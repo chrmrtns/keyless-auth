@@ -5,7 +5,7 @@ Donate link: https://github.com/chrmrtns/passwordless-auth
 Tags: passwordless login, passwordless, front-end login, login shortcode, custom login form, login without password, passwordless authentication, security, email templates, smtp, mail logging, modular architecture
 Requires at least: 3.9
 Tested up to: 6.7.1
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 
 
 Enhanced passwordless authentication with modular architecture, customizable email templates, and improved security.
@@ -15,7 +15,14 @@ Enhanced passwordless authentication with modular architecture, customizable ema
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free. Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
-**New Features in v2.0.4:**
+**New Features in v2.0.5:**
+* **✨ Two-Field Email Template System** - Separate WYSIWYG body content from optional CSS styles
+* **🎨 Enhanced Template Editor** - Body content uses inline styles, CSS styles go in head section
+* **🔧 WYSIWYG Compatibility** - No more editor corruption of HTML structure or CSS classes
+* **📐 2x2 Grid Preview Layout** - Template previews now display in compact grid instead of vertical stack
+* **🎯 Advanced Customization** - Choose inline-only styles OR use CSS classes with separate stylesheet field
+
+**Features in v2.0.4:**
 * **🔐 Secure Credential Storage** - Choose between database or wp-config.php storage for SMTP credentials
 * **🛡️ Enhanced Security** - wp-config.php option keeps sensitive credentials outside the web root
 * **⚙️ Flexible Configuration** - Toggle between storage methods with clear visual indicators
@@ -132,17 +139,26 @@ Passwordless Authentication does not replace the default login functionality in 
 
 == Screenshots ==
 
-1. Scr1
-2. Scr2
-3. Scr3
-4. Scr4
-5. Scr5
-6. Scr6
-7. Scr7
-8. Scr8
+1. Front-end login form - Clean, simple passwordless authentication interface
+2. Main admin dashboard - Overview with shortcode info and success counter
+3. Email template settings - Choose from predefined templates or create custom ones
+4. WYSIWYG email editor - Full HTML support for custom email templates
+5. SMTP configuration - Secure credential storage with wp-config.php option
+6. Mail logs - Track all sent emails with timestamps and preview
+7. Test email functionality - Verify SMTP settings with one-click testing
+8. Email preview - See exactly how your login emails will look
 
 
 == Changelog ==
+= 2.0.5 =
+* NEW: Two-field email template system - Separate WYSIWYG body content from optional CSS styles
+* NEW: Enhanced template editor - Body content editor with inline styles, separate CSS styles field
+* NEW: 2x2 grid preview layout - Template previews now display in compact grid format
+* IMPROVEMENT: WYSIWYG compatibility - No more editor corruption of HTML structure or CSS classes  
+* IMPROVEMENT: Advanced email customization - Choose between inline-only styles or CSS classes with stylesheet
+* IMPROVEMENT: Better email structure - Automatic HTML document assembly with proper head/meta tags for email clients
+* IMPROVEMENT: Flexible template creation - Users can work with familiar WYSIWYG tools while maintaining email compatibility
+
 = 2.0.4 =
 * NEW: Secure credential storage options - Choose between database or wp-config.php storage for SMTP credentials
 * NEW: wp-config.php constants support - Use CHRMRTNS_PA_SMTP_USERNAME and CHRMRTNS_PA_SMTP_PASSWORD constants

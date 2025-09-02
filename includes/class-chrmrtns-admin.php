@@ -71,12 +71,17 @@ class Chrmrtns_Admin {
     public function init_settings() {
         register_setting('chrmrtns_settings_group', 'chrmrtns_email_template');
         register_setting('chrmrtns_settings_group', 'chrmrtns_custom_email_body');
+        register_setting('chrmrtns_settings_group', 'chrmrtns_custom_email_styles');
         register_setting('chrmrtns_settings_group', 'chrmrtns_button_color');
         register_setting('chrmrtns_settings_group', 'chrmrtns_button_hover_color');
         register_setting('chrmrtns_settings_group', 'chrmrtns_link_color');
         register_setting('chrmrtns_settings_group', 'chrmrtns_link_hover_color');
         
         add_action('wp_ajax_chrmrtns_save_settings', array($this, 'save_settings'));
+        add_action('admin_post_chrmrtns_save_settings', array($this, 'save_settings'));
+        
+        // Handle form submission on settings page load
+        add_action('admin_init', array($this, 'handle_form_submission'));
     }
     
     /**
@@ -305,6 +310,23 @@ class Chrmrtns_Admin {
     /**
      * Save settings via AJAX
      */
+    /**
+     * Handle form submission
+     */
+    public function handle_form_submission() {
+        error_log('CHRMRTNS: handle_form_submission called - POST data: ' . print_r($_POST, true));
+        
+        // Check if this is a settings page submission
+        if (isset($_POST['chrmrtns_settings_nonce']) && isset($_POST['submit'])) {
+            error_log('CHRMRTNS: Form submission detected, calling save_settings');
+            $this->save_settings();
+        } elseif (isset($_POST['chrmrtns_settings_nonce'])) {
+            error_log('CHRMRTNS: Nonce found but submit button missing');
+        } else {
+            error_log('CHRMRTNS: No relevant POST data found');
+        }
+    }
+    
     public function save_settings() {
         if (!wp_verify_nonce($_POST['chrmrtns_settings_nonce'], 'chrmrtns_settings_save')) {
             wp_die(__('Security check failed.', 'chrmrtns-passwordless-auth'));

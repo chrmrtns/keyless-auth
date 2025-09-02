@@ -45,6 +45,7 @@ class Chrmrtns_Email_Templates {
      * Default email template
      */
     private function get_default_template($to, $login_url, $button_color, $button_hover_color, $link_color, $link_hover_color) {
+        $site_name = get_bloginfo('name');
         return sprintf('
             <html>
             <head>
@@ -58,24 +59,25 @@ class Chrmrtns_Email_Templates {
             </head>
             <body>
                 <div class="email-container">
-                    <h2>Passwordless Login</h2>
+                    <h2>Login to %s</h2>
                     <p>Hello %s!</p>
                     <p>You requested a passwordless login. Click the button below to log in:</p>
-                    <a href="%s" class="login-button">Log In</a>
+                    <a href="%s" class="login-button">Log In Now</a>
                     <p>If the button doesn\'t work, you can copy and paste this link into your browser:</p>
                     <p><a href="%s">%s</a></p>
                     <p>This link will expire in 10 minutes for security reasons.</p>
-                    <p>Best regards,<br>Your Website Team</p>
+                    <p>Best regards,<br>%s Team</p>
                 </div>
             </body>
             </html>
-        ', $button_color, $button_hover_color, $link_color, $link_hover_color, esc_html($to), esc_url($login_url), esc_url($login_url), esc_html($login_url));
+        ', $button_color, $button_hover_color, $link_color, $link_hover_color, esc_html($site_name), esc_html($to), esc_url($login_url), esc_url($login_url), esc_html($login_url), esc_html($site_name));
     }
     
     /**
      * German email template
      */
     private function get_german_template($to, $login_url, $button_color, $button_hover_color, $link_color, $link_hover_color) {
+        $site_name = get_bloginfo('name');
         return sprintf('
             <html>
             <head>
@@ -87,52 +89,63 @@ class Chrmrtns_Email_Templates {
                     a { color: %s; }
                     a:hover { color: %s; }
                     .footer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 14px; }
+                    .security-note { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin: 15px 0; }
                 </style>
             </head>
             <body>
                 <div class="email-container">
                     <div class="content-box">
-                        <h2 style="color: #333; margin-bottom: 20px;">Passwortloser Login</h2>
-                        <p>Hallo %s!</p>
-                        <p>Sie haben einen passwortlosen Login angefordert. Klicken Sie auf den Button unten, um sich anzumelden:</p>
-                        <a href="%s" class="login-button">Jetzt Anmelden</a>
-                        <p>Falls der Button nicht funktioniert, können Sie diesen Link in Ihren Browser kopieren:</p>
-                        <p><a href="%s">%s</a></p>
-                        <p><strong>Wichtiger Hinweis:</strong> Dieser Link ist aus Sicherheitsgründen nur 10 Minuten gültig.</p>
+                        <h2 style="color: #333; margin-bottom: 20px;">Passwortlose Anmeldung bei %s</h2>
+                        <p>Guten Tag %s!</p>
+                        <p>Sie haben eine passwortlose Anmeldung angefordert. Klicken Sie auf den untenstehenden Button, um sich sicher anzumelden:</p>
+                        <center>
+                            <a href="%s" class="login-button">Jetzt sicher anmelden</a>
+                        </center>
+                        <p>Falls der Button nicht funktioniert, können Sie alternativ diesen Link kopieren und in Ihrem Browser einfügen:</p>
+                        <p style="word-break: break-all;"><a href="%s">%s</a></p>
+                        <div class="security-note">
+                            <strong>Sicherheitshinweis:</strong> Dieser Link ist aus Sicherheitsgründen nur 10 Minuten gültig. Nach der Anmeldung wird der Link automatisch ungültig.
+                        </div>
                         <div class="footer">
-                            <p>Mit freundlichen Grüßen,<br>Ihr Website-Team</p>
+                            <p>Mit freundlichen Grüßen,<br>Ihr %s Team</p>
+                            <p style="font-size: 12px; color: #999;">Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese Nachricht.</p>
                         </div>
                     </div>
                 </div>
             </body>
             </html>
-        ', $button_color, $button_hover_color, $link_color, $link_hover_color, esc_html($to), esc_url($login_url), esc_url($login_url), esc_html($login_url));
+        ', $button_color, $button_hover_color, $link_color, $link_hover_color, esc_html($site_name), esc_html($to), esc_url($login_url), esc_url($login_url), esc_html($login_url), esc_html($site_name));
     }
     
     /**
      * Simple email template
      */
     private function get_simple_template($to, $login_url, $button_color, $button_hover_color, $link_color, $link_hover_color) {
+        $site_name = get_bloginfo('name');
         return sprintf('
             <html>
             <head>
                 <style>
-                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; padding: 20px; }
                     .login-button { display: inline-block; background-color: %s; color: white; padding: 10px 20px; text-decoration: none; border-radius: 3px; margin: 15px 0; }
                     .login-button:hover { background-color: %s; }
                     a { color: %s; }
                     a:hover { color: %s; }
+                    hr { border: none; border-top: 1px solid #eee; margin: 20px 0; }
                 </style>
             </head>
             <body>
-                <h3>Login Request</h3>
-                <p>Hello %s,</p>
-                <p>Click here to log in: <a href="%s" class="login-button">Log In</a></p>
-                <p>Link expires in 10 minutes.</p>
-                <p>Direct link: <a href="%s">%s</a></p>
+                <h3>Quick Login - %s</h3>
+                <hr>
+                <p>Hi %s,</p>
+                <p>Your login link is ready:</p>
+                <p><a href="%s" class="login-button">→ Click to Login</a></p>
+                <p style="color: #666; font-size: 14px;">Expires in 10 minutes</p>
+                <hr>
+                <p style="font-size: 12px; color: #999;">Link: <a href="%s">%s</a></p>
             </body>
             </html>
-        ', $button_color, $button_hover_color, $link_color, $link_hover_color, esc_html($to), esc_url($login_url), esc_url($login_url), esc_html($login_url));
+        ', $button_color, $button_hover_color, $link_color, $link_hover_color, esc_html($site_name), esc_html($to), esc_url($login_url), esc_url($login_url), esc_html($login_url));
     }
     
     /**
@@ -140,20 +153,67 @@ class Chrmrtns_Email_Templates {
      */
     private function get_custom_template($to, $login_url, $button_color, $button_hover_color, $link_color, $link_hover_color) {
         $custom_body = get_option('chrmrtns_custom_email_body', '');
+        $custom_styles = get_option('chrmrtns_custom_email_styles', '');
+        $site_name = get_bloginfo('name');
         
+        // If no custom body exists, provide default inline-styled content
         if (empty($custom_body)) {
-            return $this->get_default_template($to, $login_url, $button_color, $button_hover_color, $link_color, $link_hover_color);
+            $custom_body = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
+    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+        <h1 style="color: #333; text-align: center; margin-bottom: 10px;">Welcome Back!</h1>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <span style="background: #e8f5e8; color: #2d5016; padding: 8px 12px; border-radius: 15px; font-size: 12px; display: inline-block;">🔒 Secure Login</span>
+        </div>
+        <p style="font-size: 16px;">Hello <strong>{{TO}}</strong>,</p>
+        <p>Your secure login link for ' . esc_html($site_name) . ' is ready. Click the button below to access your account instantly:</p>
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{LOGIN_URL}}" style="display: inline-block; background-color: {{BUTTON_COLOR}}; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🚀 Access Your Account</a>
+        </div>
+        <p style="font-size: 14px; color: #666; text-align: center;">Or copy this link: <br><a href="{{LOGIN_URL}}" style="color: {{LINK_COLOR}}; text-decoration: none; word-break: break-all;">{{LOGIN_URL}}</a></p>
+        <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
+        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+            <p style="margin: 0; font-size: 14px; color: #856404;">
+                <strong>⏱️ Security Notice:</strong> This link expires in 10 minutes and can only be used once for your security.
+            </p>
+        </div>
+        <p style="font-size: 12px; color: #999; text-align: center; margin-top: 20px;">
+            This email was automatically generated. Please do not reply to this message.
+        </p>
+    </div>
+</div>';
         }
         
-        // Replace placeholders
-        $custom_body = str_replace('{{TO}}', esc_html($to), $custom_body);
-        $custom_body = str_replace('{{LOGIN_URL}}', esc_url($login_url), $custom_body);
-        $custom_body = str_replace('{{BUTTON_COLOR}}', $button_color, $custom_body);
-        $custom_body = str_replace('{{BUTTON_HOVER_COLOR}}', $button_hover_color, $custom_body);
-        $custom_body = str_replace('{{LINK_COLOR}}', $link_color, $custom_body);
-        $custom_body = str_replace('{{LINK_HOVER_COLOR}}', $link_hover_color, $custom_body);
+        // Build the complete HTML structure
+        $html = '<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Request</title>';
         
-        return $custom_body;
+        // Add custom styles if provided
+        if (!empty($custom_styles)) {
+            $html .= '
+    <style>
+        ' . $custom_styles . '
+    </style>';
+        }
+        
+        $html .= '
+</head>
+<body>
+    ' . $custom_body . '
+</body>
+</html>';
+        
+        // Replace placeholders
+        $html = str_replace('{{TO}}', esc_html($to), $html);
+        $html = str_replace('{{LOGIN_URL}}', esc_url($login_url), $html);
+        $html = str_replace('{{BUTTON_COLOR}}', $button_color, $html);
+        $html = str_replace('{{BUTTON_HOVER_COLOR}}', $button_hover_color, $html);
+        $html = str_replace('{{LINK_COLOR}}', $link_color, $html);
+        $html = str_replace('{{LINK_HOVER_COLOR}}', $link_hover_color, $html);
+        
+        return $html;
     }
     
     /**
@@ -233,12 +293,32 @@ class Chrmrtns_Email_Templates {
      * Render settings page
      */
     public function render_settings_page() {
+        // Debug output
+        error_log('CHRMRTNS: render_settings_page called');
+        
+        // Handle form submission directly here
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['chrmrtns_settings_nonce'])) {
+            error_log('CHRMRTNS: POST request detected in render_settings_page');
+            if (wp_verify_nonce($_POST['chrmrtns_settings_nonce'], 'chrmrtns_settings_save')) {
+                error_log('CHRMRTNS: Nonce verified, processing form submission');
+                $this->save_settings();
+                // Continue rendering the page with success message
+            } else {
+                error_log('CHRMRTNS: Nonce verification failed');
+                add_settings_error('chrmrtns_settings', 'nonce_failed', __('Security check failed. Please try again.', 'chrmrtns-passwordless-auth'), 'error');
+            }
+        }
+        
+        echo '<!-- CHRMRTNS: Settings page is loading -->';
         ?>
         <div class="chrmrtns-badge"></div>
         <h1><?php _e('Email Template Settings', 'chrmrtns-passwordless-auth'); ?></h1>
+        
+        <?php settings_errors('chrmrtns_settings'); ?>
+        
         <p><?php _e('Customize the appearance and content of your passwordless login emails.', 'chrmrtns-passwordless-auth'); ?></p>
         
-        <form id="chrmrtns_settings_form" method="post" action="">
+        <form id="chrmrtns_settings_form" method="post" action="<?php echo admin_url('admin.php?page=chrmrtns-passwordless-auth-settings'); ?>">
             <?php wp_nonce_field('chrmrtns_settings_save', 'chrmrtns_settings_nonce'); ?>
             
             <h2><?php _e('Email Template', 'chrmrtns-passwordless-auth'); ?></h2>
@@ -270,19 +350,26 @@ class Chrmrtns_Email_Templates {
             'custom' => __('Custom Template', 'chrmrtns-passwordless-auth')
         );
         
-        echo '<div class="chrmrtns-template-selection">';
+        // 2x2 Grid container
+        echo '<div class="chrmrtns-template-selection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1200px;">';
+        
         foreach ($templates as $template_key => $template_name) {
             $checked = ($current_template === $template_key) ? 'checked' : '';
-            echo '<label style="display: block; margin: 10px 0;">';
+            
+            // Each template in its own grid cell
+            echo '<div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; background: #fff;">';
+            echo '<label style="display: block; margin-bottom: 10px; font-weight: bold; cursor: pointer;">';
             echo '<input type="radio" name="chrmrtns_email_template" value="' . esc_attr($template_key) . '" ' . $checked . '>';
             echo ' ' . esc_html($template_name);
             echo '</label>';
             
             // Show preview
-            echo '<div class="template-preview" style="margin: 10px 0 20px 20px; border: 1px solid #ddd; height: 200px; width: 100%; max-width: 600px;">';
+            echo '<div class="template-preview" style="border: 1px solid #ccc; height: 200px; width: 100%;">';
             echo $this->get_template_preview($template_key);
             echo '</div>';
+            echo '</div>';
         }
+        
         echo '</div>';
     }
     
@@ -290,7 +377,29 @@ class Chrmrtns_Email_Templates {
      * Get template preview
      */
     private function get_template_preview($template_key) {
-        $preview_content = $this->get_email_template('user@example.com', '#');
+        // Get the specific template for preview
+        $button_color = get_option('chrmrtns_button_color', '#007bff');
+        $button_hover_color = get_option('chrmrtns_button_hover_color', '#0056b3');
+        $link_color = get_option('chrmrtns_link_color', '#007bff');
+        $link_hover_color = get_option('chrmrtns_link_hover_color', '#0056b3');
+        $preview_url = '#';
+        $preview_email = 'user@example.com';
+        
+        switch ($template_key) {
+            case 'german':
+                $preview_content = $this->get_german_template($preview_email, $preview_url, $button_color, $button_hover_color, $link_color, $link_hover_color);
+                break;
+            case 'simple':
+                $preview_content = $this->get_simple_template($preview_email, $preview_url, $button_color, $button_hover_color, $link_color, $link_hover_color);
+                break;
+            case 'custom':
+                $preview_content = $this->get_custom_template($preview_email, $preview_url, $button_color, $button_hover_color, $link_color, $link_hover_color);
+                break;
+            default:
+                $preview_content = $this->get_default_template($preview_email, $preview_url, $button_color, $button_hover_color, $link_color, $link_hover_color);
+                break;
+        }
+        
         return '<iframe srcdoc="' . esc_attr($preview_content) . '" style="width: 100%; height: 100%; border: none;"></iframe>';
     }
     
@@ -342,14 +451,43 @@ class Chrmrtns_Email_Templates {
      */
     private function render_custom_template_editor() {
         $custom_body = get_option('chrmrtns_custom_email_body', '');
+        
+        // If empty, provide the beautiful demo template
+        if (empty($custom_body)) {
+            $site_name = get_bloginfo('name');
+            $custom_body = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
+    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+        <h1 style="color: #333; text-align: center; margin-bottom: 10px;">Welcome Back!</h1>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <span style="background: #e8f5e8; color: #2d5016; padding: 8px 12px; border-radius: 15px; font-size: 12px; display: inline-block;">🔒 Secure Login</span>
+        </div>
+        <p style="font-size: 16px;">Hello <strong>{{TO}}</strong>,</p>
+        <p>Your secure login link for ' . esc_html($site_name) . ' is ready. Click the button below to access your account instantly:</p>
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{LOGIN_URL}}" style="display: inline-block; background-color: {{BUTTON_COLOR}}; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🚀 Access Your Account</a>
+        </div>
+        <p style="font-size: 14px; color: #666; text-align: center;">Or copy this link: <br><a href="{{LOGIN_URL}}" style="color: {{LINK_COLOR}}; text-decoration: none; word-break: break-all;">{{LOGIN_URL}}</a></p>
+        <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
+        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+            <p style="margin: 0; font-size: 14px; color: #856404;">
+                <strong>⏱️ Security Notice:</strong> This link expires in 10 minutes and can only be used once for your security.
+            </p>
+        </div>
+        <p style="font-size: 12px; color: #999; text-align: center; margin-top: 20px;">
+            This email was automatically generated. Please do not reply to this message.
+        </p>
+    </div>
+</div>';
+        }
         ?>
         <div id="chrmrtns_custom_template_section" style="<?php echo get_option('chrmrtns_email_template', 'default') !== 'custom' ? 'display: none;' : ''; ?>">
-            <p><?php _e('Create your own custom email template using HTML. Use the placeholders shown in the help section below.', 'chrmrtns-passwordless-auth'); ?></p>
+            <h4><?php _e('Email Body Content', 'chrmrtns-passwordless-auth'); ?></h4>
+            <p><?php _e('Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility.', 'chrmrtns-passwordless-auth'); ?></p>
             <?php
             wp_editor($custom_body, 'chrmrtns_custom_email_body', array(
                 'textarea_name' => 'chrmrtns_custom_email_body',
                 'media_buttons' => false,
-                'textarea_rows' => 15,
+                'textarea_rows' => 12,
                 'teeny' => false,
                 'dfw' => false,
                 'tinymce' => array(
@@ -365,6 +503,17 @@ class Chrmrtns_Email_Templates {
                 )
             ));
             ?>
+            
+            <h4 style="margin-top: 25px;"><?php _e('Custom CSS Styles (Optional)', 'chrmrtns-passwordless-auth'); ?></h4>
+            <p><?php _e('Add custom CSS that will be placed in the &lt;head&gt; section. This is for advanced users who want to use CSS classes instead of inline styles.', 'chrmrtns-passwordless-auth'); ?></p>
+            <?php
+            $custom_styles = get_option('chrmrtns_custom_email_styles', '');
+            ?>
+            <textarea name="chrmrtns_custom_email_styles" id="chrmrtns_custom_email_styles" rows="8" cols="50" style="width: 100%; font-family: monospace;" placeholder="/* Add your custom CSS here */&#10;.login-button {&#10;    background-color: {{BUTTON_COLOR}};&#10;    color: white;&#10;    padding: 15px 30px;&#10;    border-radius: 25px;&#10;}"><?php echo esc_textarea($custom_styles); ?></textarea>
+            
+            <p class="description">
+                <?php _e('The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like {{TO}}, {{LOGIN_URL}}, {{BUTTON_COLOR}}, etc.', 'chrmrtns-passwordless-auth'); ?>
+            </p>
         </div>
         <?php
     }
@@ -445,6 +594,14 @@ class Chrmrtns_Email_Templates {
                     $('#chrmrtns_custom_template_section').hide();
                 }
             });
+            
+            // Trigger initial show/hide
+            var currentTemplate = $('input[name="chrmrtns_email_template"]:checked').val();
+            if (currentTemplate === 'custom') {
+                $('#chrmrtns_custom_template_section').show();
+            } else {
+                $('#chrmrtns_custom_template_section').hide();
+            }
         });
         </script>
         <?php
@@ -454,14 +611,42 @@ class Chrmrtns_Email_Templates {
      * Save settings
      */
     public function save_settings() {
-        update_option('chrmrtns_email_template', sanitize_text_field($_POST['chrmrtns_email_template']));
-        update_option('chrmrtns_custom_email_body', $this->sanitize_email_html($_POST['chrmrtns_custom_email_body']));
+        // Debug logging
+        error_log('CHRMRTNS: save_settings called');
+        error_log('CHRMRTNS: POST data: ' . print_r($_POST, true));
+        
+        // Save the template type
+        $template_type = sanitize_text_field($_POST['chrmrtns_email_template']);
+        error_log('CHRMRTNS: Saving template type: ' . $template_type);
+        update_option('chrmrtns_email_template', $template_type);
+        
+        // Verify it was saved
+        $saved_template = get_option('chrmrtns_email_template');
+        error_log('CHRMRTNS: Verified saved template: ' . $saved_template);
+        
+        // Always save custom email body if provided (even if not currently selected)
+        if (isset($_POST['chrmrtns_custom_email_body'])) {
+            $custom_body = $this->sanitize_email_html($_POST['chrmrtns_custom_email_body']);
+            update_option('chrmrtns_custom_email_body', $custom_body);
+            error_log('CHRMRTNS: Saved custom email body length: ' . strlen($custom_body));
+        }
+        
+        // Always save custom email styles if provided
+        if (isset($_POST['chrmrtns_custom_email_styles'])) {
+            $custom_styles = wp_strip_all_tags($_POST['chrmrtns_custom_email_styles']);
+            update_option('chrmrtns_custom_email_styles', $custom_styles);
+            error_log('CHRMRTNS: Saved custom email styles length: ' . strlen($custom_styles));
+        }
+        
+        // Save color settings
         update_option('chrmrtns_button_color', $this->sanitize_color($_POST['chrmrtns_button_color']));
         update_option('chrmrtns_button_hover_color', $this->sanitize_color($_POST['chrmrtns_button_hover_color']));
         update_option('chrmrtns_link_color', $this->sanitize_color($_POST['chrmrtns_link_color']));
         update_option('chrmrtns_link_hover_color', $this->sanitize_color($_POST['chrmrtns_link_hover_color']));
         
-        wp_redirect(admin_url('admin.php?page=chrmrtns-passwordless-auth-settings&settings-updated=true'));
-        exit;
+        error_log('CHRMRTNS: Settings saved successfully - no redirect needed');
+        
+        // Don't redirect - just show success message
+        add_settings_error('chrmrtns_settings', 'settings_saved', __('Settings saved successfully.', 'chrmrtns-passwordless-auth'), 'updated');
     }
 }
