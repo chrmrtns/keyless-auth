@@ -5,7 +5,7 @@ Donate link: https://github.com/chrmrtns/passwordless-auth
 Tags: passwordless login, passwordless, front-end login, login shortcode, custom login form, login without password, passwordless authentication, security, email templates, smtp, mail logging, modular architecture
 Requires at least: 3.9
 Tested up to: 6.7.1
-Stable tag: 2.0.2
+Stable tag: 2.0.4
 
 
 Enhanced passwordless authentication with modular architecture, customizable email templates, and improved security.
@@ -15,7 +15,17 @@ Enhanced passwordless authentication with modular architecture, customizable ema
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free. Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
-**New Features in v2.0.2:**
+**New Features in v2.0.4:**
+* **🔐 Secure Credential Storage** - Choose between database or wp-config.php storage for SMTP credentials
+* **🛡️ Enhanced Security** - wp-config.php option keeps sensitive credentials outside the web root
+* **⚙️ Flexible Configuration** - Toggle between storage methods with clear visual indicators
+
+**Features in v2.0.3:**
+* **Login Link Reliability** - Fixed critical issue where login links weren't processing correctly
+* **Enhanced Hook System** - Improved WordPress hook integration for better compatibility
+* **Streamlined Code** - Removed debug logging for production-ready performance
+
+**Features in v2.0.2:**
 * **Custom Sender Names** - Force custom "From" names for all emails with toggle control
 * **Login Success Tracking** - Dynamic counter showing total successful passwordless logins
 * **Enhanced Mail Logging** - Fixed compatibility issues with other SMTP plugins
@@ -98,6 +108,15 @@ Passwordless Authentication does not replace the default login functionality in 
 
 	Absolutely! In the SMTP settings, you can enable "Force From Name" and set a custom sender name like "Your Website Name" instead of just showing the email address. This makes emails look more professional and branded. The feature includes a toggle control so you can easily enable or disable it.
 
+= Can I store SMTP credentials securely outside the database? =
+
+	Yes! Version 2.0.4 introduces secure credential storage options. You can choose to store SMTP username and password in wp-config.php instead of the database. This is more secure as wp-config.php is typically outside the web root. Simply add these constants to your wp-config.php:
+	
+	`define('CHRMRTNS_PA_SMTP_USERNAME', 'your-email@example.com');`
+	`define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');`
+	
+	Then select "Store in wp-config.php" in the SMTP settings.
+
 = What's different from the original Passwordless Login plugin? =
 
 	This enhanced version includes: modular class-based architecture, SMTP configuration, email logging & monitoring, WYSIWYG email editor, visual template previews, advanced color controls (hex/RGB/HSL), separate button and link colors, dedicated admin menu, enhanced security with comprehensive nonce verification, HTML email support, and professional styling options.
@@ -124,6 +143,19 @@ Passwordless Authentication does not replace the default login functionality in 
 
 
 == Changelog ==
+= 2.0.4 =
+* NEW: Secure credential storage options - Choose between database or wp-config.php storage for SMTP credentials
+* NEW: wp-config.php constants support - Use CHRMRTNS_PA_SMTP_USERNAME and CHRMRTNS_PA_SMTP_PASSWORD constants
+* IMPROVEMENT: Enhanced security - Keep sensitive SMTP credentials outside the web root in wp-config.php
+* IMPROVEMENT: Dynamic field toggles - Visual indicators show which storage method is active and if constants are defined
+* IMPROVEMENT: Better credential management - Automatic detection and validation of wp-config.php constants
+
+= 2.0.3 =
+* FIX: Critical login link functionality - Fixed issue where login links weren't processing properly on some WordPress configurations
+* IMPROVEMENT: Enhanced hook system - Changed from 'init' to 'wp_loaded' hook for better login link processing reliability
+* IMPROVEMENT: Code optimization - Removed debug logging for cleaner, production-ready performance
+* FIX: WordPress compatibility - Improved hook timing to ensure login links work across different hosting environments
+
 = 2.0.2 =
 * NEW: Custom sender name control - Force custom "From" names for all emails with toggle checkbox
 * NEW: Login success tracking - Dynamic counter showing total successful passwordless logins in admin

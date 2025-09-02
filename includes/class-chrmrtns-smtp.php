@@ -48,6 +48,7 @@ class Chrmrtns_SMTP {
             'smtp_encryption' => __('Encryption', 'chrmrtns-passwordless-auth'),
             'smtp_port' => __('SMTP Port', 'chrmrtns-passwordless-auth'),
             'smtp_auth' => __('Authentication', 'chrmrtns-passwordless-auth'),
+            'credential_storage' => __('Credential Storage', 'chrmrtns-passwordless-auth'),
             'smtp_username' => __('SMTP Username', 'chrmrtns-passwordless-auth'),
             'smtp_password' => __('SMTP Password', 'chrmrtns-passwordless-auth')
         );
@@ -193,16 +194,99 @@ class Chrmrtns_SMTP {
     }
     
     /**
+     * Render credential storage field
+     */
+    public function render_credential_storage_field() {
+        $options = get_option('chrmrtns_smtp_settings', array());
+        $storage_type = $options['credential_storage'] ?? 'database';
+        ?>
+        <label>
+            <input type='radio' name='chrmrtns_smtp_settings[credential_storage]' value='database' 
+                <?php checked($storage_type, 'database'); ?> onchange="chrmrtnsToggleCredentialFields('database')">
+            <?php _e('Store in Database', 'chrmrtns-passwordless-auth'); ?>
+        </label><br>
+        
+        <label>
+            <input type='radio' name='chrmrtns_smtp_settings[credential_storage]' value='wp_config' 
+                <?php checked($storage_type, 'wp_config'); ?> onchange="chrmrtnsToggleCredentialFields('wp_config')">
+            <?php _e('Store in wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+        </label>
+        
+        <p class="description">
+            <?php _e('Choose where to store SMTP credentials. wp-config.php is more secure as it\'s outside the web root.', 'chrmrtns-passwordless-auth'); ?>
+        </p>
+        
+        <div id="wp-config-instructions" style="display: none; margin-top: 10px; padding: 10px; background: #f0f0f1; border-left: 4px solid #0073aa;">
+            <strong><?php _e('To use wp-config.php storage, add these lines to your wp-config.php file:', 'chrmrtns-passwordless-auth'); ?></strong><br><br>
+            <code style="background: #fff; padding: 5px; display: block; margin: 5px 0;">
+                define('CHRMRTNS_PA_SMTP_USERNAME', 'your-email@example.com');<br>
+                define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
+            </code>
+            <small><?php _e('Replace the values with your actual SMTP credentials. The fields below will be disabled when using wp-config.php storage.', 'chrmrtns-passwordless-auth'); ?></small>
+        </div>
+        
+        <script>
+        function chrmrtnsToggleCredentialFields(storageType) {
+            var usernameField = document.querySelector('input[name="chrmrtns_smtp_settings[smtp_username]"]');
+            var passwordField = document.querySelector('input[name="chrmrtns_smtp_settings[smtp_password]"]');
+            var instructions = document.getElementById('wp-config-instructions');
+            
+            if (storageType === 'wp_config') {
+                usernameField.disabled = true;
+                passwordField.disabled = true;
+                usernameField.style.opacity = '0.5';
+                passwordField.style.opacity = '0.5';
+                instructions.style.display = 'block';
+            } else {
+                usernameField.disabled = false;
+                passwordField.disabled = false;
+                usernameField.style.opacity = '1';
+                passwordField.style.opacity = '1';
+                instructions.style.display = 'none';
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            var wpConfigRadio = document.querySelector('input[name="chrmrtns_smtp_settings[credential_storage]"][value="wp_config"]');
+            if (wpConfigRadio && wpConfigRadio.checked) {
+                chrmrtnsToggleCredentialFields('wp_config');
+            }
+        });
+        </script>
+        <?php
+    }
+    
+    /**
      * Render username field
      */
     public function render_smtp_username_field() {
         $options = get_option('chrmrtns_smtp_settings', array());
+        $storage_type = $options['credential_storage'] ?? 'database';
+        $username = '';
+        
+        if ($storage_type === 'wp_config' && defined('CHRMRTNS_PA_SMTP_USERNAME')) {
+            $username = CHRMRTNS_PA_SMTP_USERNAME;
+        } else {
+            $username = $options['smtp_username'] ?? '';
+        }
         ?>
         <input type='text' name='chrmrtns_smtp_settings[smtp_username]' 
-            value='<?php echo esc_attr($options['smtp_username'] ?? ''); ?>' 
+            value='<?php echo esc_attr($username); ?>' 
             size='50' 
             placeholder="your-email@gmail.com">
-        <p class="description"><?php _e('Your SMTP username (usually your email address).', 'chrmrtns-passwordless-auth'); ?></p>
+        
+        <?php if ($storage_type === 'wp_config'): ?>
+            <p class="description" style="color: #0073aa;">
+                <?php if (defined('CHRMRTNS_PA_SMTP_USERNAME')): ?>
+                    <?php _e('✓ Using username from wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+                <?php else: ?>
+                    <?php _e('⚠ CHRMRTNS_PA_SMTP_USERNAME not defined in wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+                <?php endif; ?>
+            </p>
+        <?php else: ?>
+            <p class="description"><?php _e('Your SMTP username (usually your email address).', 'chrmrtns-passwordless-auth'); ?></p>
+        <?php endif; ?>
         <?php
     }
     
@@ -211,11 +295,30 @@ class Chrmrtns_SMTP {
      */
     public function render_smtp_password_field() {
         $options = get_option('chrmrtns_smtp_settings', array());
+        $storage_type = $options['credential_storage'] ?? 'database';
+        $password = '';
+        
+        if ($storage_type === 'wp_config' && defined('CHRMRTNS_PA_SMTP_PASSWORD')) {
+            $password = str_repeat('*', strlen(CHRMRTNS_PA_SMTP_PASSWORD)); // Mask the password
+        } else {
+            $password = $options['smtp_password'] ?? '';
+        }
         ?>
         <input type='password' name='chrmrtns_smtp_settings[smtp_password]' 
-            value='<?php echo esc_attr($options['smtp_password'] ?? ''); ?>' 
+            value='<?php echo esc_attr($password); ?>' 
             size='50'>
-        <p class="description"><?php _e('Your SMTP password or app-specific password.', 'chrmrtns-passwordless-auth'); ?></p>
+        
+        <?php if ($storage_type === 'wp_config'): ?>
+            <p class="description" style="color: #0073aa;">
+                <?php if (defined('CHRMRTNS_PA_SMTP_PASSWORD')): ?>
+                    <?php _e('✓ Using password from wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+                <?php else: ?>
+                    <?php _e('⚠ CHRMRTNS_PA_SMTP_PASSWORD not defined in wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+                <?php endif; ?>
+            </p>
+        <?php else: ?>
+            <p class="description"><?php _e('Your SMTP password or app-specific password.', 'chrmrtns-passwordless-auth'); ?></p>
+        <?php endif; ?>
         <?php
     }
     
@@ -233,8 +336,18 @@ class Chrmrtns_SMTP {
         $sanitized['smtp_encryption'] = isset($input['smtp_encryption']) ? sanitize_text_field($input['smtp_encryption']) : 'none';
         $sanitized['smtp_port'] = isset($input['smtp_port']) ? absint($input['smtp_port']) : 25;
         $sanitized['smtp_auth'] = isset($input['smtp_auth']) ? 1 : 0;
-        $sanitized['smtp_username'] = isset($input['smtp_username']) ? sanitize_email($input['smtp_username']) : '';
-        $sanitized['smtp_password'] = isset($input['smtp_password']) ? $input['smtp_password'] : ''; // Don't sanitize password to preserve special chars
+        $sanitized['credential_storage'] = isset($input['credential_storage']) ? sanitize_text_field($input['credential_storage']) : 'database';
+        
+        // Handle credentials based on storage type
+        if ($sanitized['credential_storage'] === 'wp_config') {
+            // Don't store credentials in database when using wp-config
+            $sanitized['smtp_username'] = '';
+            $sanitized['smtp_password'] = '';
+        } else {
+            // Store in database as usual
+            $sanitized['smtp_username'] = isset($input['smtp_username']) ? sanitize_email($input['smtp_username']) : '';
+            $sanitized['smtp_password'] = isset($input['smtp_password']) ? $input['smtp_password'] : ''; // Don't sanitize password to preserve special chars
+        }
         
         // Validate port range
         if ($sanitized['smtp_port'] < 1 || $sanitized['smtp_port'] > 65535) {
@@ -246,6 +359,12 @@ class Chrmrtns_SMTP {
         $valid_encryptions = array('none', 'ssl', 'tls');
         if (!in_array($sanitized['smtp_encryption'], $valid_encryptions)) {
             $sanitized['smtp_encryption'] = 'none';
+        }
+        
+        // Validate credential storage options
+        $valid_storage_types = array('database', 'wp_config');
+        if (!in_array($sanitized['credential_storage'], $valid_storage_types)) {
+            $sanitized['credential_storage'] = 'database';
         }
         
         return $sanitized;
@@ -273,8 +392,16 @@ class Chrmrtns_SMTP {
         // Set authentication
         if (!empty($options['smtp_auth'])) {
             $phpmailer->SMTPAuth = true;
-            $phpmailer->Username = $options['smtp_username'] ?? '';
-            $phpmailer->Password = $options['smtp_password'] ?? '';
+            
+            // Get credentials based on storage type
+            $storage_type = $options['credential_storage'] ?? 'database';
+            if ($storage_type === 'wp_config') {
+                $phpmailer->Username = defined('CHRMRTNS_PA_SMTP_USERNAME') ? CHRMRTNS_PA_SMTP_USERNAME : '';
+                $phpmailer->Password = defined('CHRMRTNS_PA_SMTP_PASSWORD') ? CHRMRTNS_PA_SMTP_PASSWORD : '';
+            } else {
+                $phpmailer->Username = $options['smtp_username'] ?? '';
+                $phpmailer->Password = $options['smtp_password'] ?? '';
+            }
         }
         
         // Force From Name if enabled

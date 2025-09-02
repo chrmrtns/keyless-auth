@@ -18,7 +18,8 @@ class Chrmrtns_Core {
     public function __construct() {
         add_action('wp_ajax_nopriv_chrmrtns_request_login_code', array($this, 'handle_login_request'));
         add_action('wp_ajax_chrmrtns_request_login_code', array($this, 'handle_login_request'));
-        add_action('init', array($this, 'handle_login_link'));
+        add_action('wp_loaded', array($this, 'handle_login_link'), 1);
+        add_action('template_redirect', array($this, 'handle_form_submission'));
         add_shortcode('chrmrtns-passwordless-auth', array($this, 'render_login_form'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
     }
@@ -88,6 +89,15 @@ class Chrmrtns_Core {
             </p>
         </form>
         <?php
+    }
+    
+    /**
+     * Handle form submission
+     */
+    public function handle_form_submission() {
+        if (isset($_POST['user_email_username']) && isset($_POST['nonce'])) {
+            $this->handle_login_request();
+        }
     }
     
     /**
@@ -202,6 +212,7 @@ class Chrmrtns_Core {
     private function generate_secure_token($user_id, $expiration_time) {
         return wp_hash($user_id . $expiration_time . wp_salt());
     }
+    
     
     /**
      * Handle login link clicks

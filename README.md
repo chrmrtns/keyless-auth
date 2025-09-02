@@ -2,7 +2,7 @@
 
 **Enhanced passwordless authentication with modular architecture, customizable email templates, and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.0.2-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.4-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -10,7 +10,19 @@
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free.** Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
-## ✨ New Features in v2.0.2
+## ✨ New Features in v2.0.4
+
+* **🔐 Secure Credential Storage** - Choose between database or wp-config.php storage for SMTP credentials
+* **🛡️ Enhanced Security** - wp-config.php option keeps sensitive credentials outside the web root
+* **⚙️ Flexible Configuration** - Toggle between storage methods with clear visual indicators
+
+## 🎯 Features in v2.0.3
+
+* **🔗 Login Link Reliability** - Fixed critical issue where login links weren't processing correctly
+* **⚙️ Enhanced Hook System** - Improved WordPress hook integration for better compatibility
+* **🚀 Streamlined Code** - Removed debug logging for production-ready performance
+
+## 🎯 Features in v2.0.2
 
 * **🏷️ Custom Sender Names** - Force custom "From" names for all emails with toggle control
 * **📊 Login Success Tracking** - Dynamic counter showing total successful passwordless logins
@@ -128,7 +140,27 @@ Yes! The Mail Logs feature monitors all emails with timestamps, recipients, subj
 ### Can I customize the sender name?
 Absolutely! In SMTP settings, enable "Force From Name" and set a custom sender name for professional, branded emails.
 
+### Can I store SMTP credentials securely?
+Yes! Choose between database storage or wp-config.php storage. For maximum security, use wp-config.php by adding:
+```php
+define('CHRMRTNS_PA_SMTP_USERNAME', 'your-email@example.com');
+define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
+```
+
 ## 🔄 Changelog
+
+### v2.0.4
+- **NEW:** Secure credential storage options - Choose between database or wp-config.php storage for SMTP credentials
+- **NEW:** wp-config.php constants support - Use CHRMRTNS_PA_SMTP_USERNAME and CHRMRTNS_PA_SMTP_PASSWORD constants
+- **IMPROVEMENT:** Enhanced security - Keep sensitive SMTP credentials outside the web root in wp-config.php
+- **IMPROVEMENT:** Dynamic field toggles - Visual indicators show which storage method is active and if constants are defined
+- **IMPROVEMENT:** Better credential management - Automatic detection and validation of wp-config.php constants
+
+### v2.0.3
+- **FIX:** Critical login link functionality - Fixed issue where login links weren't processing properly on some WordPress configurations
+- **IMPROVEMENT:** Enhanced hook system - Changed from 'init' to 'wp_loaded' hook for better login link processing reliability
+- **IMPROVEMENT:** Code optimization - Removed debug logging for cleaner, production-ready performance
+- **FIX:** WordPress compatibility - Improved hook timing to ensure login links work across different hosting environments
 
 ### v2.0.2
 - **NEW:** Custom sender name control with toggle checkbox
