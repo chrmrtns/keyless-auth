@@ -1,0 +1,74 @@
+# Claude Code folder
+.claude/
+
+# WordPress specific
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backups/
+
+# Plugin development
+*.log
+*.sql
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node.js (if using build tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build files
+/build/
+/dist/
+*.min.js
+*.min.css
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Backup files
+*.bak
+*.backup
+*_backup.*
+*_bak.*
+
+# Security sensitive files
+.env
+.env.local
+.env.production
+secrets.json
+
+# WordPress debug logs
+debug.log
+error_log
+
+# Composer
+/vendor/
+composer.lock
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
