@@ -5,7 +5,7 @@ Donate link: https://github.com/chrmrtns/passwordless-auth
 Tags: passwordless login, passwordless, front-end login, login shortcode, custom login form, login without password, passwordless authentication, security, email templates, smtp, mail logging, modular architecture
 Requires at least: 3.9
 Tested up to: 6.7.1
-Stable tag: 2.0.5
+Stable tag: 2.0.6
 
 
 Enhanced passwordless authentication with modular architecture, customizable email templates, and improved security.
@@ -15,7 +15,13 @@ Enhanced passwordless authentication with modular architecture, customizable ema
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free. Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
-**New Features in v2.0.5:**
+**New Features in v2.0.6:**
+* **🔧 Fixed Placeholder Token Rendering** - Button backgrounds now display correctly in custom templates
+* **📝 WYSIWYG-Safe Placeholders** - Changed from {{PLACEHOLDER}} to [PLACEHOLDER] format to prevent editor corruption
+* **🎨 Better Email Structure** - Full-width gradient background with 600px content area for professional appearance
+* **✅ Reliable Color Replacement** - Template placeholders are properly replaced with actual colors in all scenarios
+
+**Features in v2.0.5:**
 * **✨ Two-Field Email Template System** - Separate WYSIWYG body content from optional CSS styles
 * **🎨 Enhanced Template Editor** - Body content uses inline styles, CSS styles go in head section
 * **🔧 WYSIWYG Compatibility** - No more editor corruption of HTML structure or CSS classes
@@ -150,6 +156,13 @@ Passwordless Authentication does not replace the default login functionality in 
 
 
 == Changelog ==
+= 2.0.6 =
+* FIX: Placeholder token rendering - Button backgrounds now display correctly in custom email templates
+* FIX: WYSIWYG editor corruption - Changed placeholder format from {{PLACEHOLDER}} to [PLACEHOLDER] to prevent corruption
+* IMPROVEMENT: Email template structure - Full-width gradient background with centered 600px content area
+* IMPROVEMENT: Color replacement reliability - Enhanced placeholder replacement with proper fallback handling
+* IMPROVEMENT: Better email client compatibility - Optimized HTML structure for professional email appearance
+
 = 2.0.5 =
 * NEW: Two-field email template system - Separate WYSIWYG body content from optional CSS styles
 * NEW: Enhanced template editor - Body content editor with inline styles, separate CSS styles field

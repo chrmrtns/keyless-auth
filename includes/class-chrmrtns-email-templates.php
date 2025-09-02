@@ -158,18 +158,18 @@ class Chrmrtns_Email_Templates {
         
         // If no custom body exists, provide default inline-styled content
         if (empty($custom_body)) {
-            $custom_body = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
-    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            $custom_body = '<div style="font-family: Arial, sans-serif; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;">
+    <div style="background: white; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
         <h1 style="color: #333; text-align: center; margin-bottom: 10px;">Welcome Back!</h1>
         <div style="text-align: center; margin-bottom: 20px;">
             <span style="background: #e8f5e8; color: #2d5016; padding: 8px 12px; border-radius: 15px; font-size: 12px; display: inline-block;">🔒 Secure Login</span>
         </div>
-        <p style="font-size: 16px;">Hello <strong>{{TO}}</strong>,</p>
+        <p style="font-size: 16px;">Hello <strong>[TO]</strong>,</p>
         <p>Your secure login link for ' . esc_html($site_name) . ' is ready. Click the button below to access your account instantly:</p>
         <div style="text-align: center; margin: 30px 0;">
-            <a href="{{LOGIN_URL}}" style="display: inline-block; background-color: {{BUTTON_COLOR}}; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🚀 Access Your Account</a>
+            <a href="[LOGIN_URL]" style="display: inline-block; background-color: [BUTTON_COLOR]; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🚀 Access Your Account</a>
         </div>
-        <p style="font-size: 14px; color: #666; text-align: center;">Or copy this link: <br><a href="{{LOGIN_URL}}" style="color: {{LINK_COLOR}}; text-decoration: none; word-break: break-all;">{{LOGIN_URL}}</a></p>
+        <p style="font-size: 14px; color: #666; text-align: center;">Or copy this link: <br><a href="[LOGIN_URL]" style="color: [LINK_COLOR]; text-decoration: none; word-break: break-all;">[LOGIN_URL]</a></p>
         <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
         <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
             <p style="margin: 0; font-size: 14px; color: #856404;">
@@ -205,13 +205,19 @@ class Chrmrtns_Email_Templates {
 </body>
 </html>';
         
+        // Ensure colors have default values if empty
+        $button_color = $button_color ?: '#007bff';
+        $button_hover_color = $button_hover_color ?: '#0056b3';
+        $link_color = $link_color ?: '#007bff';
+        $link_hover_color = $link_hover_color ?: '#0056b3';
+        
         // Replace placeholders
-        $html = str_replace('{{TO}}', esc_html($to), $html);
-        $html = str_replace('{{LOGIN_URL}}', esc_url($login_url), $html);
-        $html = str_replace('{{BUTTON_COLOR}}', $button_color, $html);
-        $html = str_replace('{{BUTTON_HOVER_COLOR}}', $button_hover_color, $html);
-        $html = str_replace('{{LINK_COLOR}}', $link_color, $html);
-        $html = str_replace('{{LINK_HOVER_COLOR}}', $link_hover_color, $html);
+        $html = str_replace('[TO]', esc_html($to), $html);
+        $html = str_replace('[LOGIN_URL]', esc_url($login_url), $html);
+        $html = str_replace('[BUTTON_COLOR]', $button_color, $html);
+        $html = str_replace('[BUTTON_HOVER_COLOR]', $button_hover_color, $html);
+        $html = str_replace('[LINK_COLOR]', $link_color, $html);
+        $html = str_replace('[LINK_HOVER_COLOR]', $link_hover_color, $html);
         
         return $html;
     }
@@ -455,18 +461,18 @@ class Chrmrtns_Email_Templates {
         // If empty, provide the beautiful demo template
         if (empty($custom_body)) {
             $site_name = get_bloginfo('name');
-            $custom_body = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
-    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            $custom_body = '<div style="font-family: Arial, sans-serif; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;">
+    <div style="background: white; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
         <h1 style="color: #333; text-align: center; margin-bottom: 10px;">Welcome Back!</h1>
         <div style="text-align: center; margin-bottom: 20px;">
             <span style="background: #e8f5e8; color: #2d5016; padding: 8px 12px; border-radius: 15px; font-size: 12px; display: inline-block;">🔒 Secure Login</span>
         </div>
-        <p style="font-size: 16px;">Hello <strong>{{TO}}</strong>,</p>
+        <p style="font-size: 16px;">Hello <strong>[TO]</strong>,</p>
         <p>Your secure login link for ' . esc_html($site_name) . ' is ready. Click the button below to access your account instantly:</p>
         <div style="text-align: center; margin: 30px 0;">
-            <a href="{{LOGIN_URL}}" style="display: inline-block; background-color: {{BUTTON_COLOR}}; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🚀 Access Your Account</a>
+            <a href="[LOGIN_URL]" style="display: inline-block; background-color: [BUTTON_COLOR]; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🚀 Access Your Account</a>
         </div>
-        <p style="font-size: 14px; color: #666; text-align: center;">Or copy this link: <br><a href="{{LOGIN_URL}}" style="color: {{LINK_COLOR}}; text-decoration: none; word-break: break-all;">{{LOGIN_URL}}</a></p>
+        <p style="font-size: 14px; color: #666; text-align: center;">Or copy this link: <br><a href="[LOGIN_URL]" style="color: [LINK_COLOR]; text-decoration: none; word-break: break-all;">[LOGIN_URL]</a></p>
         <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
         <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
             <p style="margin: 0; font-size: 14px; color: #856404;">
@@ -509,10 +515,10 @@ class Chrmrtns_Email_Templates {
             <?php
             $custom_styles = get_option('chrmrtns_custom_email_styles', '');
             ?>
-            <textarea name="chrmrtns_custom_email_styles" id="chrmrtns_custom_email_styles" rows="8" cols="50" style="width: 100%; font-family: monospace;" placeholder="/* Add your custom CSS here */&#10;.login-button {&#10;    background-color: {{BUTTON_COLOR}};&#10;    color: white;&#10;    padding: 15px 30px;&#10;    border-radius: 25px;&#10;}"><?php echo esc_textarea($custom_styles); ?></textarea>
+            <textarea name="chrmrtns_custom_email_styles" id="chrmrtns_custom_email_styles" rows="8" cols="50" style="width: 100%; font-family: monospace;" placeholder="/* Add your custom CSS here */&#10;.login-button {&#10;    background-color: [BUTTON_COLOR];&#10;    color: white;&#10;    padding: 15px 30px;&#10;    border-radius: 25px;&#10;}"><?php echo esc_textarea($custom_styles); ?></textarea>
             
             <p class="description">
-                <?php _e('The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like {{TO}}, {{LOGIN_URL}}, {{BUTTON_COLOR}}, etc.', 'chrmrtns-passwordless-auth'); ?>
+                <?php _e('The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like [TO], [LOGIN_URL], [BUTTON_COLOR], etc.', 'chrmrtns-passwordless-auth'); ?>
             </p>
         </div>
         <?php
@@ -527,33 +533,33 @@ class Chrmrtns_Email_Templates {
             <h3><?php _e('Template Placeholders', 'chrmrtns-passwordless-auth'); ?></h3>
             <p><?php _e('Use these placeholders in your custom template:', 'chrmrtns-passwordless-auth'); ?></p>
             <ul>
-                <li><code>{{TO}}</code> - <?php _e('Recipient email address', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>{{LOGIN_URL}}</code> - <?php _e('Login URL', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>{{BUTTON_COLOR}}</code> - <?php _e('Button color', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>{{BUTTON_HOVER_COLOR}}</code> - <?php _e('Button hover color', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>{{LINK_COLOR}}</code> - <?php _e('Link color', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>{{LINK_HOVER_COLOR}}</code> - <?php _e('Link hover color', 'chrmrtns-passwordless-auth'); ?></li>
+                <li><code>[TO]</code> - <?php _e('Recipient email address', 'chrmrtns-passwordless-auth'); ?></li>
+                <li><code>[LOGIN_URL]</code> - <?php _e('Login URL', 'chrmrtns-passwordless-auth'); ?></li>
+                <li><code>[BUTTON_COLOR]</code> - <?php _e('Button color', 'chrmrtns-passwordless-auth'); ?></li>
+                <li><code>[BUTTON_HOVER_COLOR]</code> - <?php _e('Button hover color', 'chrmrtns-passwordless-auth'); ?></li>
+                <li><code>[LINK_COLOR]</code> - <?php _e('Link color', 'chrmrtns-passwordless-auth'); ?></li>
+                <li><code>[LINK_HOVER_COLOR]</code> - <?php _e('Link hover color', 'chrmrtns-passwordless-auth'); ?></li>
             </ul>
             <h4><?php _e('Example HTML:', 'chrmrtns-passwordless-auth'); ?></h4>
             <pre style="background: white; padding: 15px; border: 1px solid #ddd; overflow-x: auto;"><code>&lt;html&gt;
 &lt;head&gt;
     &lt;style&gt;
         .login-button { 
-            background-color: {{BUTTON_COLOR}}; 
+            background-color: [BUTTON_COLOR]; 
             color: white; 
             padding: 12px 24px; 
             text-decoration: none; 
             border-radius: 4px; 
         }
-        .login-button:hover { background-color: {{BUTTON_HOVER_COLOR}}; }
-        a { color: {{LINK_COLOR}}; }
-        a:hover { color: {{LINK_HOVER_COLOR}}; }
+        .login-button:hover { background-color: [BUTTON_HOVER_COLOR]; }
+        a { color: [LINK_COLOR]; }
+        a:hover { color: [LINK_HOVER_COLOR]; }
     &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
     &lt;h2&gt;Login Request&lt;/h2&gt;
-    &lt;p&gt;Hello {{TO}}!&lt;/p&gt;
-    &lt;p&gt;&lt;a href="{{LOGIN_URL}}" class="login-button"&gt;Log In&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;Hello [TO]!&lt;/p&gt;
+    &lt;p&gt;&lt;a href="[LOGIN_URL]" class="login-button"&gt;Log In&lt;/a&gt;&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
         </div>

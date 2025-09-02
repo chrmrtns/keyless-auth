@@ -3,7 +3,7 @@
 * Plugin Name: Passwordless Auth
 * Plugin URI: https://github.com/chrmrtns/passwordless-auth
 * Description: Enhanced passwordless authentication with improved security. Fork of Passwordless Login by Cozmoslabs with additional security features.
-* Version: 2.0.5
+* Version: 2.0.6
 * Author: Chris Martens
 * Author URI: https://github.com/chrmrtns
 * License: GPL2
@@ -37,7 +37,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('CHRMRTNS_PASSWORDLESS_VERSION', '2.0.5');
+define('CHRMRTNS_PASSWORDLESS_VERSION', '2.0.6');
 define('CHRMRTNS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CHRMRTNS_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('CHRMRTNS_PLUGIN_FILE', __FILE__);
