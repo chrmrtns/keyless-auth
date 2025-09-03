@@ -28,7 +28,7 @@ class Chrmrtns_SMTP {
 
         add_settings_section(
             'chrmrtns_smtp_settings_section',
-            __('SMTP Settings', 'chrmrtns-passwordless-auth'),
+            __('SMTP Settings', 'passwordless-auth'),
             array($this, 'smtp_settings_section_callback'),
             'chrmrtns-smtp-settings'
         );
@@ -41,16 +41,16 @@ class Chrmrtns_SMTP {
      */
     private function add_smtp_fields() {
         $fields = array(
-            'enable_smtp' => __('Enable SMTP', 'chrmrtns-passwordless-auth'),
-            'force_from_name' => __('Force From Name', 'chrmrtns-passwordless-auth'),
-            'from_name' => __('From Name', 'chrmrtns-passwordless-auth'),
-            'smtp_host' => __('SMTP Host', 'chrmrtns-passwordless-auth'),
-            'smtp_encryption' => __('Encryption', 'chrmrtns-passwordless-auth'),
-            'smtp_port' => __('SMTP Port', 'chrmrtns-passwordless-auth'),
-            'smtp_auth' => __('Authentication', 'chrmrtns-passwordless-auth'),
-            'credential_storage' => __('Credential Storage', 'chrmrtns-passwordless-auth'),
-            'smtp_username' => __('SMTP Username', 'chrmrtns-passwordless-auth'),
-            'smtp_password' => __('SMTP Password', 'chrmrtns-passwordless-auth')
+            'enable_smtp' => __('Enable SMTP', 'passwordless-auth'),
+            'force_from_name' => __('Force From Name', 'passwordless-auth'),
+            'from_name' => __('From Name', 'passwordless-auth'),
+            'smtp_host' => __('SMTP Host', 'passwordless-auth'),
+            'smtp_encryption' => __('Encryption', 'passwordless-auth'),
+            'smtp_port' => __('SMTP Port', 'passwordless-auth'),
+            'smtp_auth' => __('Authentication', 'passwordless-auth'),
+            'credential_storage' => __('Credential Storage', 'passwordless-auth'),
+            'smtp_username' => __('SMTP Username', 'passwordless-auth'),
+            'smtp_password' => __('SMTP Password', 'passwordless-auth')
         );
         
         foreach ($fields as $field_id => $field_title) {
@@ -68,7 +68,7 @@ class Chrmrtns_SMTP {
      * SMTP settings section callback
      */
     public function smtp_settings_section_callback() {
-        echo '<p>' . __('Configure your SMTP settings below. Test your configuration using the test email feature.', 'chrmrtns-passwordless-auth') . '</p>';
+        echo '<p>' . esc_html__('Configure your SMTP settings below. Test your configuration using the test email feature.', 'passwordless-auth') . '</p>';
     }
     
     /**
@@ -78,8 +78,8 @@ class Chrmrtns_SMTP {
         $options = get_option('chrmrtns_smtp_settings', array());
         $checked = isset($options['enable_smtp']) && $options['enable_smtp'] ? 'checked' : '';
         ?>
-        <input type='checkbox' name='chrmrtns_smtp_settings[enable_smtp]' <?php echo $checked; ?> value='1'>
-        <p class="description"><?php _e('Enable SMTP for email delivery instead of PHP mail().', 'chrmrtns-passwordless-auth'); ?></p>
+        <input type='checkbox' name='chrmrtns_smtp_settings[enable_smtp]' <?php echo esc_attr($checked); ?> value='1'>
+        <p class="description"><?php esc_html_e('Enable SMTP for email delivery instead of PHP mail().', 'passwordless-auth'); ?></p>
         <?php
     }
     
@@ -90,8 +90,8 @@ class Chrmrtns_SMTP {
         $options = get_option('chrmrtns_smtp_settings', array());
         $checked = isset($options['force_from_name']) && $options['force_from_name'] ? 'checked' : '';
         ?>
-        <input type='checkbox' name='chrmrtns_smtp_settings[force_from_name]' <?php echo $checked; ?> value='1' onchange="chrmrtnsToggleFromName(this.checked)">
-        <p class="description"><?php _e('Force a custom "From" name for all emails sent via SMTP.', 'chrmrtns-passwordless-auth'); ?></p>
+        <input type='checkbox' name='chrmrtns_smtp_settings[force_from_name]' <?php echo esc_attr($checked); ?> value='1' onchange="chrmrtnsToggleFromName(this.checked)">
+        <p class="description"><?php esc_html_e('Force a custom "From" name for all emails sent via SMTP.', 'passwordless-auth'); ?></p>
         
         <script>
         function chrmrtnsToggleFromName(enabled) {
@@ -120,7 +120,7 @@ class Chrmrtns_SMTP {
             value='<?php echo esc_attr($options['from_name'] ?? ''); ?>' 
             size='50' 
             placeholder="Your Website Name">
-        <p class="description"><?php _e('The name that will appear as the sender (e.g., "Your Website Name").', 'chrmrtns-passwordless-auth'); ?></p>
+        <p class="description"><?php esc_html_e('The name that will appear as the sender (e.g., "Your Website Name").', 'passwordless-auth'); ?></p>
         <?php
     }
     
@@ -134,7 +134,7 @@ class Chrmrtns_SMTP {
             value='<?php echo esc_attr($options['smtp_host'] ?? ''); ?>' 
             size='50' 
             placeholder="smtp.gmail.com">
-        <p class="description"><?php _e('Your SMTP server hostname (e.g., smtp.gmail.com, smtp.mailgun.org).', 'chrmrtns-passwordless-auth'); ?></p>
+        <p class="description"><?php esc_html_e('Your SMTP server hostname (e.g., smtp.gmail.com, smtp.mailgun.org).', 'passwordless-auth'); ?></p>
         <?php
     }
     
@@ -146,11 +146,11 @@ class Chrmrtns_SMTP {
         $current = $options['smtp_encryption'] ?? 'none';
         ?>
         <select name='chrmrtns_smtp_settings[smtp_encryption]' onchange="chrmrtnsUpdatePort(this.value)">
-            <option value='none' <?php selected($current, 'none'); ?>><?php _e('None', 'chrmrtns-passwordless-auth'); ?></option>
-            <option value='ssl' <?php selected($current, 'ssl'); ?>><?php _e('SSL', 'chrmrtns-passwordless-auth'); ?></option>
-            <option value='tls' <?php selected($current, 'tls'); ?>><?php _e('TLS', 'chrmrtns-passwordless-auth'); ?></option>
+            <option value='none' <?php selected($current, 'none'); ?>><?php esc_html_e('None', 'passwordless-auth'); ?></option>
+            <option value='ssl' <?php selected($current, 'ssl'); ?>><?php esc_html_e('SSL', 'passwordless-auth'); ?></option>
+            <option value='tls' <?php selected($current, 'tls'); ?>><?php esc_html_e('TLS', 'passwordless-auth'); ?></option>
         </select>
-        <p class="description"><?php _e('Encryption type. SSL uses port 465, TLS uses port 587.', 'chrmrtns-passwordless-auth'); ?></p>
+        <p class="description"><?php esc_html_e('Encryption type. SSL uses port 465, TLS uses port 587.', 'passwordless-auth'); ?></p>
         
         <script>
         function chrmrtnsUpdatePort(encryption) {
@@ -177,7 +177,7 @@ class Chrmrtns_SMTP {
             value='<?php echo esc_attr($options['smtp_port'] ?? '25'); ?>' 
             min='1' max='65535' 
             size='10'>
-        <p class="description"><?php _e('SMTP port number. Common ports: 25 (none), 587 (TLS), 465 (SSL).', 'chrmrtns-passwordless-auth'); ?></p>
+        <p class="description"><?php esc_html_e('SMTP port number. Common ports: 25 (none), 587 (TLS), 465 (SSL).', 'passwordless-auth'); ?></p>
         <?php
     }
     
@@ -188,8 +188,8 @@ class Chrmrtns_SMTP {
         $options = get_option('chrmrtns_smtp_settings', array());
         $checked = isset($options['smtp_auth']) && $options['smtp_auth'] ? 'checked' : '';
         ?>
-        <input type='checkbox' name='chrmrtns_smtp_settings[smtp_auth]' <?php echo $checked; ?> value='1'>
-        <p class="description"><?php _e('Enable SMTP authentication (recommended for most providers).', 'chrmrtns-passwordless-auth'); ?></p>
+        <input type='checkbox' name='chrmrtns_smtp_settings[smtp_auth]' <?php echo esc_attr($checked); ?> value='1'>
+        <p class="description"><?php esc_html_e('Enable SMTP authentication (recommended for most providers).', 'passwordless-auth'); ?></p>
         <?php
     }
     
@@ -203,26 +203,26 @@ class Chrmrtns_SMTP {
         <label>
             <input type='radio' name='chrmrtns_smtp_settings[credential_storage]' value='database' 
                 <?php checked($storage_type, 'database'); ?> onchange="chrmrtnsToggleCredentialFields('database')">
-            <?php _e('Store in Database', 'chrmrtns-passwordless-auth'); ?>
+            <?php esc_html_e('Store in Database', 'passwordless-auth'); ?>
         </label><br>
         
         <label>
             <input type='radio' name='chrmrtns_smtp_settings[credential_storage]' value='wp_config' 
                 <?php checked($storage_type, 'wp_config'); ?> onchange="chrmrtnsToggleCredentialFields('wp_config')">
-            <?php _e('Store in wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+            <?php esc_html_e('Store in wp-config.php', 'passwordless-auth'); ?>
         </label>
         
         <p class="description">
-            <?php _e('Choose where to store SMTP credentials. wp-config.php is more secure as it\'s outside the web root.', 'chrmrtns-passwordless-auth'); ?>
+            <?php esc_html_e('Choose where to store SMTP credentials. wp-config.php is more secure as it\'s outside the web root.', 'passwordless-auth'); ?>
         </p>
         
         <div id="wp-config-instructions" style="display: none; margin-top: 10px; padding: 10px; background: #f0f0f1; border-left: 4px solid #0073aa;">
-            <strong><?php _e('To use wp-config.php storage, add these lines to your wp-config.php file:', 'chrmrtns-passwordless-auth'); ?></strong><br><br>
+            <strong><?php esc_html_e('To use wp-config.php storage, add these lines to your wp-config.php file:', 'passwordless-auth'); ?></strong><br><br>
             <code style="background: #fff; padding: 5px; display: block; margin: 5px 0;">
                 define('CHRMRTNS_PA_SMTP_USERNAME', 'your-email@example.com');<br>
                 define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
             </code>
-            <small><?php _e('Replace the values with your actual SMTP credentials. The fields below will be disabled when using wp-config.php storage.', 'chrmrtns-passwordless-auth'); ?></small>
+            <small><?php esc_html_e('Replace the values with your actual SMTP credentials. The fields below will be disabled when using wp-config.php storage.', 'passwordless-auth'); ?></small>
         </div>
         
         <script>
@@ -279,13 +279,13 @@ class Chrmrtns_SMTP {
         <?php if ($storage_type === 'wp_config'): ?>
             <p class="description" style="color: #0073aa;">
                 <?php if (defined('CHRMRTNS_PA_SMTP_USERNAME')): ?>
-                    <?php _e('✓ Using username from wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+                    <?php esc_html_e('✓ Using username from wp-config.php', 'passwordless-auth'); ?>
                 <?php else: ?>
-                    <?php _e('⚠ CHRMRTNS_PA_SMTP_USERNAME not defined in wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+                    <?php esc_html_e('⚠ CHRMRTNS_PA_SMTP_USERNAME not defined in wp-config.php', 'passwordless-auth'); ?>
                 <?php endif; ?>
             </p>
         <?php else: ?>
-            <p class="description"><?php _e('Your SMTP username (usually your email address).', 'chrmrtns-passwordless-auth'); ?></p>
+            <p class="description"><?php esc_html_e('Your SMTP username (usually your email address).', 'passwordless-auth'); ?></p>
         <?php endif; ?>
         <?php
     }
@@ -311,13 +311,13 @@ class Chrmrtns_SMTP {
         <?php if ($storage_type === 'wp_config'): ?>
             <p class="description" style="color: #0073aa;">
                 <?php if (defined('CHRMRTNS_PA_SMTP_PASSWORD')): ?>
-                    <?php _e('✓ Using password from wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+                    <?php esc_html_e('✓ Using password from wp-config.php', 'passwordless-auth'); ?>
                 <?php else: ?>
-                    <?php _e('⚠ CHRMRTNS_PA_SMTP_PASSWORD not defined in wp-config.php', 'chrmrtns-passwordless-auth'); ?>
+                    <?php esc_html_e('⚠ CHRMRTNS_PA_SMTP_PASSWORD not defined in wp-config.php', 'passwordless-auth'); ?>
                 <?php endif; ?>
             </p>
         <?php else: ?>
-            <p class="description"><?php _e('Your SMTP password or app-specific password.', 'chrmrtns-passwordless-auth'); ?></p>
+            <p class="description"><?php esc_html_e('Your SMTP password or app-specific password.', 'passwordless-auth'); ?></p>
         <?php endif; ?>
         <?php
     }
@@ -352,7 +352,7 @@ class Chrmrtns_SMTP {
         // Validate port range
         if ($sanitized['smtp_port'] < 1 || $sanitized['smtp_port'] > 65535) {
             $sanitized['smtp_port'] = 25;
-            add_settings_error('chrmrtns_smtp_settings', 'invalid_port', __('Invalid port number. Using default port 25.', 'chrmrtns-passwordless-auth'), 'error');
+            add_settings_error('chrmrtns_smtp_settings', 'invalid_port', __('Invalid port number. Using default port 25.', 'passwordless-auth'), 'error');
         }
         
         // Validate encryption options
@@ -416,19 +416,35 @@ class Chrmrtns_SMTP {
     
     /**
      * Check port availability
+     * Note: Uses fsockopen() for network connectivity testing - this is legitimate use
+     * for testing SMTP server connectivity and cannot be replaced with WP_Filesystem
      */
     public function check_port_availability($host, $port) {
+        // Sanitize inputs
+        $host = sanitize_text_field($host);
+        $port = absint($port);
+        
+        if (empty($host) || $port <= 0) {
+            return false;
+        }
+        
         $errno = 0;
         $errstr = '';
         $timeout = 3; // seconds
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fsockopen -- Required for network connectivity testing
         $connection = @fsockopen($host, $port, $errno, $errstr, $timeout);
 
         if (is_resource($connection)) {
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Required for closing network connection
             fclose($connection);
             return true;
         }
 
-        error_log("CHRMRTNS SMTP: Could not connect to $host on port $port. Error ($errno): $errstr");
+        // Only log errors in debug mode
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+            error_log("CHRMRTNS SMTP: Could not connect to $host on port $port. Error ($errno): $errstr");
+        }
         return false;
     }
     
@@ -444,13 +460,13 @@ class Chrmrtns_SMTP {
             add_settings_error(
                 'chrmrtns_smtp_test_email',
                 'chrmrtns_smtp_nonce_failed',
-                __('Security check failed. Please refresh the page and try again.', 'chrmrtns-passwordless-auth'),
+                __('Security check failed. Please refresh the page and try again.', 'passwordless-auth'),
                 'error'
             );
             return;
         }
 
-        $to = isset($_POST['test_email_address']) ? sanitize_email($_POST['test_email_address']) : '';
+        $to = isset($_POST['test_email_address']) ? sanitize_email(wp_unslash($_POST['test_email_address'])) : '';
         
         if (empty($to)) {
             $to = get_option('admin_email');
@@ -467,7 +483,8 @@ class Chrmrtns_SMTP {
                     'chrmrtns_smtp_test_email',
                     'chrmrtns_smtp_port_blocked',
                     sprintf(
-                        __('Could not connect to %s on port %d. It may be blocked by your hosting environment.', 'chrmrtns-passwordless-auth'),
+                        /* translators: %1$s: SMTP hostname, %2$d: port number */
+                        __('Could not connect to %1$s on port %2$d. It may be blocked by your hosting environment.', 'passwordless-auth'),
                         esc_html($host),
                         esc_html($port)
                     ),
@@ -477,8 +494,8 @@ class Chrmrtns_SMTP {
             }
         }
 
-        $subject = __('SMTP Test Email - Passwordless Auth', 'chrmrtns-passwordless-auth');
-        $message = __('This is a test email sent via your SMTP settings from the Passwordless Auth plugin.', 'chrmrtns-passwordless-auth');
+        $subject = __('SMTP Test Email - Passwordless Auth', 'passwordless-auth');
+        $message = __('This is a test email sent via your SMTP settings from the Passwordless Auth plugin.', 'passwordless-auth');
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
         $sent = wp_mail($to, $subject, $message, $headers);
@@ -488,7 +505,8 @@ class Chrmrtns_SMTP {
                 'chrmrtns_smtp_test_email',
                 'chrmrtns_smtp_test_email_success',
                 sprintf(
-                    __('Test email sent successfully to %s! Check the inbox.', 'chrmrtns-passwordless-auth'),
+                    /* translators: %s: recipient email address */
+                    __('Test email sent successfully to %s! Check the inbox.', 'passwordless-auth'),
                     esc_html($to)
                 ),
                 'updated'
@@ -497,7 +515,7 @@ class Chrmrtns_SMTP {
             add_settings_error(
                 'chrmrtns_smtp_test_email',
                 'chrmrtns_smtp_test_email_failed',
-                __('Failed to send test email. Check your SMTP settings or server logs for more information.', 'chrmrtns-passwordless-auth'),
+                __('Failed to send test email. Check your SMTP settings or server logs for more information.', 'passwordless-auth'),
                 'error'
             );
         }

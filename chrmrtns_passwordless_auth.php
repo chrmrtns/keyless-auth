@@ -3,11 +3,11 @@
 * Plugin Name: Passwordless Auth
 * Plugin URI: https://github.com/chrmrtns/passwordless-auth
 * Description: Enhanced passwordless authentication with improved security. Fork of Passwordless Login by Cozmoslabs with additional security features.
-* Version: 2.0.6
+* Version: 2.0.7
 * Author: Chris Martens
 * Author URI: https://github.com/chrmrtns
 * License: GPL2
-* Text Domain: chrmrtns-passwordless-auth
+* Text Domain: passwordless-auth
 * Domain Path: /languages
 */
 /* 
@@ -37,7 +37,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('CHRMRTNS_PASSWORDLESS_VERSION', '2.0.6');
+define('CHRMRTNS_PASSWORDLESS_VERSION', '2.0.7');
 define('CHRMRTNS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CHRMRTNS_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('CHRMRTNS_PLUGIN_FILE', __FILE__);
@@ -137,7 +137,7 @@ class Chrmrtns_Passwordless_Auth {
      */
     public function load_textdomain() {
         load_plugin_textdomain(
-            'chrmrtns-passwordless-auth',
+            'passwordless-auth',
             false,
             dirname(plugin_basename(__FILE__)) . '/languages'
         );
@@ -177,23 +177,17 @@ function chrmrtns_activation_hook() {
  */
 register_deactivation_hook(__FILE__, 'chrmrtns_deactivation_hook');
 function chrmrtns_deactivation_hook() {
-    // Clean up temporary data
-    global $wpdb;
+    // Clean up temporary login tokens using WordPress functions
+    $users_with_tokens = get_users(array(
+        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Acceptable for one-time deactivation cleanup
+        'meta_key' => 'chrmrtns_login_token',
+        'fields' => 'ID'
+    ));
     
-    // Remove all login tokens
-    $wpdb->delete(
-        $wpdb->usermeta,
-        array(
-            'meta_key' => 'chrmrtns_login_token'
-        )
-    );
-    
-    $wpdb->delete(
-        $wpdb->usermeta,
-        array(
-            'meta_key' => 'chrmrtns_login_token_expiration'
-        )
-    );
+    foreach ($users_with_tokens as $user_id) {
+        delete_user_meta($user_id, 'chrmrtns_login_token');
+        delete_user_meta($user_id, 'chrmrtns_login_token_expiration');
+    }
     
     // Remove temporary options
     delete_option('chrmrtns_login_request_error');
@@ -230,19 +224,15 @@ function chrmrtns_uninstall_hook() {
         wp_delete_post($log->ID, true);
     }
     
-    // Remove user meta
-    global $wpdb;
-    $wpdb->delete(
-        $wpdb->usermeta,
-        array(
-            'meta_key' => 'chrmrtns_login_token'
-        )
-    );
+    // Remove user meta using WordPress functions
+    $users_with_tokens = get_users(array(
+        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Acceptable for one-time uninstall cleanup
+        'meta_key' => 'chrmrtns_login_token',
+        'fields' => 'ID'
+    ));
     
-    $wpdb->delete(
-        $wpdb->usermeta,
-        array(
-            'meta_key' => 'chrmrtns_login_token_expiration'
-        )
-    );
+    foreach ($users_with_tokens as $user_id) {
+        delete_user_meta($user_id, 'chrmrtns_login_token');
+        delete_user_meta($user_id, 'chrmrtns_login_token_expiration');
+    }
 }

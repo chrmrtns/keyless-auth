@@ -28,37 +28,37 @@ class Chrmrtns_Admin {
      */
     public function add_admin_menu() {
         add_menu_page(
-            __('Passwordless Auth', 'chrmrtns-passwordless-auth'),
-            __('Passwordless Auth', 'chrmrtns-passwordless-auth'),
+            __('Passwordless Auth', 'passwordless-auth'),
+            __('Passwordless Auth', 'passwordless-auth'),
             'manage_options',
-            'chrmrtns-passwordless-auth',
+            'passwordless-auth',
             array($this, 'main_page'),
             'dashicons-shield-alt',
             30
         );
         
         add_submenu_page(
-            'chrmrtns-passwordless-auth',
-            __('PA Settings', 'chrmrtns-passwordless-auth'),
-            __('PA Settings', 'chrmrtns-passwordless-auth'),
+            'passwordless-auth',
+            __('PA Settings', 'passwordless-auth'),
+            __('PA Settings', 'passwordless-auth'),
             'manage_options',
             'chrmrtns-passwordless-auth-settings',
             array($this, 'settings_page')
         );
         
         add_submenu_page(
-            'chrmrtns-passwordless-auth',
-            __('SMTP Settings', 'chrmrtns-passwordless-auth'),
-            __('SMTP', 'chrmrtns-passwordless-auth'),
+            'passwordless-auth',
+            __('SMTP Settings', 'passwordless-auth'),
+            __('SMTP', 'passwordless-auth'),
             'manage_options',
             'chrmrtns-smtp-settings',
             array($this, 'smtp_settings_page')
         );
         
         add_submenu_page(
-            'chrmrtns-passwordless-auth',
-            __('Mail Logs', 'chrmrtns-passwordless-auth'),
-            __('Mail Logs', 'chrmrtns-passwordless-auth'),
+            'passwordless-auth',
+            __('Mail Logs', 'passwordless-auth'),
+            __('Mail Logs', 'passwordless-auth'),
             'manage_options',
             'chrmrtns-mail-logs',
             array($this, 'mail_logs_page')
@@ -69,13 +69,27 @@ class Chrmrtns_Admin {
      * Initialize settings
      */
     public function init_settings() {
-        register_setting('chrmrtns_settings_group', 'chrmrtns_email_template');
-        register_setting('chrmrtns_settings_group', 'chrmrtns_custom_email_body');
-        register_setting('chrmrtns_settings_group', 'chrmrtns_custom_email_styles');
-        register_setting('chrmrtns_settings_group', 'chrmrtns_button_color');
-        register_setting('chrmrtns_settings_group', 'chrmrtns_button_hover_color');
-        register_setting('chrmrtns_settings_group', 'chrmrtns_link_color');
-        register_setting('chrmrtns_settings_group', 'chrmrtns_link_hover_color');
+        register_setting('chrmrtns_settings_group', 'chrmrtns_email_template', array(
+            'sanitize_callback' => 'sanitize_text_field'
+        ));
+        register_setting('chrmrtns_settings_group', 'chrmrtns_custom_email_body', array(
+            'sanitize_callback' => array($this, 'sanitize_email_html')
+        ));
+        register_setting('chrmrtns_settings_group', 'chrmrtns_custom_email_styles', array(
+            'sanitize_callback' => array($this, 'sanitize_css')
+        ));
+        register_setting('chrmrtns_settings_group', 'chrmrtns_button_color', array(
+            'sanitize_callback' => 'sanitize_hex_color'
+        ));
+        register_setting('chrmrtns_settings_group', 'chrmrtns_button_hover_color', array(
+            'sanitize_callback' => 'sanitize_hex_color'
+        ));
+        register_setting('chrmrtns_settings_group', 'chrmrtns_link_color', array(
+            'sanitize_callback' => 'sanitize_hex_color'
+        ));
+        register_setting('chrmrtns_settings_group', 'chrmrtns_link_hover_color', array(
+            'sanitize_callback' => 'sanitize_hex_color'
+        ));
         
         add_action('wp_ajax_chrmrtns_save_settings', array($this, 'save_settings'));
         add_action('admin_post_chrmrtns_save_settings', array($this, 'save_settings'));
@@ -89,7 +103,7 @@ class Chrmrtns_Admin {
      */
     public function main_page() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'chrmrtns-passwordless-auth'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'passwordless-auth'));
         }
         ?>
         <div class="wrap chrmrtns-wrap">
@@ -103,7 +117,7 @@ class Chrmrtns_Admin {
      */
     public function settings_page() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'chrmrtns-passwordless-auth'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'passwordless-auth'));
         }
         ?>
         <div class="wrap chrmrtns-wrap">
@@ -117,7 +131,7 @@ class Chrmrtns_Admin {
      */
     public function smtp_settings_page() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'chrmrtns-passwordless-auth'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'passwordless-auth'));
         }
         
         // Handle test email if SMTP class is loaded
@@ -129,8 +143,8 @@ class Chrmrtns_Admin {
         
         ?>
         <div class="wrap chrmrtns-wrap">
-            <h1><?php _e('SMTP Settings', 'chrmrtns-passwordless-auth'); ?></h1>
-            <p><?php _e('Configure SMTP settings to ensure reliable email delivery for your passwordless login emails.', 'chrmrtns-passwordless-auth'); ?></p>
+            <h1><?php esc_html_e('SMTP Settings', 'passwordless-auth'); ?></h1>
+            <p><?php esc_html_e('Configure SMTP settings to ensure reliable email delivery for your passwordless login emails.', 'passwordless-auth'); ?></p>
             
             <form action='options.php' method='post'>
                 <?php
@@ -142,20 +156,20 @@ class Chrmrtns_Admin {
             
             <?php if (class_exists('Chrmrtns_SMTP')): ?>
                 <hr />
-                <h2><?php _e('Send Test Email', 'chrmrtns-passwordless-auth'); ?></h2>
-                <p><?php _e('Send a test email to verify your SMTP configuration is working correctly.', 'chrmrtns-passwordless-auth'); ?></p>
+                <h2><?php esc_html_e('Send Test Email', 'passwordless-auth'); ?></h2>
+                <p><?php esc_html_e('Send a test email to verify your SMTP configuration is working correctly.', 'passwordless-auth'); ?></p>
                 <form method="post">
                     <?php wp_nonce_field('chrmrtns_smtp_send_test_email_action', 'chrmrtns_smtp_send_test_email_nonce'); ?>
                     <table class="form-table">
                         <tr>
-                            <th scope="row"><?php _e('Test Email Address', 'chrmrtns-passwordless-auth'); ?></th>
+                            <th scope="row"><?php esc_html_e('Test Email Address', 'passwordless-auth'); ?></th>
                             <td>
                                 <input type="email" name="test_email_address" value="<?php echo esc_attr(get_option('admin_email')); ?>" size="50">
-                                <p class="description"><?php _e('Email address to send the test email to. Defaults to admin email.', 'chrmrtns-passwordless-auth'); ?></p>
+                                <p class="description"><?php esc_html_e('Email address to send the test email to. Defaults to admin email.', 'passwordless-auth'); ?></p>
                             </td>
                         </tr>
                     </table>
-                    <?php submit_button(__('Send Test Email', 'chrmrtns-passwordless-auth'), 'secondary', 'chrmrtns_smtp_send_test_email'); ?>
+                    <?php submit_button(__('Send Test Email', 'passwordless-auth'), 'secondary', 'chrmrtns_smtp_send_test_email'); ?>
                 </form>
             <?php endif; ?>
         </div>
@@ -167,7 +181,7 @@ class Chrmrtns_Admin {
      */
     public function mail_logs_page() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'chrmrtns-passwordless-auth'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'passwordless-auth'));
         }
         
         // Render mail logs page if Mail Logger class is loaded
@@ -183,53 +197,57 @@ class Chrmrtns_Admin {
     private function render_main_content() {
         ?>
         <div class="chrmrtns-badge"></div>
-        <h1><?php _e('Passwordless Auth', 'chrmrtns-passwordless-auth'); ?> <small>v.<?php echo CHRMRTNS_PASSWORDLESS_VERSION; ?></small></h1>
+        <h1><?php esc_html_e('Passwordless Auth', 'passwordless-auth'); ?> <small>v.<?php echo esc_html(CHRMRTNS_PASSWORDLESS_VERSION); ?></small></h1>
         <p class="chrmrtns-text">
             <?php 
             $successful_logins = get_option('chrmrtns_successful_logins', 0);
-            printf(__('<p>A front-end login form without a password.</p><p><strong style="font-size: 16px; color:#d54e21;">%d</strong> successful logins so far.</p>', 'chrmrtns-passwordless-auth'), $successful_logins);
+            printf(
+                /* translators: %d: number of successful passwordless logins */
+                esc_html__('<p>A front-end login form without a password.</p><p><strong style="font-size: 16px; color:#d54e21;">%d</strong> successful logins so far.</p>', 'passwordless-auth'), 
+                esc_html($successful_logins)
+            );
             ?>
         </p>
         
         <div class="chrmrtns-callout">
-            <?php _e('One time password for WordPress', 'chrmrtns-passwordless-auth'); ?>
+            <?php esc_html_e('One time password for WordPress', 'passwordless-auth'); ?>
         </div>
         
         <div class="chrmrtns-row chrmrtns-2-col">
             <div>
-                <h2><?php _e('[chrmrtns-passwordless-auth] shortcode', 'chrmrtns-passwordless-auth'); ?></h2>
-                <p><?php _e('Just place <strong class="nowrap">[chrmrtns-passwordless-auth]</strong> shortcode in a page or a widget and you\'re good to go.', 'chrmrtns-passwordless-auth'); ?></p>
+                <h2><?php esc_html_e('[chrmrtns-passwordless-auth] shortcode', 'passwordless-auth'); ?></h2>
+                <p><?php esc_html_e('Just place <strong class="nowrap">[chrmrtns-passwordless-auth]</strong> shortcode in a page or a widget and you\'re good to go.', 'passwordless-auth'); ?></p>
                 <p><textarea class="chrmrtns-shortcode textarea" readonly onclick="this.select();" style="width: 100%; height: 60px; padding: 10px;">[chrmrtns-passwordless-auth]</textarea></p>
             </div>
             
             <div>
-                <h2><?php _e('An alternative to passwords', 'chrmrtns-passwordless-auth'); ?></h2>
+                <h2><?php esc_html_e('An alternative to passwords', 'passwordless-auth'); ?></h2>
                 <ul>
-                    <li><?php _e('Visual email template selection with live previews', 'chrmrtns-passwordless-auth'); ?></li>
-                    <li><?php _e('WYSIWYG email editor with HTML support', 'chrmrtns-passwordless-auth'); ?></li>
-                    <li><?php _e('Advanced color controls (hex, RGB, HSL, HSLA)', 'chrmrtns-passwordless-auth'); ?></li>
-                    <li><?php _e('Separate button and link color customization', 'chrmrtns-passwordless-auth'); ?></li>
-                    <li><?php _e('Enhanced security with timing attack protection', 'chrmrtns-passwordless-auth'); ?></li>
-                    <li><?php _e('SMTP configuration for reliable email delivery', 'chrmrtns-passwordless-auth'); ?></li>
-                    <li><?php _e('Comprehensive email logging and monitoring', 'chrmrtns-passwordless-auth'); ?></li>
+                    <li><?php esc_html_e('Visual email template selection with live previews', 'passwordless-auth'); ?></li>
+                    <li><?php esc_html_e('WYSIWYG email editor with HTML support', 'passwordless-auth'); ?></li>
+                    <li><?php esc_html_e('Advanced color controls (hex, RGB, HSL, HSLA)', 'passwordless-auth'); ?></li>
+                    <li><?php esc_html_e('Separate button and link color customization', 'passwordless-auth'); ?></li>
+                    <li><?php esc_html_e('Enhanced security with timing attack protection', 'passwordless-auth'); ?></li>
+                    <li><?php esc_html_e('SMTP configuration for reliable email delivery', 'passwordless-auth'); ?></li>
+                    <li><?php esc_html_e('Comprehensive email logging and monitoring', 'passwordless-auth'); ?></li>
                 </ul>
-                <p><?php _e('Passwordless Authentication <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel.', 'chrmrtns-passwordless-auth'); ?></p>
+                <p><?php esc_html_e('Passwordless Authentication <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel.', 'passwordless-auth'); ?></p>
             </div>
         </div>
         
         <hr>
         
-        <h2><?php _e('Advanced Email Features', 'chrmrtns-passwordless-auth'); ?></h2>
+        <h2><?php esc_html_e('Advanced Email Features', 'passwordless-auth'); ?></h2>
         <div class="chrmrtns-row chrmrtns-2-col">
             <div>
-                <h3><?php _e('SMTP Configuration', 'chrmrtns-passwordless-auth'); ?></h3>
-                <p><?php _e('Configure SMTP settings to ensure reliable email delivery with support for major providers like Gmail, Outlook, Mailgun, and SendGrid.', 'chrmrtns-passwordless-auth'); ?></p>
-                <p><a href="<?php echo admin_url('admin.php?page=chrmrtns-smtp-settings'); ?>" class="button button-primary"><?php _e('Configure SMTP', 'chrmrtns-passwordless-auth'); ?></a></p>
+                <h3><?php esc_html_e('SMTP Configuration', 'passwordless-auth'); ?></h3>
+                <p><?php esc_html_e('Configure SMTP settings to ensure reliable email delivery with support for major providers like Gmail, Outlook, Mailgun, and SendGrid.', 'passwordless-auth'); ?></p>
+                <p><a href="<?php echo esc_url(admin_url('admin.php?page=chrmrtns-smtp-settings')); ?>" class="button button-primary"><?php esc_html_e('Configure SMTP', 'passwordless-auth'); ?></a></p>
             </div>
             <div>
-                <h3><?php _e('Mail Logging', 'chrmrtns-passwordless-auth'); ?></h3>
-                <p><?php _e('Track and monitor all emails sent from your WordPress site with detailed logging including timestamps, recipients, and content.', 'chrmrtns-passwordless-auth'); ?></p>
-                <p><a href="<?php echo admin_url('admin.php?page=chrmrtns-mail-logs'); ?>" class="button button-primary"><?php _e('View Mail Logs', 'chrmrtns-passwordless-auth'); ?></a></p>
+                <h3><?php esc_html_e('Mail Logging', 'passwordless-auth'); ?></h3>
+                <p><?php esc_html_e('Track and monitor all emails sent from your WordPress site with detailed logging including timestamps, recipients, and content.', 'passwordless-auth'); ?></p>
+                <p><a href="<?php echo esc_url(admin_url('admin.php?page=chrmrtns-mail-logs')); ?>" class="button button-primary"><?php esc_html_e('View Mail Logs', 'passwordless-auth'); ?></a></p>
             </div>
         </div>
         <?php
@@ -250,7 +268,7 @@ class Chrmrtns_Admin {
      */
     public function handle_notification_dismiss() {
         if (isset($_GET['chrmrtns_learn_more_dismiss_notification']) && isset($_GET['_wpnonce'])) {
-            if (wp_verify_nonce($_GET['_wpnonce'], 'chrmrtns_learn_more_dismiss_notification')) {
+            if (wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'chrmrtns_learn_more_dismiss_notification')) {
                 update_option('chrmrtns_learn_more_dismiss_notification', true);
                 wp_redirect(remove_query_arg(array('chrmrtns_learn_more_dismiss_notification', '_wpnonce')));
                 exit;
@@ -271,10 +289,10 @@ class Chrmrtns_Admin {
             ?>
             <div class="updated" style="max-width: 800px;">
                 <p>
-                    <?php _e('Use [chrmrtns-passwordless-auth] shortcode in your pages or widgets.', 'chrmrtns-passwordless-auth'); ?>
-                    <a href="<?php echo esc_url($learn_more_url); ?>"><?php _e('Learn more.', 'chrmrtns-passwordless-auth'); ?></a>
+                    <?php esc_html_e('Use [chrmrtns-passwordless-auth] shortcode in your pages or widgets.', 'passwordless-auth'); ?>
+                    <a href="<?php echo esc_url($learn_more_url); ?>"><?php esc_html_e('Learn more.', 'passwordless-auth'); ?></a>
                     <a href="<?php echo esc_url($dismiss_url); ?>" class="chrmrtns-dismiss-notification" style="float:right;margin-left:20px;">
-                        <?php _e('Dismiss', 'chrmrtns-passwordless-auth'); ?>
+                        <?php esc_html_e('Dismiss', 'passwordless-auth'); ?>
                     </a>
                 </p>
             </div>
@@ -314,26 +332,41 @@ class Chrmrtns_Admin {
      * Handle form submission
      */
     public function handle_form_submission() {
-        error_log('CHRMRTNS: handle_form_submission called - POST data: ' . print_r($_POST, true));
+        // Debug logging only when WP_DEBUG is enabled
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r,WordPress.Security.NonceVerification.Missing -- Debug logging when WP_DEBUG is enabled
+            error_log('CHRMRTNS: handle_form_submission called - POST data: ' . print_r($_POST, true));
+        }
         
-        // Check if this is a settings page submission
+        // Check if this is a settings page submission - nonce verification happens in save_settings()
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in save_settings()
         if (isset($_POST['chrmrtns_settings_nonce']) && isset($_POST['submit'])) {
-            error_log('CHRMRTNS: Form submission detected, calling save_settings');
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                error_log('CHRMRTNS: Form submission detected, calling save_settings');
+            }
             $this->save_settings();
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in save_settings()
         } elseif (isset($_POST['chrmrtns_settings_nonce'])) {
-            error_log('CHRMRTNS: Nonce found but submit button missing');
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                error_log('CHRMRTNS: Nonce found but submit button missing');
+            }
         } else {
-            error_log('CHRMRTNS: No relevant POST data found');
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                error_log('CHRMRTNS: No relevant POST data found');
+            }
         }
     }
     
     public function save_settings() {
-        if (!wp_verify_nonce($_POST['chrmrtns_settings_nonce'], 'chrmrtns_settings_save')) {
-            wp_die(__('Security check failed.', 'chrmrtns-passwordless-auth'));
+        if (!isset($_POST['chrmrtns_settings_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_settings_nonce'])), 'chrmrtns_settings_save')) {
+            wp_die(esc_html__('Security check failed.', 'passwordless-auth'));
         }
         
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions.', 'chrmrtns-passwordless-auth'));
+            wp_die(esc_html__('You do not have sufficient permissions.', 'passwordless-auth'));
         }
         
         // Save settings if Email Templates class is loaded
@@ -341,5 +374,32 @@ class Chrmrtns_Admin {
             $email_templates = new Chrmrtns_Email_Templates();
             $email_templates->save_settings();
         }
+    }
+    
+    /**
+     * Sanitize email HTML content
+     */
+    public function sanitize_email_html($html) {
+        if (class_exists('Chrmrtns_Email_Templates')) {
+            $email_templates = new Chrmrtns_Email_Templates();
+            return $email_templates->sanitize_email_html($html);
+        }
+        return wp_kses_post($html);
+    }
+    
+    /**
+     * Sanitize CSS content
+     */
+    public function sanitize_css($css) {
+        // Remove script tags and javascript
+        $css = preg_replace('/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/mi', '', $css);
+        $css = preg_replace('/javascript:/i', '', $css);
+        $css = preg_replace('/vbscript:/i', '', $css);
+        $css = preg_replace('/onload/i', '', $css);
+        
+        // Strip all HTML tags from CSS
+        $css = wp_strip_all_tags($css);
+        
+        return $css;
     }
 }

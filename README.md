@@ -2,7 +2,7 @@
 
 **Enhanced passwordless authentication with modular architecture, customizable email templates, and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.0.6-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.7-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -10,12 +10,13 @@
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free.** Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
-## ✨ New Features in v2.0.6
+## ✨ New Features in v2.0.7
 
-* **🔧 Fixed Token Rendering** - Button backgrounds now display correctly in custom templates
-* **📝 WYSIWYG-Safe Placeholders** - Changed from `{{PLACEHOLDER}}` to `[PLACEHOLDER]` format to prevent corruption
-* **🎨 Professional Email Layout** - Full-width gradient background with 600px content area
-* **✅ Reliable Color System** - Enhanced placeholder replacement with proper fallback handling
+* **🛡️ WordPress.org Compliance** - Full Plugin Check compliance for WordPress.org submission
+* **🔒 Security Hardening** - Enhanced output escaping and input validation
+* **⚡ Performance Optimized** - Improved database queries and conditional debug logging
+* **📋 Code Quality** - Complete adherence to WordPress coding and security standards
+* **🔐 Enhanced Protection** - Advanced CSRF and timing attack mitigation
 
 ## 📝 Features in v2.0.5
 

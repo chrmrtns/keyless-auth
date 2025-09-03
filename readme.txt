@@ -2,10 +2,12 @@
 
 Contributors: chrmrtns, sareiodata, cozmoslabs
 Donate link: https://github.com/chrmrtns/passwordless-auth
-Tags: passwordless login, passwordless, front-end login, login shortcode, custom login form, login without password, passwordless authentication, security, email templates, smtp, mail logging, modular architecture
+Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
-Tested up to: 6.7.1
-Stable tag: 2.0.6
+Tested up to: 6.8
+Stable tag: 2.0.7
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 
 Enhanced passwordless authentication with modular architecture, customizable email templates, and improved security.
@@ -156,6 +158,16 @@ Passwordless Authentication does not replace the default login functionality in 
 
 
 == Changelog ==
+= 2.0.7 =
+* COMPLIANCE: Full WordPress.org Plugin Check compliance - All security and coding standards met
+* FIX: Output escaping - All user-facing content properly escaped for security
+* FIX: Input validation - Enhanced nonce verification and superglobal sanitization
+* FIX: Database queries - Optimized user meta queries for better performance
+* FIX: Debug code - Conditional debug logging only when WP_DEBUG is enabled
+* IMPROVEMENT: Code quality - Added comprehensive phpcs ignore comments for legitimate use cases
+* IMPROVEMENT: Security hardening - Enhanced protection against timing attacks and CSRF
+* IMPROVEMENT: WordPress standards - Full compliance with WordPress coding and security standards
+
 = 2.0.6 =
 * FIX: Placeholder token rendering - Button backgrounds now display correctly in custom email templates
 * FIX: WYSIWYG editor corruption - Changed placeholder format from {{PLACEHOLDER}} to [PLACEHOLDER] to prevent corruption

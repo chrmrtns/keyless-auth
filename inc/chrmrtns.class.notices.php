@@ -40,7 +40,8 @@ class CHRMRTNS_Add_Notices{
 		if ( current_user_can( 'manage_options' ) ){
 			// Check that the user hasn't already clicked to ignore the message
 			if ( ! get_user_meta($user_id, $this->notificationId.'_dismiss_notification' ) ) {
-				echo $finalMessage = apply_filters($this->notificationId.'_notification_message','<div class="'. $this->notificationClass .'" >'.$this->notificationMessage.'</div>', $this->notificationMessage);
+				$finalMessage = apply_filters($this->notificationId.'_notification_message','<div class="'. esc_attr($this->notificationClass) .'" >'.wp_kses_post($this->notificationMessage).'</div>', $this->notificationMessage);
+				echo wp_kses_post($finalMessage);
 			}
 			do_action( $this->notificationId.'_notification_displayed', $current_user, $pagenow );
 		}
@@ -49,7 +50,7 @@ class CHRMRTNS_Add_Notices{
 
 	function dismiss_notification() {
 
-		if( empty( $_GET['_wpnonce'] ) || !wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ), 'chrmrtns_notice_dismiss' ) )
+		if( empty( $_GET['_wpnonce'] ) || !wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'chrmrtns_notice_dismiss' ) )
 			return;
 
 		global $current_user;
@@ -59,7 +60,7 @@ class CHRMRTNS_Add_Notices{
 		do_action( $this->notificationId.'_before_notification_dismissed', $current_user );
 
 		// If user clicks to ignore the notice, add that to their user meta
-		if ( isset( $_GET[$this->notificationId.'_dismiss_notification']) && '0' == $_GET[$this->notificationId.'_dismiss_notification'] )
+		if ( isset( $_GET[$this->notificationId.'_dismiss_notification']) && '0' == sanitize_text_field( wp_unslash( $_GET[$this->notificationId.'_dismiss_notification'] ) ) )
 			add_user_meta( $user_id, $this->notificationId.'_dismiss_notification', 'true', true );
 
 		do_action( $this->notificationId.'_after_notification_dismissed', $current_user );

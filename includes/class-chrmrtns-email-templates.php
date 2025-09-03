@@ -299,44 +299,56 @@ class Chrmrtns_Email_Templates {
      * Render settings page
      */
     public function render_settings_page() {
-        // Debug output
-        error_log('CHRMRTNS: render_settings_page called');
+        // Debug output only when WP_DEBUG is enabled
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+            error_log('CHRMRTNS: render_settings_page called');
+        }
         
         // Handle form submission directly here
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['chrmrtns_settings_nonce'])) {
-            error_log('CHRMRTNS: POST request detected in render_settings_page');
-            if (wp_verify_nonce($_POST['chrmrtns_settings_nonce'], 'chrmrtns_settings_save')) {
-                error_log('CHRMRTNS: Nonce verified, processing form submission');
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['chrmrtns_settings_nonce'])) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                error_log('CHRMRTNS: POST request detected in render_settings_page');
+            }
+            if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_settings_nonce'])), 'chrmrtns_settings_save')) {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                    error_log('CHRMRTNS: Nonce verified, processing form submission');
+                }
                 $this->save_settings();
                 // Continue rendering the page with success message
             } else {
-                error_log('CHRMRTNS: Nonce verification failed');
-                add_settings_error('chrmrtns_settings', 'nonce_failed', __('Security check failed. Please try again.', 'chrmrtns-passwordless-auth'), 'error');
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                    error_log('CHRMRTNS: Nonce verification failed');
+                }
+                add_settings_error('chrmrtns_settings', 'nonce_failed', __('Security check failed. Please try again.', 'passwordless-auth'), 'error');
             }
         }
         
         echo '<!-- CHRMRTNS: Settings page is loading -->';
         ?>
         <div class="chrmrtns-badge"></div>
-        <h1><?php _e('Email Template Settings', 'chrmrtns-passwordless-auth'); ?></h1>
+        <h1><?php esc_html_e('Email Template Settings', 'passwordless-auth'); ?></h1>
         
         <?php settings_errors('chrmrtns_settings'); ?>
         
-        <p><?php _e('Customize the appearance and content of your passwordless login emails.', 'chrmrtns-passwordless-auth'); ?></p>
+        <p><?php esc_html_e('Customize the appearance and content of your passwordless login emails.', 'passwordless-auth'); ?></p>
         
-        <form id="chrmrtns_settings_form" method="post" action="<?php echo admin_url('admin.php?page=chrmrtns-passwordless-auth-settings'); ?>">
+        <form id="chrmrtns_settings_form" method="post" action="<?php echo esc_url(admin_url('admin.php?page=chrmrtns-passwordless-auth-settings')); ?>">
             <?php wp_nonce_field('chrmrtns_settings_save', 'chrmrtns_settings_nonce'); ?>
             
-            <h2><?php _e('Email Template', 'chrmrtns-passwordless-auth'); ?></h2>
+            <h2><?php esc_html_e('Email Template', 'passwordless-auth'); ?></h2>
             <?php $this->render_template_selection(); ?>
             
-            <h2><?php _e('Color Settings', 'chrmrtns-passwordless-auth'); ?></h2>
+            <h2><?php esc_html_e('Color Settings', 'passwordless-auth'); ?></h2>
             <?php $this->render_color_settings(); ?>
             
-            <h2><?php _e('Custom Template Editor', 'chrmrtns-passwordless-auth'); ?></h2>
+            <h2><?php esc_html_e('Custom Template Editor', 'passwordless-auth'); ?></h2>
             <?php $this->render_custom_template_editor(); ?>
             
-            <?php submit_button(__('Save Settings', 'chrmrtns-passwordless-auth')); ?>
+            <?php submit_button(__('Save Settings', 'passwordless-auth')); ?>
         </form>
         
         <?php $this->render_template_help(); ?>
@@ -350,10 +362,10 @@ class Chrmrtns_Email_Templates {
     private function render_template_selection() {
         $current_template = get_option('chrmrtns_email_template', 'default');
         $templates = array(
-            'default' => __('Default Template', 'chrmrtns-passwordless-auth'),
-            'german' => __('German Template', 'chrmrtns-passwordless-auth'),
-            'simple' => __('Simple Template', 'chrmrtns-passwordless-auth'),
-            'custom' => __('Custom Template', 'chrmrtns-passwordless-auth')
+            'default' => __('Default Template', 'passwordless-auth'),
+            'german' => __('German Template', 'passwordless-auth'),
+            'simple' => __('Simple Template', 'passwordless-auth'),
+            'custom' => __('Custom Template', 'passwordless-auth')
         );
         
         // 2x2 Grid container
@@ -365,13 +377,13 @@ class Chrmrtns_Email_Templates {
             // Each template in its own grid cell
             echo '<div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; background: #fff;">';
             echo '<label style="display: block; margin-bottom: 10px; font-weight: bold; cursor: pointer;">';
-            echo '<input type="radio" name="chrmrtns_email_template" value="' . esc_attr($template_key) . '" ' . $checked . '>';
+            echo '<input type="radio" name="chrmrtns_email_template" value="' . esc_attr($template_key) . '" ' . esc_attr($checked) . '>';
             echo ' ' . esc_html($template_name);
             echo '</label>';
             
             // Show preview
             echo '<div class="template-preview" style="border: 1px solid #ccc; height: 200px; width: 100%;">';
-            echo $this->get_template_preview($template_key);
+            echo wp_kses_post($this->get_template_preview($template_key));
             echo '</div>';
             echo '</div>';
         }
@@ -421,28 +433,28 @@ class Chrmrtns_Email_Templates {
         ?>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php _e('Button Color', 'chrmrtns-passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Button Color', 'passwordless-auth'); ?></th>
                 <td>
                     <input type="color" id="chrmrtns_button_color_picker" value="<?php echo esc_attr($button_color); ?>" />
                     <input type="text" name="chrmrtns_button_color" id="chrmrtns_button_color_text" value="<?php echo esc_attr($button_color); ?>" placeholder="e.g. #007bff, rgb(0,123,255), hsl(211,100%,50%)" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php _e('Button Hover Color', 'chrmrtns-passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Button Hover Color', 'passwordless-auth'); ?></th>
                 <td>
                     <input type="color" id="chrmrtns_button_hover_color_picker" value="<?php echo esc_attr($button_hover_color); ?>" />
                     <input type="text" name="chrmrtns_button_hover_color" id="chrmrtns_button_hover_color_text" value="<?php echo esc_attr($button_hover_color); ?>" placeholder="e.g. #0056b3, rgba(0,86,179,0.9)" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php _e('Link Color', 'chrmrtns-passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Link Color', 'passwordless-auth'); ?></th>
                 <td>
                     <input type="color" id="chrmrtns_link_color_picker" value="<?php echo esc_attr($link_color); ?>" />
                     <input type="text" name="chrmrtns_link_color" id="chrmrtns_link_color_text" value="<?php echo esc_attr($link_color); ?>" placeholder="e.g. #007bff, rgb(0,123,255)" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php _e('Link Hover Color', 'chrmrtns-passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Link Hover Color', 'passwordless-auth'); ?></th>
                 <td>
                     <input type="color" id="chrmrtns_link_hover_color_picker" value="<?php echo esc_attr($link_hover_color); ?>" />
                     <input type="text" name="chrmrtns_link_hover_color" id="chrmrtns_link_hover_color_text" value="<?php echo esc_attr($link_hover_color); ?>" placeholder="e.g. #0056b3, rgba(0,86,179,0.9)" class="regular-text" />
@@ -487,8 +499,8 @@ class Chrmrtns_Email_Templates {
         }
         ?>
         <div id="chrmrtns_custom_template_section" style="<?php echo get_option('chrmrtns_email_template', 'default') !== 'custom' ? 'display: none;' : ''; ?>">
-            <h4><?php _e('Email Body Content', 'chrmrtns-passwordless-auth'); ?></h4>
-            <p><?php _e('Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility.', 'chrmrtns-passwordless-auth'); ?></p>
+            <h4><?php esc_html_e('Email Body Content', 'passwordless-auth'); ?></h4>
+            <p><?php esc_html_e('Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility.', 'passwordless-auth'); ?></p>
             <?php
             wp_editor($custom_body, 'chrmrtns_custom_email_body', array(
                 'textarea_name' => 'chrmrtns_custom_email_body',
@@ -510,15 +522,15 @@ class Chrmrtns_Email_Templates {
             ));
             ?>
             
-            <h4 style="margin-top: 25px;"><?php _e('Custom CSS Styles (Optional)', 'chrmrtns-passwordless-auth'); ?></h4>
-            <p><?php _e('Add custom CSS that will be placed in the &lt;head&gt; section. This is for advanced users who want to use CSS classes instead of inline styles.', 'chrmrtns-passwordless-auth'); ?></p>
+            <h4 style="margin-top: 25px;"><?php esc_html_e('Custom CSS Styles (Optional)', 'passwordless-auth'); ?></h4>
+            <p><?php esc_html_e('Add custom CSS that will be placed in the &lt;head&gt; section. This is for advanced users who want to use CSS classes instead of inline styles.', 'passwordless-auth'); ?></p>
             <?php
             $custom_styles = get_option('chrmrtns_custom_email_styles', '');
             ?>
             <textarea name="chrmrtns_custom_email_styles" id="chrmrtns_custom_email_styles" rows="8" cols="50" style="width: 100%; font-family: monospace;" placeholder="/* Add your custom CSS here */&#10;.login-button {&#10;    background-color: [BUTTON_COLOR];&#10;    color: white;&#10;    padding: 15px 30px;&#10;    border-radius: 25px;&#10;}"><?php echo esc_textarea($custom_styles); ?></textarea>
             
             <p class="description">
-                <?php _e('The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like [TO], [LOGIN_URL], [BUTTON_COLOR], etc.', 'chrmrtns-passwordless-auth'); ?>
+                <?php esc_html_e('The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like [TO], [LOGIN_URL], [BUTTON_COLOR], etc.', 'passwordless-auth'); ?>
             </p>
         </div>
         <?php
@@ -530,17 +542,17 @@ class Chrmrtns_Email_Templates {
     private function render_template_help() {
         ?>
         <div class="chrmrtns-template-help" style="margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 5px;">
-            <h3><?php _e('Template Placeholders', 'chrmrtns-passwordless-auth'); ?></h3>
-            <p><?php _e('Use these placeholders in your custom template:', 'chrmrtns-passwordless-auth'); ?></p>
+            <h3><?php esc_html_e('Template Placeholders', 'passwordless-auth'); ?></h3>
+            <p><?php esc_html_e('Use these placeholders in your custom template:', 'passwordless-auth'); ?></p>
             <ul>
-                <li><code>[TO]</code> - <?php _e('Recipient email address', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>[LOGIN_URL]</code> - <?php _e('Login URL', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>[BUTTON_COLOR]</code> - <?php _e('Button color', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>[BUTTON_HOVER_COLOR]</code> - <?php _e('Button hover color', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>[LINK_COLOR]</code> - <?php _e('Link color', 'chrmrtns-passwordless-auth'); ?></li>
-                <li><code>[LINK_HOVER_COLOR]</code> - <?php _e('Link hover color', 'chrmrtns-passwordless-auth'); ?></li>
+                <li><code>[TO]</code> - <?php esc_html_e('Recipient email address', 'passwordless-auth'); ?></li>
+                <li><code>[LOGIN_URL]</code> - <?php esc_html_e('Login URL', 'passwordless-auth'); ?></li>
+                <li><code>[BUTTON_COLOR]</code> - <?php esc_html_e('Button color', 'passwordless-auth'); ?></li>
+                <li><code>[BUTTON_HOVER_COLOR]</code> - <?php esc_html_e('Button hover color', 'passwordless-auth'); ?></li>
+                <li><code>[LINK_COLOR]</code> - <?php esc_html_e('Link color', 'passwordless-auth'); ?></li>
+                <li><code>[LINK_HOVER_COLOR]</code> - <?php esc_html_e('Link hover color', 'passwordless-auth'); ?></li>
             </ul>
-            <h4><?php _e('Example HTML:', 'chrmrtns-passwordless-auth'); ?></h4>
+            <h4><?php esc_html_e('Example HTML:', 'passwordless-auth'); ?></h4>
             <pre style="background: white; padding: 15px; border: 1px solid #ddd; overflow-x: auto;"><code>&lt;html&gt;
 &lt;head&gt;
     &lt;style&gt;
@@ -617,42 +629,85 @@ class Chrmrtns_Email_Templates {
      * Save settings
      */
     public function save_settings() {
-        // Debug logging
-        error_log('CHRMRTNS: save_settings called');
-        error_log('CHRMRTNS: POST data: ' . print_r($_POST, true));
+        // Debug logging only when WP_DEBUG is enabled
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+            error_log('CHRMRTNS: save_settings called');
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r,WordPress.Security.NonceVerification.Missing -- Debug logging when WP_DEBUG is enabled
+            error_log('CHRMRTNS: POST data: ' . print_r($_POST, true));
+        }
         
-        // Save the template type
-        $template_type = sanitize_text_field($_POST['chrmrtns_email_template']);
-        error_log('CHRMRTNS: Saving template type: ' . $template_type);
-        update_option('chrmrtns_email_template', $template_type);
-        
-        // Verify it was saved
-        $saved_template = get_option('chrmrtns_email_template');
-        error_log('CHRMRTNS: Verified saved template: ' . $saved_template);
+        // Save the template type - ensure it exists first
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
+        if (isset($_POST['chrmrtns_email_template'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
+            $template_type = sanitize_text_field(wp_unslash($_POST['chrmrtns_email_template']));
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                error_log('CHRMRTNS: Saving template type: ' . $template_type);
+            }
+            update_option('chrmrtns_email_template', $template_type);
+            
+            // Verify it was saved
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                $saved_template = get_option('chrmrtns_email_template');
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                error_log('CHRMRTNS: Verified saved template: ' . $saved_template);
+            }
+        }
         
         // Always save custom email body if provided (even if not currently selected)
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
         if (isset($_POST['chrmrtns_custom_email_body'])) {
-            $custom_body = $this->sanitize_email_html($_POST['chrmrtns_custom_email_body']);
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verification happens in calling method, input sanitized via sanitize_email_html()
+            $custom_body = $this->sanitize_email_html(wp_unslash($_POST['chrmrtns_custom_email_body']));
             update_option('chrmrtns_custom_email_body', $custom_body);
-            error_log('CHRMRTNS: Saved custom email body length: ' . strlen($custom_body));
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                error_log('CHRMRTNS: Saved custom email body length: ' . strlen($custom_body));
+            }
         }
         
         // Always save custom email styles if provided
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
         if (isset($_POST['chrmrtns_custom_email_styles'])) {
-            $custom_styles = wp_strip_all_tags($_POST['chrmrtns_custom_email_styles']);
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
+            $custom_styles = wp_strip_all_tags(wp_unslash($_POST['chrmrtns_custom_email_styles']));
             update_option('chrmrtns_custom_email_styles', $custom_styles);
-            error_log('CHRMRTNS: Saved custom email styles length: ' . strlen($custom_styles));
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+                error_log('CHRMRTNS: Saved custom email styles length: ' . strlen($custom_styles));
+            }
         }
         
-        // Save color settings
-        update_option('chrmrtns_button_color', $this->sanitize_color($_POST['chrmrtns_button_color']));
-        update_option('chrmrtns_button_hover_color', $this->sanitize_color($_POST['chrmrtns_button_hover_color']));
-        update_option('chrmrtns_link_color', $this->sanitize_color($_POST['chrmrtns_link_color']));
-        update_option('chrmrtns_link_hover_color', $this->sanitize_color($_POST['chrmrtns_link_hover_color']));
+        // Save color settings with proper validation
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
+        if (isset($_POST['chrmrtns_button_color'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verification happens in calling method, input sanitized via sanitize_color()
+            update_option('chrmrtns_button_color', $this->sanitize_color(wp_unslash($_POST['chrmrtns_button_color'])));
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
+        if (isset($_POST['chrmrtns_button_hover_color'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verification happens in calling method, input sanitized via sanitize_color()
+            update_option('chrmrtns_button_hover_color', $this->sanitize_color(wp_unslash($_POST['chrmrtns_button_hover_color'])));
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
+        if (isset($_POST['chrmrtns_link_color'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verification happens in calling method, input sanitized via sanitize_color()
+            update_option('chrmrtns_link_color', $this->sanitize_color(wp_unslash($_POST['chrmrtns_link_color'])));
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in calling method
+        if (isset($_POST['chrmrtns_link_hover_color'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verification happens in calling method, input sanitized via sanitize_color()
+            update_option('chrmrtns_link_hover_color', $this->sanitize_color(wp_unslash($_POST['chrmrtns_link_hover_color'])));
+        }
         
-        error_log('CHRMRTNS: Settings saved successfully - no redirect needed');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
+            error_log('CHRMRTNS: Settings saved successfully - no redirect needed');
+        }
         
         // Don't redirect - just show success message
-        add_settings_error('chrmrtns_settings', 'settings_saved', __('Settings saved successfully.', 'chrmrtns-passwordless-auth'), 'updated');
+        add_settings_error('chrmrtns_settings', 'settings_saved', __('Settings saved successfully.', 'passwordless-auth'), 'updated');
     }
 }

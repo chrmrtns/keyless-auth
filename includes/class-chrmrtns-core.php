@@ -20,7 +20,7 @@ class Chrmrtns_Core {
         add_action('wp_ajax_chrmrtns_request_login_code', array($this, 'handle_login_request'));
         add_action('wp_loaded', array($this, 'handle_login_link'), 1);
         add_action('template_redirect', array($this, 'handle_form_submission'));
-        add_shortcode('chrmrtns-passwordless-auth', array($this, 'render_login_form'));
+        add_shortcode('passwordless-auth', array($this, 'render_login_form'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
     }
     
@@ -30,26 +30,34 @@ class Chrmrtns_Core {
     public function render_login_form() {
         ob_start();
         
-        $account = (isset($_POST['user_email_username'])) ? sanitize_text_field($_POST['user_email_username']) : false;
-        $error_token = (isset($_GET['chrmrtns_error_token'])) ? sanitize_key($_GET['chrmrtns_error_token']) : false;
-        $adminapp_error = (isset($_GET['chrmrtns_adminapp_error'])) ? sanitize_key($_GET['chrmrtns_adminapp_error']) : false;
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Form display logic, not processing
+        $account = (isset($_POST['user_email_username'])) ? sanitize_text_field(wp_unslash($_POST['user_email_username'])) : false;
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for error display
+        $error_token = (isset($_GET['chrmrtns_error_token'])) ? sanitize_key(wp_unslash($_GET['chrmrtns_error_token'])) : false;
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for error display  
+        $adminapp_error = (isset($_GET['chrmrtns_adminapp_error'])) ? sanitize_key(wp_unslash($_GET['chrmrtns_adminapp_error'])) : false;
 
         $sent_link = get_option('chrmrtns_login_request_error');
 
         if ($account && !is_wp_error($sent_link)) {
-            echo '<p class="chrmrtns-box chrmrtns-success">' . apply_filters('chrmrtns_success_link_msg', __('Please check your email. You will soon receive an email with a login link.', 'chrmrtns-passwordless-auth')) . '</p>';
+            echo '<p class="chrmrtns-box chrmrtns-success">' . wp_kses_post(apply_filters('chrmrtns_success_link_msg', esc_html__('Please check your email. You will soon receive an email with a login link.', 'passwordless-auth'))) . '</p>';
         } elseif (is_user_logged_in()) {
             $current_user = wp_get_current_user();
-            echo '<p class="chrmrtns-box chrmrtns-alert">' . apply_filters('chrmrtns_success_login_msg', sprintf(__('You are currently logged in as %1$s. %2$s', 'chrmrtns-passwordless-auth'), '<a href="' . esc_url(get_author_posts_url($current_user->ID)) . '" title="' . esc_attr($current_user->display_name) . '">' . esc_html($current_user->display_name) . '</a>', '<a href="' . esc_url(wp_logout_url($this->get_current_page_url())) . '" title="' . __('Log out of this account', 'chrmrtns-passwordless-auth') . '">' . __('Log out', 'chrmrtns-passwordless-auth') . ' &raquo;</a>')) . '</p><!-- .alert-->';
+            echo '<p class="chrmrtns-box chrmrtns-alert">' . wp_kses_post(apply_filters('chrmrtns_success_login_msg', sprintf(
+                /* translators: %1$s: user display name with link, %2$s: logout link */
+                esc_html__('You are currently logged in as %1$s. %2$s', 'passwordless-auth'), 
+                '<a href="' . esc_url(get_author_posts_url($current_user->ID)) . '" title="' . esc_attr($current_user->display_name) . '">' . esc_html($current_user->display_name) . '</a>', 
+                '<a href="' . esc_url(wp_logout_url($this->get_current_page_url())) . '" title="' . esc_html__('Log out of this account', 'passwordless-auth') . '">' . esc_html__('Log out', 'passwordless-auth') . ' &raquo;</a>'
+            ))) . '</p><!-- .alert-->';
         } else {
             if (is_wp_error($sent_link)) {
                 echo '<p class="chrmrtns-box chrmrtns-error">' . esc_html(apply_filters('chrmrtns_error', $sent_link->get_error_message())) . '</p>';
             }
             if ($error_token) {
-                echo '<p class="chrmrtns-box chrmrtns-error">' . apply_filters('chrmrtns_invalid_token_error', __('Your token has probably expired. Please try again.', 'chrmrtns-passwordless-auth')) . '</p>';
+                echo '<p class="chrmrtns-box chrmrtns-error">' . wp_kses_post(apply_filters('chrmrtns_invalid_token_error', __('Your token has probably expired. Please try again.', 'passwordless-auth'))) . '</p>';
             }
             if ($adminapp_error) { // admin approval compatibility
-                echo '<p class="chrmrtns-box chrmrtns-error">' . apply_filters('chrmrtns_admin_approval_error', __('Your account needs to be approved by an admin before you can log-in.', 'chrmrtns-passwordless-auth')) . '</p>';
+                echo '<p class="chrmrtns-box chrmrtns-error">' . wp_kses_post(apply_filters('chrmrtns_admin_approval_error', __('Your account needs to be approved by an admin before you can log-in.', 'passwordless-auth'))) . '</p>';
             }
             
             // Render the login form
@@ -66,26 +74,26 @@ class Chrmrtns_Core {
         include_once(ABSPATH . 'wp-admin/includes/plugin.php');
         
         // Setting up the label for the password request form based on the Allows Users to Login With Profile Builder Option
-        $login_label = __('Login with email or username', 'chrmrtns-passwordless-auth');
+        $login_label = __('Login with email or username', 'passwordless-auth');
         
         if (is_plugin_active('profile-builder-pro/index.php') || is_plugin_active('profile-builder/index.php') || is_plugin_active('profile-builder-hobbyist/index.php')) {
             $wppb_general_options = get_option('wppb_general_settings');
             if (isset($wppb_general_options['loginWith']) && ($wppb_general_options['loginWith'] == 'email')) {
-                $login_label = __('Login with email', 'chrmrtns-passwordless-auth');
+                $login_label = __('Login with email', 'passwordless-auth');
             } elseif (isset($wppb_general_options['loginWith']) && ($wppb_general_options['loginWith'] == 'username')) {
-                $login_label = __('Login with username', 'chrmrtns-passwordless-auth');
+                $login_label = __('Login with username', 'passwordless-auth');
             }
         }
         
         ?>
         <form method="post" class="chrmrtns-form">
             <p>
-                <label for="user_email_username"><?php echo apply_filters('chrmrtns_change_form_label', $login_label); ?></label><br>
+                <label for="user_email_username"><?php echo esc_html(apply_filters('chrmrtns_change_form_label', $login_label)); ?></label><br>
                 <input type="text" name="user_email_username" id="user_email_username" class="input" value="" size="20" required />
             </p>
             <?php wp_nonce_field('chrmrtns_passwordless_login_request', 'nonce', false); ?>
             <p class="submit">
-                <input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="<?php _e('Send me the link', 'chrmrtns-passwordless-auth'); ?>" />
+                <input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="<?php esc_html_e('Send me the link', 'passwordless-auth'); ?>" />
             </p>
         </form>
         <?php
@@ -95,6 +103,7 @@ class Chrmrtns_Core {
      * Handle form submission
      */
     public function handle_form_submission() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in handle_login_request()
         if (isset($_POST['user_email_username']) && isset($_POST['nonce'])) {
             $this->handle_login_request();
         }
@@ -112,19 +121,19 @@ class Chrmrtns_Core {
         }
         
         // Verify nonce
-        if (!wp_verify_nonce($_POST['nonce'], 'chrmrtns_passwordless_login_request')) {
-            $error = new WP_Error('nonce_failed', __('Security check failed. Please try again.', 'chrmrtns-passwordless-auth'));
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'chrmrtns_passwordless_login_request')) {
+            $error = new WP_Error('nonce_failed', __('Security check failed. Please try again.', 'passwordless-auth'));
             update_option('chrmrtns_login_request_error', $error);
             return;
         }
         
-        $user_email_username = sanitize_text_field($_POST['user_email_username']);
+        $user_email_username = sanitize_text_field(wp_unslash($_POST['user_email_username']));
         
         // Get user by email or username
         $user = $this->get_user_by_email_or_username($user_email_username);
         
         if (!$user) {
-            $error = new WP_Error('invalid_user', __('The username or email you provided do not exist. Please try again.', 'chrmrtns-passwordless-auth'));
+            $error = new WP_Error('invalid_user', __('The username or email you provided do not exist. Please try again.', 'passwordless-auth'));
             update_option('chrmrtns_login_request_error', $error);
             return;
         }
@@ -137,7 +146,7 @@ class Chrmrtns_Core {
         
         // Generate and send login link
         if (!$this->send_login_email($user)) {
-            $error = new WP_Error('email_failed', __('There was a problem sending your email. Please try again or contact an admin.', 'chrmrtns-passwordless-auth'));
+            $error = new WP_Error('email_failed', __('There was a problem sending your email. Please try again or contact an admin.', 'passwordless-auth'));
             update_option('chrmrtns_login_request_error', $error);
         }
     }
@@ -193,14 +202,19 @@ class Chrmrtns_Core {
         } else {
             // Fallback template
             $email_body = sprintf(
-                __('Hello! <br><br>Login at %s by visiting this url: <a href="%s" target="_blank">%s</a>', 'chrmrtns-passwordless-auth'),
+                /* translators: %1$s: site name, %2$s: login URL for href attribute, %3$s: login URL for display text */
+                __('Hello! <br><br>Login at %1$s by visiting this url: <a href="%2$s" target="_blank">%3$s</a>', 'passwordless-auth'),
                 get_bloginfo('name'),
                 esc_url($login_url),
                 esc_url($login_url)
             );
         }
         
-        $subject = sprintf(__('Login at %s', 'chrmrtns-passwordless-auth'), get_bloginfo('name'));
+        $subject = sprintf(
+            /* translators: %s: site name */
+            __('Login at %s', 'passwordless-auth'), 
+            get_bloginfo('name')
+        );
         $headers = array('Content-Type: text/html; charset=UTF-8');
         
         return wp_mail($user_email, $subject, $email_body, apply_filters('chrmrtns_email_headers', $headers));
@@ -218,11 +232,14 @@ class Chrmrtns_Core {
      * Handle login link clicks
      */
     public function handle_login_link() {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for login token, not form data
         if (!isset($_GET['chrmrtns_token']) || !isset($_GET['chrmrtns_user_id'])) {
             return;
         }
         
-        $token = sanitize_text_field($_GET['chrmrtns_token']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for login token, not form data
+        $token = sanitize_text_field(wp_unslash($_GET['chrmrtns_token']));
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for login token, not form data
         $user_id = intval($_GET['chrmrtns_user_id']);
         
         // Validate token
@@ -283,7 +300,7 @@ class Chrmrtns_Core {
         global $wp;
         
         if (isset($_SERVER['REQUEST_URI'])) {
-            $request_uri = sanitize_text_field($_SERVER['REQUEST_URI']);
+            $request_uri = sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI']));
             
             // Remove existing chrmrtns parameters to avoid accumulation
             $clean_uri = remove_query_arg(array(
