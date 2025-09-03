@@ -137,31 +137,59 @@ class Chrmrtns_Mail_Logger {
     
     /**
      * Log mail events
+     * Note: This function logs email data for debugging and monitoring purposes.
+     * Logged data may contain personal information and should be handled according to privacy laws.
      */
     public function log_mail_event($mail_data) {
         if (get_option('chrmrtns_mail_logging_enabled') !== '1') {
             return $mail_data;
         }
 
-        // Extract mail parameters from the array
-        $to = isset($mail_data['to']) ? $mail_data['to'] : '';
-        $subject = isset($mail_data['subject']) ? $mail_data['subject'] : '';
-        $message = isset($mail_data['message']) ? $mail_data['message'] : '';
+        // Privacy check - allow users to disable logging via filter
+        if (!apply_filters('chrmrtns_allow_mail_logging', true)) {
+            return $mail_data;
+        }
+
+        // Extract and sanitize mail parameters from the array
+        $to = isset($mail_data['to']) ? sanitize_email($mail_data['to']) : '';
+        $subject = isset($mail_data['subject']) ? sanitize_text_field($mail_data['subject']) : '';
+        $message = isset($mail_data['message']) ? wp_kses_post($mail_data['message']) : '';
         $headers = isset($mail_data['headers']) ? $mail_data['headers'] : '';
         $attachments = isset($mail_data['attachments']) ? $mail_data['attachments'] : array();
 
+        // Validate email addresses
+        if (!empty($to) && !is_email($to)) {
+            // If not a valid email, sanitize as text but mark as invalid
+            $to = sanitize_text_field($mail_data['to'] ?? '') . ' (invalid)';
+        }
+
         // Extract From header if present
-        $from = get_option('admin_email'); // Default fallback
+        $from = sanitize_email(get_option('admin_email')); // Default fallback
         if (is_array($headers)) {
             foreach ($headers as $header) {
-                if (stripos($header, 'From:') === 0) {
-                    $from = trim(preg_replace('/From:\s*/i', '', $header));
+                if (is_string($header) && stripos($header, 'From:') === 0) {
+                    $extracted_from = trim(preg_replace('/From:\s*/i', '', $header));
+                    // Extract email from "Name <email>" format
+                    if (preg_match('/<(.+?)>/', $extracted_from, $matches)) {
+                        $extracted_from = $matches[1];
+                    }
+                    if (is_email($extracted_from)) {
+                        $from = sanitize_email($extracted_from);
+                    } else {
+                        $from = sanitize_text_field($extracted_from);
+                    }
                     break;
                 }
             }
-        } else {
-            if (stripos($headers, 'From:') === 0) {
-                $from = trim(preg_replace('/From:\s*/i', '', $headers));
+        } elseif (is_string($headers) && stripos($headers, 'From:') === 0) {
+            $extracted_from = trim(preg_replace('/From:\s*/i', '', $headers));
+            if (preg_match('/<(.+?)>/', $extracted_from, $matches)) {
+                $extracted_from = $matches[1];
+            }
+            if (is_email($extracted_from)) {
+                $from = sanitize_email($extracted_from);
+            } else {
+                $from = sanitize_text_field($extracted_from);
             }
         }
 
@@ -178,13 +206,28 @@ class Chrmrtns_Mail_Logger {
         $post_id = wp_insert_post($post_data);
 
         if ($post_id) {
-            update_post_meta($post_id, 'date_time', gmdate('Y-m-d H:i:s'));
-            update_post_meta($post_id, 'from', $from);
-            update_post_meta($post_id, 'to', $to);
-            update_post_meta($post_id, 'subject', $subject);
-            update_post_meta($post_id, 'message', $message);
-            update_post_meta($post_id, 'headers', $headers);
-            update_post_meta($post_id, 'attachments', $attachments);
+            // Store sanitized data with proper validation
+            update_post_meta($post_id, 'date_time', sanitize_text_field(gmdate('Y-m-d H:i:s')));
+            update_post_meta($post_id, 'from', sanitize_text_field($from));
+            update_post_meta($post_id, 'to', sanitize_text_field($to));
+            update_post_meta($post_id, 'subject', sanitize_text_field($subject));
+            update_post_meta($post_id, 'message', wp_kses_post($message));
+            
+            // Sanitize headers - can be array or string
+            if (is_array($headers)) {
+                $sanitized_headers = array_map('sanitize_text_field', $headers);
+                update_post_meta($post_id, 'headers', $sanitized_headers);
+            } else {
+                update_post_meta($post_id, 'headers', sanitize_textarea_field($headers));
+            }
+            
+            // Sanitize attachments - should be array of file paths
+            if (is_array($attachments)) {
+                $sanitized_attachments = array_map('sanitize_text_field', $attachments);
+                update_post_meta($post_id, 'attachments', $sanitized_attachments);
+            } else {
+                update_post_meta($post_id, 'attachments', array());
+            }
         }
 
         return $mail_data;
@@ -216,6 +259,11 @@ class Chrmrtns_Mail_Logger {
      * Render mail logs page
      */
     public function render_mail_logs_page() {
+        // Additional security check
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'passwordless-auth'));
+        }
+
         $logging_enabled = get_option('chrmrtns_mail_logging_enabled') === '1';
         $log_size_limit  = get_option('chrmrtns_mail_log_size_limit', 100);
 
@@ -226,6 +274,11 @@ class Chrmrtns_Mail_Logger {
         <div class="wrap chrmrtns-wrap">
             <h1><?php esc_html_e('Mail Logs', 'passwordless-auth'); ?></h1>
             <p><?php esc_html_e('Track and monitor all emails sent from your WordPress site. Enable logging to see detailed information about sent emails including recipients, subjects, and content.', 'passwordless-auth'); ?></p>
+            
+            <div class="notice notice-info">
+                <p><strong><?php esc_html_e('Privacy Notice:', 'passwordless-auth'); ?></strong> 
+                <?php esc_html_e('Mail logs may contain personal information including email addresses and message content. Ensure compliance with applicable privacy laws (GDPR, CCPA, etc.) when enabling this feature. Logs are automatically cleaned up based on your retention settings.', 'passwordless-auth'); ?></p>
+            </div>
 
             <!-- Settings Form -->
             <form method="post" action="">

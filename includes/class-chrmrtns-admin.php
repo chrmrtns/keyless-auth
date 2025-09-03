@@ -42,7 +42,7 @@ class Chrmrtns_Admin {
             __('PA Settings', 'passwordless-auth'),
             __('PA Settings', 'passwordless-auth'),
             'manage_options',
-            'chrmrtns-passwordless-auth-settings',
+            'passwordless-auth-settings',
             array($this, 'settings_page')
         );
         
@@ -73,10 +73,10 @@ class Chrmrtns_Admin {
             'sanitize_callback' => 'sanitize_text_field'
         ));
         register_setting('chrmrtns_settings_group', 'chrmrtns_custom_email_body', array(
-            'sanitize_callback' => array($this, 'sanitize_email_html')
+            'sanitize_callback' => 'wp_kses_post'
         ));
         register_setting('chrmrtns_settings_group', 'chrmrtns_custom_email_styles', array(
-            'sanitize_callback' => array($this, 'sanitize_css')
+            'sanitize_callback' => 'wp_strip_all_tags'
         ));
         register_setting('chrmrtns_settings_group', 'chrmrtns_button_color', array(
             'sanitize_callback' => 'sanitize_hex_color'
@@ -89,6 +89,12 @@ class Chrmrtns_Admin {
         ));
         register_setting('chrmrtns_settings_group', 'chrmrtns_link_hover_color', array(
             'sanitize_callback' => 'sanitize_hex_color'
+        ));
+        register_setting('chrmrtns_settings_group', 'chrmrtns_button_text_color', array(
+            'sanitize_callback' => 'sanitize_text_field'
+        ));
+        register_setting('chrmrtns_settings_group', 'chrmrtns_button_hover_text_color', array(
+            'sanitize_callback' => 'sanitize_text_field'
         ));
         
         add_action('wp_ajax_chrmrtns_save_settings', array($this, 'save_settings'));
@@ -201,10 +207,18 @@ class Chrmrtns_Admin {
         <p class="chrmrtns-text">
             <?php 
             $successful_logins = get_option('chrmrtns_successful_logins', 0);
-            printf(
-                /* translators: %d: number of successful passwordless logins */
-                esc_html__('<p>A front-end login form without a password.</p><p><strong style="font-size: 16px; color:#d54e21;">%d</strong> successful logins so far.</p>', 'passwordless-auth'), 
-                esc_html($successful_logins)
+            echo wp_kses(
+                sprintf(
+                    /* translators: %d: number of successful passwordless logins */
+                    __('<p>A front-end login form without a password.</p><p><strong style="font-size: 16px; color:#d54e21;">%d</strong> successful logins so far.</p>', 'passwordless-auth'), 
+                    intval($successful_logins)
+                ),
+                array(
+                    'p' => array(),
+                    'strong' => array(
+                        'style' => array()
+                    )
+                )
             );
             ?>
         </p>
@@ -215,9 +229,12 @@ class Chrmrtns_Admin {
         
         <div class="chrmrtns-row chrmrtns-2-col">
             <div>
-                <h2><?php esc_html_e('[chrmrtns-passwordless-auth] shortcode', 'passwordless-auth'); ?></h2>
-                <p><?php esc_html_e('Just place <strong class="nowrap">[chrmrtns-passwordless-auth]</strong> shortcode in a page or a widget and you\'re good to go.', 'passwordless-auth'); ?></p>
-                <p><textarea class="chrmrtns-shortcode textarea" readonly onclick="this.select();" style="width: 100%; height: 60px; padding: 10px;">[chrmrtns-passwordless-auth]</textarea></p>
+                <h2><?php esc_html_e('[passwordless-auth] shortcode', 'passwordless-auth'); ?></h2>
+                <p><?php echo wp_kses(
+                    __('Just place <strong class="nowrap">[passwordless-auth]</strong> shortcode in a page or a widget and you\'re good to go.', 'passwordless-auth'),
+                    array('strong' => array('class' => array()))
+                ); ?></p>
+                <p><textarea class="chrmrtns-shortcode textarea" readonly onclick="this.select();" style="width: 100%; height: 60px; padding: 10px;">[passwordless-auth]</textarea></p>
             </div>
             
             <div>
@@ -231,7 +248,10 @@ class Chrmrtns_Admin {
                     <li><?php esc_html_e('SMTP configuration for reliable email delivery', 'passwordless-auth'); ?></li>
                     <li><?php esc_html_e('Comprehensive email logging and monitoring', 'passwordless-auth'); ?></li>
                 </ul>
-                <p><?php esc_html_e('Passwordless Authentication <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel.', 'passwordless-auth'); ?></p>
+                <p><?php echo wp_kses(
+                    __('Passwordless Authentication <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel.', 'passwordless-auth'),
+                    array('strong' => array())
+                ); ?></p>
             </div>
         </div>
         
@@ -268,7 +288,7 @@ class Chrmrtns_Admin {
      */
     public function handle_notification_dismiss() {
         if (isset($_GET['chrmrtns_learn_more_dismiss_notification']) && isset($_GET['_wpnonce'])) {
-            if (wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'chrmrtns_learn_more_dismiss_notification')) {
+            if (wp_verify_nonce($_GET['_wpnonce'], 'chrmrtns_learn_more_dismiss_notification')) {
                 update_option('chrmrtns_learn_more_dismiss_notification', true);
                 wp_redirect(remove_query_arg(array('chrmrtns_learn_more_dismiss_notification', '_wpnonce')));
                 exit;
@@ -281,7 +301,7 @@ class Chrmrtns_Admin {
      */
     public function display_admin_notice() {
         if (!get_option('chrmrtns_learn_more_dismiss_notification')) {
-            $learn_more_url = admin_url('admin.php?page=chrmrtns-passwordless-auth');
+            $learn_more_url = admin_url('admin.php?page=passwordless-auth');
             $dismiss_url = wp_nonce_url(
                 add_query_arg('chrmrtns_learn_more_dismiss_notification', '0'),
                 'chrmrtns_learn_more_dismiss_notification'
@@ -289,7 +309,7 @@ class Chrmrtns_Admin {
             ?>
             <div class="updated" style="max-width: 800px;">
                 <p>
-                    <?php esc_html_e('Use [chrmrtns-passwordless-auth] shortcode in your pages or widgets.', 'passwordless-auth'); ?>
+                    <?php esc_html_e('Use [passwordless-auth] shortcode in your pages or widgets.', 'passwordless-auth'); ?>
                     <a href="<?php echo esc_url($learn_more_url); ?>"><?php esc_html_e('Learn more.', 'passwordless-auth'); ?></a>
                     <a href="<?php echo esc_url($dismiss_url); ?>" class="chrmrtns-dismiss-notification" style="float:right;margin-left:20px;">
                         <?php esc_html_e('Dismiss', 'passwordless-auth'); ?>
@@ -305,8 +325,8 @@ class Chrmrtns_Admin {
      */
     public function enqueue_admin_scripts($hook) {
         $allowed_pages = array(
-            'toplevel_page_chrmrtns-passwordless-auth',
-            'passwordless-auth_page_chrmrtns-passwordless-auth-settings',
+            'toplevel_page_passwordless-auth',
+            'passwordless-auth_page_passwordless-auth-settings',
             'passwordless-auth_page_chrmrtns-smtp-settings',
             'passwordless-auth_page_chrmrtns-mail-logs'
         );
@@ -315,8 +335,15 @@ class Chrmrtns_Admin {
             wp_register_style('chrmrtns_admin_stylesheet', CHRMRTNS_PLUGIN_URL . 'assets/style-back-end.css', array(), CHRMRTNS_PASSWORDLESS_VERSION);
             wp_enqueue_style('chrmrtns_admin_stylesheet');
             
+            // Add logo with correct path and notice width styling
+            $inline_css = '
+                .chrmrtns-badge { background: url(' . CHRMRTNS_PLUGIN_URL . 'assets/logo_150_150.png) center 0px no-repeat #007bff; }
+                #setting-error-settings_saved { max-width: 800px; }
+            ';
+            wp_add_inline_style('chrmrtns_admin_stylesheet', $inline_css);
+            
             // Enqueue editor scripts for settings page
-            if ($hook === 'passwordless-auth_page_chrmrtns-passwordless-auth-settings') {
+            if ($hook === 'passwordless-auth_page_passwordless-auth-settings') {
                 wp_enqueue_editor();
                 wp_enqueue_media();
                 wp_enqueue_script('wp-color-picker');
@@ -332,36 +359,29 @@ class Chrmrtns_Admin {
      * Handle form submission
      */
     public function handle_form_submission() {
-        // Debug logging only when WP_DEBUG is enabled
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log,WordPress.PHP.DevelopmentFunctions.error_log_print_r,WordPress.Security.NonceVerification.Missing -- Debug logging when WP_DEBUG is enabled
             error_log('CHRMRTNS: handle_form_submission called - POST data: ' . print_r($_POST, true));
         }
         
-        // Check if this is a settings page submission - nonce verification happens in save_settings()
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in save_settings()
+        // Check if this is a settings page submission
         if (isset($_POST['chrmrtns_settings_nonce']) && isset($_POST['submit'])) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
                 error_log('CHRMRTNS: Form submission detected, calling save_settings');
             }
             $this->save_settings();
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in save_settings()
         } elseif (isset($_POST['chrmrtns_settings_nonce'])) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
                 error_log('CHRMRTNS: Nonce found but submit button missing');
             }
         } else {
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
                 error_log('CHRMRTNS: No relevant POST data found');
             }
         }
     }
     
     public function save_settings() {
-        if (!isset($_POST['chrmrtns_settings_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_settings_nonce'])), 'chrmrtns_settings_save')) {
+        if (!wp_verify_nonce($_POST['chrmrtns_settings_nonce'], 'chrmrtns_settings_save')) {
             wp_die(esc_html__('Security check failed.', 'passwordless-auth'));
         }
         
@@ -369,37 +389,70 @@ class Chrmrtns_Admin {
             wp_die(esc_html__('You do not have sufficient permissions.', 'passwordless-auth'));
         }
         
-        // Save settings if Email Templates class is loaded
-        if (class_exists('Chrmrtns_Email_Templates')) {
-            $email_templates = new Chrmrtns_Email_Templates();
-            $email_templates->save_settings();
+        // Save settings directly here instead of delegating  
+        if (isset($_POST['chrmrtns_email_template'])) {
+            update_option('chrmrtns_email_template', sanitize_text_field($_POST['chrmrtns_email_template']));
         }
-    }
-    
-    /**
-     * Sanitize email HTML content
-     */
-    public function sanitize_email_html($html) {
-        if (class_exists('Chrmrtns_Email_Templates')) {
-            $email_templates = new Chrmrtns_Email_Templates();
-            return $email_templates->sanitize_email_html($html);
+        
+        if (isset($_POST['chrmrtns_button_color'])) {
+            update_option('chrmrtns_button_color', sanitize_hex_color($_POST['chrmrtns_button_color']));
         }
-        return wp_kses_post($html);
-    }
-    
-    /**
-     * Sanitize CSS content
-     */
-    public function sanitize_css($css) {
-        // Remove script tags and javascript
-        $css = preg_replace('/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/mi', '', $css);
-        $css = preg_replace('/javascript:/i', '', $css);
-        $css = preg_replace('/vbscript:/i', '', $css);
-        $css = preg_replace('/onload/i', '', $css);
         
-        // Strip all HTML tags from CSS
-        $css = wp_strip_all_tags($css);
+        if (isset($_POST['chrmrtns_button_hover_color'])) {
+            update_option('chrmrtns_button_hover_color', sanitize_hex_color($_POST['chrmrtns_button_hover_color']));
+        }
         
-        return $css;
+        if (isset($_POST['chrmrtns_link_color'])) {
+            update_option('chrmrtns_link_color', sanitize_hex_color($_POST['chrmrtns_link_color']));
+        }
+        
+        if (isset($_POST['chrmrtns_link_hover_color'])) {
+            update_option('chrmrtns_link_hover_color', sanitize_hex_color($_POST['chrmrtns_link_hover_color']));
+        }
+        
+        if (isset($_POST['chrmrtns_custom_email_body'])) {
+            update_option('chrmrtns_custom_email_body', wp_kses_post($_POST['chrmrtns_custom_email_body']));
+        }
+        
+        if (isset($_POST['chrmrtns_custom_email_styles'])) {
+            update_option('chrmrtns_custom_email_styles', wp_strip_all_tags($_POST['chrmrtns_custom_email_styles']));
+        }
+        
+        if (isset($_POST['chrmrtns_button_text_color'])) {
+            $text_color = sanitize_text_field($_POST['chrmrtns_button_text_color']);
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('CHRMRTNS: Button text color received: ' . $_POST['chrmrtns_button_text_color'] . ' -> sanitized: ' . $text_color);
+            }
+            // Fallback to default if not a valid color format
+            if (empty($text_color)) {
+                $text_color = '#ffffff';
+            }
+            update_option('chrmrtns_button_text_color', $text_color);
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('CHRMRTNS: Button text color saved as: ' . $text_color);
+            }
+        } else {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('CHRMRTNS: chrmrtns_button_text_color not found in POST data');
+            }
+        }
+        
+        if (isset($_POST['chrmrtns_button_hover_text_color'])) {
+            $hover_text_color = sanitize_text_field($_POST['chrmrtns_button_hover_text_color']);
+            // Fallback to default if not a valid color format  
+            if (empty($hover_text_color)) {
+                $hover_text_color = '#ffffff';
+            }
+            update_option('chrmrtns_button_hover_text_color', $hover_text_color);
+        }
+        
+        // Debug: Check what was actually saved
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('CHRMRTNS: Final saved values - button_text_color: ' . get_option('chrmrtns_button_text_color', 'NOT_SET'));
+            error_log('CHRMRTNS: Final saved values - button_hover_text_color: ' . get_option('chrmrtns_button_hover_text_color', 'NOT_SET'));
+        }
+        
+        // Show success message
+        add_settings_error('chrmrtns_settings', 'settings_saved', __('Settings saved successfully.', 'passwordless-auth'), 'updated');
     }
 }

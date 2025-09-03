@@ -5,7 +5,7 @@ Donate link: https://github.com/chrmrtns/passwordless-auth
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.0.7
+Stable tag: 2.0.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,14 @@ Passwordless Authentication does not replace the default login functionality in 
 
 
 == Changelog ==
+= 2.0.8 =
+* IMPROVEMENT: Enhanced output escaping compliance - All user-facing content now uses proper WordPress escaping functions
+* IMPROVEMENT: Template preview security - Email template previews now use wp_kses with controlled HTML allowlists
+* IMPROVEMENT: Admin interface escaping - Form outputs and translations properly escaped with esc_html_e() and wp_kses()
+* IMPROVEMENT: Email template escaping - All template rendering functions now use proper escaping for security
+* IMPROVEMENT: Button text color functionality - Fixed button text color controls to prevent blue hover text issues
+* SECURITY: WordPress.org Plugin Check compliance - Comprehensive escaping improvements for enhanced security
+
 = 2.0.7 =
 * COMPLIANCE: Full WordPress.org Plugin Check compliance - All security and coding standards met
 * FIX: Output escaping - All user-facing content properly escaped for security

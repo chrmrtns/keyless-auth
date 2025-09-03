@@ -71,7 +71,8 @@
 }
 
 /* Limit notification width to make room for logo */
-.chrmrtns-wrap .updated {
+.chrmrtns-wrap .updated,
+.chrmrtns-wrap .settings-error {
     max-width: 800px;
 }
 
@@ -215,26 +216,51 @@
     display:none;
 }
 
-/* Columns :) */
+/* Columns :) - Updated to use flexbox for better compatibility */
 .chrmrtns-row{
 	overflow:hidden;
+	display: flex;
+	gap: 20px;
+}
+
+.chrmrtns-3-col {
+	display: flex;
+	gap: 20px;
 }
 
 .chrmrtns-3-col > div {
-	float:left;
-	width:28%;
-	margin-right:5%;
+	flex: 1;
+	width: 28%;
+	margin-right: 0;
+}
+
+.chrmrtns-2-col {
+	display: flex;
+	gap: 20px;
 }
 
 .chrmrtns-2-col > div {
-	float:left;
-	width:45%;
-	margin-right:5%;
+	flex: 1;
+	width: 45%;
+	margin-right: 0;
 }
 
 .chrmrtns-3-col > div:last-child,
 .chrmrtns-2-col > div:last-child{
 	margin:0;
+}
+
+/* Fallback for older browsers */
+.no-flexbox .chrmrtns-3-col > div {
+	float:left;
+	width:28%;
+	margin-right:5%;
+}
+
+.no-flexbox .chrmrtns-2-col > div {
+	float:left;
+	width:45%;
+	margin-right:5%;
 }
 
 /* Extra Form Styles */
