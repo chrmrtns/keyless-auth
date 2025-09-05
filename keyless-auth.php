@@ -1,13 +1,13 @@
 <?php
 /**
-* Plugin Name: Passwordless Auth
-* Plugin URI: https://github.com/chrmrtns/passwordless-auth
-* Description: Enhanced passwordless authentication with improved security. Fork of Passwordless Login by Cozmoslabs with additional security features.
-* Version: 2.0.8
+* Plugin Name: Keyless Auth - Login without Passwords
+* Plugin URI: https://github.com/chrmrtns/keyless-auth
+* Description: Enhanced passwordless authentication allowing users to login securely without passwords via email magic links. Fork of Passwordless Login by Cozmoslabs with additional security features.
+* Version: 2.0.10
 * Author: Chris Martens
 * Author URI: https://github.com/chrmrtns
 * License: GPL2
-* Text Domain: passwordless-auth
+* Text Domain: keyless-auth
 * Domain Path: /languages
 */
 /* 
@@ -37,16 +37,16 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('CHRMRTNS_PASSWORDLESS_VERSION', '2.0.7');
-define('CHRMRTNS_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('CHRMRTNS_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('CHRMRTNS_PLUGIN_FILE', __FILE__);
+define('CHRMRTNS_KLA_VERSION', '2.0.10');
+define('CHRMRTNS_KLA_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('CHRMRTNS_KLA_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('CHRMRTNS_KLA_PLUGIN_FILE', __FILE__);
 
 
 /**
  * Main plugin class
  */
-class Chrmrtns_Passwordless_Auth {
+class Chrmrtns_KLA_Main {
     
     /**
      * Plugin instance
@@ -71,8 +71,8 @@ class Chrmrtns_Passwordless_Auth {
         add_action('plugins_loaded', array($this, 'load_textdomain'));
         
         // Include existing notices class
-        if (file_exists(CHRMRTNS_PLUGIN_DIR . 'inc/chrmrtns.class.notices.php')) {
-            include_once CHRMRTNS_PLUGIN_DIR . 'inc/chrmrtns.class.notices.php';
+        if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . 'inc/chrmrtns.class.notices.php')) {
+            include_once CHRMRTNS_KLA_PLUGIN_DIR . 'inc/chrmrtns.class.notices.php';
         }
     }
     
@@ -92,15 +92,15 @@ class Chrmrtns_Passwordless_Auth {
      */
     private function include_classes() {
         $classes = array(
-            'class-chrmrtns-core.php',
-            'class-chrmrtns-admin.php',
-            'class-chrmrtns-smtp.php',
-            'class-chrmrtns-mail-logger.php',
-            'class-chrmrtns-email-templates.php'
+            'class-chrmrtns-kla-core.php',
+            'class-chrmrtns-kla-admin.php',
+            'class-chrmrtns-kla-smtp.php',
+            'class-chrmrtns-kla-mail-logger.php',
+            'class-chrmrtns-kla-email-templates.php'
         );
         
         foreach ($classes as $class_file) {
-            $file_path = CHRMRTNS_PLUGIN_DIR . 'includes/' . $class_file;
+            $file_path = CHRMRTNS_KLA_PLUGIN_DIR . 'includes/' . $class_file;
             if (file_exists($file_path)) {
                 require_once $file_path;
             }
@@ -112,23 +112,23 @@ class Chrmrtns_Passwordless_Auth {
      */
     private function init_components() {
         // Initialize core functionality
-        if (class_exists('Chrmrtns_Core')) {
-            new Chrmrtns_Core();
+        if (class_exists('Chrmrtns_KLA_Core')) {
+            new Chrmrtns_KLA_Core();
         }
         
         // Initialize admin functionality (only in admin)
-        if (is_admin() && class_exists('Chrmrtns_Admin')) {
-            new Chrmrtns_Admin();
+        if (is_admin() && class_exists('Chrmrtns_KLA_Admin')) {
+            new Chrmrtns_KLA_Admin();
         }
         
         // Initialize SMTP functionality
-        if (class_exists('Chrmrtns_SMTP')) {
-            new Chrmrtns_SMTP();
+        if (class_exists('Chrmrtns_KLA_SMTP')) {
+            new Chrmrtns_KLA_SMTP();
         }
         
         // Initialize mail logging
-        if (class_exists('Chrmrtns_Mail_Logger')) {
-            new Chrmrtns_Mail_Logger();
+        if (class_exists('Chrmrtns_KLA_Mail_Logger')) {
+            new Chrmrtns_KLA_Mail_Logger();
         }
     }
     
@@ -137,7 +137,7 @@ class Chrmrtns_Passwordless_Auth {
      */
     public function load_textdomain() {
         load_plugin_textdomain(
-            'passwordless-auth',
+            'keyless-auth',
             false,
             dirname(plugin_basename(__FILE__)) . '/languages'
         );
@@ -147,26 +147,26 @@ class Chrmrtns_Passwordless_Auth {
 /**
  * Initialize plugin
  */
-function chrmrtns_passwordless_auth_init() {
-    return Chrmrtns_Passwordless_Auth::get_instance();
+function chrmrtns_kla_init() {
+    return Chrmrtns_KLA_Main::get_instance();
 }
 
 // Start the plugin
-chrmrtns_passwordless_auth_init();
+chrmrtns_kla_init();
 
 /**
  * Activation hook
  */
-register_activation_hook(__FILE__, 'chrmrtns_activation_hook');
-function chrmrtns_activation_hook() {
+register_activation_hook(__FILE__, 'chrmrtns_kla_activation_hook');
+function chrmrtns_kla_activation_hook() {
     // Set default options
-    add_option('chrmrtns_email_template', 'default');
-    add_option('chrmrtns_button_color', '#007bff');
-    add_option('chrmrtns_button_hover_color', '#0056b3');
-    add_option('chrmrtns_link_color', '#007bff');
-    add_option('chrmrtns_link_hover_color', '#0056b3');
-    add_option('chrmrtns_mail_logging_enabled', '0');
-    add_option('chrmrtns_mail_log_size_limit', '100');
+    add_option('chrmrtns_kla_email_template', 'default');
+    add_option('chrmrtns_kla_button_color', '#007bff');
+    add_option('chrmrtns_kla_button_hover_color', '#0056b3');
+    add_option('chrmrtns_kla_link_color', '#007bff');
+    add_option('chrmrtns_kla_link_hover_color', '#0056b3');
+    add_option('chrmrtns_kla_mail_logging_enabled', '0');
+    add_option('chrmrtns_kla_mail_log_size_limit', '100');
     
     // Flush rewrite rules
     flush_rewrite_rules();
@@ -175,22 +175,22 @@ function chrmrtns_activation_hook() {
 /**
  * Deactivation hook
  */
-register_deactivation_hook(__FILE__, 'chrmrtns_deactivation_hook');
-function chrmrtns_deactivation_hook() {
+register_deactivation_hook(__FILE__, 'chrmrtns_kla_deactivation_hook');
+function chrmrtns_kla_deactivation_hook() {
     // Clean up temporary login tokens using WordPress functions
     $users_with_tokens = get_users(array(
         // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Acceptable for one-time deactivation cleanup
-        'meta_key' => 'chrmrtns_login_token',
+        'meta_key' => 'chrmrtns_kla_login_token',
         'fields' => 'ID'
     ));
     
     foreach ($users_with_tokens as $user_id) {
-        delete_user_meta($user_id, 'chrmrtns_login_token');
-        delete_user_meta($user_id, 'chrmrtns_login_token_expiration');
+        delete_user_meta($user_id, 'chrmrtns_kla_login_token');
+        delete_user_meta($user_id, 'chrmrtns_kla_login_token_expiration');
     }
     
     // Remove temporary options
-    delete_option('chrmrtns_login_request_error');
+    delete_option('chrmrtns_kla_login_request_error');
     
     // Flush rewrite rules
     flush_rewrite_rules();
@@ -199,23 +199,23 @@ function chrmrtns_deactivation_hook() {
 /**
  * Uninstall hook
  */
-register_uninstall_hook(__FILE__, 'chrmrtns_uninstall_hook');
-function chrmrtns_uninstall_hook() {
+register_uninstall_hook(__FILE__, 'chrmrtns_kla_uninstall_hook');
+function chrmrtns_kla_uninstall_hook() {
     // Remove all plugin options
-    delete_option('chrmrtns_email_template');
-    delete_option('chrmrtns_custom_email_body');
-    delete_option('chrmrtns_button_color');
-    delete_option('chrmrtns_button_hover_color');
-    delete_option('chrmrtns_link_color');
-    delete_option('chrmrtns_link_hover_color');
-    delete_option('chrmrtns_smtp_settings');
-    delete_option('chrmrtns_mail_logging_enabled');
-    delete_option('chrmrtns_mail_log_size_limit');
-    delete_option('chrmrtns_learn_more_dismiss_notification');
+    delete_option('chrmrtns_kla_email_template');
+    delete_option('chrmrtns_kla_custom_email_body');
+    delete_option('chrmrtns_kla_button_color');
+    delete_option('chrmrtns_kla_button_hover_color');
+    delete_option('chrmrtns_kla_link_color');
+    delete_option('chrmrtns_kla_link_hover_color');
+    delete_option('chrmrtns_kla_smtp_settings');
+    delete_option('chrmrtns_kla_mail_logging_enabled');
+    delete_option('chrmrtns_kla_mail_log_size_limit');
+    delete_option('chrmrtns_kla_learn_more_dismiss_notification');
     
     // Remove all mail logs
     $args = array(
-        'post_type' => 'chrmrtns_mail_logs',
+        'post_type' => 'chrmrtns_kla_mail_logs',
         'posts_per_page' => -1,
         'post_status' => 'any'
     );
@@ -227,12 +227,12 @@ function chrmrtns_uninstall_hook() {
     // Remove user meta using WordPress functions
     $users_with_tokens = get_users(array(
         // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Acceptable for one-time uninstall cleanup
-        'meta_key' => 'chrmrtns_login_token',
+        'meta_key' => 'chrmrtns_kla_login_token',
         'fields' => 'ID'
     ));
     
     foreach ($users_with_tokens as $user_id) {
-        delete_user_meta($user_id, 'chrmrtns_login_token');
-        delete_user_meta($user_id, 'chrmrtns_login_token_expiration');
+        delete_user_meta($user_id, 'chrmrtns_kla_login_token');
+        delete_user_meta($user_id, 'chrmrtns_kla_login_token_expiration');
     }
 }

@@ -1,8 +1,8 @@
-# Passwordless Auth
+# Keyless Auth - Login without Passwords
 
-**Enhanced passwordless authentication with modular architecture, customizable email templates, and improved security.**
+**Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.0.7-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.10-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -10,7 +10,30 @@
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free.** Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
-## ✨ New Features in v2.0.7
+## ✨ New Features in v2.0.10
+
+* **🛡️ WordPress.org Plugin Check Compliance** - Resolved all input validation and sanitization warnings
+* **🔒 Enhanced Security** - Fixed wp_unslash() issues and removed insecure duplicate form processing
+* **⚡ Improved Code Quality** - Eliminated security vulnerabilities in POST data handling
+* **🧹 Code Cleanup** - Removed redundant save_settings() method that bypassed security checks
+
+## 🔧 Features in v2.0.9
+
+* **🏷️ WordPress.org Ready** - Complete rebrand to "Keyless Auth" for WordPress.org compliance
+* **🔧 Enhanced Prefixes** - All functions/classes use unique "chrmrtns_kla_" prefixes
+* **🛡️ Security Hardening** - Improved nonce verification with proper sanitization
+* **⚡ Performance Optimized** - Converted inline JS/CSS to proper wp_enqueue system
+* **📋 Code Compliance** - Full WordPress.org Plugin Check compliance
+* **🎯 Simplified Shortcode** - New [keyless-auth] shortcode (was [chrmrtns-passwordless-auth])
+
+## 🔒 Features in v2.0.8
+
+* **🔒 Security Improvements** - Enhanced output escaping compliance with esc_html_e() and wp_kses()
+* **🎨 Template Preview Security** - Email template previews use controlled HTML allowlists
+* **🖱️ Button Text Colors** - Fixed button text color controls to prevent blue hover text issues
+* **🛡️ WordPress.org Compliance** - Comprehensive escaping improvements for enhanced security
+
+## 🛡️ Features in v2.0.7
 
 * **🛡️ WordPress.org Compliance** - Full Plugin Check compliance for WordPress.org submission
 * **🔒 Security Hardening** - Enhanced output escaping and input validation
@@ -18,7 +41,14 @@
 * **📋 Code Quality** - Complete adherence to WordPress coding and security standards
 * **🔐 Enhanced Protection** - Advanced CSRF and timing attack mitigation
 
-## 📝 Features in v2.0.5
+## 🔧 Features in v2.0.6
+
+* **🔧 Fixed Placeholder Token Rendering** - Button backgrounds now display correctly in custom templates
+* **📝 WYSIWYG-Safe Placeholders** - Changed from {{PLACEHOLDER}} to [PLACEHOLDER] format to prevent editor corruption
+* **🎨 Better Email Structure** - Full-width gradient background with 600px content area for professional appearance
+* **✅ Reliable Color Replacement** - Template placeholders are properly replaced with actual colors in all scenarios
+
+## ✨ Features in v2.0.5
 
 * **📝 Two-Field Email Template System** - Separate WYSIWYG body content from optional CSS styles
 * **🎨 Enhanced Template Editor** - Body content uses inline styles, CSS styles go in head section
@@ -80,17 +110,17 @@ Comprehensive nonce verification and input sanitization
 
 ## 📥 Installation
 
-1. Upload the `passwordless-auth` folder to `/wp-content/plugins/`
+1. Upload the `keyless-auth` folder to `/wp-content/plugins/`
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to **Passwordless Auth > PA Settings** to configure templates and colors
-4. Create a page and use the shortcode `[chrmrtns-passwordless-auth]`
+3. Go to **Keyless Auth > Templates** to configure templates and colors
+4. Create a page and use the shortcode `[keyless-auth]`
 
 ## 🎮 Usage
 
 Simply add the shortcode to any page or widget:
 
 ```
-[chrmrtns-passwordless-auth]
+[keyless-auth]
 ```
 
 ## ⚙️ Configuration
@@ -164,6 +194,55 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.0.10
+- **SECURITY:** WordPress.org Plugin Check compliance - Fixed all input validation and sanitization warnings
+- **SECURITY:** Enhanced POST data handling - Added wp_unslash() before all sanitization functions
+- **SECURITY:** Removed duplicate save_settings() method - Eliminated insecure form processing that bypassed nonce verification
+- **IMPROVEMENT:** $_SERVER validation - Added proper isset() checks for superglobal access
+- **IMPROVEMENT:** Code cleanup - Removed redundant form processing methods to prevent security gaps
+
+### v2.0.9
+- **BREAKING:** Plugin renamed to "Keyless Auth - Login without Passwords" for WordPress.org compliance  
+- **BREAKING:** Plugin slug changed to "keyless-auth" (old: "passwordless-auth")
+- **BREAKING:** Text domain changed to "keyless-auth" (old: "passwordless-auth")
+- **IMPROVEMENT:** All prefixes updated to "chrmrtns_kla_" for uniqueness and compliance
+- **IMPROVEMENT:** Nonce verification enhanced with proper sanitization (wp_unslash + sanitize_text_field)
+- **IMPROVEMENT:** Converted all inline JavaScript/CSS to proper wp_enqueue system
+- **IMPROVEMENT:** Removed WordPress.org directory assets from plugin ZIP
+- **IMPROVEMENT:** Enhanced WordPress.org Plugin Check compliance
+- **IMPROVEMENT:** Shortcode changed to [keyless-auth] (old: [chrmrtns-passwordless-auth])
+
+### v2.0.8
+- **IMPROVEMENT:** Enhanced output escaping compliance - All user-facing content now uses proper WordPress escaping functions
+- **IMPROVEMENT:** Template preview security - Email template previews now use wp_kses with controlled HTML allowlists
+- **IMPROVEMENT:** Admin interface escaping - Form outputs and translations properly escaped with esc_html_e() and wp_kses()
+- **IMPROVEMENT:** Email template escaping - All template rendering functions now use proper escaping for security
+- **IMPROVEMENT:** Button text color functionality - Fixed button text color controls to prevent blue hover text issues
+- **SECURITY:** WordPress.org Plugin Check compliance - Comprehensive escaping improvements for enhanced security
+
+### v2.0.7
+- **COMPLIANCE:** Full WordPress.org Plugin Check compliance - All security and coding standards met
+- **FIX:** Output escaping - All user-facing content properly escaped for security
+- **FIX:** Input validation - Enhanced nonce verification and superglobal sanitization
+- **FIX:** Database queries - Optimized user meta queries for better performance
+- **FIX:** Debug code - Conditional debug logging only when WP_DEBUG is enabled
+- **IMPROVEMENT:** Code quality - Added comprehensive phpcs ignore comments for legitimate use cases
+- **IMPROVEMENT:** Security hardening - Enhanced protection against timing attacks and CSRF
+- **IMPROVEMENT:** WordPress standards - Full compliance with WordPress coding and security standards
+
+### v2.0.6
+- **FIX:** Fixed placeholder token rendering - Button backgrounds now display correctly in custom templates
+- **IMPROVEMENT:** WYSIWYG-safe placeholders - Changed from {{PLACEHOLDER}} to [PLACEHOLDER] format to prevent editor corruption
+- **IMPROVEMENT:** Better email structure - Full-width gradient background with 600px content area for professional appearance
+- **IMPROVEMENT:** Reliable color replacement - Template placeholders are properly replaced with actual colors in all scenarios
+
+### v2.0.5
+- **NEW:** Two-field email template system - Separate WYSIWYG body content from optional CSS styles
+- **NEW:** Enhanced template editor - Body content uses inline styles, CSS styles go in head section
+- **IMPROVEMENT:** WYSIWYG compatibility - No more editor corruption of HTML structure or CSS classes
+- **IMPROVEMENT:** 2x2 grid preview layout - Template previews now display in compact grid instead of vertical stack
+- **IMPROVEMENT:** Advanced customization - Choose inline-only styles OR use CSS classes with separate stylesheet field
 
 ### v2.0.4
 - **NEW:** Secure credential storage options - Choose between database or wp-config.php storage for SMTP credentials

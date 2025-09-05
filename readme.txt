@@ -1,23 +1,50 @@
-=== Passwordless Auth ===
+=== Keyless Auth - Login without Passwords ===
 
 Contributors: chrmrtns, sareiodata, cozmoslabs
 Donate link: https://github.com/chrmrtns/passwordless-auth
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.0.8
+Stable tag: 2.0.10
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 
-Enhanced passwordless authentication with modular architecture, customizable email templates, and improved security.
+Secure keyless authentication - users login via email magic links without passwords. Customizable templates and enhanced security.
 
 
 == Description ==
 
-**Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free. Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
+**Keyless Auth - Login without Passwords** allows users to securely login to your WordPress site without remembering passwords. Simply enter their email, and they receive a magic login link - secure, fast, and user-friendly.
 
-**New Features in v2.0.6:**
+**✨ New Features in v2.0.10:**
+* **🛡️ WordPress.org Plugin Check Compliance** - Resolved all input validation and sanitization warnings
+* **🔒 Enhanced Security** - Fixed wp_unslash() issues and removed insecure duplicate form processing
+* **⚡ Improved Code Quality** - Eliminated security vulnerabilities in POST data handling
+* **🧹 Code Cleanup** - Removed redundant save_settings() method that bypassed security checks
+
+**Features in v2.0.9:**
+* **🏷️ WordPress.org Ready** - Complete rebrand to "Keyless Auth" for WordPress.org compliance
+* **🔧 Enhanced Prefixes** - All functions/classes use unique "chrmrtns_kla_" prefixes
+* **🛡️ Security Hardening** - Improved nonce verification with proper sanitization
+* **⚡ Performance Optimized** - Converted inline JS/CSS to proper wp_enqueue system
+* **📋 Code Compliance** - Full WordPress.org Plugin Check compliance
+* **🎯 Simplified Shortcode** - New [keyless-auth] shortcode
+
+**Features in v2.0.8:**
+* **🔒 Security Improvements** - Enhanced output escaping compliance with esc_html_e() and wp_kses()
+* **🎨 Template Preview Security** - Email template previews use controlled HTML allowlists
+* **🖱️ Button Text Colors** - Fixed button text color controls to prevent blue hover text issues
+* **🛡️ WordPress.org Compliance** - Comprehensive escaping improvements for enhanced security
+
+**Features in v2.0.7:**
+* **🛡️ WordPress.org Compliance** - Full Plugin Check compliance for WordPress.org submission
+* **🔒 Security Hardening** - Enhanced output escaping and input validation
+* **⚡ Performance Optimized** - Improved database queries and conditional debug logging
+* **📋 Code Quality** - Complete adherence to WordPress coding and security standards
+* **🔐 Enhanced Protection** - Advanced CSRF and timing attack mitigation
+
+**Features in v2.0.6:**
 * **🔧 Fixed Placeholder Token Rendering** - Button backgrounds now display correctly in custom templates
 * **📝 WYSIWYG-Safe Placeholders** - Changed from {{PLACEHOLDER}} to [PLACEHOLDER] format to prevent editor corruption
 * **🎨 Better Email Structure** - Full-width gradient background with 600px content area for professional appearance
@@ -36,28 +63,28 @@ Enhanced passwordless authentication with modular architecture, customizable ema
 * **⚙️ Flexible Configuration** - Toggle between storage methods with clear visual indicators
 
 **Features in v2.0.3:**
-* **Login Link Reliability** - Fixed critical issue where login links weren't processing correctly
-* **Enhanced Hook System** - Improved WordPress hook integration for better compatibility
-* **Streamlined Code** - Removed debug logging for production-ready performance
+* **🔗 Login Link Reliability** - Fixed critical issue where login links weren't processing correctly
+* **🔌 Enhanced Hook System** - Improved WordPress hook integration for better compatibility
+* **🧹 Streamlined Code** - Removed debug logging for production-ready performance
 
 **Features in v2.0.2:**
-* **Custom Sender Names** - Force custom "From" names for all emails with toggle control
-* **Login Success Tracking** - Dynamic counter showing total successful passwordless logins
-* **Enhanced Mail Logging** - Fixed compatibility issues with other SMTP plugins
+* **👤 Custom Sender Names** - Force custom "From" names for all emails with toggle control
+* **📊 Login Success Tracking** - Dynamic counter showing total successful passwordless logins
+* **📧 Enhanced Mail Logging** - Fixed compatibility issues with other SMTP plugins
 
 **Features in v2.0.1:**
-* **Modular Architecture** - Complete code refactoring with clean, maintainable class structure
-* **SMTP Configuration** - Full SMTP support for reliable email delivery with major providers
-* **Email Logging & Monitoring** - Track and monitor all emails sent from WordPress
-* **Visual Email Editor** - WYSIWYG editor with HTML support for custom templates
-* **Advanced Color Controls** - Support for hex, RGB, HSL, and HSLA color formats
-* **Template Previews** - Live preview of email templates before selection
-* **Link Color Customization** - Separate color controls for buttons and text links
-* **Enhanced Menu Structure** - Dedicated top-level admin menu with subpages
-* **Professional Email Templates** - Styled German and Simple English templates
-* **Enhanced Security** - Comprehensive nonce verification and input sanitization
+* **🏗️ Modular Architecture** - Complete code refactoring with clean, maintainable class structure
+* **📨 SMTP Configuration** - Full SMTP support for reliable email delivery with major providers
+* **📋 Email Logging & Monitoring** - Track and monitor all emails sent from WordPress
+* **🎨 Visual Email Editor** - WYSIWYG editor with HTML support for custom templates
+* **🎨 Advanced Color Controls** - Support for hex, RGB, HSL, and HSLA color formats
+* **👁️ Template Previews** - Live preview of email templates before selection
+* **🔗 Link Color Customization** - Separate color controls for buttons and text links
+* **🎛️ Enhanced Menu Structure** - Dedicated top-level admin menu with subpages
+* **💼 Professional Email Templates** - Styled German and Simple English templates
+* **🔒 Enhanced Security** - Comprehensive nonce verification and input sanitization
 
-This is how it works:
+**How it works:**
 
 * Instead of asking users for a password when they try to log in to your website, we simply ask them for their username or email
 * The plugin creates a temporary authorization token and saves it securely with enhanced validation
@@ -65,7 +92,7 @@ This is how it works:
 * The user clicks the button and is automatically logged in
 * Tokens expire after 10 minutes and can only be used once for maximum security
 
-You can use the shortcode [chrmrtns-passwordless-auth] in a page or widget.
+You can use the shortcode [keyless-auth] in a page or widget.
 
 If you're looking to create front-end user registration and profile forms we recommend [Profile Builder](https://www.cozmoslabs.com/wordpress-profile-builder/). 
 
@@ -78,8 +105,8 @@ Passwordless Authentication does not replace the default login functionality in 
 
 1. Upload the passwordless-auth folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Go to Passwordless Auth > PA Settings to configure email templates and colors
-1. Create a new page and use the shortcode [chrmrtns-passwordless-auth]
+1. Go to Keyless Auth > Templates to configure email templates and colors
+1. Create a new page and use the shortcode [keyless-auth]
 
 == Frequently Asked Questions ==
 
@@ -158,6 +185,24 @@ Passwordless Authentication does not replace the default login functionality in 
 
 
 == Changelog ==
+= 2.0.10 =
+* SECURITY: WordPress.org Plugin Check compliance - Fixed all input validation and sanitization warnings
+* SECURITY: Enhanced POST data handling - Added wp_unslash() before all sanitization functions
+* SECURITY: Removed duplicate save_settings() method - Eliminated insecure form processing that bypassed nonce verification
+* IMPROVEMENT: $_SERVER validation - Added proper isset() checks for superglobal access
+* IMPROVEMENT: Code cleanup - Removed redundant form processing methods to prevent security gaps
+= 2.0.9 =
+* BREAKING: Plugin renamed to "Keyless Auth - Login without Passwords" for WordPress.org compliance  
+* BREAKING: Plugin slug changed to "keyless-auth" (old: "passwordless-auth")
+* BREAKING: Text domain changed to "keyless-auth" (old: "passwordless-auth")
+* IMPROVEMENT: All prefixes updated to "chrmrtns_kla_" for uniqueness and compliance
+* IMPROVEMENT: Nonce verification enhanced with proper sanitization (wp_unslash + sanitize_text_field)
+* IMPROVEMENT: Converted all inline JavaScript/CSS to proper wp_enqueue system
+* IMPROVEMENT: Removed WordPress.org directory assets from plugin ZIP
+* IMPROVEMENT: Enhanced WordPress.org Plugin Check compliance
+* IMPROVEMENT: Shortcode changed to [keyless-auth] (old: [chrmrtns-passwordless-auth])
+* NOTE: This is a complete rebrand required for WordPress.org submission - all functionality remains identical
+
 = 2.0.8 =
 * IMPROVEMENT: Enhanced output escaping compliance - All user-facing content now uses proper WordPress escaping functions
 * IMPROVEMENT: Template preview security - Email template previews now use wp_kses with controlled HTML allowlists

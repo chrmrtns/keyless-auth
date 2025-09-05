@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Chrmrtns_Email_Templates {
+class Chrmrtns_KLA_Email_Templates {
     
     /**
      * Constructor
@@ -23,13 +23,13 @@ class Chrmrtns_Email_Templates {
      * Get email template content
      */
     public function get_email_template($to, $login_url) {
-        $template = get_option('chrmrtns_email_template', 'default');
-        $button_color = get_option('chrmrtns_button_color', '#007bff');
-        $button_hover_color = get_option('chrmrtns_button_hover_color', '#0056b3');
-        $button_text_color = get_option('chrmrtns_button_text_color', '#ffffff');
-        $button_hover_text_color = get_option('chrmrtns_button_hover_text_color', '#ffffff');
-        $link_color = get_option('chrmrtns_link_color', '#007bff');
-        $link_hover_color = get_option('chrmrtns_link_hover_color', '#0056b3');
+        $template = get_option('chrmrtns_kla_email_template', 'default');
+        $button_color = get_option('chrmrtns_kla_button_color', '#007bff');
+        $button_hover_color = get_option('chrmrtns_kla_button_hover_color', '#0056b3');
+        $button_text_color = get_option('chrmrtns_kla_button_text_color', '#ffffff');
+        $button_hover_text_color = get_option('chrmrtns_kla_button_hover_text_color', '#ffffff');
+        $link_color = get_option('chrmrtns_kla_link_color', '#007bff');
+        $link_hover_color = get_option('chrmrtns_kla_link_hover_color', '#0056b3');
         
         switch ($template) {
             case 'german':
@@ -154,8 +154,8 @@ class Chrmrtns_Email_Templates {
      * Custom email template
      */
     private function get_custom_template($to, $login_url, $button_color, $button_hover_color, $button_text_color, $button_hover_text_color, $link_color, $link_hover_color) {
-        $custom_body = get_option('chrmrtns_custom_email_body', '');
-        $custom_styles = get_option('chrmrtns_custom_email_styles', '');
+        $custom_body = get_option('chrmrtns_kla_custom_email_body', '');
+        $custom_styles = get_option('chrmrtns_kla_custom_email_styles', '');
         $site_name = get_bloginfo('name');
         
         // If no custom body exists, provide default inline-styled content
@@ -308,46 +308,45 @@ class Chrmrtns_Email_Templates {
         }
         
         // Handle form submission directly here
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['chrmrtns_settings_nonce'])) {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['chrmrtns_kla_settings_nonce'])) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 error_log('CHRMRTNS: POST request detected in render_settings_page');
             }
-            if (wp_verify_nonce($_POST['chrmrtns_settings_nonce'], 'chrmrtns_settings_save')) {
+            if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_settings_nonce'])), 'chrmrtns_kla_settings_save')) {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log('CHRMRTNS: Nonce verified, processing form submission');
+                    error_log('CHRMRTNS: Nonce verified, but form processing handled by admin class');
                 }
-                $this->save_settings();
-                // Continue rendering the page with success message
+                // Form processing is handled by the admin class save_settings method
             } else {
                 if (defined('WP_DEBUG') && WP_DEBUG) {
                     error_log('CHRMRTNS: Nonce verification failed');
                 }
-                add_settings_error('chrmrtns_settings', 'nonce_failed', esc_html__('Security check failed. Please try again.', 'passwordless-auth'), 'error');
+                add_settings_error('chrmrtns_kla_settings', 'nonce_failed', esc_html__('Security check failed. Please try again.', 'keyless-auth'), 'error');
             }
         }
         
         echo '<!-- CHRMRTNS: Settings page is loading -->';
         ?>
         <div class="chrmrtns-badge"></div>
-        <h1><?php esc_html_e('Email Template Settings', 'passwordless-auth'); ?></h1>
+        <h1><?php esc_html_e('Email Template Settings', 'keyless-auth'); ?></h1>
         
-        <?php settings_errors('chrmrtns_settings'); ?>
+        <?php settings_errors('chrmrtns_kla_settings'); ?>
         
-        <p><?php esc_html_e('Customize the appearance and content of your passwordless login emails.', 'passwordless-auth'); ?></p>
+        <p><?php esc_html_e('Customize the appearance and content of your passwordless login emails.', 'keyless-auth'); ?></p>
         
-        <form id="chrmrtns_settings_form" method="post" action="<?php echo esc_url(admin_url('admin.php?page=passwordless-auth-settings')); ?>">
-            <?php wp_nonce_field('chrmrtns_settings_save', 'chrmrtns_settings_nonce'); ?>
+        <form id="chrmrtns_kla_settings_form" method="post" action="<?php echo esc_url(admin_url('admin.php?page=keyless-auth-settings')); ?>">
+            <?php wp_nonce_field('chrmrtns_kla_settings_save', 'chrmrtns_kla_settings_nonce'); ?>
             
-            <h2><?php esc_html_e('Email Template', 'passwordless-auth'); ?></h2>
+            <h2><?php esc_html_e('Email Template', 'keyless-auth'); ?></h2>
             <?php $this->render_template_selection(); ?>
             
-            <h2><?php esc_html_e('Color Settings', 'passwordless-auth'); ?></h2>
+            <h2><?php esc_html_e('Color Settings', 'keyless-auth'); ?></h2>
             <?php $this->render_color_settings(); ?>
             
-            <h2><?php esc_html_e('Custom Template Editor', 'passwordless-auth'); ?></h2>
+            <h2><?php esc_html_e('Custom Template Editor', 'keyless-auth'); ?></h2>
             <?php $this->render_custom_template_editor(); ?>
             
-            <?php submit_button(esc_html__('Save Settings', 'passwordless-auth')); ?>
+            <?php submit_button(esc_html__('Save Settings', 'keyless-auth')); ?>
         </form>
         
         <?php $this->render_template_help(); ?>
@@ -359,12 +358,12 @@ class Chrmrtns_Email_Templates {
      * Render template selection
      */
     private function render_template_selection() {
-        $current_template = get_option('chrmrtns_email_template', 'default');
+        $current_template = get_option('chrmrtns_kla_email_template', 'default');
         $templates = array(
-            'default' => esc_html__('Default Template', 'passwordless-auth'),
-            'german' => esc_html__('German Template', 'passwordless-auth'),
-            'simple' => esc_html__('Simple Template', 'passwordless-auth'),
-            'custom' => esc_html__('Custom Template', 'passwordless-auth')
+            'default' => esc_html__('Default Template', 'keyless-auth'),
+            'german' => esc_html__('German Template', 'keyless-auth'),
+            'simple' => esc_html__('Simple Template', 'keyless-auth'),
+            'custom' => esc_html__('Custom Template', 'keyless-auth')
         );
         
         // 2x2 Grid container
@@ -376,7 +375,7 @@ class Chrmrtns_Email_Templates {
             // Each template in its own grid cell
             echo '<div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; background: #fff;">';
             echo '<label style="display: block; margin-bottom: 10px; font-weight: bold; cursor: pointer;">';
-            echo '<input type="radio" name="chrmrtns_email_template" value="' . esc_attr($template_key) . '" ' . esc_attr($checked) . '>';
+            echo '<input type="radio" name="chrmrtns_kla_email_template" value="' . esc_attr($template_key) . '" ' . esc_attr($checked) . '>';
             echo ' ' . esc_html($template_name);
             echo '</label>';
             
@@ -426,12 +425,12 @@ class Chrmrtns_Email_Templates {
      */
     private function get_template_preview($template_key) {
         // Get the specific template for preview
-        $button_color = get_option('chrmrtns_button_color', '#007bff');
-        $button_hover_color = get_option('chrmrtns_button_hover_color', '#0056b3');
-        $button_text_color = get_option('chrmrtns_button_text_color', '#ffffff');
-        $button_hover_text_color = get_option('chrmrtns_button_hover_text_color', '#ffffff');
-        $link_color = get_option('chrmrtns_link_color', '#007bff');
-        $link_hover_color = get_option('chrmrtns_link_hover_color', '#0056b3');
+        $button_color = get_option('chrmrtns_kla_button_color', '#007bff');
+        $button_hover_color = get_option('chrmrtns_kla_button_hover_color', '#0056b3');
+        $button_text_color = get_option('chrmrtns_kla_button_text_color', '#ffffff');
+        $button_hover_text_color = get_option('chrmrtns_kla_button_hover_text_color', '#ffffff');
+        $link_color = get_option('chrmrtns_kla_link_color', '#007bff');
+        $link_hover_color = get_option('chrmrtns_kla_link_hover_color', '#0056b3');
         $preview_url = '#';
         $preview_email = 'user@example.com';
         
@@ -457,12 +456,12 @@ class Chrmrtns_Email_Templates {
      * Render color settings
      */
     private function render_color_settings() {
-        $button_color = get_option('chrmrtns_button_color', '#007bff');
-        $button_hover_color = get_option('chrmrtns_button_hover_color', '#0056b3');
-        $button_text_color = get_option('chrmrtns_button_text_color', '#ffffff');
-        $button_hover_text_color = get_option('chrmrtns_button_hover_text_color', '#ffffff');
-        $link_color = get_option('chrmrtns_link_color', '#007bff');
-        $link_hover_color = get_option('chrmrtns_link_hover_color', '#0056b3');
+        $button_color = get_option('chrmrtns_kla_button_color', '#007bff');
+        $button_hover_color = get_option('chrmrtns_kla_button_hover_color', '#0056b3');
+        $button_text_color = get_option('chrmrtns_kla_button_text_color', '#ffffff');
+        $button_hover_text_color = get_option('chrmrtns_kla_button_hover_text_color', '#ffffff');
+        $link_color = get_option('chrmrtns_kla_link_color', '#007bff');
+        $link_hover_color = get_option('chrmrtns_kla_link_hover_color', '#0056b3');
         
         // Debug: Log what we're loading
         if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -473,45 +472,45 @@ class Chrmrtns_Email_Templates {
         ?>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php esc_html_e('Button Color', 'passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Button Color', 'keyless-auth'); ?></th>
                 <td>
-                    <input type="color" id="chrmrtns_button_color_picker" value="<?php echo esc_attr($button_color); ?>" />
-                    <input type="text" name="chrmrtns_button_color" id="chrmrtns_button_color_text" value="<?php echo esc_attr($button_color); ?>" placeholder="e.g. #007bff, rgb(0,123,255), hsl(211,100%,50%)" class="regular-text" />
+                    <input type="color" id="chrmrtns_kla_button_color_picker" value="<?php echo esc_attr($button_color); ?>" />
+                    <input type="text" name="chrmrtns_kla_button_color" id="chrmrtns_kla_button_color_text" value="<?php echo esc_attr($button_color); ?>" placeholder="e.g. #007bff, rgb(0,123,255), hsl(211,100%,50%)" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php esc_html_e('Button Hover Color', 'passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Button Hover Color', 'keyless-auth'); ?></th>
                 <td>
-                    <input type="color" id="chrmrtns_button_hover_color_picker" value="<?php echo esc_attr($button_hover_color); ?>" />
-                    <input type="text" name="chrmrtns_button_hover_color" id="chrmrtns_button_hover_color_text" value="<?php echo esc_attr($button_hover_color); ?>" placeholder="e.g. #0056b3, rgba(0,86,179,0.9)" class="regular-text" />
+                    <input type="color" id="chrmrtns_kla_button_hover_color_picker" value="<?php echo esc_attr($button_hover_color); ?>" />
+                    <input type="text" name="chrmrtns_kla_button_hover_color" id="chrmrtns_kla_button_hover_color_text" value="<?php echo esc_attr($button_hover_color); ?>" placeholder="e.g. #0056b3, rgba(0,86,179,0.9)" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php esc_html_e('Button Text Color', 'passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Button Text Color', 'keyless-auth'); ?></th>
                 <td>
-                    <input type="color" id="chrmrtns_button_text_color_picker" value="<?php echo esc_attr($button_text_color); ?>" />
-                    <input type="text" name="chrmrtns_button_text_color" id="chrmrtns_button_text_color_text" value="<?php echo esc_attr($button_text_color); ?>" placeholder="e.g. #ffffff, white" class="regular-text" />
+                    <input type="color" id="chrmrtns_kla_button_text_color_picker" value="<?php echo esc_attr($button_text_color); ?>" />
+                    <input type="text" name="chrmrtns_kla_button_text_color" id="chrmrtns_kla_button_text_color_text" value="<?php echo esc_attr($button_text_color); ?>" placeholder="e.g. #ffffff, white" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php esc_html_e('Button Hover Text Color', 'passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Button Hover Text Color', 'keyless-auth'); ?></th>
                 <td>
-                    <input type="color" id="chrmrtns_button_hover_text_color_picker" value="<?php echo esc_attr($button_hover_text_color); ?>" />
-                    <input type="text" name="chrmrtns_button_hover_text_color" id="chrmrtns_button_hover_text_color_text" value="<?php echo esc_attr($button_hover_text_color); ?>" placeholder="e.g. #ffffff, white" class="regular-text" />
+                    <input type="color" id="chrmrtns_kla_button_hover_text_color_picker" value="<?php echo esc_attr($button_hover_text_color); ?>" />
+                    <input type="text" name="chrmrtns_kla_button_hover_text_color" id="chrmrtns_kla_button_hover_text_color_text" value="<?php echo esc_attr($button_hover_text_color); ?>" placeholder="e.g. #ffffff, white" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php esc_html_e('Link Color', 'passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Link Color', 'keyless-auth'); ?></th>
                 <td>
-                    <input type="color" id="chrmrtns_link_color_picker" value="<?php echo esc_attr($link_color); ?>" />
-                    <input type="text" name="chrmrtns_link_color" id="chrmrtns_link_color_text" value="<?php echo esc_attr($link_color); ?>" placeholder="e.g. #007bff, rgb(0,123,255)" class="regular-text" />
+                    <input type="color" id="chrmrtns_kla_link_color_picker" value="<?php echo esc_attr($link_color); ?>" />
+                    <input type="text" name="chrmrtns_kla_link_color" id="chrmrtns_kla_link_color_text" value="<?php echo esc_attr($link_color); ?>" placeholder="e.g. #007bff, rgb(0,123,255)" class="regular-text" />
                 </td>
             </tr>
             <tr>
-                <th scope="row"><?php esc_html_e('Link Hover Color', 'passwordless-auth'); ?></th>
+                <th scope="row"><?php esc_html_e('Link Hover Color', 'keyless-auth'); ?></th>
                 <td>
-                    <input type="color" id="chrmrtns_link_hover_color_picker" value="<?php echo esc_attr($link_hover_color); ?>" />
-                    <input type="text" name="chrmrtns_link_hover_color" id="chrmrtns_link_hover_color_text" value="<?php echo esc_attr($link_hover_color); ?>" placeholder="e.g. #0056b3, rgba(0,86,179,0.9)" class="regular-text" />
+                    <input type="color" id="chrmrtns_kla_link_hover_color_picker" value="<?php echo esc_attr($link_hover_color); ?>" />
+                    <input type="text" name="chrmrtns_kla_link_hover_color" id="chrmrtns_kla_link_hover_color_text" value="<?php echo esc_attr($link_hover_color); ?>" placeholder="e.g. #0056b3, rgba(0,86,179,0.9)" class="regular-text" />
                 </td>
             </tr>
         </table>
@@ -522,7 +521,7 @@ class Chrmrtns_Email_Templates {
      * Render custom template editor
      */
     private function render_custom_template_editor() {
-        $custom_body = get_option('chrmrtns_custom_email_body', '');
+        $custom_body = get_option('chrmrtns_kla_custom_email_body', '');
         
         // If empty, provide the beautiful demo template
         if (empty($custom_body)) {
@@ -552,12 +551,12 @@ class Chrmrtns_Email_Templates {
 </div>';
         }
         ?>
-        <div id="chrmrtns_custom_template_section" style="<?php echo get_option('chrmrtns_email_template', 'default') !== 'custom' ? 'display: none;' : ''; ?>">
-            <h4><?php esc_html_e('Email Body Content', 'passwordless-auth'); ?></h4>
-            <p><?php esc_html_e('Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility.', 'passwordless-auth'); ?></p>
+        <div id="chrmrtns_kla_custom_template_section" style="<?php echo get_option('chrmrtns_kla_email_template', 'default') !== 'custom' ? 'display: none;' : ''; ?>">
+            <h4><?php esc_html_e('Email Body Content', 'keyless-auth'); ?></h4>
+            <p><?php esc_html_e('Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility.', 'keyless-auth'); ?></p>
             <?php
-            wp_editor($custom_body, 'chrmrtns_custom_email_body', array(
-                'textarea_name' => 'chrmrtns_custom_email_body',
+            wp_editor($custom_body, 'chrmrtns_kla_custom_email_body', array(
+                'textarea_name' => 'chrmrtns_kla_custom_email_body',
                 'media_buttons' => false,
                 'textarea_rows' => 12,
                 'teeny' => false,
@@ -576,19 +575,19 @@ class Chrmrtns_Email_Templates {
             ));
             ?>
             
-            <h4 style="margin-top: 25px;"><?php esc_html_e('Custom CSS Styles (Optional)', 'passwordless-auth'); ?></h4>
+            <h4 style="margin-top: 25px;"><?php esc_html_e('Custom CSS Styles (Optional)', 'keyless-auth'); ?></h4>
             <p><?php echo wp_kses(
-                __('Add custom CSS that will be placed in the &lt;head&gt; section. This is for advanced users who want to use CSS classes instead of inline styles.', 'passwordless-auth'),
+                __('Add custom CSS that will be placed in the &lt;head&gt; section. This is for advanced users who want to use CSS classes instead of inline styles.', 'keyless-auth'),
                 array()
             ); ?></p>
             <?php
-            $custom_styles = get_option('chrmrtns_custom_email_styles', '');
+            $custom_styles = get_option('chrmrtns_kla_custom_email_styles', '');
             ?>
-            <textarea name="chrmrtns_custom_email_styles" id="chrmrtns_custom_email_styles" rows="8" cols="50" style="width: 100%; font-family: monospace;" placeholder="/* Add your custom CSS here */&#10;.login-button {&#10;    background-color: [BUTTON_COLOR];&#10;    color: white;&#10;    padding: 15px 30px;&#10;    border-radius: 25px;&#10;}"><?php echo esc_textarea($custom_styles); ?></textarea>
+            <textarea name="chrmrtns_kla_custom_email_styles" id="chrmrtns_kla_custom_email_styles" rows="8" cols="50" style="width: 100%; font-family: monospace;" placeholder="/* Add your custom CSS here */&#10;.login-button {&#10;    background-color: [BUTTON_COLOR];&#10;    color: white;&#10;    padding: 15px 30px;&#10;    border-radius: 25px;&#10;}"><?php echo esc_textarea($custom_styles); ?></textarea>
             
             <p class="description">
                 <?php echo wp_kses(
-                    __('The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like [TO], [LOGIN_URL], [BUTTON_COLOR], etc.', 'passwordless-auth'),
+                    __('The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like [TO], [LOGIN_URL], [BUTTON_COLOR], etc.', 'keyless-auth'),
                     array()
                 ); ?>
             </p>
@@ -602,17 +601,17 @@ class Chrmrtns_Email_Templates {
     private function render_template_help() {
         ?>
         <div class="chrmrtns-template-help" style="margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 5px;">
-            <h3><?php esc_html_e('Template Placeholders', 'passwordless-auth'); ?></h3>
-            <p><?php esc_html_e('Use these placeholders in your custom template:', 'passwordless-auth'); ?></p>
+            <h3><?php esc_html_e('Template Placeholders', 'keyless-auth'); ?></h3>
+            <p><?php esc_html_e('Use these placeholders in your custom template:', 'keyless-auth'); ?></p>
             <ul>
-                <li><code>[TO]</code> - <?php esc_html_e('Recipient email address', 'passwordless-auth'); ?></li>
-                <li><code>[LOGIN_URL]</code> - <?php esc_html_e('Login URL', 'passwordless-auth'); ?></li>
-                <li><code>[BUTTON_COLOR]</code> - <?php esc_html_e('Button color', 'passwordless-auth'); ?></li>
-                <li><code>[BUTTON_HOVER_COLOR]</code> - <?php esc_html_e('Button hover color', 'passwordless-auth'); ?></li>
-                <li><code>[LINK_COLOR]</code> - <?php esc_html_e('Link color', 'passwordless-auth'); ?></li>
-                <li><code>[LINK_HOVER_COLOR]</code> - <?php esc_html_e('Link hover color', 'passwordless-auth'); ?></li>
+                <li><code>[TO]</code> - <?php esc_html_e('Recipient email address', 'keyless-auth'); ?></li>
+                <li><code>[LOGIN_URL]</code> - <?php esc_html_e('Login URL', 'keyless-auth'); ?></li>
+                <li><code>[BUTTON_COLOR]</code> - <?php esc_html_e('Button color', 'keyless-auth'); ?></li>
+                <li><code>[BUTTON_HOVER_COLOR]</code> - <?php esc_html_e('Button hover color', 'keyless-auth'); ?></li>
+                <li><code>[LINK_COLOR]</code> - <?php esc_html_e('Link color', 'keyless-auth'); ?></li>
+                <li><code>[LINK_HOVER_COLOR]</code> - <?php esc_html_e('Link hover color', 'keyless-auth'); ?></li>
             </ul>
-            <h4><?php esc_html_e('Example HTML:', 'passwordless-auth'); ?></h4>
+            <h4><?php esc_html_e('Example HTML:', 'keyless-auth'); ?></h4>
             <pre style="background: white; padding: 15px; border: 1px solid #ddd; overflow-x: auto;"><code>&lt;html&gt;
 &lt;head&gt;
     &lt;style&gt;
@@ -642,102 +641,7 @@ class Chrmrtns_Email_Templates {
      * Enqueue scripts for the settings page
      */
     private function enqueue_scripts() {
-        ?>
-        <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            // HTML5 Color picker to text input synchronization
-            $('input[type="color"][id$="_picker"]').on('change input', function() {
-                var color = $(this).val();
-                var textInput = $(this).siblings('input[type="text"]');
-                console.log('Color picker changed:', $(this).attr('id'), 'color:', color, 'textInput:', textInput.attr('id'));
-                textInput.val(color);
-            });
-            
-            // Text input to color picker synchronization
-            $('input[id$="_text"]').on('input', function() {
-                var colorValue = $(this).val();
-                var colorPicker = $(this).siblings('input[type="color"]');
-                
-                // Only update color picker if it's a valid hex color
-                if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(colorValue)) {
-                    colorPicker.val(colorValue);
-                }
-            });
-            
-            // Show/hide custom template editor based on selection
-            $('input[name="chrmrtns_email_template"]').change(function() {
-                if ($(this).val() === 'custom') {
-                    $('#chrmrtns_custom_template_section').show();
-                } else {
-                    $('#chrmrtns_custom_template_section').hide();
-                }
-            });
-            
-            // Trigger initial show/hide
-            var currentTemplate = $('input[name="chrmrtns_email_template"]:checked').val();
-            if (currentTemplate === 'custom') {
-                $('#chrmrtns_custom_template_section').show();
-            } else {
-                $('#chrmrtns_custom_template_section').hide();
-            }
-        });
-        </script>
-        <?php
-    }
-    
-    /**
-     * Save settings
-     */
-    public function save_settings() {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('CHRMRTNS: save_settings called');
-            error_log('CHRMRTNS: POST data: ' . print_r($_POST, true));
-        }
-        
-        // Save the template type
-        $template_type = sanitize_text_field($_POST['chrmrtns_email_template']);
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('CHRMRTNS: Saving template type: ' . $template_type);
-        }
-        update_option('chrmrtns_email_template', $template_type);
-        
-        // Verify it was saved
-        $saved_template = get_option('chrmrtns_email_template');
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('CHRMRTNS: Verified saved template: ' . $saved_template);
-        }
-        
-        // Always save custom email body if provided (even if not currently selected)
-        if (isset($_POST['chrmrtns_custom_email_body'])) {
-            $custom_body = $this->sanitize_email_html($_POST['chrmrtns_custom_email_body']);
-            update_option('chrmrtns_custom_email_body', $custom_body);
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: Saved custom email body length: ' . strlen($custom_body));
-            }
-        }
-        
-        // Always save custom email styles if provided
-        if (isset($_POST['chrmrtns_custom_email_styles'])) {
-            $custom_styles = wp_strip_all_tags($_POST['chrmrtns_custom_email_styles']);
-            update_option('chrmrtns_custom_email_styles', $custom_styles);
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: Saved custom email styles length: ' . strlen($custom_styles));
-            }
-        }
-        
-        // Save color settings
-        update_option('chrmrtns_button_color', $this->sanitize_color($_POST['chrmrtns_button_color']));
-        update_option('chrmrtns_button_hover_color', $this->sanitize_color($_POST['chrmrtns_button_hover_color']));
-        update_option('chrmrtns_button_text_color', $this->sanitize_color($_POST['chrmrtns_button_text_color']));
-        update_option('chrmrtns_button_hover_text_color', $this->sanitize_color($_POST['chrmrtns_button_hover_text_color']));
-        update_option('chrmrtns_link_color', $this->sanitize_color($_POST['chrmrtns_link_color']));
-        update_option('chrmrtns_link_hover_color', $this->sanitize_color($_POST['chrmrtns_link_hover_color']));
-        
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('CHRMRTNS: Settings saved successfully - no redirect needed');
-        }
-        
-        // Don't redirect - just show success message
-        add_settings_error('chrmrtns_settings', 'settings_saved', esc_html__('Settings saved successfully.', 'passwordless-auth'), 'updated');
+        // Scripts are now properly enqueued in class-chrmrtns-kla-admin.php
+        // via the enqueue_admin_scripts() method
     }
 }
