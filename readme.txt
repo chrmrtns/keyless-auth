@@ -101,8 +101,6 @@ Secure keyless authentication - users login via email magic links without passwo
 
 You can use the shortcode [keyless-auth] in a page or widget.
 
-If you're looking to create front-end user registration and profile forms we recommend [Profile Builder](https://www.cozmoslabs.com/wordpress-profile-builder/). 
-
 NOTE:
 
 Passwordless Authentication does not replace the default login functionality in WordPress.
@@ -128,10 +126,6 @@ Passwordless Authentication does not replace the default login functionality in 
 = Isn't it more complicated they just entering a password? =
 
 	Weak passwords are used every day by users. There are also people who use the same password across various services and websites. By using the Passwordless Login plugin your users will have one less password to worry about.
-
-= But what if my users don't want to login every time via their email?  =
-
-	You can extend the auth cookie expiration to something like 1 month or 3 months (this can be changed by using the wpa_change_link_expiration filter). Also, you can offer Passwordless Login as an alternative login system and enforce stronger passwords on registration using <a href="http://wordpress.org/plugins/profile-builder/">Profile Builder plugin.</a>
 
 = How do I customize the email templates? =
 
