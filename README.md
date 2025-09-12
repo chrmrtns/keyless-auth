@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.0.10-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.11-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -10,7 +10,15 @@
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free.** Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
-## ✨ New Features in v2.0.10
+## ✨ New Features in v2.0.11
+
+* **📧 Critical SMTP Fix** - Fixed sender email not being used, emails now properly send from configured SMTP address
+* **📝 Fixed Mail Logging** - Resolved post type name length issue preventing mail logs from being saved
+* **🔧 Fixed wp-config.php Instructions** - Restored missing JavaScript for credential storage toggle display  
+* **🐛 Fixed Fatal Errors** - Resolved multiple undefined function errors in Mail Logger page
+* **🔍 Enhanced Diagnostics** - Added diagnostic information to help troubleshoot mail logging issues
+
+## 🔐 Features in v2.0.10
 
 * **🛡️ WordPress.org Plugin Check Compliance** - Resolved all input validation and sanitization warnings
 * **🔒 Enhanced Security** - Fixed wp_unslash() issues and removed insecure duplicate form processing
@@ -194,6 +202,14 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.0.11
+- **FIX:** SMTP sender email not being used - Added missing `$phpmailer->From` to properly authenticate emails
+- **FIX:** Mail logging post type registration - Fixed post type name length issue (shortened from 22 to 17 characters)
+- **FIX:** wp-config.php instructions not displaying - Restored JavaScript and added inline fallback for credential storage toggle
+- **FIX:** Fatal errors on Mail Logger page - Fixed multiple `esc_attresc_html_e()` typos causing page crashes
+- **FIX:** Plugin initialization timing - Changed from 'init' to 'plugins_loaded' hook for better component loading
+- **IMPROVEMENT:** Added diagnostic information box to Mail Logs page for troubleshooting
 
 ### v2.0.10
 - **SECURITY:** WordPress.org Plugin Check compliance - Fixed all input validation and sanitization warnings

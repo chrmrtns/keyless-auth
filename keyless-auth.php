@@ -3,7 +3,7 @@
 * Plugin Name: Keyless Auth - Login without Passwords
 * Plugin URI: https://github.com/chrmrtns/keyless-auth
 * Description: Enhanced passwordless authentication allowing users to login securely without passwords via email magic links. Fork of Passwordless Login by Cozmoslabs with additional security features.
-* Version: 2.0.10
+* Version: 2.0.11
 * Author: Chris Martens
 * Author URI: https://github.com/chrmrtns
 * License: GPL2
@@ -37,7 +37,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('CHRMRTNS_KLA_VERSION', '2.0.10');
+define('CHRMRTNS_KLA_VERSION', '2.0.11');
 define('CHRMRTNS_KLA_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CHRMRTNS_KLA_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('CHRMRTNS_KLA_PLUGIN_FILE', __FILE__);
@@ -67,7 +67,7 @@ class Chrmrtns_KLA_Main {
      * Constructor
      */
     private function __construct() {
-        add_action('init', array($this, 'init'));
+        add_action('plugins_loaded', array($this, 'init'));
         add_action('plugins_loaded', array($this, 'load_textdomain'));
         
         // Include existing notices class
@@ -215,7 +215,7 @@ function chrmrtns_kla_uninstall_hook() {
     
     // Remove all mail logs
     $args = array(
-        'post_type' => 'chrmrtns_kla_mail_logs',
+        'post_type' => 'chrmrtns_kla_logs',
         'posts_per_page' => -1,
         'post_status' => 'any'
     );

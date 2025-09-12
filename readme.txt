@@ -5,7 +5,7 @@ Donate link: https://github.com/chrmrtns/passwordless-auth
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.0.10
+Stable tag: 2.0.11
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,14 @@ Secure keyless authentication - users login via email magic links without passwo
 
 **Keyless Auth - Login without Passwords** allows users to securely login to your WordPress site without remembering passwords. Simply enter their email, and they receive a magic login link - secure, fast, and user-friendly.
 
-**✨ New Features in v2.0.10:**
+**✨ New Features in v2.0.11:**
+* **📧 Critical SMTP Fix** - Fixed sender email not being used, emails now properly send from configured SMTP address
+* **📝 Fixed Mail Logging** - Resolved post type name length issue preventing mail logs from being saved
+* **🔧 Fixed wp-config.php Instructions** - Restored missing JavaScript for credential storage toggle display  
+* **🐛 Fixed Fatal Errors** - Resolved multiple undefined function errors in Mail Logger page
+* **🔍 Enhanced Diagnostics** - Added diagnostic information to help troubleshoot mail logging issues
+
+**Features in v2.0.10:**
 * **🛡️ WordPress.org Plugin Check Compliance** - Resolved all input validation and sanitization warnings
 * **🔒 Enhanced Security** - Fixed wp_unslash() issues and removed insecure duplicate form processing
 * **⚡ Improved Code Quality** - Eliminated security vulnerabilities in POST data handling
@@ -185,6 +192,13 @@ Passwordless Authentication does not replace the default login functionality in 
 
 
 == Changelog ==
+= 2.0.11 =
+* FIX: SMTP sender email not being used - Added missing $phpmailer->From to properly authenticate emails
+* FIX: Mail logging post type registration - Fixed post type name length issue (shortened chrmrtns_kla_mail_logs to chrmrtns_kla_logs)
+* FIX: wp-config.php instructions not displaying - Restored JavaScript and added inline fallback for credential storage toggle
+* FIX: Fatal errors on Mail Logger page - Fixed multiple esc_attresc_html_e() typos causing page crashes
+* FIX: Plugin initialization timing - Changed from 'init' to 'plugins_loaded' hook for better component loading
+* IMPROVEMENT: Added diagnostic information box to Mail Logs page for troubleshooting
 = 2.0.10 =
 * SECURITY: WordPress.org Plugin Check compliance - Fixed all input validation and sanitization warnings
 * SECURITY: Enhanced POST data handling - Added wp_unslash() before all sanitization functions

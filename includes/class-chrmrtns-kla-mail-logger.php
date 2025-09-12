@@ -16,7 +16,13 @@ class Chrmrtns_KLA_Mail_Logger {
      * Constructor
      */
     public function __construct() {
-        add_action('init', array($this, 'register_mail_logs_post_type'));
+        // Register post type immediately if we're past the init hook, otherwise hook it
+        if (did_action('init')) {
+            $this->register_mail_logs_post_type();
+        } else {
+            add_action('init', array($this, 'register_mail_logs_post_type'), 1);
+        }
+        
         add_action('admin_init', array($this, 'handle_mail_logs_actions'));
         add_filter('wp_mail', array($this, 'log_mail_event'), 10, 1);
     }
@@ -25,7 +31,7 @@ class Chrmrtns_KLA_Mail_Logger {
      * Register custom post type for mail logs
      */
     public function register_mail_logs_post_type() {
-        register_post_type('chrmrtns_kla_mail_logs', array(
+        register_post_type('chrmrtns_kla_logs', array(
             'public' => false,
             'publicly_queryable' => false,
             'show_in_menu' => false,
@@ -89,7 +95,7 @@ class Chrmrtns_KLA_Mail_Logger {
             }
             
             $args = array(
-                'post_type'      => 'chrmrtns_kla_mail_logs',
+                'post_type'      => 'chrmrtns_kla_logs',
                 'posts_per_page' => -1,
                 'post_status'    => 'any'
             );
@@ -199,7 +205,7 @@ class Chrmrtns_KLA_Mail_Logger {
 
         // Insert the log as a custom post
         $post_data = array(
-            'post_type'   => 'chrmrtns_kla_mail_logs',
+            'post_type'   => 'chrmrtns_kla_logs',
             'post_status' => 'publish',
             'post_title'  => __('Mail Log', 'keyless-auth') . ' - ' . gmdate('Y-m-d H:i:s')
         );
@@ -238,7 +244,7 @@ class Chrmrtns_KLA_Mail_Logger {
      */
     public function cleanup_old_mail_logs($limit) {
         $args = array(
-            'post_type'      => 'chrmrtns_kla_mail_logs',
+            'post_type'      => 'chrmrtns_kla_logs',
             'posts_per_page' => -1,
             'orderby'        => 'date',
             'order'          => 'DESC',
@@ -308,9 +314,22 @@ class Chrmrtns_KLA_Mail_Logger {
             <?php if ($logging_enabled): ?>
                 <hr>
                 
+                <!-- Diagnostic Info -->
+                <div style="background: #f1f1f1; padding: 10px; margin: 10px 0; border-left: 4px solid #0073aa;">
+                    <strong><?php esc_html_e('Diagnostic Information:', 'keyless-auth'); ?></strong><br>
+                    <?php 
+                    echo 'Mail logging enabled: ' . (get_option('chrmrtns_kla_mail_logging_enabled') === '1' ? 'Yes' : 'No') . '<br>';
+                    echo 'Post type registered: ' . (post_type_exists('chrmrtns_kla_logs') ? 'Yes' : 'No') . '<br>';
+                    
+                    // Count total logs
+                    $total_logs = wp_count_posts('chrmrtns_kla_logs');
+                    echo 'Total mail logs in database: ' . esc_html($total_logs->publish ?? 0) . '<br>';
+                    ?>
+                </div>
+                
                 <!-- Clear All Logs Button -->
                 <div class="tablenav top">
-                    <form method="post" action="" style="float: left;" onsubmit="return confirm('<?php esc_attresc_html_e('Are you sure you want to delete all mail logs? This action cannot be undone.', 'keyless-auth'); ?>');">
+                    <form method="post" action="" style="float: left;" onsubmit="return confirm('<?php echo esc_attr(__('Are you sure you want to delete all mail logs? This action cannot be undone.', 'keyless-auth')); ?>');">
                         <?php wp_nonce_field('chrmrtns_kla_clear_mail_logs', 'chrmrtns_kla_clear_logs_nonce'); ?>
                         <?php submit_button(__('Clear All Logs', 'keyless-auth'), 'delete', 'chrmrtns_kla_clear_mail_logs', false); ?>
                     </form>
@@ -320,7 +339,7 @@ class Chrmrtns_KLA_Mail_Logger {
                 <?php
                 // Get and display logs
                 $args = array(
-                    'post_type'      => 'chrmrtns_kla_mail_logs',
+                    'post_type'      => 'chrmrtns_kla_logs',
                     'posts_per_page' => 100,
                     'orderby'        => 'date',
                     'order'          => 'DESC',
@@ -358,7 +377,7 @@ class Chrmrtns_KLA_Mail_Logger {
                                     <td><?php echo esc_html($subject); ?></td>
                                     <td>
                                         <button type="button" class="button button-small" onclick="chrmrtnsShowEmailContent(<?php echo esc_attr($log->ID); ?>)"><?php esc_html_e('View Content', 'keyless-auth'); ?></button>
-                                        <form method="post" style="display: inline;" onsubmit="return confirm('<?php esc_attresc_html_e('Are you sure you want to delete this log?', 'keyless-auth'); ?>');">
+                                        <form method="post" style="display: inline;" onsubmit="return confirm('<?php echo esc_attr(__('Are you sure you want to delete this log?', 'keyless-auth')); ?>');">
                                             <?php wp_nonce_field('chrmrtns_kla_delete_mail_log', 'chrmrtns_kla_delete_log_nonce'); ?>
                                             <input type="hidden" name="chrmrtns_kla_delete_log_id" value="<?php echo esc_attr($log->ID); ?>">
                                             <?php submit_button(__('Delete', 'keyless-auth'), 'delete button-small', 'chrmrtns_kla_delete_log', false); ?>

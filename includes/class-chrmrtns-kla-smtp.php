@@ -188,7 +188,11 @@ class Chrmrtns_KLA_SMTP {
             <?php esc_html_e('Choose where to store SMTP credentials. wp-config.php is more secure as it\'s outside the web root.', 'keyless-auth'); ?>
         </p>
         
-        <div id="wp-config-instructions" style="display: none; margin-top: 10px; padding: 10px; background: #f0f0f1; border-left: 4px solid #0073aa;">
+        <?php
+        // Show instructions if wp_config is selected
+        $show_instructions = ($storage_type === 'wp_config') ? 'block' : 'none';
+        ?>
+        <div id="wp-config-instructions" style="display: <?php echo esc_attr($show_instructions); ?>; margin-top: 10px; padding: 10px; background: #f0f0f1; border-left: 4px solid #0073aa;">
             <strong><?php esc_html_e('To use wp-config.php storage, add these lines to your wp-config.php file:', 'keyless-auth'); ?></strong><br><br>
             <code style="background: #fff; padding: 5px; display: block; margin: 5px 0;">
                 define('CHRMRTNS_KLA_SMTP_USERNAME', 'your-email@example.com');<br>
@@ -196,6 +200,19 @@ class Chrmrtns_KLA_SMTP {
             </code>
             <small><?php esc_html_e('Replace the values with your actual SMTP credentials. The fields below will be disabled when using wp-config.php storage.', 'keyless-auth'); ?></small>
         </div>
+        
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Inline credential storage toggle for reliability
+            $('input[name="chrmrtns_kla_smtp_settings[credential_storage]"]').on('change', function() {
+                if ($(this).val() === 'wp_config' && $(this).is(':checked')) {
+                    $('#wp-config-instructions').show();
+                } else if ($(this).val() === 'database' && $(this).is(':checked')) {
+                    $('#wp-config-instructions').hide();
+                }
+            });
+        });
+        </script>
         <?php
     }
     
@@ -349,6 +366,11 @@ class Chrmrtns_KLA_SMTP {
         // Force From Name if enabled
         if (!empty($options['force_from_name']) && !empty($options['from_name'])) {
             $phpmailer->FromName = $options['from_name'];
+        }
+        
+        // Set the From email address to match the SMTP username (authenticated sender)
+        if (!empty($phpmailer->Username)) {
+            $phpmailer->From = $phpmailer->Username;
         }
         
         // Additional settings

@@ -83,6 +83,33 @@ jQuery(document).ready(function($) {
         }
     });
 
+    // Credential storage toggle
+    function handleCredentialStorage() {
+        var storage = $('input[name="chrmrtns_kla_smtp_settings[credential_storage]"]:checked').val();
+        var instructions = $('#wp-config-instructions');
+        var usernameField = $('input[name="chrmrtns_kla_smtp_settings[smtp_username]"]');
+        var passwordField = $('input[name="chrmrtns_kla_smtp_settings[smtp_password]"]');
+        
+        if (storage === 'wp_config') {
+            instructions.css('display', 'block');
+            // Check if constants are defined (indicated by disabled fields from PHP)
+            if (usernameField.prop('disabled')) {
+                usernameField.closest('tr').find('.description').html('<span style="color: green;">✓ Defined in wp-config.php</span>');
+                passwordField.closest('tr').find('.description').html('<span style="color: green;">✓ Defined in wp-config.php</span>');
+            }
+        } else {
+            instructions.css('display', 'none');
+            usernameField.prop('disabled', false);
+            passwordField.prop('disabled', false);
+        }
+    }
+    
+    // Bind change event
+    $('input[name="chrmrtns_kla_smtp_settings[credential_storage]"]').on('change', handleCredentialStorage);
+    
+    // Check on page load
+    handleCredentialStorage();
+
     // Test email functionality
     $('#chrmrtns_kla_smtp_send_test').click(function(e) {
         e.preventDefault();
