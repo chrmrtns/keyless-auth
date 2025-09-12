@@ -1,7 +1,7 @@
 === Keyless Auth - Login without Passwords ===
 
 Contributors: chrmrtns, sareiodata, cozmoslabs
-Donate link: https://github.com/chrmrtns/passwordless-auth
+Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
