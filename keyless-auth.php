@@ -70,6 +70,9 @@ class Chrmrtns_KLA_Main {
         add_action('plugins_loaded', array($this, 'init'));
         add_action('plugins_loaded', array($this, 'load_textdomain'));
         
+        // Add plugin action links
+        add_filter('plugin_action_links_' . plugin_basename(CHRMRTNS_KLA_PLUGIN_FILE), array($this, 'add_plugin_action_links'));
+        
         // Include existing notices class
         if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . 'inc/chrmrtns.class.notices.php')) {
             include_once CHRMRTNS_KLA_PLUGIN_DIR . 'inc/chrmrtns.class.notices.php';
@@ -141,6 +144,15 @@ class Chrmrtns_KLA_Main {
             false,
             dirname(plugin_basename(__FILE__)) . '/languages'
         );
+    }
+    
+    /**
+     * Add plugin action links
+     */
+    public function add_plugin_action_links($links) {
+        $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=chrmrtns_kla')) . '">' . esc_html__('Settings', 'keyless-auth') . '</a>';
+        array_unshift($links, $settings_link);
+        return $links;
     }
 }
 
