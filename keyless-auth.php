@@ -150,7 +150,7 @@ class Chrmrtns_KLA_Main {
      * Add plugin action links
      */
     public function add_plugin_action_links($links) {
-        $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=chrmrtns_kla')) . '">' . esc_html__('Settings', 'keyless-auth') . '</a>';
+        $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=keyless-auth')) . '">' . esc_html__('Settings', 'keyless-auth') . '</a>';
         array_unshift($links, $settings_link);
         return $links;
     }
