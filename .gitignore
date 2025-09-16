@@ -72,3 +72,7 @@ composer.lock
 *.zip
 *.tar.gz
 *.rar
+
+# Private project documentation
+PROJECT_SUMMARY.md
+SVN_SUBMISSION_GUIDE.md
