@@ -2,7 +2,7 @@
 
 ## Plugin Overview
 **Name:** Keyless Auth - Login without Passwords  
-**Version:** 2.0.11  
+**Version:** 2.0.12  
 **Slug:** keyless-auth  
 **Text Domain:** keyless-auth  
 **Author:** Chris Martens (@chrmrtns)  
@@ -57,7 +57,14 @@ keyless-auth/
 6. **Security:** Token expiration (10 min), one-time use, timing attack protection
 7. **wp-config.php Support:** Optional credential storage in wp-config.php
 
-### Critical Fixes in v2.0.11
+### Latest Changes in v2.0.12 (September 16, 2025)
+1. **Settings Link:** Added plugin action links filter for direct settings access from WordPress plugin list
+2. **Mail Logs Fix:** Added missing JavaScript functions `chrmrtnsShowEmailContent()` and `chrmrtnsHideEmailContent()`
+3. **Admin Improvements:** Fixed settings link URL to use correct "keyless-auth" slug
+
+**⚠️ PENDING:** SVN deployment to WordPress.org repository still needed (tags/2.0.12)
+
+### Previous Fixes in v2.0.11
 1. **SMTP Fix:** Added `$phpmailer->From = $phpmailer->Username;` to properly authenticate
 2. **Mail Logging Fix:** Shortened post type name from 22 to 17 characters
 3. **JavaScript Fix:** Restored wp-config.php instructions display functionality
@@ -142,6 +149,7 @@ svn commit --username chrmrtns -m "message"
 - **Donate:** https://paypal.me/chrmrtns
 
 ## Version History
+- **2.0.12:** Settings link in plugin list, mail logs view button fix (SVN deployment pending)
 - **2.0.11:** Critical SMTP/logging fixes, JS restoration
 - **2.0.10:** WordPress.org compliance fixes
 - **2.0.9:** Complete rebrand to Keyless Auth
@@ -150,6 +158,11 @@ svn commit --username chrmrtns -m "message"
 - **2.0.6:** Fixed placeholder token rendering
 - **2.0.5:** Two-field email template system
 
+## 📋 TODO for Tomorrow
+- [ ] Deploy v2.0.12 to WordPress.org SVN repository (create tags/2.0.12)
+- [ ] Update stable tag in SVN trunk
+- [ ] Verify deployment on WordPress.org plugin page
+
 ---
-*Last Updated: September 12, 2025*
+*Last Updated: September 16, 2025*
 *This summary allows future AI assistants to understand the plugin structure without reading all code files.*
