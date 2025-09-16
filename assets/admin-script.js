@@ -132,3 +132,18 @@ jQuery(document).ready(function($) {
         });
     });
 });
+
+// Mail logs view content functions (global scope for onclick handlers)
+function chrmrtnsShowEmailContent(logId) {
+    var contentDiv = document.getElementById('chrmrtns_email_content_' + logId);
+    if (contentDiv) {
+        contentDiv.style.display = 'block';
+    }
+}
+
+function chrmrtnsHideEmailContent(logId) {
+    var contentDiv = document.getElementById('chrmrtns_email_content_' + logId);
+    if (contentDiv) {
+        contentDiv.style.display = 'none';
+    }
+}
