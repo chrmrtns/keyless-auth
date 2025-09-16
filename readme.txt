@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.0.11
+Stable tag: 2.0.12
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,12 @@ Secure keyless authentication - users login via email magic links without passwo
 
 **Keyless Auth - Login without Passwords** allows users to securely login to your WordPress site without remembering passwords. Simply enter their email, and they receive a magic login link - secure, fast, and user-friendly.
 
-**✨ New Features in v2.0.11:**
+**✨ New Features in v2.0.12:**
+* **🔗 Settings Link Added** - Direct settings link in WordPress plugin list for easier access  
+* **📧 Fixed Mail Logs View Button** - View Content button now properly displays email content
+* **🎯 Improved Admin JavaScript** - Added missing functions for mail logs interaction
+
+**Features in v2.0.11:**
 * **📧 Critical SMTP Fix** - Fixed sender email not being used, emails now properly send from configured SMTP address
 * **📝 Fixed Mail Logging** - Resolved post type name length issue preventing mail logs from being saved
 * **🔧 Fixed wp-config.php Instructions** - Restored missing JavaScript for credential storage toggle display  
@@ -186,6 +191,12 @@ Passwordless Authentication does not replace the default login functionality in 
 
 
 == Changelog ==
+= 2.0.12 =
+* FIX: Added plugin action links for quick settings access from WordPress plugin list
+* FIX: Mail logs "View Content" button functionality - Added missing JavaScript functions
+* IMPROVEMENT: Enhanced admin JavaScript with global scope functions for mail logs interaction
+* IMPROVEMENT: Fixed settings link URL to use correct "keyless-auth" slug instead of internal prefix
+
 = 2.0.11 =
 * FIX: SMTP sender email not being used - Added missing $phpmailer->From to properly authenticate emails
 * FIX: Mail logging post type registration - Fixed post type name length issue (shortened chrmrtns_kla_mail_logs to chrmrtns_kla_logs)

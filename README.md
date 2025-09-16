@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.0.11-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.12-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -10,7 +10,13 @@
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free.** Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
-## ✨ New Features in v2.0.11
+## ✨ New Features in v2.0.12
+
+* **🔗 Settings Link Added** - Direct settings link in WordPress plugin list for easier access  
+* **📧 Fixed Mail Logs View Button** - View Content button now properly displays email content
+* **🎯 Improved Admin JavaScript** - Added missing functions for mail logs interaction
+
+## 🔐 Features in v2.0.11
 
 * **📧 Critical SMTP Fix** - Fixed sender email not being used, emails now properly send from configured SMTP address
 * **📝 Fixed Mail Logging** - Resolved post type name length issue preventing mail logs from being saved
@@ -18,7 +24,7 @@
 * **🐛 Fixed Fatal Errors** - Resolved multiple undefined function errors in Mail Logger page
 * **🔍 Enhanced Diagnostics** - Added diagnostic information to help troubleshoot mail logging issues
 
-## 🔐 Features in v2.0.10
+## 🏷️ Features in v2.0.10
 
 * **🛡️ WordPress.org Plugin Check Compliance** - Resolved all input validation and sanitization warnings
 * **🔒 Enhanced Security** - Fixed wp_unslash() issues and removed insecure duplicate form processing
