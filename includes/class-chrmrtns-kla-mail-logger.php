@@ -130,7 +130,8 @@ class Chrmrtns_KLA_Mail_Logger {
 
             if (isset($_POST['log_ids']) && is_array($_POST['log_ids'])) {
                 $deleted_count = 0;
-                foreach ($_POST['log_ids'] as $log_id) {
+                $log_ids = array_map('sanitize_text_field', wp_unslash($_POST['log_ids']));
+                foreach ($log_ids as $log_id) {
                     $log_id = intval($log_id);
                     if ($log_id > 0) {
                         wp_delete_post($log_id, true);
