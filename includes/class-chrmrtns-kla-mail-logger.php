@@ -116,6 +116,43 @@ class Chrmrtns_KLA_Mail_Logger {
             );
         }
 
+        // Handle bulk delete action
+        if (isset($_POST['chrmrtns_kla_bulk_action']) && isset($_POST['bulk_action']) && $_POST['bulk_action'] === 'delete') {
+            if (!isset($_POST['chrmrtns_kla_bulk_delete_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_bulk_delete_nonce'])), 'chrmrtns_kla_bulk_delete_mail_logs')) {
+                add_settings_error(
+                    'chrmrtns_kla_mail_logs_settings',
+                    'chrmrtns_kla_bulk_delete_nonce_failed',
+                    __('Security check failed. Please refresh the page and try again.', 'keyless-auth'),
+                    'error'
+                );
+                return;
+            }
+
+            if (isset($_POST['log_ids']) && is_array($_POST['log_ids'])) {
+                $deleted_count = 0;
+                foreach ($_POST['log_ids'] as $log_id) {
+                    $log_id = intval($log_id);
+                    if ($log_id > 0) {
+                        wp_delete_post($log_id, true);
+                        $deleted_count++;
+                    }
+                }
+
+                if ($deleted_count > 0) {
+                    add_settings_error(
+                        'chrmrtns_kla_mail_logs_settings',
+                        'chrmrtns_bulk_logs_deleted',
+                        sprintf(
+                            /* translators: %d: number of deleted mail logs */
+                            __('Successfully deleted %d selected mail log(s).', 'keyless-auth'),
+                            $deleted_count
+                        ),
+                        'updated'
+                    );
+                }
+            }
+        }
+
         // Handle deleting a single mail log
         if (isset($_POST['chrmrtns_kla_delete_log']) && isset($_POST['chrmrtns_kla_delete_log_id'])) {
             if (!isset($_POST['chrmrtns_kla_delete_log_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_delete_log_nonce'])), 'chrmrtns_kla_delete_mail_log')) {
@@ -327,14 +364,27 @@ class Chrmrtns_KLA_Mail_Logger {
                     ?>
                 </div>
                 
-                <!-- Clear All Logs Button -->
-                <div class="tablenav top">
-                    <form method="post" action="" style="float: left;" onsubmit="return confirm('<?php echo esc_attr(__('Are you sure you want to delete all mail logs? This action cannot be undone.', 'keyless-auth')); ?>');">
-                        <?php wp_nonce_field('chrmrtns_kla_clear_mail_logs', 'chrmrtns_kla_clear_logs_nonce'); ?>
-                        <?php submit_button(__('Clear All Logs', 'keyless-auth'), 'delete', 'chrmrtns_kla_clear_mail_logs', false); ?>
-                    </form>
-                    <div class="clear"></div>
-                </div>
+                <!-- Bulk Actions -->
+                <form method="post" action="" id="chrmrtns-mail-logs-form">
+                    <?php wp_nonce_field('chrmrtns_kla_bulk_delete_mail_logs', 'chrmrtns_kla_bulk_delete_nonce'); ?>
+
+                    <div class="tablenav top">
+                        <div class="alignleft actions bulkactions">
+                            <select name="bulk_action" id="bulk-action-selector">
+                                <option value=""><?php esc_html_e('Bulk Actions', 'keyless-auth'); ?></option>
+                                <option value="delete"><?php esc_html_e('Delete', 'keyless-auth'); ?></option>
+                            </select>
+                            <?php submit_button(__('Apply', 'keyless-auth'), 'action', 'chrmrtns_kla_bulk_action', false); ?>
+                        </div>
+
+                        <div class="alignleft actions">
+                            <button type="submit" name="chrmrtns_kla_clear_mail_logs" class="button delete"
+                                onclick="return confirm('<?php echo esc_attr(__('Are you sure you want to delete all mail logs? This action cannot be undone.', 'keyless-auth')); ?>');">
+                                <?php esc_html_e('Clear All Logs', 'keyless-auth'); ?>
+                            </button>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
 
                 <?php
                 // Get and display logs
@@ -353,6 +403,9 @@ class Chrmrtns_KLA_Mail_Logger {
                     <table class="wp-list-table widefat fixed striped">
                         <thead>
                             <tr>
+                                <td class="manage-column column-cb check-column">
+                                    <input type="checkbox" id="chrmrtns-select-all-logs" />
+                                </td>
                                 <th><?php esc_html_e('Date & Time', 'keyless-auth'); ?></th>
                                 <th><?php esc_html_e('From', 'keyless-auth'); ?></th>
                                 <th><?php esc_html_e('To', 'keyless-auth'); ?></th>
@@ -371,6 +424,9 @@ class Chrmrtns_KLA_Mail_Logger {
                                 $message = $meta['message'][0] ?? '';
                                 ?>
                                 <tr>
+                                    <th scope="row" class="check-column">
+                                        <input type="checkbox" name="log_ids[]" value="<?php echo esc_attr($log->ID); ?>" class="chrmrtns-log-checkbox" />
+                                    </th>
                                     <td><?php echo esc_html($date_time); ?></td>
                                     <td><?php echo esc_html($from); ?></td>
                                     <td><?php echo esc_html($to); ?></td>
@@ -383,18 +439,64 @@ class Chrmrtns_KLA_Mail_Logger {
                                             <?php submit_button(__('Delete', 'keyless-auth'), 'delete button-small', 'chrmrtns_kla_delete_log', false); ?>
                                         </form>
                                         
-                                        <div id="chrmrtns_email_content_<?php echo esc_attr($log->ID); ?>" style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ddd; background: #f9f9f9;">
-                                            <h4><?php esc_html_e('Email Content:', 'keyless-auth'); ?></h4>
-                                            <div style="max-height: 300px; overflow-y: auto; background: white; padding: 10px; border: 1px solid #ccc;">
+                                        <div id="chrmrtns_email_content_<?php echo esc_attr($log->ID); ?>" style="display: none; position: absolute; left: 50%; transform: translateX(-50%); width: 90%; max-width: 800px; margin-top: 10px; padding: 15px; border: 1px solid #ddd; background: #f9f9f9; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
+                                            <h4 style="margin-top: 0;"><?php esc_html_e('Email Content:', 'keyless-auth'); ?></h4>
+                                            <div style="max-height: 400px; overflow-y: auto; background: white; padding: 15px; border: 1px solid #ccc; border-radius: 3px;">
                                                 <?php echo wp_kses_post($message); ?>
                                             </div>
-                                            <button type="button" class="button button-small" onclick="chrmrtnsHideEmailContent(<?php echo esc_attr($log->ID); ?>)" style="margin-top: 10px;"><?php esc_html_e('Hide Content', 'keyless-auth'); ?></button>
+                                            <div style="text-align: center; margin-top: 10px;">
+                                                <button type="button" class="button button-small" onclick="chrmrtnsHideEmailContent(<?php echo esc_attr($log->ID); ?>)"><?php esc_html_e('Hide Content', 'keyless-auth'); ?></button>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                </form> <!-- End of bulk action form -->
+
+                <script type="text/javascript">
+                jQuery(document).ready(function($) {
+                    // Select all checkbox functionality
+                    $('#chrmrtns-select-all-logs').on('change', function() {
+                        $('.chrmrtns-log-checkbox').prop('checked', $(this).prop('checked'));
+                    });
+
+                    // Update select all checkbox based on individual checkboxes
+                    $('.chrmrtns-log-checkbox').on('change', function() {
+                        var allChecked = $('.chrmrtns-log-checkbox:checked').length === $('.chrmrtns-log-checkbox').length;
+                        $('#chrmrtns-select-all-logs').prop('checked', allChecked);
+                    });
+
+                    // Confirm bulk delete
+                    $('#chrmrtns-mail-logs-form').on('submit', function(e) {
+                        if ($('select[name="bulk_action"]').val() === 'delete' &&
+                            $('input[name="chrmrtns_kla_bulk_action"]').is(':focus')) {
+                            var checkedCount = $('.chrmrtns-log-checkbox:checked').length;
+                            if (checkedCount === 0) {
+                                alert('<?php echo esc_js(__('Please select at least one log to delete.', 'keyless-auth')); ?>');
+                                return false;
+                            }
+                            return confirm('<?php echo esc_js(__('Are you sure you want to delete the selected logs? This action cannot be undone.', 'keyless-auth')); ?>');
+                        }
+                    });
+
+                    // Email content show/hide functions (redefine here to ensure availability)
+                    window.chrmrtnsShowEmailContent = function(logId) {
+                        var contentDiv = document.getElementById('chrmrtns_email_content_' + logId);
+                        if (contentDiv) {
+                            contentDiv.style.display = 'block';
+                        }
+                    };
+
+                    window.chrmrtnsHideEmailContent = function(logId) {
+                        var contentDiv = document.getElementById('chrmrtns_email_content_' + logId);
+                        if (contentDiv) {
+                            contentDiv.style.display = 'none';
+                        }
+                    };
+                });
+                </script>
                 <?php endif; ?>
             <?php else: ?>
                 <p><em><?php esc_html_e('Mail logging is currently disabled. Enable it above to start tracking emails.', 'keyless-auth'); ?></em></p>

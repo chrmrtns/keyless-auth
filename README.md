@@ -10,11 +10,41 @@
 
 **Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free.** Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
 
+### 🔐 Feature Overview
+
+**✅ Ready:**
+• Passwordless Login via Email – secure, simple, password-free
+• Token Expiry + Security Rules – one-time login links with expiration and abuse protection
+• SMTP Integration – send emails via your own mail server
+• Simple Mail Log – track when and to whom login links were sent
+• Email Templates – customize your login email content
+• Basic Email Designer – quick styling options directly in the dashboard
+
+**🛠 In Progress:**
+• Role-Based Token Redirects – redirect users based on their role after login
+• Webhook Support – trigger external actions after login (e.g., automation tools)
+• Telegram Support – receive login links via Telegram Bot
+• Simple CSS Styling – easily adjust button & container styles
+
+**🧠 Planned:**
+• BricksBuilder Login Element – full BricksBuilder integration
+• Visual Email Designer (Bricks-Based) – design login emails visually with Bricks
+• White-Label / Branding Removal – perfect for agencies & white-label solutions
+• REST API – access login functionality via secure API endpoints
+• KLA Companion App (PWA) – receive login links in an app instead of email
+• Login Audit Log – log IP, timestamp, device type, etc.
+• Two-Factor Authentication – extra security via Telegram, app-based code, or similar
+
 ## ✨ New Features in v2.0.12
 
-* **🔗 Settings Link Added** - Direct settings link in WordPress plugin list for easier access  
+* **🔗 Settings Link Added** - Direct settings link in WordPress plugin list for easier access
 * **📧 Fixed Mail Logs View Button** - View Content button now properly displays email content
 * **🎯 Improved Admin JavaScript** - Added missing functions for mail logs interaction
+* **🔄 SMTP Cache Management** - Added "Clear SMTP Cache" button to resolve configuration issues when settings aren't updating
+* **📧 Enhanced Email Deliverability** - Message-ID domain now matches authenticated sender for better SPF/DKIM/DMARC alignment
+* **🛠️ Automatic Cache Clearing** - SMTP settings now automatically clear cache when saved to ensure fresh configuration
+* **☑️ Bulk Delete Mail Logs** - Select multiple mail logs with checkboxes and delete them in one action
+* **✅ Select All Checkbox** - Quickly select/deselect all mail logs for bulk operations
 
 ## 🔐 Features in v2.0.11
 
@@ -208,6 +238,17 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.0.12
+- **FIX:** Added plugin action links for quick settings access from WordPress plugin list
+- **FIX:** Mail logs "View Content" button functionality - Added missing JavaScript functions
+- **IMPROVEMENT:** Enhanced admin JavaScript with global scope functions for mail logs interaction
+- **IMPROVEMENT:** Fixed settings link URL to use correct "keyless-auth" slug instead of internal prefix
+- **NEW:** SMTP cache management - Added "Clear SMTP Cache" button to resolve configuration issues
+- **IMPROVEMENT:** Enhanced email deliverability - Message-ID domain now matches authenticated sender for better SPF/DKIM/DMARC alignment
+- **IMPROVEMENT:** Automatic cache clearing - SMTP settings now automatically clear cache when saved
+- **NEW:** Bulk delete mail logs - Added checkbox selection system with "Select All" for bulk operations
+- **IMPROVEMENT:** WordPress-style bulk actions dropdown for familiar mail log management experience
 
 ### v2.0.11
 - **FIX:** SMTP sender email not being used - Added missing `$phpmailer->From` to properly authenticate emails

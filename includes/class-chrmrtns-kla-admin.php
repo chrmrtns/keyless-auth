@@ -139,12 +139,14 @@ class Chrmrtns_KLA_Admin {
         if (!current_user_can('manage_options')) {
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'keyless-auth'));
         }
-        
-        // Handle test email if SMTP class is loaded
+
+        // Handle test email and cache clearing if SMTP class is loaded
         if (class_exists('Chrmrtns_KLA_SMTP')) {
             $smtp = new Chrmrtns_KLA_SMTP();
             $smtp->handle_test_email_submission();
+            $smtp->handle_cache_clear();
             settings_errors('chrmrtns_kla_smtp_test_email');
+            settings_errors('chrmrtns_kla_smtp_cache');
         }
         
         ?>
@@ -176,6 +178,14 @@ class Chrmrtns_KLA_Admin {
                         </tr>
                     </table>
                     <?php submit_button(__('Send Test Email', 'keyless-auth'), 'secondary', 'chrmrtns_kla_smtp_send_test_email'); ?>
+                </form>
+
+                <hr />
+                <h2><?php esc_html_e('Clear Settings Cache', 'keyless-auth'); ?></h2>
+                <p><?php esc_html_e('If your SMTP settings are not updating properly, clear the cache to force the plugin to reload settings from the database.', 'keyless-auth'); ?></p>
+                <form method="post">
+                    <?php wp_nonce_field('chrmrtns_kla_smtp_clear_cache_action', 'chrmrtns_kla_smtp_clear_cache_nonce'); ?>
+                    <?php submit_button(__('Clear SMTP Cache', 'keyless-auth'), 'secondary', 'chrmrtns_kla_smtp_clear_cache'); ?>
                 </form>
             <?php endif; ?>
         </div>

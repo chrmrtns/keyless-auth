@@ -286,7 +286,11 @@ class Chrmrtns_KLA_SMTP {
      */
     public function sanitize_smtp_settings($input) {
         $sanitized = array();
-        
+
+        // Clear any cached values before saving
+        wp_cache_delete('chrmrtns_kla_smtp_settings', 'options');
+        wp_cache_delete('alloptions', 'options');
+
         // Sanitize each field
         $sanitized['enable_smtp'] = isset($input['enable_smtp']) ? 1 : 0;
         $sanitized['force_from_name'] = isset($input['force_from_name']) ? 1 : 0;
@@ -333,12 +337,16 @@ class Chrmrtns_KLA_SMTP {
      * Configure PHPMailer for SMTP
      */
     public function configure_phpmailer($phpmailer) {
+        // Force fresh read from database, bypassing cache
+        wp_cache_delete('chrmrtns_kla_smtp_settings', 'options');
+        wp_cache_delete('alloptions', 'options');
+
         $options = get_option('chrmrtns_kla_smtp_settings', array());
-        
+
         if (empty($options['enable_smtp'])) {
             return;
         }
-        
+
         $phpmailer->isSMTP();
         $phpmailer->Host = $options['smtp_host'] ?? '';
         $phpmailer->Port = $options['smtp_port'] ?? 25;
@@ -371,8 +379,15 @@ class Chrmrtns_KLA_SMTP {
         // Set the From email address to match the SMTP username (authenticated sender)
         if (!empty($phpmailer->Username)) {
             $phpmailer->From = $phpmailer->Username;
+
+            // Set the Message-ID domain to match the From email domain for better deliverability
+            // This improves SPF/DKIM/DMARC alignment
+            $from_parts = explode('@', $phpmailer->Username);
+            if (count($from_parts) === 2) {
+                $phpmailer->Hostname = $from_parts[1]; // This affects how Message-ID is generated
+            }
         }
-        
+
         // Additional settings
         $phpmailer->SMTPDebug = 0; // Disable debug output
         $phpmailer->Timeout = 30; // 30 seconds timeout
@@ -412,6 +427,44 @@ class Chrmrtns_KLA_SMTP {
         return false;
     }
     
+    /**
+     * Handle cache clearing
+     */
+    public function handle_cache_clear() {
+        if (!isset($_POST['chrmrtns_kla_smtp_clear_cache'])) {
+            return;
+        }
+
+        if (!check_admin_referer('chrmrtns_kla_smtp_clear_cache_action', 'chrmrtns_kla_smtp_clear_cache_nonce')) {
+            add_settings_error(
+                'chrmrtns_kla_smtp_cache',
+                'chrmrtns_kla_smtp_nonce_failed',
+                __('Security check failed. Please refresh the page and try again.', 'keyless-auth'),
+                'error'
+            );
+            return;
+        }
+
+        // Clear all related caches
+        wp_cache_delete('chrmrtns_kla_smtp_settings', 'options');
+        wp_cache_delete('alloptions', 'options');
+
+        // Force refresh the option
+        delete_transient('chrmrtns_kla_smtp_settings');
+
+        // Optionally flush object cache if available
+        if (function_exists('wp_cache_flush')) {
+            wp_cache_flush();
+        }
+
+        add_settings_error(
+            'chrmrtns_kla_smtp_cache',
+            'chrmrtns_kla_smtp_cache_cleared',
+            __('SMTP settings cache has been cleared successfully.', 'keyless-auth'),
+            'updated'
+        );
+    }
+
     /**
      * Handle test email submission
      */
