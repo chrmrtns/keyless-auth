@@ -44,6 +44,7 @@ class Chrmrtns_KLA_SMTP {
             'enable_smtp' => __('Enable SMTP', 'keyless-auth'),
             'force_from_name' => __('Force From Name', 'keyless-auth'),
             'from_name' => __('From Name', 'keyless-auth'),
+            'from_email' => __('From Email', 'keyless-auth'),
             'smtp_host' => __('SMTP Host', 'keyless-auth'),
             'smtp_encryption' => __('Encryption', 'keyless-auth'),
             'smtp_port' => __('SMTP Port', 'keyless-auth'),
@@ -108,7 +109,21 @@ class Chrmrtns_KLA_SMTP {
         <p class="description"><?php esc_html_e('The name that will appear as the sender (e.g., "Your Website Name").', 'keyless-auth'); ?></p>
         <?php
     }
-    
+
+    /**
+     * Render from email field
+     */
+    public function render_from_email_field() {
+        $options = get_option('chrmrtns_kla_smtp_settings', array());
+        ?>
+        <input type='email' name='chrmrtns_kla_smtp_settings[from_email]'
+            value='<?php echo esc_attr($options['from_email'] ?? ''); ?>'
+            size='50'
+            placeholder="noreply@example.com">
+        <p class="description"><?php esc_html_e('Optional: Specify a different "From" email address. If empty, SMTP username will be used as the sender email.', 'keyless-auth'); ?></p>
+        <?php
+    }
+
     /**
      * Render SMTP host field
      */
