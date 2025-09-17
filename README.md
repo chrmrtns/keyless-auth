@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.0.12-blue.svg)
+![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -35,7 +35,14 @@
 • Login Audit Log – log IP, timestamp, device type, etc.
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
 
-## ✨ New Features in v2.0.12
+## ✨ New Features in v2.1.0
+
+* **📧 Optional From Email Field** - Added optional "From Email" field in SMTP settings for flexible sender configuration
+* **⚙️ Enhanced SMTP Flexibility** - Support scenarios where SMTP authentication email differs from desired sender email
+* **📬 Maintained Deliverability** - Proper Message-ID domain alignment for SPF/DKIM/DMARC compliance preserved
+* **🔄 Backwards Compatible** - Empty From Email field defaults to SMTP username, ensuring existing installations work unchanged
+
+## ✨ Features from v2.0.12
 
 * **🔗 Settings Link Added** - Direct settings link in WordPress plugin list for easier access
 * **📧 Fixed Mail Logs View Button** - View Content button now properly displays email content
@@ -238,6 +245,12 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.1.0
+- **NEW:** Optional "From Email" field in SMTP settings - Allows specifying a different sender email address when SMTP username differs from desired sender
+- **IMPROVEMENT:** Enhanced SMTP configuration flexibility - Supports scenarios where SMTP authentication uses one email but sender should appear as another
+- **IMPROVEMENT:** Maintains proper email deliverability with Message-ID domain alignment for SPF/DKIM/DMARC compliance
+- **IMPROVEMENT:** Backwards compatible - If From Email field is empty, uses SMTP username as before
 
 ### v2.0.12
 - **FIX:** Added plugin action links for quick settings access from WordPress plugin list

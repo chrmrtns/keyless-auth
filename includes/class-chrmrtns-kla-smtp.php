@@ -295,6 +295,7 @@ class Chrmrtns_KLA_SMTP {
         $sanitized['enable_smtp'] = isset($input['enable_smtp']) ? 1 : 0;
         $sanitized['force_from_name'] = isset($input['force_from_name']) ? 1 : 0;
         $sanitized['from_name'] = isset($input['from_name']) ? sanitize_text_field($input['from_name']) : '';
+        $sanitized['from_email'] = isset($input['from_email']) ? sanitize_email($input['from_email']) : '';
         $sanitized['smtp_host'] = isset($input['smtp_host']) ? sanitize_text_field($input['smtp_host']) : '';
         $sanitized['smtp_encryption'] = isset($input['smtp_encryption']) ? sanitize_text_field($input['smtp_encryption']) : 'none';
         $sanitized['smtp_port'] = isset($input['smtp_port']) ? absint($input['smtp_port']) : 25;
@@ -376,13 +377,14 @@ class Chrmrtns_KLA_SMTP {
             $phpmailer->FromName = $options['from_name'];
         }
         
-        // Set the From email address to match the SMTP username (authenticated sender)
+        // Set the From email address (use from_email field if specified, otherwise SMTP username)
         if (!empty($phpmailer->Username)) {
-            $phpmailer->From = $phpmailer->Username;
+            $from_email = !empty($options['from_email']) ? $options['from_email'] : $phpmailer->Username;
+            $phpmailer->From = $from_email;
 
             // Set the Message-ID domain to match the From email domain for better deliverability
             // This improves SPF/DKIM/DMARC alignment
-            $from_parts = explode('@', $phpmailer->Username);
+            $from_parts = explode('@', $from_email);
             if (count($from_parts) === 2) {
                 $phpmailer->Hostname = $from_parts[1]; // This affects how Message-ID is generated
             }
