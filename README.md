@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.1.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -34,6 +34,17 @@
 • KLA Companion App (PWA) – receive login links in an app instead of email
 • Login Audit Log – log IP, timestamp, device type, etc.
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
+
+## 🔧 Latest Fixes in v2.1.1
+
+* **🏷️ Consistent Branding** - All "Passwordless Authentication" references updated to "Keyless Auth"
+* **🔒 Updated Security Nonces** - Changed from passwordless_login_request to keyless_login_request
+* **📧 Fixed SMTP Test Emails** - Test emails now properly show "Keyless Auth" branding
+* **📁 Correct Installation Path** - Documentation now references correct "keyless-auth" folder
+* **📝 Fixed Menu References** - Updated from "PA Settings" to proper "Templates" menu name
+* **🔗 Updated Repository URLs** - All GitHub links now point to correct keyless-auth repository
+* **🌐 Clean Translation Template** - Regenerated keyless-auth.pot with only current strings
+* **🧹 Removed Legacy Strings** - Cleaned up obsolete translation references from original fork
 
 ## ✨ New Features in v2.1.0
 
@@ -226,10 +237,10 @@ Available placeholders for custom templates:
 Yes. Tokens are created using `wp_hash()` based on user ID, timestamp, and WordPress salt. Tokens expire after 10 minutes and can only be used once.
 
 ### Can I customize email templates?
-Absolutely! Go to **Passwordless Auth > PA Settings** to choose from predefined templates or create custom HTML templates using the WYSIWYG editor.
+Absolutely! Go to **Keyless Auth > Templates** to choose from predefined templates or create custom HTML templates using the WYSIWYG editor.
 
 ### How do I configure SMTP?
-Go to **Passwordless Auth > SMTP** to configure settings for providers like Gmail, Outlook, Mailgun, SendGrid, and more. Includes automatic port configuration and connection testing.
+Go to **Keyless Auth > SMTP** to configure settings for providers like Gmail, Outlook, Mailgun, SendGrid, and more. Includes automatic port configuration and connection testing.
 
 ### Can I track sent emails?
 Yes! The Mail Logs feature monitors all emails with timestamps, recipients, subjects, and content preview. Perfect for troubleshooting delivery issues.
@@ -245,6 +256,16 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.1.1
+- **FIX:** Replaced all "Passwordless Authentication" references with "Keyless Auth" for consistent branding
+- **FIX:** Updated nonce names from passwordless_login_request to keyless_login_request
+- **FIX:** Changed SMTP test email subject/message to use "Keyless Auth" branding
+- **FIX:** Updated installation instructions to reference correct "keyless-auth" folder name
+- **FIX:** Fixed menu references from "PA Settings" to "Templates" in documentation
+- **FIX:** Updated GitHub repository URLs from passwordless-auth to keyless-auth
+- **IMPROVEMENT:** Regenerated translation template (keyless-auth.pot) with current strings only
+- **IMPROVEMENT:** Removed obsolete translation strings from original fork
 
 ### v2.1.0
 - **NEW:** Optional "From Email" field in SMTP settings - Allows specifying a different sender email address when SMTP username differs from desired sender
@@ -351,7 +372,7 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 
 ## 🤝 Contributing
 
-Issues and pull requests are welcome on [GitHub](https://github.com/chrmrtns/passwordless-auth).
+Issues and pull requests are welcome on [GitHub](https://github.com/chrmrtns/keyless-auth).
 
 ## 📄 License
 
@@ -361,7 +382,7 @@ This plugin is licensed under the [GPL v2](https://www.gnu.org/licenses/gpl-2.0.
 
 **Chris Martens**
 - GitHub: [@chrmrtns](https://github.com/chrmrtns)
-- Plugin URI: [https://github.com/chrmrtns/passwordless-auth](https://github.com/chrmrtns/passwordless-auth)
+- Plugin URI: [https://github.com/chrmrtns/keyless-auth](https://github.com/chrmrtns/keyless-auth)
 
 ---
 

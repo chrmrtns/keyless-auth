@@ -259,7 +259,7 @@ class Chrmrtns_KLA_Admin {
                     <li><?php esc_html_e('Comprehensive email logging and monitoring', 'keyless-auth'); ?></li>
                 </ul>
                 <p><?php echo wp_kses(
-                    __('Passwordless Authentication <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel.', 'keyless-auth'),
+                    __('Keyless Auth <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel.', 'keyless-auth'),
                     array('strong' => array())
                 ); ?></p>
             </div>

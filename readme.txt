@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,16 @@ Secure keyless authentication - users login via email magic links without passwo
 • KLA Companion App (PWA) – receive login links in an app instead of email
 • Login Audit Log – log IP, timestamp, device type, etc.
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
+
+**🔧 Latest Fixes in v2.1.1:**
+* **🏷️ Consistent Branding** - All "Passwordless Authentication" references updated to "Keyless Auth"
+* **🔒 Updated Security Nonces** - Changed from passwordless_login_request to keyless_login_request
+* **📧 Fixed SMTP Test Emails** - Test emails now properly show "Keyless Auth" branding
+* **📁 Correct Installation Path** - Documentation now references correct "keyless-auth" folder
+* **📝 Fixed Menu References** - Updated from "PA Settings" to proper "Templates" menu name
+* **🔗 Updated Repository URLs** - All GitHub links now point to correct keyless-auth repository
+* **🌐 Clean Translation Template** - Regenerated keyless-auth.pot with only current strings
+* **🧹 Removed Legacy Strings** - Cleaned up obsolete translation references from original fork
 
 **✨ New Features in v2.1.0:**
 * **📧 Optional From Email Field** - Added optional "From Email" field in SMTP settings for flexible sender configuration
@@ -144,12 +154,12 @@ You can use the shortcode [keyless-auth] in a page or widget.
 
 NOTE:
 
-Passwordless Authentication does not replace the default login functionality in WordPress.
+Keyless Auth does not replace the default login functionality in WordPress.
 
 
 == Installation ==
 
-1. Upload the passwordless-auth folder to the '/wp-content/plugins/' directory
+1. Upload the keyless-auth folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Go to Keyless Auth > Templates to configure email templates and colors
 1. Create a new page and use the shortcode [keyless-auth]
@@ -166,11 +176,11 @@ Passwordless Authentication does not replace the default login functionality in 
 
 = Isn't it more complicated they just entering a password? =
 
-	Weak passwords are used every day by users. There are also people who use the same password across various services and websites. By using the Passwordless Login plugin your users will have one less password to worry about.
+	Weak passwords are used every day by users. There are also people who use the same password across various services and websites. By using the Keyless Auth plugin your users will have one less password to worry about.
 
 = How do I customize the email templates? =
 
-	Go to Passwordless Auth > PA Settings in your WordPress admin. You can choose from predefined templates (German or English) or create your own custom HTML template using the built-in WYSIWYG editor with full HTML and CSS support.
+	Go to Keyless Auth > Templates in your WordPress admin. You can choose from predefined templates (German or English) or create your own custom HTML template using the built-in WYSIWYG editor with full HTML and CSS support.
 
 = Can I change the colors in the emails? =
 
@@ -182,7 +192,7 @@ Passwordless Authentication does not replace the default login functionality in 
 
 = How do I configure SMTP for reliable email delivery? =
 
-	Go to Passwordless Auth > SMTP in your WordPress admin. You can configure SMTP settings for providers like Gmail, Outlook, Mailgun, SendGrid, and more. The plugin includes automatic port configuration for SSL/TLS, connection testing, and debug tools to ensure your emails are delivered reliably.
+	Go to Keyless Auth > SMTP in your WordPress admin. You can configure SMTP settings for providers like Gmail, Outlook, Mailgun, SendGrid, and more. The plugin includes automatic port configuration for SSL/TLS, connection testing, and debug tools to ensure your emails are delivered reliably.
 
 = Can I track what emails are being sent? =
 
@@ -227,6 +237,16 @@ Passwordless Authentication does not replace the default login functionality in 
 
 
 == Changelog ==
+= 2.1.1 =
+* FIX: Replaced all "Passwordless Authentication" references with "Keyless Auth" for consistent branding
+* FIX: Updated nonce names from passwordless_login_request to keyless_login_request
+* FIX: Changed SMTP test email subject/message to use "Keyless Auth" branding
+* FIX: Updated installation instructions to reference correct "keyless-auth" folder name
+* FIX: Fixed menu references from "PA Settings" to "Templates" in documentation
+* FIX: Updated GitHub repository URLs from passwordless-auth to keyless-auth
+* IMPROVEMENT: Regenerated translation template (keyless-auth.pot) with current strings only
+* IMPROVEMENT: Removed obsolete translation strings from original fork
+
 = 2.1.0 =
 * NEW: Optional "From Email" field in SMTP settings - Allows specifying a different sender email address when SMTP username differs from desired sender
 * IMPROVEMENT: Enhanced SMTP configuration flexibility - Supports scenarios where SMTP authentication uses one email but sender should appear as another

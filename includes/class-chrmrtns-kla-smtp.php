@@ -1,6 +1,6 @@
 <?php
 /**
- * SMTP functionality for Passwordless Auth
+ * SMTP functionality for Keyless Auth
  * 
  * @since 2.0.1
  */
@@ -528,8 +528,8 @@ class Chrmrtns_KLA_SMTP {
             }
         }
 
-        $subject = __('SMTP Test Email - Passwordless Auth', 'keyless-auth');
-        $message = __('This is a test email sent via your SMTP settings from the Passwordless Auth plugin.', 'keyless-auth');
+        $subject = __('SMTP Test Email - Keyless Auth', 'keyless-auth');
+        $message = __('This is a test email sent via your SMTP settings from the Keyless Auth plugin.', 'keyless-auth');
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
         $sent = wp_mail($to, $subject, $message, $headers);

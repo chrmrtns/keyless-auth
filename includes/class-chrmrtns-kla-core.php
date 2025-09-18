@@ -91,7 +91,7 @@ class Chrmrtns_KLA_Core {
                 <label for="user_email_username"><?php echo esc_html(apply_filters('chrmrtns_kla_change_form_label', $login_label)); ?></label><br>
                 <input type="text" name="user_email_username" id="user_email_username" class="input" value="" size="20" required />
             </p>
-            <?php wp_nonce_field('chrmrtns_kla_passwordless_login_request', 'nonce', false); ?>
+            <?php wp_nonce_field('chrmrtns_kla_keyless_login_request', 'nonce', false); ?>
             <p class="submit">
                 <input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="<?php esc_html_e('Send me the link', 'keyless-auth'); ?>" />
             </p>
@@ -121,7 +121,7 @@ class Chrmrtns_KLA_Core {
         }
         
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'chrmrtns_kla_passwordless_login_request')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'chrmrtns_kla_keyless_login_request')) {
             $error = new WP_Error('nonce_failed', __('Security check failed. Please try again.', 'keyless-auth'));
             update_option('chrmrtns_kla_login_request_error', $error);
             return;

@@ -1,0 +1,261 @@
+# Copyright (C) 2025 Chris Martens
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: Keyless Auth 2.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/chrmrtns/keyless-auth/issues\n"
+"Last-Translator: Chris Martens\n"
+"Language-Team: Chris Martens <support@keyless-auth.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-01-01T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language: \n"
+"X-Generator: Keyless Auth\n"
+"X-Domain: keyless-auth\n"
+
+#. Plugin Name of the plugin
+msgid "Keyless Auth - Login without Passwords"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/chrmrtns/keyless-auth"
+msgstr ""
+
+#. Description of the plugin
+msgid "Enhanced passwordless authentication allowing users to login securely without passwords via email magic links."
+msgstr ""
+
+#. Author of the plugin
+msgid "Chris Martens"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://github.com/chrmrtns"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:31
+#: includes/class-chrmrtns-kla-admin.php:32
+msgid "Keyless Auth"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:42
+#: includes/class-chrmrtns-kla-admin.php:43
+msgid "Templates"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:51
+#: includes/class-chrmrtns-kla-admin.php:52
+#: includes/class-chrmrtns-kla-smtp.php:31
+msgid "SMTP"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:60
+#: includes/class-chrmrtns-kla-admin.php:61
+msgid "Mail Logs"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:112
+#: includes/class-chrmrtns-kla-admin.php:126
+#: includes/class-chrmrtns-kla-admin.php:140
+#: includes/class-chrmrtns-kla-admin.php:200
+#: includes/class-chrmrtns-kla-mail-logger.php:308
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:216
+msgid "Keyless Auth"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:223
+msgid "Secure keyless authentication allowing users to login without passwords via email magic links."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:237
+msgid "How to Use"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:242
+msgid "Use the shortcode"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:244
+msgid "in any page or widget to display the keyless login form."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:251
+msgid "Key Features"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:253
+msgid "No passwords needed - login via email"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:254
+msgid "Secure magic links valid for 10 minutes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:255
+msgid "One-time use tokens for enhanced security"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:256
+msgid "Customizable email templates"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:257
+msgid "Color customization for buttons and links"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:258
+msgid "SMTP configuration for reliable email delivery"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:259
+msgid "Comprehensive email logging and monitoring"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:262
+msgid "Keyless Auth <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:270
+msgid "Quick Links"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:273
+msgid "Email Templates"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:274
+msgid "Configure your login email templates and colors"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:275
+msgid "Go to Templates"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:278
+msgid "SMTP Settings"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:279
+msgid "Set up SMTP for reliable email delivery"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:280
+msgid "Configure SMTP"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:323
+msgid "Enjoying Keyless Auth?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:325
+msgid "Please consider supporting the development!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:411
+#: includes/class-chrmrtns-kla-admin.php:407
+msgid "Security check failed"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:478
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:44
+msgid "Enable SMTP"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:45
+msgid "Force From Name"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:46
+msgid "From Name"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:47
+msgid "From Email"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:48
+msgid "SMTP Host"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:49
+msgid "Encryption"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:50
+msgid "SMTP Port"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:51
+msgid "Authentication"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:52
+msgid "Credential Storage"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:53
+msgid "SMTP Username"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:54
+msgid "SMTP Password"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:55
+#: includes/class-chrmrtns-kla-mail-logger.php:91
+#: includes/class-chrmrtns-kla-mail-logger.php:125
+#: includes/class-chrmrtns-kla-mail-logger.php:163
+msgid "Security check failed. Please refresh the page and try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:71
+msgid "Mail logging settings saved successfully!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:112
+msgid "Successfully deleted %d mail logs."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:148
+msgid "Successfully deleted %d selected mail log(s)."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:175
+msgid "Mail log deleted successfully."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:248
+msgid "Mail Log"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:151
+msgid "Username or Email"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:154
+msgid "Send Magic Link"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:244
+msgid "Login Link for %s"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:301
+msgid "A login email has been sent to your email address."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:303
+msgid "Invalid username or email address."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:42
+msgid "Click here to login"
+msgstr ""

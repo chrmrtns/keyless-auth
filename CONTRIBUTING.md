@@ -19,7 +19,7 @@ keyless-auth/
 │   ├── admin-style.css                 # Admin CSS
 │   └── style-front-end.css            # Frontend styles
 └── languages/
-    └── passwordless-login.pot         # Translation template
+    └── keyless-auth.pot               # Translation template
 ```
 
 ## 🔧 Development Guidelines
