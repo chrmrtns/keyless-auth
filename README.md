@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.1.1-blue.svg)
+![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -32,10 +32,21 @@
 • White-Label / Branding Removal – perfect for agencies & white-label solutions
 • REST API – access login functionality via secure API endpoints
 • KLA Companion App (PWA) – receive login links in an app instead of email
-• Login Audit Log – log IP, timestamp, device type, etc.
+• Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
 
-## 🔧 Latest Fixes in v2.1.1
+## 🚀 Major Update in v2.2.0
+
+* **🗄️ Custom Database Tables** - Migrated from wp_options to dedicated database tables for scalability and performance
+* **📊 Enhanced Login Audit Log** - Comprehensive tracking with IP addresses, device types, user agents, and timestamps
+* **⚡ Performance Improvements** - Optimized database queries and reduced wp_posts table bloat
+* **🔐 Advanced Token Management** - Secure token storage with attempt tracking and automatic cleanup
+* **📧 Enhanced Mail Logging** - Improved email tracking with status monitoring and delivery insights
+* **🔄 Backwards Compatibility** - Seamless upgrade path with legacy system fallbacks
+* **🛡️ Security Enhancements** - Better audit trails and login attempt monitoring
+* **🔧 Database Infrastructure** - Foundation for future features like 2FA, companion app, and webhooks
+
+## 🔧 Fixes in v2.1.1
 
 * **🏷️ Consistent Branding** - All "Passwordless Authentication" references updated to "Keyless Auth"
 * **🔒 Updated Security Nonces** - Changed from passwordless_login_request to keyless_login_request
@@ -256,6 +267,21 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.2.0
+- **MAJOR:** Custom database architecture - Migrated from wp_options storage to dedicated database tables for better scalability
+- **NEW:** Login audit log table - Comprehensive tracking of login attempts with IP addresses, device types, user agents, and timestamps
+- **NEW:** Enhanced mail logs table - Advanced email tracking with status monitoring, SMTP responses, and delivery insights
+- **NEW:** Secure token storage table - Dedicated table for login tokens with automatic expiration and cleanup
+- **NEW:** Device tracking table - Foundation for future 2FA and companion app features
+- **NEW:** Webhook logs table - Infrastructure for future webhook support and external integrations
+- **IMPROVEMENT:** Performance optimization - Reduced database overhead by moving high-volume data out of wp_posts and wp_options
+- **IMPROVEMENT:** Enhanced security - Better audit trails with detailed login attempt monitoring and device fingerprinting
+- **IMPROVEMENT:** Backwards compatibility - Automatic detection and fallback to legacy systems for seamless upgrades
+- **IMPROVEMENT:** Database indexing - Optimized queries with proper indexes for better performance at scale
+- **IMPROVEMENT:** Automatic cleanup - Built-in maintenance routines for expired tokens and old log entries
+- **DEVELOPER:** Modular database class - Clean separation of database operations with comprehensive error handling
+- **DEVELOPER:** Migration system - Automatic database version management and upgrade handling
 
 ### v2.1.1
 - **FIX:** Replaced all "Passwordless Authentication" references with "Keyless Auth" for consistent branding

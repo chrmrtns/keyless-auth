@@ -93,24 +93,34 @@ class Chrmrtns_KLA_Mail_Logger {
                 );
                 return;
             }
-            
-            $args = array(
-                'post_type'      => 'chrmrtns_kla_logs',
-                'posts_per_page' => -1,
-                'post_status'    => 'any'
-            );
-            $logs = get_posts($args);
-            foreach ($logs as $log) {
-                wp_delete_post($log->ID, true);
+
+            $deleted_count = 0;
+
+            if (class_exists('Chrmrtns_KLA_Database')) {
+                // Clear from database
+                global $wpdb;
+                $deleted_count = $wpdb->query("DELETE FROM {$wpdb->prefix}kla_mail_logs");
+            } else {
+                // Clear from legacy posts
+                $args = array(
+                    'post_type'      => 'chrmrtns_kla_logs',
+                    'posts_per_page' => -1,
+                    'post_status'    => 'any'
+                );
+                $logs = get_posts($args);
+                foreach ($logs as $log) {
+                    wp_delete_post($log->ID, true);
+                }
+                $deleted_count = count($logs);
             }
-            
+
             add_settings_error(
                 'chrmrtns_kla_mail_logs_settings',
                 'chrmrtns_kla_mail_logs_cleared',
                 sprintf(
                     /* translators: %d: number of deleted mail logs */
-                    __('Successfully deleted %d mail logs.', 'keyless-auth'), 
-                    count($logs)
+                    __('Successfully deleted %d mail logs.', 'keyless-auth'),
+                    $deleted_count
                 ),
                 'updated'
             );
@@ -131,11 +141,31 @@ class Chrmrtns_KLA_Mail_Logger {
             if (isset($_POST['log_ids']) && is_array($_POST['log_ids'])) {
                 $deleted_count = 0;
                 $log_ids = array_map('sanitize_text_field', wp_unslash($_POST['log_ids']));
-                foreach ($log_ids as $log_id) {
-                    $log_id = intval($log_id);
-                    if ($log_id > 0) {
-                        wp_delete_post($log_id, true);
-                        $deleted_count++;
+
+                if (class_exists('Chrmrtns_KLA_Database')) {
+                    // Delete from database
+                    global $wpdb;
+                    foreach ($log_ids as $log_id) {
+                        $log_id = intval($log_id);
+                        if ($log_id > 0) {
+                            $result = $wpdb->delete(
+                                $wpdb->prefix . 'kla_mail_logs',
+                                array('id' => $log_id),
+                                array('%d')
+                            );
+                            if ($result) {
+                                $deleted_count++;
+                            }
+                        }
+                    }
+                } else {
+                    // Delete legacy posts
+                    foreach ($log_ids as $log_id) {
+                        $log_id = intval($log_id);
+                        if ($log_id > 0) {
+                            wp_delete_post($log_id, true);
+                            $deleted_count++;
+                        }
                     }
                 }
 
@@ -168,13 +198,29 @@ class Chrmrtns_KLA_Mail_Logger {
             
             $log_id = intval($_POST['chrmrtns_kla_delete_log_id']);
             if ($log_id > 0) {
-                wp_delete_post($log_id, true);
-                add_settings_error(
-                    'chrmrtns_kla_mail_logs_settings',
-                    'chrmrtns_single_log_deleted',
-                    __('Mail log deleted successfully.', 'keyless-auth'),
-                    'updated'
-                );
+                $deleted = false;
+
+                if (class_exists('Chrmrtns_KLA_Database')) {
+                    // Delete from database
+                    global $wpdb;
+                    $deleted = $wpdb->delete(
+                        $wpdb->prefix . 'kla_mail_logs',
+                        array('id' => $log_id),
+                        array('%d')
+                    );
+                } else {
+                    // Delete legacy post
+                    $deleted = wp_delete_post($log_id, true);
+                }
+
+                if ($deleted) {
+                    add_settings_error(
+                        'chrmrtns_kla_mail_logs_settings',
+                        'chrmrtns_single_log_deleted',
+                        __('Mail log deleted successfully.', 'keyless-auth'),
+                        'updated'
+                    );
+                }
             }
         }
     }
@@ -237,6 +283,35 @@ class Chrmrtns_KLA_Mail_Logger {
             }
         }
 
+        // Get user ID if available
+        $user_id = null;
+        if (is_email($to)) {
+            $user = get_user_by('email', $to);
+            if ($user) {
+                $user_id = $user->ID;
+            }
+        }
+
+        // Use new database system if available
+        if (class_exists('Chrmrtns_KLA_Database')) {
+            $database = new Chrmrtns_KLA_Database();
+            $database->log_email($user_id, $to, $subject, $message, 'sent', null, 'default');
+
+            // Clean up old logs
+            $size_limit = get_option('chrmrtns_kla_mail_log_size_limit', 100);
+            // TODO: Implement cleanup_old_logs method in database class
+        } else {
+            // Fallback to legacy post system
+            $this->log_mail_event_legacy($mail_data, $to, $subject, $message, $headers, $attachments, $from);
+        }
+
+        return $mail_data;
+    }
+
+    /**
+     * Legacy mail logging using custom post type (for backwards compatibility)
+     */
+    private function log_mail_event_legacy($mail_data, $to, $subject, $message, $headers, $attachments, $from) {
         // Clean up old logs if needed
         $size_limit = get_option('chrmrtns_kla_mail_log_size_limit', 100);
         $this->cleanup_old_mail_logs($size_limit);
@@ -256,7 +331,7 @@ class Chrmrtns_KLA_Mail_Logger {
             update_post_meta($post_id, 'to', sanitize_text_field($to));
             update_post_meta($post_id, 'subject', sanitize_text_field($subject));
             update_post_meta($post_id, 'message', wp_kses_post($message));
-            
+
             // Sanitize headers - can be array or string
             if (is_array($headers)) {
                 $sanitized_headers = array_map('sanitize_text_field', $headers);
@@ -264,7 +339,7 @@ class Chrmrtns_KLA_Mail_Logger {
             } else {
                 update_post_meta($post_id, 'headers', sanitize_textarea_field($headers));
             }
-            
+
             // Sanitize attachments - should be array of file paths
             if (is_array($attachments)) {
                 $sanitized_attachments = array_map('sanitize_text_field', $attachments);
@@ -273,8 +348,6 @@ class Chrmrtns_KLA_Mail_Logger {
                 update_post_meta($post_id, 'attachments', array());
             }
         }
-
-        return $mail_data;
     }
     
     /**
@@ -299,6 +372,63 @@ class Chrmrtns_KLA_Mail_Logger {
         }
     }
     
+    /**
+     * Get mail logs from either database or legacy system
+     */
+    private function get_mail_logs($limit = 100) {
+        if (class_exists('Chrmrtns_KLA_Database')) {
+            // Use new database system
+            global $wpdb;
+            $results = $wpdb->get_results($wpdb->prepare(
+                "SELECT id, user_id, recipient_email as recipient, subject, email_body as message, sent_time, status, 'N/A' as from_email
+                FROM {$wpdb->prefix}kla_mail_logs
+                ORDER BY sent_time DESC
+                LIMIT %d",
+                $limit
+            ), ARRAY_A);
+
+            // Format for consistent display
+            $logs = array();
+            foreach ($results as $result) {
+                $logs[] = array(
+                    'id' => $result['id'],
+                    'date_time' => $result['sent_time'],
+                    'from' => $result['from_email'],
+                    'to' => $result['recipient'],
+                    'subject' => $result['subject'],
+                    'message' => $result['message'],
+                    'status' => $result['status']
+                );
+            }
+            return $logs;
+        } else {
+            // Use legacy post system
+            $args = array(
+                'post_type'      => 'chrmrtns_kla_logs',
+                'posts_per_page' => $limit,
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+                'post_status'    => 'any'
+            );
+            $posts = get_posts($args);
+
+            $logs = array();
+            foreach ($posts as $post) {
+                $meta = get_post_meta($post->ID);
+                $logs[] = array(
+                    'id' => $post->ID,
+                    'date_time' => $meta['date_time'][0] ?? '',
+                    'from' => $meta['from'][0] ?? '',
+                    'to' => $meta['to'][0] ?? '',
+                    'subject' => $meta['subject'][0] ?? '',
+                    'message' => $meta['message'][0] ?? '',
+                    'status' => 'sent' // Legacy system doesn't track status
+                );
+            }
+            return $logs;
+        }
+    }
+
     /**
      * Render mail logs page
      */
@@ -360,8 +490,16 @@ class Chrmrtns_KLA_Mail_Logger {
                     echo 'Post type registered: ' . (post_type_exists('chrmrtns_kla_logs') ? 'Yes' : 'No') . '<br>';
                     
                     // Count total logs
-                    $total_logs = wp_count_posts('chrmrtns_kla_logs');
-                    echo 'Total mail logs in database: ' . esc_html($total_logs->publish ?? 0) . '<br>';
+                    if (class_exists('Chrmrtns_KLA_Database')) {
+                        global $wpdb;
+                        $total_logs = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs");
+                        echo 'Total mail logs in database: ' . esc_html($total_logs) . '<br>';
+                        echo 'Storage system: Custom database tables<br>';
+                    } else {
+                        $total_logs = wp_count_posts('chrmrtns_kla_logs');
+                        echo 'Total mail logs in database: ' . esc_html($total_logs->publish ?? 0) . '<br>';
+                        echo 'Storage system: WordPress custom post type (legacy)<br>';
+                    }
                     ?>
                 </div>
                 
@@ -389,14 +527,7 @@ class Chrmrtns_KLA_Mail_Logger {
 
                 <?php
                 // Get and display logs
-                $args = array(
-                    'post_type'      => 'chrmrtns_kla_logs',
-                    'posts_per_page' => 100,
-                    'orderby'        => 'date',
-                    'order'          => 'DESC',
-                    'post_status'    => 'any'
-                );
-                $logs = get_posts($args);
+                $logs = $this->get_mail_logs();
 
                 if (empty($logs)): ?>
                     <p><?php esc_html_e('No mail logs found. Emails will appear here once they are sent.', 'keyless-auth'); ?></p>
@@ -411,42 +542,40 @@ class Chrmrtns_KLA_Mail_Logger {
                                 <th><?php esc_html_e('From', 'keyless-auth'); ?></th>
                                 <th><?php esc_html_e('To', 'keyless-auth'); ?></th>
                                 <th><?php esc_html_e('Subject', 'keyless-auth'); ?></th>
+                                <th><?php esc_html_e('Status', 'keyless-auth'); ?></th>
                                 <th><?php esc_html_e('Actions', 'keyless-auth'); ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($logs as $log): ?>
-                                <?php
-                                $meta = get_post_meta($log->ID);
-                                $date_time = $meta['date_time'][0] ?? '';
-                                $from = $meta['from'][0] ?? '';
-                                $to = $meta['to'][0] ?? '';
-                                $subject = $meta['subject'][0] ?? '';
-                                $message = $meta['message'][0] ?? '';
-                                ?>
                                 <tr>
                                     <th scope="row" class="check-column">
-                                        <input type="checkbox" name="log_ids[]" value="<?php echo esc_attr($log->ID); ?>" class="chrmrtns-log-checkbox" />
+                                        <input type="checkbox" name="log_ids[]" value="<?php echo esc_attr($log['id']); ?>" class="chrmrtns-log-checkbox" />
                                     </th>
-                                    <td><?php echo esc_html($date_time); ?></td>
-                                    <td><?php echo esc_html($from); ?></td>
-                                    <td><?php echo esc_html($to); ?></td>
-                                    <td><?php echo esc_html($subject); ?></td>
+                                    <td><?php echo esc_html($log['date_time']); ?></td>
+                                    <td><?php echo esc_html($log['from'] ?? 'N/A'); ?></td>
+                                    <td><?php echo esc_html($log['to']); ?></td>
+                                    <td><?php echo esc_html($log['subject']); ?></td>
                                     <td>
-                                        <button type="button" class="button button-small" onclick="chrmrtnsShowEmailContent(<?php echo esc_attr($log->ID); ?>)"><?php esc_html_e('View Content', 'keyless-auth'); ?></button>
+                                        <span class="status-<?php echo esc_attr($log['status'] ?? 'sent'); ?>">
+                                            <?php echo esc_html(ucfirst($log['status'] ?? 'sent')); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="button button-small" onclick="chrmrtnsShowEmailContent(<?php echo esc_attr($log['id']); ?>)"><?php esc_html_e('View Content', 'keyless-auth'); ?></button>
                                         <form method="post" style="display: inline;" onsubmit="return confirm('<?php echo esc_attr(__('Are you sure you want to delete this log?', 'keyless-auth')); ?>');">
                                             <?php wp_nonce_field('chrmrtns_kla_delete_mail_log', 'chrmrtns_kla_delete_log_nonce'); ?>
-                                            <input type="hidden" name="chrmrtns_kla_delete_log_id" value="<?php echo esc_attr($log->ID); ?>">
+                                            <input type="hidden" name="chrmrtns_kla_delete_log_id" value="<?php echo esc_attr($log['id']); ?>">
                                             <?php submit_button(__('Delete', 'keyless-auth'), 'delete button-small', 'chrmrtns_kla_delete_log', false); ?>
                                         </form>
-                                        
-                                        <div id="chrmrtns_email_content_<?php echo esc_attr($log->ID); ?>" style="display: none; position: absolute; left: 50%; transform: translateX(-50%); width: 90%; max-width: 800px; margin-top: 10px; padding: 15px; border: 1px solid #ddd; background: #f9f9f9; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
+
+                                        <div id="chrmrtns_email_content_<?php echo esc_attr($log['id']); ?>" style="display: none; position: absolute; left: 50%; transform: translateX(-50%); width: 90%; max-width: 800px; margin-top: 10px; padding: 15px; border: 1px solid #ddd; background: #f9f9f9; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
                                             <h4 style="margin-top: 0;"><?php esc_html_e('Email Content:', 'keyless-auth'); ?></h4>
                                             <div style="max-height: 400px; overflow-y: auto; background: white; padding: 15px; border: 1px solid #ccc; border-radius: 3px;">
-                                                <?php echo wp_kses_post($message); ?>
+                                                <?php echo wp_kses_post($log['message']); ?>
                                             </div>
                                             <div style="text-align: center; margin-top: 10px;">
-                                                <button type="button" class="button button-small" onclick="chrmrtnsHideEmailContent(<?php echo esc_attr($log->ID); ?>)"><?php esc_html_e('Hide Content', 'keyless-auth'); ?></button>
+                                                <button type="button" class="button button-small" onclick="chrmrtnsHideEmailContent(<?php echo esc_attr($log['id']); ?>)"><?php esc_html_e('Hide Content', 'keyless-auth'); ?></button>
                                             </div>
                                         </div>
                                     </td>

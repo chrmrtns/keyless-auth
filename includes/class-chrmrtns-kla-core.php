@@ -185,9 +185,15 @@ class Chrmrtns_KLA_Core {
         $expiration_time = time() + apply_filters('chrmrtns_kla_change_link_expiration', 600); // 10 minutes default
         $token = $this->generate_secure_token($user_id, $expiration_time);
         
-        // Store token with user
-        update_user_meta($user_id, 'chrmrtns_kla_login_token', $token);
-        update_user_meta($user_id, 'chrmrtns_kla_login_token_expiration', $expiration_time);
+        // Store token in database
+        if (class_exists('Chrmrtns_KLA_Database')) {
+            $database = new Chrmrtns_KLA_Database();
+            $database->store_login_token($user_id, $token, $expiration_time);
+        } else {
+            // Fallback to user meta (backwards compatibility)
+            update_user_meta($user_id, 'chrmrtns_kla_login_token', $token);
+            update_user_meta($user_id, 'chrmrtns_kla_login_token_expiration', $expiration_time);
+        }
         
         // Create login URL
         $login_url = add_query_arg(array(
@@ -270,26 +276,46 @@ class Chrmrtns_KLA_Core {
      * Validate login token
      */
     private function validate_login_token($user_id, $provided_token) {
+        // Try new database system first
+        if (class_exists('Chrmrtns_KLA_Database')) {
+            $database = new Chrmrtns_KLA_Database();
+
+            // Log the login attempt
+            $user = get_user_by('ID', $user_id);
+            $user_email = $user ? $user->user_email : '';
+
+            if ($database->validate_login_token($user_id, $provided_token)) {
+                // Log successful login
+                $database->log_login_attempt($user_id, $user_email, 'success', $provided_token);
+                return true;
+            } else {
+                // Log failed login
+                $database->log_login_attempt($user_id, $user_email, 'failed', $provided_token, 'Invalid or expired token');
+                return false;
+            }
+        }
+
+        // Fallback to legacy user meta system
         $stored_token = get_user_meta($user_id, 'chrmrtns_kla_login_token', true);
         $expiration = get_user_meta($user_id, 'chrmrtns_kla_login_token_expiration', true);
-        
+
         // Check if token exists
         if (empty($stored_token) || empty($expiration)) {
             return false;
         }
-        
+
         // Check expiration
         if (time() > $expiration) {
             delete_user_meta($user_id, 'chrmrtns_kla_login_token');
             delete_user_meta($user_id, 'chrmrtns_kla_login_token_expiration');
             return false;
         }
-        
+
         // Use hash_equals to prevent timing attacks
         if (!hash_equals($stored_token, $provided_token)) {
             return false;
         }
-        
+
         return true;
     }
     

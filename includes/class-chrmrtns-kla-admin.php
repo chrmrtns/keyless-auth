@@ -381,24 +381,10 @@ class Chrmrtns_KLA_Admin {
      * Handle form submission
      */
     public function handle_form_submission() {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('CHRMRTNS: handle_form_submission called - POST data: ' . print_r($_POST, true));
-        }
-        
-        // Check if this is a settings page submission
-        if (isset($_POST['chrmrtns_kla_settings_nonce']) && isset($_POST['submit'])) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: Form submission detected, calling save_settings');
-            }
+        // Check if this is a settings page submission (either main form or reset form)
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification happens in save_settings()
+        if (isset($_POST['chrmrtns_kla_settings_nonce']) && (isset($_POST['submit']) || isset($_POST['reset_template']))) {
             $this->save_settings();
-        } elseif (isset($_POST['chrmrtns_kla_settings_nonce'])) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: Nonce found but submit button missing');
-            }
-        } else {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: No relevant POST data found');
-            }
         }
     }
     
@@ -411,70 +397,182 @@ class Chrmrtns_KLA_Admin {
             wp_die(esc_html__('You do not have sufficient permissions.', 'keyless-auth'));
         }
         
-        // Save settings directly here instead of delegating  
+        // Handle reset template action
+        if (isset($_POST['reset_custom_template'])) {
+            global $wpdb;
+
+            // Force complete reset - delete all template-related options (both old and new naming)
+            delete_option('chrmrtns_kla_custom_email_body');
+            delete_option('chrmrtns_kla_custom_email_styles');
+            delete_option('chrmrtns_kla_email_template'); // Reset template selection too
+
+            // Also delete any old naming convention options that might be interfering
+            delete_option('chrmrtns_custom_email_body');
+            delete_option('chrmrtns_custom_email_styles');
+            delete_option('chrmrtns_email_template');
+
+            // Force deletion directly from database as a fallback for orphaned options
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Necessary for cleanup of potentially orphaned legacy options
+            $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name IN ('chrmrtns_kla_custom_email_body', 'chrmrtns_kla_custom_email_styles', 'chrmrtns_kla_email_template', 'chrmrtns_custom_email_body', 'chrmrtns_custom_email_styles', 'chrmrtns_email_template')");
+
+            // Clear all caches
+            wp_cache_flush();
+            wp_cache_delete('alloptions', 'options');
+
+            // Add success message
+            add_settings_error('chrmrtns_kla_settings', 'template_reset',
+                esc_html__('Template Reset Complete: All email template settings have been reset to defaults.', 'keyless-auth'),
+                'success');
+            return;
+        }
+
+        // Save settings directly here instead of delegating
         if (isset($_POST['chrmrtns_kla_email_template'])) {
             update_option('chrmrtns_kla_email_template', sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_email_template'])));
         }
         
         if (isset($_POST['chrmrtns_kla_button_color'])) {
-            update_option('chrmrtns_kla_button_color', sanitize_hex_color(wp_unslash($_POST['chrmrtns_kla_button_color'])));
+            $color = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_button_color']));
+            update_option('chrmrtns_kla_button_color', $this->sanitize_color_value($color));
         }
-        
+
         if (isset($_POST['chrmrtns_kla_button_hover_color'])) {
-            update_option('chrmrtns_kla_button_hover_color', sanitize_hex_color(wp_unslash($_POST['chrmrtns_kla_button_hover_color'])));
+            $color = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_button_hover_color']));
+            update_option('chrmrtns_kla_button_hover_color', $this->sanitize_color_value($color));
         }
-        
+
         if (isset($_POST['chrmrtns_kla_link_color'])) {
-            update_option('chrmrtns_kla_link_color', sanitize_hex_color(wp_unslash($_POST['chrmrtns_kla_link_color'])));
+            $color = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_link_color']));
+            update_option('chrmrtns_kla_link_color', $this->sanitize_color_value($color));
         }
-        
+
         if (isset($_POST['chrmrtns_kla_link_hover_color'])) {
-            update_option('chrmrtns_kla_link_hover_color', sanitize_hex_color(wp_unslash($_POST['chrmrtns_kla_link_hover_color'])));
+            $color = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_link_hover_color']));
+            update_option('chrmrtns_kla_link_hover_color', $this->sanitize_color_value($color));
         }
         
         if (isset($_POST['chrmrtns_kla_custom_email_body'])) {
-            update_option('chrmrtns_kla_custom_email_body', wp_kses_post(wp_unslash($_POST['chrmrtns_kla_custom_email_body'])));
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via wp_kses below
+            $email_body = wp_unslash($_POST['chrmrtns_kla_custom_email_body']);
+
+            // Use wp_kses with email-appropriate allowed tags instead of wp_kses_post
+            $allowed_tags = array(
+                'div' => array('style' => array(), 'class' => array()),
+                'p' => array('style' => array(), 'class' => array()),
+                'h1' => array('style' => array(), 'class' => array()),
+                'h2' => array('style' => array(), 'class' => array()),
+                'h3' => array('style' => array(), 'class' => array()),
+                'h4' => array('style' => array(), 'class' => array()),
+                'h5' => array('style' => array(), 'class' => array()),
+                'h6' => array('style' => array(), 'class' => array()),
+                'a' => array('href' => array(), 'style' => array(), 'class' => array(), 'target' => array(), 'rel' => array()),
+                'strong' => array('style' => array(), 'class' => array()),
+                'em' => array('style' => array(), 'class' => array()),
+                'br' => array(),
+                'hr' => array('style' => array(), 'class' => array()),
+                'span' => array('style' => array(), 'class' => array()),
+                'img' => array('src' => array(), 'alt' => array(), 'style' => array(), 'class' => array(), 'width' => array(), 'height' => array()),
+                'table' => array('style' => array(), 'class' => array(), 'border' => array(), 'cellpadding' => array(), 'cellspacing' => array()),
+                'tr' => array('style' => array(), 'class' => array()),
+                'td' => array('style' => array(), 'class' => array(), 'colspan' => array(), 'rowspan' => array()),
+                'th' => array('style' => array(), 'class' => array(), 'colspan' => array(), 'rowspan' => array()),
+                'ul' => array('style' => array(), 'class' => array()),
+                'ol' => array('style' => array(), 'class' => array()),
+                'li' => array('style' => array(), 'class' => array())
+            );
+
+            $sanitized_body = wp_kses($email_body, $allowed_tags);
+            update_option('chrmrtns_kla_custom_email_body', $sanitized_body);
         }
         
         if (isset($_POST['chrmrtns_kla_custom_email_styles'])) {
-            update_option('chrmrtns_kla_custom_email_styles', wp_strip_all_tags(wp_unslash($_POST['chrmrtns_kla_custom_email_styles'])));
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via sanitize_css_content below
+            $custom_styles = wp_unslash($_POST['chrmrtns_kla_custom_email_styles']);
+            // Sanitize CSS content while preserving valid CSS syntax
+            $sanitized_css = $this->sanitize_css_content($custom_styles);
+            update_option('chrmrtns_kla_custom_email_styles', $sanitized_css);
         }
-        
+
         if (isset($_POST['chrmrtns_kla_button_text_color'])) {
             $text_color = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_button_text_color']));
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: Button text color received: ' . sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_button_text_color'])) . ' -> sanitized: ' . $text_color);
-            }
-            // Fallback to default if not a valid color format
-            if (empty($text_color)) {
-                $text_color = '#ffffff';
-            }
-            update_option('chrmrtns_kla_button_text_color', $text_color);
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: Button text color saved as: ' . $text_color);
-            }
-        } else {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: chrmrtns_kla_button_text_color not found in POST data');
-            }
+            update_option('chrmrtns_kla_button_text_color', $this->sanitize_color_value($text_color));
         }
-        
+
         if (isset($_POST['chrmrtns_kla_button_hover_text_color'])) {
             $hover_text_color = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_button_hover_text_color']));
-            // Fallback to default if not a valid color format  
-            if (empty($hover_text_color)) {
-                $hover_text_color = '#ffffff';
-            }
-            update_option('chrmrtns_kla_button_hover_text_color', $hover_text_color);
+            update_option('chrmrtns_kla_button_hover_text_color', $this->sanitize_color_value($hover_text_color));
         }
         
-        // Debug: Check what was actually saved
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('CHRMRTNS: Final saved values - button_text_color: ' . get_option('chrmrtns_kla_button_text_color', 'NOT_SET'));
-            error_log('CHRMRTNS: Final saved values - button_hover_text_color: ' . get_option('chrmrtns_kla_button_hover_text_color', 'NOT_SET'));
-        }
         
+        // Clear any option caches to ensure fresh data
+        wp_cache_delete('chrmrtns_kla_custom_email_body', 'options');
+        wp_cache_delete('chrmrtns_kla_custom_email_styles', 'options');
+        wp_cache_delete('chrmrtns_kla_email_template', 'options');
+
+        // Also clear any persistent caches
+        wp_cache_flush();
+
         // Show success message
         add_settings_error('chrmrtns_kla_settings', 'settings_saved', __('Settings saved successfully.', 'keyless-auth'), 'updated');
+    }
+
+    /**
+     * Sanitize color value (supports hex, rgb, rgba, hsl, hsla, and named colors)
+     */
+    private function sanitize_color_value($color) {
+        $color = sanitize_text_field($color);
+
+        if (empty($color)) {
+            return '';
+        }
+
+        // Check for hex color
+        if (preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $color)) {
+            return $color;
+        }
+
+        // Check for RGB/RGBA
+        if (preg_match('/^rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*(,\s*[\d.]+)?\s*\)$/i', $color)) {
+            return $color;
+        }
+
+        // Check for HSL/HSLA
+        if (preg_match('/^hsla?\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*(,\s*[\d.]+)?\s*\)$/i', $color)) {
+            return $color;
+        }
+
+        // Check for named colors (basic set)
+        $named_colors = array('white', 'black', 'red', 'green', 'blue', 'yellow', 'orange', 'purple', 'pink', 'brown', 'gray', 'grey');
+        if (in_array(strtolower($color), $named_colors, true)) {
+            return strtolower($color);
+        }
+
+        // Try WordPress sanitize_hex_color as fallback
+        $hex_color = sanitize_hex_color($color);
+        if ($hex_color) {
+            return $hex_color;
+        }
+
+        // Return empty if no valid format found
+        return '';
+    }
+
+    /**
+     * Sanitize CSS content while preserving valid CSS syntax
+     */
+    private function sanitize_css_content($css) {
+        if (empty($css)) {
+            return '';
+        }
+
+        // Remove potentially dangerous patterns while preserving CSS
+        $css = wp_strip_all_tags($css); // Remove any HTML tags
+        $css = preg_replace('/javascript:/i', '', $css); // Remove javascript: protocols
+        $css = preg_replace('/expression\s*\(/i', '', $css); // Remove CSS expressions
+        $css = preg_replace('/@import/i', '', $css); // Remove @import statements
+        $css = preg_replace('/behavior\s*:/i', '', $css); // Remove IE behavior
+        $css = preg_replace('/binding\s*:/i', '', $css); // Remove binding
+
+        return sanitize_textarea_field($css);
     }
 }

@@ -213,15 +213,32 @@ class Chrmrtns_KLA_Email_Templates {
         $link_color = $link_color ?: '#007bff';
         $link_hover_color = $link_hover_color ?: '#0056b3';
         
-        // Replace placeholders
-        $html = str_replace('[TO]', esc_html($to), $html);
-        $html = str_replace('[LOGIN_URL]', esc_url($login_url), $html);
-        $html = str_replace('[BUTTON_COLOR]', $button_color, $html);
-        $html = str_replace('[BUTTON_HOVER_COLOR]', $button_hover_color, $html);
-        $html = str_replace('[BUTTON_TEXT_COLOR]', $button_text_color, $html);
-        $html = str_replace('[BUTTON_HOVER_TEXT_COLOR]', $button_hover_text_color, $html);
-        $html = str_replace('[LINK_COLOR]', $link_color, $html);
-        $html = str_replace('[LINK_HOVER_COLOR]', $link_hover_color, $html);
+        // Replace placeholders - case insensitive to handle common variations
+
+        $replacements = array(
+            '/\[TO\]/i' => esc_html($to),
+            '/\[LOGIN_URL\]/i' => esc_url($login_url),
+            '/\[BUTTON_COLOR\]/i' => $button_color,
+            '/\[BUTTON_HOVER_COLOR\]/i' => $button_hover_color,
+            '/\[BUTTON_TEXT_COLOR\]/i' => $button_text_color,
+            '/\[BUTTON_HOVER_TEXT_COLOR\]/i' => $button_hover_text_color,
+            '/\[LINK_COLOR\]/i' => $link_color,
+            '/\[LINK_HOVER_COLOR\]/i' => $link_hover_color,
+            // Handle lowercase variations (TinyMCE converts within CSS style attributes)
+            '/\[button_color\]/i' => $button_color,
+            '/\[button_text_color\]/i' => $button_text_color,
+            '/\[button_hover_color\]/i' => $button_hover_color,
+            '/\[button_hover_text_color\]/i' => $button_hover_text_color,
+            '/\[link_color\]/i' => $link_color,
+            '/\[link_hover_color\]/i' => $link_hover_color,
+            // Handle common typos
+            '/\[buttton_color\]/i' => $button_color, // Triple 't' typo
+        );
+
+        foreach ($replacements as $pattern => $replacement) {
+            $html = preg_replace($pattern, $replacement, $html);
+        }
+
         
         return $html;
     }
@@ -303,24 +320,16 @@ class Chrmrtns_KLA_Email_Templates {
      * Render settings page
      */
     public function render_settings_page() {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('CHRMRTNS: render_settings_page called');
-        }
         
         // Handle form submission directly here
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['chrmrtns_kla_settings_nonce'])) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('CHRMRTNS: POST request detected in render_settings_page');
-            }
             if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_settings_nonce'])), 'chrmrtns_kla_settings_save')) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log('CHRMRTNS: Nonce verified, but form processing handled by admin class');
+                // Call the admin class save_settings method directly
+                if (class_exists('Chrmrtns_KLA_Admin')) {
+                    $admin = new Chrmrtns_KLA_Admin();
+                    $admin->save_settings();
                 }
-                // Form processing is handled by the admin class save_settings method
             } else {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    error_log('CHRMRTNS: Nonce verification failed');
-                }
                 add_settings_error('chrmrtns_kla_settings', 'nonce_failed', esc_html__('Security check failed. Please try again.', 'keyless-auth'), 'error');
             }
         }
@@ -331,6 +340,12 @@ class Chrmrtns_KLA_Email_Templates {
         <h1><?php esc_html_e('Email Template Settings', 'keyless-auth'); ?></h1>
         
         <?php settings_errors('chrmrtns_kla_settings'); ?>
+
+        <?php if (isset($_GET['template_reset'])): ?>
+            <div class="notice notice-success is-dismissible">
+                <p><strong>Template Reset Complete:</strong> All email template settings have been reset to defaults. The template selection is now "Default Template".</p>
+            </div>
+        <?php endif; ?>
         
         <p><?php esc_html_e('Customize the appearance and content of your passwordless login emails.', 'keyless-auth'); ?></p>
         
@@ -346,8 +361,19 @@ class Chrmrtns_KLA_Email_Templates {
             <h2><?php esc_html_e('Custom Template Editor', 'keyless-auth'); ?></h2>
             <?php $this->render_custom_template_editor(); ?>
             
-            <?php submit_button(esc_html__('Save Settings', 'keyless-auth')); ?>
-        </form>
+            <div style="display: flex; gap: 15px; align-items: center; margin-top: 20px;">
+                <div>
+                    <?php submit_button(esc_html__('Save Settings', 'keyless-auth'), 'primary', 'submit', false); ?>
+                </div>
+                </form>
+                <form method="post" action="<?php echo esc_url(admin_url('admin.php?page=keyless-auth-settings')); ?>" style="margin: 0;">
+                    <?php wp_nonce_field('chrmrtns_kla_settings_save', 'chrmrtns_kla_settings_nonce'); ?>
+                    <input type="hidden" name="reset_custom_template" value="1">
+                    <div>
+                        <?php submit_button(esc_html__('Reset Custom Template', 'keyless-auth'), 'secondary', 'reset_template', false, array('onclick' => 'return confirm("Are you sure you want to reset the custom template? This will delete all custom content.");')); ?>
+                    </div>
+                </form>
+            </div>
         
         <?php $this->render_template_help(); ?>
         <?php $this->enqueue_scripts(); ?>
@@ -463,11 +489,6 @@ class Chrmrtns_KLA_Email_Templates {
         $link_color = get_option('chrmrtns_kla_link_color', '#007bff');
         $link_hover_color = get_option('chrmrtns_kla_link_hover_color', '#0056b3');
         
-        // Debug: Log what we're loading
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('CHRMRTNS: Loading button_text_color: ' . $button_text_color);
-            error_log('CHRMRTNS: Loading button_hover_text_color: ' . $button_hover_text_color);
-        }
         
         ?>
         <table class="form-table">
@@ -522,11 +543,14 @@ class Chrmrtns_KLA_Email_Templates {
      */
     private function render_custom_template_editor() {
         $custom_body = get_option('chrmrtns_kla_custom_email_body', '');
-        
-        // If empty, provide the beautiful demo template
+
+
+        // Only provide placeholder content for DISPLAY PURPOSES if completely empty
+        // This does NOT auto-save the content - just shows a helpful starting template
+        $editor_content = $custom_body;
         if (empty($custom_body)) {
             $site_name = get_bloginfo('name');
-            $custom_body = '<div style="font-family: Arial, sans-serif; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;">
+            $editor_content = '<div style="font-family: Arial, sans-serif; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;">
     <div style="background: white; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
         <h1 style="color: #333; text-align: center; margin-bottom: 10px;">Welcome Back!</h1>
         <div style="text-align: center; margin-bottom: 20px;">
@@ -535,7 +559,7 @@ class Chrmrtns_KLA_Email_Templates {
         <p style="font-size: 16px;">Hello <strong>[TO]</strong>,</p>
         <p>Your secure login link for ' . esc_html($site_name) . ' is ready. Click the button below to access your account instantly:</p>
         <div style="text-align: center; margin: 30px 0;">
-            <a href="[LOGIN_URL]" style="display: inline-block; background-color: [BUTTON_COLOR]; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🚀 Access Your Account</a>
+            <a href="[LOGIN_URL]" style="display: inline-block; background-color: [BUTTON_COLOR]; color: [BUTTON_TEXT_COLOR]; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">🚀 Access Your Account</a>
         </div>
         <p style="font-size: 14px; color: #666; text-align: center;">Or copy this link: <br><a href="[LOGIN_URL]" style="color: [LINK_COLOR]; text-decoration: none; word-break: break-all;">[LOGIN_URL]</a></p>
         <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
@@ -554,8 +578,16 @@ class Chrmrtns_KLA_Email_Templates {
         <div id="chrmrtns_kla_custom_template_section" style="<?php echo get_option('chrmrtns_kla_email_template', 'default') !== 'custom' ? 'display: none;' : ''; ?>">
             <h4><?php esc_html_e('Email Body Content', 'keyless-auth'); ?></h4>
             <p><?php esc_html_e('Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility.', 'keyless-auth'); ?></p>
+            <div style="background: #e7f3ff; border-left: 4px solid #2196F3; padding: 12px; margin: 15px 0; border-radius: 4px;">
+                <p style="margin: 0; font-size: 14px;"><strong>💡 Tip:</strong> When switching between Visual and Text modes, the editor may convert placeholders within CSS style attributes to lowercase (e.g., <code>[BUTTON_COLOR]</code> becomes <code>[button_color]</code>). This is normal behavior and both formats work correctly in your emails.</p>
+            </div>
+            <?php if (empty($custom_body)): ?>
+                <p style="background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; margin: 10px 0;">
+                    <strong>Note:</strong> This is a starter template. Edit it as needed and click "Save Settings" to store your changes.
+                </p>
+            <?php endif; ?>
             <?php
-            wp_editor($custom_body, 'chrmrtns_kla_custom_email_body', array(
+            wp_editor($editor_content, 'chrmrtns_kla_custom_email_body', array(
                 'textarea_name' => 'chrmrtns_kla_custom_email_body',
                 'media_buttons' => false,
                 'textarea_rows' => 12,
@@ -568,6 +600,11 @@ class Chrmrtns_KLA_Email_Templates {
                     'relative_urls' => false,
                     'remove_script_host' => false,
                     'convert_urls' => false,
+                    'verify_html' => false,
+                    'cleanup' => false,
+                    'force_p_newlines' => false,
+                    'forced_root_block' => false,
+                    'entity_encoding' => 'raw'
                 ),
                 'quicktags' => array(
                     'buttons' => 'em,strong,link,block,del,ins,img,ul,ol,li,code,more,close'
