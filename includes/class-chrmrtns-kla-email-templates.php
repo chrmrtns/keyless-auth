@@ -1,6 +1,6 @@
 <?php
 /**
- * Email templates functionality for Passwordless Auth
+ * Email templates functionality for Keyless Auth
  * 
  * @since 2.0.1
  */

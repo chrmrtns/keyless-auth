@@ -1,6 +1,6 @@
 <?php
 /**
- * Core authentication functionality for Passwordless Auth
+ * Core authentication functionality for Keyless Auth
  * 
  * @since 2.0.1
  */

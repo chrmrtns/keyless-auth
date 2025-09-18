@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin functionality for Passwordless Auth
+ * Admin functionality for Keyless Auth
  * 
  * @since 2.0.1
  */
