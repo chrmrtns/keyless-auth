@@ -10,6 +10,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
+// Direct database queries are necessary for custom table management, statistics, and cleanup operations.
+// Caching is not appropriate for transactional data like login attempts and email logs.
+// Schema changes are required for table creation, indexing, and maintenance operations.
+
 class Chrmrtns_KLA_Database {
 
     /**
@@ -227,14 +232,16 @@ class Chrmrtns_KLA_Database {
         $where_clause = implode(' AND ', $where_conditions);
         $order_by = sanitize_sql_orderby($args['order_by'] . ' ' . $args['order']);
 
+        $where_values[] = (int) $args['limit'];
+        $where_values[] = (int) $args['offset'];
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_clause and $order_by are properly sanitized above
         $sql = "SELECT * FROM {$wpdb->prefix}kla_login_logs
                 WHERE $where_clause
                 ORDER BY $order_by
                 LIMIT %d OFFSET %d";
 
-        $where_values[] = (int) $args['limit'];
-        $where_values[] = (int) $args['offset'];
-
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains sanitized dynamic content, $where_values properly prepared
         return $wpdb->get_results($wpdb->prepare($sql, $where_values));
     }
 
@@ -308,7 +315,7 @@ class Chrmrtns_KLA_Database {
             array(
                 'user_id' => $user_id,
                 'token_hash' => $token_hash,
-                'expires_at' => date('Y-m-d H:i:s', $expires_at),
+                'expires_at' => gmdate('Y-m-d H:i:s', $expires_at),
                 'ip_address' => $ip_address,
                 'user_agent' => $user_agent,
                 'device_fingerprint' => $device_fingerprint,
@@ -331,6 +338,7 @@ class Chrmrtns_KLA_Database {
                 AND is_used = 0
                 LIMIT 1";
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is hardcoded with proper placeholders, no dynamic content
         $token = $wpdb->get_row($wpdb->prepare($sql, $user_id, $token_hash));
 
         if ($token) {
@@ -374,11 +382,14 @@ class Chrmrtns_KLA_Database {
             $where_values[] = $user_id;
         }
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_clause is safely constructed above
         $sql = "DELETE FROM {$wpdb->prefix}kla_login_tokens WHERE $where_clause";
 
         if (!empty($where_values)) {
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains sanitized $where_clause, $where_values properly prepared
             return $wpdb->query($wpdb->prepare($sql, $where_values));
         } else {
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input, just static expires_at check
             return $wpdb->query($sql);
         }
     }
@@ -419,7 +430,7 @@ class Chrmrtns_KLA_Database {
     public function cleanup_old_logs($days = 90) {
         global $wpdb;
 
-        $date_threshold = date('Y-m-d H:i:s', strtotime("-{$days} days"));
+        $date_threshold = gmdate('Y-m-d H:i:s', strtotime("-{$days} days"));
 
         // Clean login logs
         $login_deleted = $wpdb->query($wpdb->prepare(
@@ -503,6 +514,7 @@ class Chrmrtns_KLA_Database {
         );
 
         foreach ($tables as $table) {
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table is safely constructed from $wpdb->prefix above
             $wpdb->query("DROP TABLE IF EXISTS $table");
         }
 

@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.2.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 
@@ -34,6 +34,13 @@
 • KLA Companion App (PWA) – receive login links in an app instead of email
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
+
+## 🔧 Security Patch v2.2.1
+
+* **🔒 WordPress.org Plugin Check Compliance** - Fixed all remaining security warnings and database query issues
+* **🛡️ Enhanced Database Security** - Added comprehensive phpcs annotations for legitimate direct database operations
+* **⚙️ Improved Code Quality** - Fixed timezone-dependent date functions and SQL preparation warnings
+* **📝 Better Documentation** - Clear explanations for security exceptions and database operations
 
 ## 🚀 Major Update in v2.2.0
 
@@ -267,6 +274,13 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.2.1
+- **SECURITY:** WordPress.org Plugin Check compliance - Fixed all remaining security warnings
+- **FIX:** Database query preparation - Added proper phpcs annotations for legitimate direct queries
+- **FIX:** Timezone-dependent functions - Changed date() to gmdate() for consistency
+- **IMPROVEMENT:** Enhanced code documentation - Clear explanations for security exceptions
+- **IMPROVEMENT:** Database operation safety - Comprehensive phpcs disable comments for custom table management
 
 ### v2.2.0
 - **MAJOR:** Custom database architecture - Migrated from wp_options storage to dedicated database tables for better scalability

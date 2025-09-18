@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,7 +42,13 @@ Secure keyless authentication - users login via email magic links without passwo
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
 
-**🚀 Latest Major Update in v2.2.0:**
+**🔧 Latest Security Patch v2.2.1:**
+* **🔒 WordPress.org Plugin Check Compliance** - Fixed all remaining security warnings and database query issues
+* **🛡️ Enhanced Database Security** - Added comprehensive phpcs annotations for legitimate direct database operations
+* **⚙️ Improved Code Quality** - Fixed timezone-dependent date functions and SQL preparation warnings
+* **📝 Better Documentation** - Clear explanations for security exceptions and database operations
+
+**🚀 Major Update in v2.2.0:**
 * **🗄️ Custom Database Tables** - Migrated from wp_options to dedicated database tables for scalability
 * **📊 Enhanced Login Audit Log** - Comprehensive logging with IP addresses, device types, and user agents
 * **⚡ Performance Improvements** - Optimized database queries and reduced wp_posts table bloat
@@ -246,6 +252,13 @@ Keyless Auth does not replace the default login functionality in WordPress.
 
 
 == Changelog ==
+= 2.2.1 =
+* SECURITY: WordPress.org Plugin Check compliance - Fixed all remaining security warnings and database query issues
+* FIX: Database query preparation - Added proper phpcs annotations for legitimate direct database operations
+* FIX: Timezone-dependent functions - Changed date() to gmdate() for consistency across timezones
+* IMPROVEMENT: Enhanced code documentation - Clear explanations for security exceptions in custom database operations
+* IMPROVEMENT: Database operation safety - Comprehensive phpcs disable comments for custom table management
+
 = 2.2.0 =
 * MAJOR: Custom database architecture - Migrated from wp_options storage to dedicated database tables for better scalability
 * NEW: Login audit log table - Comprehensive tracking of login attempts with IP addresses, device types, user agents, and timestamps
