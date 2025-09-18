@@ -5,6 +5,7 @@
 ![Version](https://img.shields.io/badge/version-2.2.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
+[![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
 
 ## 🚀 Description
 
@@ -190,10 +191,20 @@ Comprehensive nonce verification and input sanitization
 
 ## 📥 Installation
 
-1. Upload the `keyless-auth` folder to `/wp-content/plugins/`
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to **Keyless Auth > Templates** to configure templates and colors
-4. Create a page and use the shortcode `[keyless-auth]`
+### From WordPress.org (Recommended)
+1. Go to **Plugins > Add New** in your WordPress admin
+2. Search for "**Keyless Auth**"
+3. Click **Install Now** and then **Activate**
+4. Go to **Keyless Auth > Templates** to configure templates and colors
+
+### Manual Installation
+1. Download from [WordPress.org](https://wordpress.org/plugins/keyless-auth/) or [GitHub](https://github.com/chrmrtns/keyless-auth)
+2. Upload the `keyless-auth` folder to `/wp-content/plugins/`
+3. Activate the plugin through the 'Plugins' menu in WordPress
+4. Go to **Keyless Auth > Templates** to configure templates and colors
+
+### Getting Started
+Create a page and use the shortcode `[keyless-auth]` to add the passwordless login form.
 
 ## 🎮 Usage
 
@@ -410,6 +421,16 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 - **SECURITY:** Enhanced nonce verification for all forms
 - **IMPROVEMENT:** Professional admin interface
 
+## 🌐 WordPress.org Plugin
+
+This plugin is officially available on WordPress.org!
+
+[![WordPress Plugin: Tested WP Version](https://img.shields.io/wordpress/plugin/tested/keyless-auth.svg)](https://wordpress.org/plugins/keyless-auth/)
+[![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dt/keyless-auth.svg)](https://wordpress.org/plugins/keyless-auth/)
+[![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/stars/keyless-auth.svg)](https://wordpress.org/plugins/keyless-auth/)
+
+**[📦 Install from WordPress.org](https://wordpress.org/plugins/keyless-auth/)**
+
 ## 🤝 Contributing
 
 Issues and pull requests are welcome on [GitHub](https://github.com/chrmrtns/keyless-auth).
@@ -423,7 +444,8 @@ This plugin is licensed under the [GPL v2](https://www.gnu.org/licenses/gpl-2.0.
 **Chris Martens**
 - GitHub: [@chrmrtns](https://github.com/chrmrtns)
 - Plugin URI: [https://github.com/chrmrtns/keyless-auth](https://github.com/chrmrtns/keyless-auth)
+- WordPress.org: [https://wordpress.org/plugins/keyless-auth/](https://wordpress.org/plugins/keyless-auth/)
 
 ---
 
-⭐ **If this plugin helps you, please consider giving it a star on GitHub!**
+⭐ **If this plugin helps you, please consider giving it a star on GitHub and a rating on WordPress.org!**
