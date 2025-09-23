@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.3.0
+Stable tag: 2.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,7 +42,12 @@ Secure keyless authentication - users login via email magic links without passwo
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
 
-**🚀 Latest Features v2.3.0:**
+**🚀 Latest Patch v2.3.1:**
+* **🎨 Fixed Admin Interface Consistency** - Resolved header styling issues on Options and Help pages
+* **🔧 Enhanced CSS Loading** - Admin styles and JavaScript now properly loaded on all admin pages
+* **📐 Logo Display Improvements** - Consistent 40x40px logo sizing across all admin interfaces
+
+**🚀 Major Features v2.3.0:**
 * **🔐 WordPress Login Integration** - Added optional magic login field to wp-login.php with toggle control
 * **⚙️ Enhanced Options Screen** - New dedicated Options page with feature toggles and controls
 * **📖 Comprehensive Help System** - New Help & Instructions page with getting started guide and troubleshooting
@@ -258,6 +263,11 @@ Keyless Auth does not replace the default login functionality in WordPress.
 
 
 == Changelog ==
+= 2.3.1 =
+* FIX: Fixed inconsistent header styling on Options and Help admin pages
+* FIX: Admin CSS and JavaScript now properly loaded on all admin pages
+* IMPROVEMENT: Consistent 40x40px logo display across all admin interfaces
+
 = 2.3.0 =
 * NEW: WordPress Login Integration - Added optional magic login field to wp-login.php with enable/disable toggle
 * NEW: Options Settings Page - Dedicated Options page for enabling/disabling wp-login.php integration and other features

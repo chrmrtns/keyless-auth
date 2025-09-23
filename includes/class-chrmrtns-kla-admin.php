@@ -368,7 +368,9 @@ class Chrmrtns_KLA_Admin {
             'toplevel_page_keyless-auth',
             'keyless-auth_page_keyless-auth-settings',
             'keyless-auth_page_chrmrtns-kla-smtp-settings',
-            'keyless-auth_page_chrmrtns-mail-logs'
+            'keyless-auth_page_chrmrtns-mail-logs',
+            'keyless-auth_page_keyless-auth-options',
+            'keyless-auth_page_keyless-auth-help'
         );
         
         if (in_array($hook, $allowed_pages)) {

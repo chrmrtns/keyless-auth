@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.3.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.3.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -36,7 +36,13 @@
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
 
-## 🚀 Latest Features v2.3.0
+## 🔧 Latest Patch v2.3.1
+
+* **🎨 Fixed Admin Interface Consistency** - Resolved header styling issues on Options and Help pages
+* **🔧 Enhanced CSS Loading** - Admin styles and JavaScript now properly loaded on all admin pages
+* **📐 Logo Display Improvements** - Consistent 40x40px logo sizing across all admin interfaces
+
+## 🚀 Major Features v2.3.0
 
 * **🔐 WordPress Login Integration** - Added optional magic login field to wp-login.php with toggle control
 * **⚙️ Enhanced Options Screen** - New dedicated Options page with feature toggles and controls
@@ -292,6 +298,11 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.3.1
+- **FIX:** Fixed inconsistent header styling on Options and Help admin pages
+- **FIX:** Admin CSS and JavaScript now properly loaded on all admin pages
+- **IMPROVEMENT:** Consistent 40x40px logo display across all admin interfaces
 
 ### v2.3.0
 - **NEW:** WordPress Login Integration - Added optional magic login field to wp-login.php with enable/disable toggle
