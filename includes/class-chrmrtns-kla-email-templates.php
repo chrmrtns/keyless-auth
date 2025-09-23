@@ -336,8 +336,10 @@ class Chrmrtns_KLA_Email_Templates {
         
         echo '<!-- CHRMRTNS: Settings page is loading -->';
         ?>
-        <div class="chrmrtns-badge"></div>
-        <h1><?php esc_html_e('Email Template Settings', 'keyless-auth'); ?></h1>
+        <h1 class="chrmrtns-header">
+            <img src="<?php echo esc_url(CHRMRTNS_KLA_PLUGIN_URL . 'assets/logo_150_150.png'); ?>" alt="<?php esc_attr_e('Keyless Auth Logo', 'keyless-auth'); ?>" class="chrmrtns-header-logo" />
+            <?php esc_html_e('Email Template Settings', 'keyless-auth'); ?>
+        </h1>
         
         <?php settings_errors('chrmrtns_kla_settings'); ?>
 

@@ -100,7 +100,7 @@ class Chrmrtns_KLA_Mail_Logger {
                 // Clear from database
                 global $wpdb;
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for bulk log cleanup, no caching needed
-                $deleted_count = $wpdb->query("DELETE FROM {$wpdb->prefix}kla_mail_logs");
+                $deleted_count = $wpdb->query("DELETE FROM {$wpdb->prefix}kla_mail_logs"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
             } else {
                 // Clear from legacy posts
                 $args = array(
@@ -150,7 +150,7 @@ class Chrmrtns_KLA_Mail_Logger {
                         $log_id = intval($log_id);
                         if ($log_id > 0) {
                             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for bulk log deletion, no caching needed
-                            $result = $wpdb->delete(
+                            $result = $wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
                                 $wpdb->prefix . 'kla_mail_logs',
                                 array('id' => $log_id),
                                 array('%d')
@@ -206,7 +206,7 @@ class Chrmrtns_KLA_Mail_Logger {
                     // Delete from database
                     global $wpdb;
                     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for single log deletion, no caching needed
-                    $deleted = $wpdb->delete(
+                    $deleted = $wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
                         $wpdb->prefix . 'kla_mail_logs',
                         array('id' => $log_id),
                         array('%d')
@@ -383,7 +383,7 @@ class Chrmrtns_KLA_Mail_Logger {
             // Use new database system
             global $wpdb;
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for retrieving mail logs, no caching needed for transactional data
-            $results = $wpdb->get_results($wpdb->prepare(
+            $results = $wpdb->get_results($wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
                 "SELECT id, user_id, recipient_email as recipient, subject, email_body as message, sent_time, status, 'N/A' as from_email
                 FROM {$wpdb->prefix}kla_mail_logs
                 ORDER BY sent_time DESC
@@ -450,7 +450,10 @@ class Chrmrtns_KLA_Mail_Logger {
 
         ?>
         <div class="wrap chrmrtns-wrap">
-            <h1><?php esc_html_e('Mail Logs', 'keyless-auth'); ?></h1>
+            <h1 class="chrmrtns-header">
+                <img src="<?php echo esc_url(CHRMRTNS_KLA_PLUGIN_URL . 'assets/logo_150_150.png'); ?>" alt="<?php esc_attr_e('Keyless Auth Logo', 'keyless-auth'); ?>" class="chrmrtns-header-logo" />
+                <?php esc_html_e('Mail Logs', 'keyless-auth'); ?>
+            </h1>
             <p><?php esc_html_e('Track and monitor all emails sent from your WordPress site. Enable logging to see detailed information about sent emails including recipients, subjects, and content.', 'keyless-auth'); ?></p>
             
             <div class="notice notice-info">
@@ -497,7 +500,7 @@ class Chrmrtns_KLA_Mail_Logger {
                     if (class_exists('Chrmrtns_KLA_Database')) {
                         global $wpdb;
                         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Simple count query for diagnostics, no caching needed
-                        $total_logs = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs");
+                        $total_logs = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
                         echo 'Total mail logs in database: ' . esc_html($total_logs) . '<br>';
                         echo 'Storage system: Custom database tables<br>';
                     } else {

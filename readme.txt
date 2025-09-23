@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.2.1
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,7 +42,13 @@ Secure keyless authentication - users login via email magic links without passwo
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
 
-**🔧 Latest Security Patch v2.2.1:**
+**🚀 Latest Features v2.3.0:**
+* **🔐 WordPress Login Integration** - Added optional magic login field to wp-login.php with toggle control
+* **⚙️ Enhanced Options Screen** - New dedicated Options page with feature toggles and controls
+* **📖 Comprehensive Help System** - New Help & Instructions page with getting started guide and troubleshooting
+* **🛠️ Admin Interface Improvements** - Better organized settings with clear navigation and user guidance
+
+**🔧 Security Patch v2.2.1:**
 * **🔒 WordPress.org Plugin Check Compliance** - Fixed all remaining security warnings and database query issues
 * **🛡️ Enhanced Database Security** - Added comprehensive phpcs annotations for legitimate direct database operations
 * **⚙️ Improved Code Quality** - Fixed timezone-dependent date functions and SQL preparation warnings
@@ -252,6 +258,14 @@ Keyless Auth does not replace the default login functionality in WordPress.
 
 
 == Changelog ==
+= 2.3.0 =
+* NEW: WordPress Login Integration - Added optional magic login field to wp-login.php with enable/disable toggle
+* NEW: Options Settings Page - Dedicated Options page for enabling/disabling wp-login.php integration and other features
+* NEW: Help & Instructions Page - Comprehensive help system with getting started guide, security features overview, and troubleshooting
+* IMPROVEMENT: Enhanced admin menu structure with clearer navigation between Templates, Options, and Help sections
+* IMPROVEMENT: Better user onboarding with step-by-step instructions and common issue solutions
+* IMPROVEMENT: Streamlined settings organization for easier plugin configuration and management
+
 = 2.2.1 =
 * SECURITY: WordPress.org Plugin Check compliance - Fixed all remaining security warnings and database query issues
 * FIX: Database query preparation - Added proper phpcs annotations for legitimate direct database operations

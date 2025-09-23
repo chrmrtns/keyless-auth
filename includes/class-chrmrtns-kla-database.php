@@ -181,9 +181,13 @@ class Chrmrtns_KLA_Database {
         global $wpdb;
 
         // Composite indexes for common queries
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Creating performance indexes for custom tables
         $wpdb->query("CREATE INDEX IF NOT EXISTS idx_mail_logs_user_status ON {$wpdb->prefix}kla_mail_logs (user_id, status)");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Creating performance indexes for custom tables
         $wpdb->query("CREATE INDEX IF NOT EXISTS idx_login_logs_user_time ON {$wpdb->prefix}kla_login_logs (user_id, login_time)");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Creating performance indexes for custom tables
         $wpdb->query("CREATE INDEX IF NOT EXISTS idx_tokens_user_expires ON {$wpdb->prefix}kla_login_tokens (user_id, expires_at)");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Creating performance indexes for custom tables
         $wpdb->query("CREATE INDEX IF NOT EXISTS idx_devices_user_active ON {$wpdb->prefix}kla_user_devices (user_id, is_active)");
     }
 
@@ -242,7 +246,7 @@ class Chrmrtns_KLA_Database {
                 LIMIT %d OFFSET %d";
 
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains sanitized dynamic content, $where_values properly prepared
-        return $wpdb->get_results($wpdb->prepare($sql, $where_values));
+        return $wpdb->get_results($wpdb->prepare($sql, $where_values)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
     }
 
     /**
@@ -255,6 +259,7 @@ class Chrmrtns_KLA_Database {
         $user_agent = $this->get_user_agent();
         $device_type = $this->detect_device_type($user_agent);
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Logging to custom login audit table
         return $wpdb->insert(
             $wpdb->prefix . 'kla_login_logs',
             array(
@@ -280,6 +285,7 @@ class Chrmrtns_KLA_Database {
 
         $ip_address = $this->get_client_ip();
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Logging to custom mail logs table
         return $wpdb->insert(
             $wpdb->prefix . 'kla_mail_logs',
             array(
@@ -310,6 +316,7 @@ class Chrmrtns_KLA_Database {
         $user_agent = $this->get_user_agent();
         $device_fingerprint = $this->generate_device_fingerprint();
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Storing tokens in custom table
         return $wpdb->insert(
             $wpdb->prefix . 'kla_login_tokens',
             array(
@@ -331,6 +338,7 @@ class Chrmrtns_KLA_Database {
     public function validate_login_token($user_id, $token_hash) {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is hardcoded with proper placeholders, no dynamic content
         $sql = "SELECT * FROM {$wpdb->prefix}kla_login_tokens
                 WHERE user_id = %d
                 AND token_hash = %s
@@ -338,11 +346,11 @@ class Chrmrtns_KLA_Database {
                 AND is_used = 0
                 LIMIT 1";
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is hardcoded with proper placeholders, no dynamic content
-        $token = $wpdb->get_row($wpdb->prepare($sql, $user_id, $token_hash));
+        $token = $wpdb->get_row($wpdb->prepare($sql, $user_id, $token_hash)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
         if ($token) {
             // Mark token as used
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating token usage in custom table
             $wpdb->update(
                 $wpdb->prefix . 'kla_login_tokens',
                 array(
@@ -383,14 +391,12 @@ class Chrmrtns_KLA_Database {
         }
 
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_clause is safely constructed above
-        $sql = "DELETE FROM {$wpdb->prefix}kla_login_tokens WHERE $where_clause";
+        $sql = "DELETE FROM {$wpdb->prefix}kla_login_tokens WHERE $where_clause"; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
         if (!empty($where_values)) {
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains sanitized $where_clause, $where_values properly prepared
-            return $wpdb->query($wpdb->prepare($sql, $where_values));
+            return $wpdb->query($wpdb->prepare($sql, $where_values)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
         } else {
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input, just static expires_at check
-            return $wpdb->query($sql);
+            return $wpdb->query($sql); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
         }
     }
 
@@ -403,9 +409,11 @@ class Chrmrtns_KLA_Database {
         $stats = array();
 
         // Total logins
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
         $stats['total_logins'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_login_logs WHERE status = 'success'");
 
         // Logins this month
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
         $stats['logins_this_month'] = $wpdb->get_var(
             "SELECT COUNT(*) FROM {$wpdb->prefix}kla_login_logs
              WHERE status = 'success'
@@ -413,12 +421,15 @@ class Chrmrtns_KLA_Database {
         );
 
         // Failed attempts
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
         $stats['failed_attempts'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_login_logs WHERE status = 'failed'");
 
         // Total emails sent
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
         $stats['emails_sent'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs WHERE status = 'sent'");
 
         // Active tokens
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
         $stats['active_tokens'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_login_tokens WHERE expires_at > NOW() AND is_used = 0");
 
         return $stats;
@@ -433,12 +444,14 @@ class Chrmrtns_KLA_Database {
         $date_threshold = gmdate('Y-m-d H:i:s', strtotime("-{$days} days"));
 
         // Clean login logs
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Maintenance cleanup of old logs
         $login_deleted = $wpdb->query($wpdb->prepare(
             "DELETE FROM {$wpdb->prefix}kla_login_logs WHERE login_time < %s",
             $date_threshold
         ));
 
         // Clean mail logs
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Maintenance cleanup of old logs
         $mail_deleted = $wpdb->query($wpdb->prepare(
             "DELETE FROM {$wpdb->prefix}kla_mail_logs WHERE sent_time < %s",
             $date_threshold
@@ -514,7 +527,7 @@ class Chrmrtns_KLA_Database {
         );
 
         foreach ($tables as $table) {
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table is safely constructed from $wpdb->prefix above
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- $table is safely constructed from $wpdb->prefix above
             $wpdb->query("DROP TABLE IF EXISTS $table");
         }
 

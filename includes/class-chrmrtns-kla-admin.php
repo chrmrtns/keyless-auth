@@ -63,6 +63,24 @@ class Chrmrtns_KLA_Admin {
             'chrmrtns-mail-logs',
             array($this, 'mail_logs_page')
         );
+
+        add_submenu_page(
+            'keyless-auth',
+            __('Options', 'keyless-auth'),
+            __('Options', 'keyless-auth'),
+            'manage_options',
+            'keyless-auth-options',
+            array($this, 'options_page')
+        );
+
+        add_submenu_page(
+            'keyless-auth',
+            __('Help & Instructions', 'keyless-auth'),
+            __('Help', 'keyless-auth'),
+            'manage_options',
+            'keyless-auth-help',
+            array($this, 'help_page')
+        );
     }
     
     /**
@@ -96,7 +114,13 @@ class Chrmrtns_KLA_Admin {
         register_setting('chrmrtns_kla_settings_group', 'chrmrtns_kla_button_hover_text_color', array(
             'sanitize_callback' => 'sanitize_text_field'
         ));
-        
+
+        // Options settings
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_enable_wp_login', array(
+            'sanitize_callback' => array($this, 'sanitize_checkbox'),
+            'default' => '0'
+        ));
+
         add_action('wp_ajax_chrmrtns_kla_save_settings', array($this, 'save_settings'));
         add_action('admin_post_chrmrtns_kla_save_settings', array($this, 'save_settings'));
         
@@ -151,7 +175,10 @@ class Chrmrtns_KLA_Admin {
         
         ?>
         <div class="wrap chrmrtns-wrap">
-            <h1><?php esc_html_e('SMTP Settings', 'keyless-auth'); ?></h1>
+            <h1 class="chrmrtns-header">
+                <img src="<?php echo esc_url(CHRMRTNS_KLA_PLUGIN_URL . 'assets/logo_150_150.png'); ?>" alt="<?php esc_attr_e('Keyless Auth Logo', 'keyless-auth'); ?>" class="chrmrtns-header-logo" />
+                <?php esc_html_e('SMTP Settings', 'keyless-auth'); ?>
+            </h1>
             <p><?php esc_html_e('Configure SMTP settings to ensure reliable email delivery for your passwordless login emails.', 'keyless-auth'); ?></p>
             
             <form action='options.php' method='post'>
@@ -212,8 +239,11 @@ class Chrmrtns_KLA_Admin {
      */
     private function render_main_content() {
         ?>
-        <div class="chrmrtns-badge"></div>
-        <h1><?php esc_html_e('Keyless Auth', 'keyless-auth'); ?> <small>v.<?php echo esc_html(CHRMRTNS_KLA_VERSION); ?></small></h1>
+        <h1 class="chrmrtns-header">
+            <img src="<?php echo esc_url(CHRMRTNS_KLA_PLUGIN_URL . 'assets/logo_150_150.png'); ?>" alt="<?php esc_attr_e('Keyless Auth Logo', 'keyless-auth'); ?>" class="chrmrtns-header-logo" />
+            <?php esc_html_e('Keyless Auth', 'keyless-auth'); ?>
+            <small>v.<?php echo esc_html(CHRMRTNS_KLA_VERSION); ?></small>
+        </h1>
         <p class="chrmrtns-text">
             <?php 
             $successful_logins = get_option('chrmrtns_kla_successful_logins', 0);
@@ -348,10 +378,16 @@ class Chrmrtns_KLA_Admin {
             // Enqueue additional admin styles
             wp_enqueue_style('chrmrtns_kla_admin_style', CHRMRTNS_KLA_PLUGIN_URL . 'assets/admin-style.css', array(), CHRMRTNS_KLA_VERSION);
             
-            // Add logo with correct path and notice width styling
+            // Add updated logo styling in header and notice width styling
             $inline_css = '
-                .chrmrtns-badge { background: url(' . CHRMRTNS_KLA_PLUGIN_URL . 'assets/logo_150_150.png) center 0px no-repeat #007bff; }
+                .chrmrtns-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+                .chrmrtns-header-logo { width: 40px; height: 40px; border-radius: 6px; }
+                .chrmrtns-header small { color: #666; font-weight: normal; margin-left: 10px; }
                 #setting-error-settings_saved { max-width: 800px; }
+                .chrmrtns-badge { display: none; }
+                .chrmrtns_kla_card { position: relative; margin-top: 20px; padding: 1.2em 2em 1.5em; min-width: 600px; max-width: 100%; border: 1px solid #c3c4c7; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); background: #fff; box-sizing: border-box; border-radius: 4px; }
+                .chrmrtns_kla_card h2 { margin-top: 0; color: #23282d; border-bottom: 1px solid #e1e1e1; padding-bottom: 8px; margin-bottom: 15px; }
+                .chrmrtns_kla_card h3 { color: #23282d; margin-top: 20px; margin-bottom: 10px; }
             ';
             wp_add_inline_style('chrmrtns_kla_admin_stylesheet', $inline_css);
             
@@ -574,5 +610,163 @@ class Chrmrtns_KLA_Admin {
         $css = preg_replace('/binding\s*:/i', '', $css); // Remove binding
 
         return sanitize_textarea_field($css);
+    }
+
+    /**
+     * Options page
+     */
+    public function options_page() {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'keyless-auth'));
+        }
+
+        // Handle form submission
+        if (isset($_POST['submit_options']) && isset($_POST['chrmrtns_kla_options_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_options_nonce'])), 'chrmrtns_kla_options_action')) {
+            $enable_wp_login = isset($_POST['chrmrtns_kla_enable_wp_login']) ? '1' : '0';
+            update_option('chrmrtns_kla_enable_wp_login', $enable_wp_login);
+
+            add_settings_error('chrmrtns_kla_options', 'settings_updated', __('Options saved successfully!', 'keyless-auth'), 'updated');
+        }
+
+        settings_errors('chrmrtns_kla_options');
+
+        $enable_wp_login = get_option('chrmrtns_kla_enable_wp_login', '0');
+        ?>
+        <div class="wrap">
+            <h1 class="chrmrtns-header">
+                <img src="<?php echo esc_url(CHRMRTNS_KLA_PLUGIN_URL . 'assets/logo_150_150.png'); ?>" alt="<?php esc_attr_e('Keyless Auth Logo', 'keyless-auth'); ?>" class="chrmrtns-header-logo" />
+                <?php esc_html_e('Keyless Auth - Options', 'keyless-auth'); ?>
+            </h1>
+            <h2><?php esc_html_e('Plugin Options', 'keyless-auth'); ?></h2>
+
+            <form method="post" action="">
+                <?php wp_nonce_field('chrmrtns_kla_options_action', 'chrmrtns_kla_options_nonce'); ?>
+
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_enable_wp_login"><?php esc_html_e('Enable Login on wp-login.php', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <input type="checkbox" id="chrmrtns_kla_enable_wp_login" name="chrmrtns_kla_enable_wp_login" value="1" <?php checked($enable_wp_login, '1'); ?> />
+                            <p class="description">
+                                <?php esc_html_e('Add a magic login field to the WordPress login page (wp-login.php).', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <?php submit_button(__('Save Options', 'keyless-auth'), 'primary', 'submit_options'); ?>
+            </form>
+        </div>
+        <?php
+    }
+
+    /**
+     * Help page
+     */
+    public function help_page() {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'keyless-auth'));
+        }
+        ?>
+        <div class="wrap">
+            <h1 class="chrmrtns-header">
+                <img src="<?php echo esc_url(CHRMRTNS_KLA_PLUGIN_URL . 'assets/logo_150_150.png'); ?>" alt="<?php esc_attr_e('Keyless Auth Logo', 'keyless-auth'); ?>" class="chrmrtns-header-logo" />
+                <?php esc_html_e('Keyless Auth - Help & Instructions', 'keyless-auth'); ?>
+            </h1>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Getting Started', 'keyless-auth'); ?></h2>
+                <p><?php esc_html_e('Keyless Auth allows your users to login without passwords using secure email magic links. Here\'s how to get started:', 'keyless-auth'); ?></p>
+
+                <ol>
+                    <li><strong><?php esc_html_e('Configure SMTP Settings:', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to SMTP tab and configure your email settings for reliable delivery.', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Customize Email Templates:', 'keyless-auth'); ?></strong> <?php esc_html_e('Use the Templates tab to customize how your login emails look.', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Add Login Form:', 'keyless-auth'); ?></strong> <?php esc_html_e('Use the shortcode [keyless-auth] on any page or post.', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Enable wp-login.php (Optional):', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to Options to add magic login to the WordPress login page.', 'keyless-auth'); ?></li>
+                </ol>
+            </div>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Available Shortcodes', 'keyless-auth'); ?></h2>
+                <table class="widefat">
+                    <thead>
+                        <tr>
+                            <th><?php esc_html_e('Shortcode', 'keyless-auth'); ?></th>
+                            <th><?php esc_html_e('Description', 'keyless-auth'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>[keyless-auth]</code></td>
+                            <td><?php esc_html_e('Main passwordless login form', 'keyless-auth'); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('How It Works', 'keyless-auth'); ?></h2>
+                <ol>
+                    <li><?php esc_html_e('User enters their email address or username', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('System generates a secure, time-limited token', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Email is sent with a magic login link', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('User clicks the link and is automatically logged in', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Token expires after 10 minutes for security', 'keyless-auth'); ?></li>
+                </ol>
+            </div>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Security Features', 'keyless-auth'); ?></h2>
+                <ul>
+                    <li><strong><?php esc_html_e('Token Expiration:', 'keyless-auth'); ?></strong> <?php esc_html_e('All login links expire after 10 minutes', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('One-Time Use:', 'keyless-auth'); ?></strong> <?php esc_html_e('Each token can only be used once', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('IP Tracking:', 'keyless-auth'); ?></strong> <?php esc_html_e('Login attempts are logged with IP addresses', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Device Fingerprinting:', 'keyless-auth'); ?></strong> <?php esc_html_e('Tracks device information for audit purposes', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Database Logging:', 'keyless-auth'); ?></strong> <?php esc_html_e('All attempts are logged for security analysis', 'keyless-auth'); ?></li>
+                </ul>
+            </div>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Troubleshooting', 'keyless-auth'); ?></h2>
+                <dl>
+                    <dt><strong><?php esc_html_e('Emails not being sent?', 'keyless-auth'); ?></strong></dt>
+                    <dd><?php esc_html_e('Check your SMTP settings and test with the built-in email tester. Make sure your hosting provider allows email sending.', 'keyless-auth'); ?></dd>
+
+                    <dt><strong><?php esc_html_e('Login links not working?', 'keyless-auth'); ?></strong></dt>
+                    <dd><?php esc_html_e('Verify that tokens haven\'t expired (10 minute limit) and check that the link hasn\'t been used already.', 'keyless-auth'); ?></dd>
+
+                    <dt><strong><?php esc_html_e('Users not receiving emails?', 'keyless-auth'); ?></strong></dt>
+                    <dd><?php esc_html_e('Check spam folders and verify the user\'s email address is correct. Consider configuring DKIM/SPF records.', 'keyless-auth'); ?></dd>
+                </dl>
+            </div>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Advanced Configuration', 'keyless-auth'); ?></h2>
+                <h3><?php esc_html_e('Developer Functions', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('For developers, these functions are available:', 'keyless-auth'); ?></p>
+                <ul>
+                    <li><code>do_shortcode('[keyless-auth]')</code> - <?php esc_html_e('Display login form in templates', 'keyless-auth'); ?></li>
+                </ul>
+
+                <h3><?php esc_html_e('Database Tables', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('Keyless Auth creates these custom tables for optimal performance:', 'keyless-auth'); ?></p>
+                <ul>
+                    <li><code>wp_chrmrtns_kla_login_logs</code> - <?php esc_html_e('Login attempt tracking', 'keyless-auth'); ?></li>
+                    <li><code>wp_chrmrtns_kla_mail_logs</code> - <?php esc_html_e('Email sending logs', 'keyless-auth'); ?></li>
+                    <li><code>wp_chrmrtns_kla_login_tokens</code> - <?php esc_html_e('Secure token storage', 'keyless-auth'); ?></li>
+                    <li><code>wp_chrmrtns_kla_user_devices</code> - <?php esc_html_e('Device fingerprinting', 'keyless-auth'); ?></li>
+                </ul>
+            </div>
+        </div>
+        <?php
+    }
+
+    /**
+     * Sanitize checkbox values
+     */
+    public function sanitize_checkbox($input) {
+        return ($input === '1' || $input === 1 || $input === true) ? '1' : '0';
     }
 }

@@ -22,6 +22,10 @@ class Chrmrtns_KLA_Core {
         add_action('template_redirect', array($this, 'handle_form_submission'));
         add_shortcode('keyless-auth', array($this, 'render_login_form'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
+
+        // wp-login.php integration
+        add_action('login_form', array($this, 'chrmrtns_kla_add_wp_login_field'));
+        add_action('authenticate', array($this, 'chrmrtns_kla_handle_wp_login_request'), 20, 3);
     }
     
     /**
@@ -350,5 +354,86 @@ class Chrmrtns_KLA_Core {
             wp_register_style('chrmrtns_frontend_stylesheet', CHRMRTNS_KLA_PLUGIN_URL . 'assets/style-front-end.css', array(), CHRMRTNS_KLA_VERSION);
             wp_enqueue_style('chrmrtns_frontend_stylesheet');
         }
+    }
+
+    /**
+     * Add magic login field to wp-login.php
+     */
+    public function chrmrtns_kla_add_wp_login_field() {
+        // Only add field if the option is enabled
+        if (get_option('chrmrtns_kla_enable_wp_login', '0') !== '1') {
+            return;
+        }
+        ?>
+        <div id="chrmrtns-kla-wp-login-wrapper" style="margin: 15px 0; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9;">
+            <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;"><?php esc_html_e('Magic Login (No Password Required)', 'keyless-auth'); ?></h3>
+            <p style="margin: 0 0 10px 0; font-size: 12px; color: #666;">
+                <?php esc_html_e('Enter your email address to receive a secure login link.', 'keyless-auth'); ?>
+            </p>
+
+            <form id="chrmrtns-kla-wp-login-form" method="post" action="">
+                <?php wp_nonce_field('chrmrtns_kla_wp_login', 'chrmrtns_kla_wp_login_nonce'); ?>
+                <input type="hidden" name="chrmrtns_kla_wp_login_request" value="1" />
+
+                <p>
+                    <label for="chrmrtns_kla_wp_login_email" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                        <?php esc_html_e('Email or Username:', 'keyless-auth'); ?>
+                    </label>
+                    <input type="text"
+                           id="chrmrtns_kla_wp_login_email"
+                           name="chrmrtns_kla_wp_login_email"
+                           class="input"
+                           size="20"
+                           style="width: 100%;"
+                           placeholder="<?php esc_attr_e('Enter email or username', 'keyless-auth'); ?>"
+                           required />
+                </p>
+
+                <p>
+                    <input type="submit"
+                           name="chrmrtns_kla_wp_login_submit"
+                           id="chrmrtns_kla_wp_login_submit"
+                           class="button button-primary button-large"
+                           value="<?php esc_attr_e('Send Magic Link', 'keyless-auth'); ?>"
+                           style="width: 100%;" />
+                </p>
+            </form>
+        </div>
+        <?php
+    }
+
+    /**
+     * Handle magic login request from wp-login.php
+     */
+    public function chrmrtns_kla_handle_wp_login_request($user, $username, $password) {
+        // Only handle if this is our magic login request
+        if (!isset($_POST['chrmrtns_kla_wp_login_request']) ||
+            !isset($_POST['chrmrtns_kla_wp_login_nonce']) ||
+            !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_wp_login_nonce'])), 'chrmrtns_kla_wp_login')) {
+            return $user;
+        }
+
+        // Get the email/username from our custom field
+        if (!isset($_POST['chrmrtns_kla_wp_login_email'])) {
+            return $user;
+        }
+        $user_input = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_wp_login_email']));
+
+        if (empty($user_input)) {
+            return new WP_Error('empty_field', __('Please enter your email address or username.', 'keyless-auth'));
+        }
+
+        // Process the magic login request (reuse existing logic)
+        $result = $this->process_login_request($user_input);
+
+        if (is_wp_error($result)) {
+            return $result;
+        }
+
+        // Don't actually log the user in yet - they need to click the email link
+        // Return an error that will be displayed as a success message
+        return new WP_Error('magic_link_sent',
+            __('Magic login link sent! Check your email and click the link to login.', 'keyless-auth')
+        );
     }
 }

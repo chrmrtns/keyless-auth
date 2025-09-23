@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.2.1-blue.svg)
+![Version](https://img.shields.io/badge/version-2.3.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -35,6 +35,13 @@
 • KLA Companion App (PWA) – receive login links in an app instead of email
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
 • Two-Factor Authentication – extra security via Telegram, app-based code, or similar
+
+## 🚀 Latest Features v2.3.0
+
+* **🔐 WordPress Login Integration** - Added optional magic login field to wp-login.php with toggle control
+* **⚙️ Enhanced Options Screen** - New dedicated Options page with feature toggles and controls
+* **📖 Comprehensive Help System** - New Help & Instructions page with getting started guide and troubleshooting
+* **🛠️ Admin Interface Improvements** - Better organized settings with clear navigation and user guidance
 
 ## 🔧 Security Patch v2.2.1
 
@@ -285,6 +292,14 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.3.0
+- **NEW:** WordPress Login Integration - Added optional magic login field to wp-login.php with enable/disable toggle
+- **NEW:** Options Settings Page - Dedicated Options page for enabling/disabling wp-login.php integration and other features
+- **NEW:** Help & Instructions Page - Comprehensive help system with getting started guide, security features overview, and troubleshooting
+- **IMPROVEMENT:** Enhanced admin menu structure with clearer navigation between Templates, Options, and Help sections
+- **IMPROVEMENT:** Better user onboarding with step-by-step instructions and common issue solutions
+- **IMPROVEMENT:** Streamlined settings organization for easier plugin configuration and management
 
 ### v2.2.1
 - **SECURITY:** WordPress.org Plugin Check compliance - Fixed all remaining security warnings

@@ -45,23 +45,62 @@
 }
 
 .chrmrtns-badge{
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	color:#FDFDFD;
-	display: inline-block;
-    font-size: 14px;
-    font-weight: 600;
-    width: 150px;
-	height: 30px;
-	margin-bottom:25px;
-    padding-top: 160px;
-    text-align: center;
-    text-rendering: optimizelegibility;
+	display: none;
 }
 
-.chrmrtns-badge{
-	background:url(logo_150_150.png) center 0px no-repeat #007bff;
+.chrmrtns-header {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin-bottom: 20px;
+}
+
+.chrmrtns-header-logo {
+	width: 40px;
+	height: 40px;
+	border-radius: 6px;
+}
+
+.chrmrtns-header small {
+	color: #666;
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+/* Ensure logo sizing is consistent across all admin pages */
+.chrmrtns-header-logo {
+	width: 40px !important;
+	height: 40px !important;
+	border-radius: 6px;
+	object-fit: cover;
+}
+
+/* Card styling for help and info sections */
+.chrmrtns_kla_card {
+	position: relative;
+	margin-top: 20px;
+	padding: 1.2em 2em 1.5em;
+	min-width: 600px;
+	max-width: 100%;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+	background: #fff;
+	box-sizing: border-box;
+	border-radius: 4px;
+}
+
+.chrmrtns_kla_card h2 {
+	margin-top: 0;
+	color: #23282d;
+	border-bottom: 1px solid #e1e1e1;
+	padding-bottom: 8px;
+	margin-bottom: 15px;
+}
+
+.chrmrtns_kla_card h3 {
+	color: #23282d;
+	margin-top: 20px;
+	margin-bottom: 10px;
 }
 
 
