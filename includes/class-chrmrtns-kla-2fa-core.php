@@ -172,7 +172,9 @@ class Chrmrtns_KLA_2FA_Core {
      * @return bool
      */
     public function user_needs_2fa($user_id) {
-        return $this->user_has_2fa($user_id) || $this->user_role_requires_2fa($user_id);
+        // Only require 2FA verification if user actually has 2FA set up
+        // Role requirements without 2FA setup should go through grace period logic instead
+        return $this->user_has_2fa($user_id);
     }
 
     /**
