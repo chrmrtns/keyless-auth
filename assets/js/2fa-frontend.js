@@ -6,52 +6,34 @@
  */
 
 // Test script loading BEFORE jQuery
-console.log('2FA frontend script file loaded - BEFORE jQuery');
 
 jQuery(document).ready(function($) {
     'use strict';
 
-    console.log('2FA Frontend script loaded');
 
-    // Debug: Check if backup codes button exists FIRST
-    const $generateBackupBtn = $('#chrmrtns-generate-backup-codes');
-    console.log('Generate backup codes button found:', $generateBackupBtn.length > 0);
-    console.log('Button element:', $generateBackupBtn.length > 0 ? $generateBackupBtn[0] : 'not found');
-    console.log('Button text:', $generateBackupBtn.length > 0 ? $generateBackupBtn.text() : 'N/A');
-
-    // Debug: Check if required JavaScript objects are available
-    console.log('chrmrtns_2fa object available:', typeof chrmrtns_2fa !== 'undefined');
-    console.log('chrmrtns_2fa contents:', typeof chrmrtns_2fa !== 'undefined' ? chrmrtns_2fa : 'undefined');
 
     // Add flag to prevent accidental reloads
     window.chrmrtnsPreventReload = false;
-    console.log('QRCode available on DOM ready:', typeof QRCode !== 'undefined');
-    console.log('QRCode object:', typeof QRCode !== 'undefined' ? QRCode : 'undefined');
 
     // Generate QR code if container exists
     const qrContainer = $('#chrmrtns-2fa-qrcode');
-    console.log('QR Container found:', qrContainer.length > 0);
 
     if (qrContainer.length) {
         let totpUri = qrContainer.data('totp-uri');
-        console.log('Original TOTP URI:', totpUri);
 
         if (totpUri) {
             try {
                 // Decode HTML entities (especially &amp; to &)
                 const tempDiv = $('<div>').html(totpUri);
                 totpUri = tempDiv.text();
-                console.log('Decoded TOTP URI:', totpUri);
 
 
                 if (typeof QRCode !== 'undefined') {
-                    console.log('QRCode library available, generating QR code');
                     qrContainer.empty();
                     // Wait a bit to ensure the library is fully loaded
                     setTimeout(function() {
                         try {
-                            console.log('Attempting to create QR code with URI:', totpUri);
-                            const qrcode = new QRCode(qrContainer[0], {
+                                const qrcode = new QRCode(qrContainer[0], {
                                 text: totpUri,
                                 width: 200,
                                 height: 200,
@@ -59,22 +41,18 @@ jQuery(document).ready(function($) {
                                 colorLight: '#ffffff',
                                 correctLevel: QRCode.CorrectLevel.M
                             });
-                            console.log('QR code created successfully');
                         } catch (qrError) {
                             console.error('QR code generation error:', qrError);
                             qrContainer.html('<div class="chrmrtns-qr-error">Unable to generate QR code. Please use manual entry below.</div>');
                         }
                     }, 100);
                 } else {
-                    console.log('QRCode library not available on first check, waiting...');
                     // Try again after a short delay in case the library is loading
                     setTimeout(function() {
                         if (typeof QRCode !== 'undefined') {
-                            console.log('QRCode library available after delay, generating QR code');
-                            qrContainer.empty();
+                                qrContainer.empty();
                             try {
-                                console.log('Attempting to create QR code with URI (delayed):', totpUri);
-                                const qrcode = new QRCode(qrContainer[0], {
+                                    const qrcode = new QRCode(qrContainer[0], {
                                     text: totpUri,
                                     width: 200,
                                     height: 200,
@@ -82,14 +60,12 @@ jQuery(document).ready(function($) {
                                     colorLight: '#ffffff',
                                     correctLevel: QRCode.CorrectLevel.M
                                 });
-                                console.log('QR code created successfully after delay');
                             } catch (qrError) {
                                 console.error('QR code generation error after delay:', qrError);
                                 qrContainer.html('<div class="chrmrtns-qr-error">Unable to generate QR code. Please use manual entry below.</div>');
                             }
                         } else {
-                            console.log('QRCode library still not available after delay');
-                            qrContainer.html('<div class="chrmrtns-qr-error">QRCode library not loaded. Please refresh the page.</div>');
+                                qrContainer.html('<div class="chrmrtns-qr-error">QRCode library not loaded. Please refresh the page.</div>');
                         }
                     }, 500);
                 }
@@ -101,7 +77,6 @@ jQuery(document).ready(function($) {
         }
     }
 
-    console.log('DEBUG: After QR code section, continuing with form handlers');
 
     // 2FA Setup Form
     $('#chrmrtns-2fa-setup-form').on('submit', function(e) {
@@ -187,21 +162,17 @@ jQuery(document).ready(function($) {
         }
     });
 
-    console.log('DEBUG: Reached backup codes section');
 
     // Generate Backup Codes
-    console.log('Attempting to bind click handler to backup codes button');
 
     // Try multiple approaches to ensure the handler gets bound
     // Approach 1: Direct binding
     $('#chrmrtns-generate-backup-codes').on('click', function() {
-        console.log('CLICK HANDLER TRIGGERED: Generate backup codes clicked (direct binding)!');
         handleGenerateBackupCodes.call(this);
     });
 
     // Approach 2: Delegated event binding (in case button is dynamically loaded)
     $(document).on('click', '#chrmrtns-generate-backup-codes', function() {
-        console.log('CLICK HANDLER TRIGGERED: Generate backup codes clicked (delegated binding)!');
         handleGenerateBackupCodes.call(this);
     });
 
@@ -213,7 +184,6 @@ jQuery(document).ready(function($) {
 
         // Set flag to prevent any automatic reloads
         window.chrmrtnsPreventReload = true;
-        console.log('Set chrmrtnsPreventReload to true');
 
         const $button = $(this);
         const originalText = $button.text();
@@ -228,25 +198,19 @@ jQuery(document).ready(function($) {
                 nonce: chrmrtns_2fa.nonce
             },
             success: function(response) {
-                console.log('Backup codes generation response:', response);
                 if (response.success) {
-                    console.log('SUCCESS: Showing backup codes modal');
                     // Don't show success message to avoid any interference
                     if (response.data.backup_codes) {
-                        console.log('Opening modal with codes:', response.data.backup_codes.length);
                         showBackupCodesModal(response.data.backup_codes, false); // false = don't auto-reload
                     }
                 } else {
-                    console.log('ERROR:', response.data);
                     showMessage(response.data || chrmrtns_2fa.strings.error, 'error');
                 }
             },
             error: function() {
-                console.log('AJAX ERROR');
                 showMessage(chrmrtns_2fa.strings.error, 'error');
             },
             complete: function() {
-                console.log('AJAX COMPLETE');
                 $button.prop('disabled', false).text(originalText);
             }
         });
@@ -325,8 +289,6 @@ jQuery(document).ready(function($) {
      * @param {boolean} reloadOnClose - Whether to reload page when modal is closed
      */
     function showBackupCodesModal(codes, reloadOnClose = false) {
-        console.log('showBackupCodesModal called with reloadOnClose:', reloadOnClose);
-        console.log('Number of codes:', codes.length);
 
         // Remove any existing modals first
         $('#chrmrtns-backup-modal').remove();
