@@ -50,6 +50,22 @@ Secure keyless authentication - users login via email magic links without passwo
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
 • Telegram Support – receive login links via Telegram Bot
 
+
+
+## 🚀 Latest Updates
+
+### v2.4.1 - Stability Patch (September 25, 2024)
+**Clean, production-ready patch focusing on stability and compliance**
+
+* **🔧 PATCH:** Temporarily disabled 2FA authentication hooks to resolve login conflicts - emergency mode and grace period functionality fully operational
+* **🎨 IMPROVEMENT:** Enhanced grace period notices with dynamic colors and emojis based on urgency (red for <3 days, yellow for 4-7 days, blue for 8+ days)
+* **✅ FIX:** Removed all debug code to comply with WordPress.org Plugin Check requirements
+* **✅ FIX:** Fixed timezone function warnings by removing development date() calls
+* **✅ FIX:** Removed .DS_Store hidden files for full WordPress.org compliance
+* **✅ FIX:** Implemented proper singleton pattern to prevent multiple class instantiation
+* **🛡️ STABILITY:** Clean, production-ready code with all WordPress.org compliance issues resolved
+* **📝 NOTE:** Full 2FA authentication functionality will be restored in v2.4.2 with proper conflict resolution
+
 **🚀 Major Update v2.4.0:**
 * **🔐 Two-Factor Authentication (2FA)** - Complete TOTP-based 2FA system with QR code setup and secure token generation
 * **👥 Role-Based 2FA Requirements** - Configure specific user roles to require 2FA authentication
