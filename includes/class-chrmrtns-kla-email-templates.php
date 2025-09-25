@@ -677,6 +677,210 @@ class Chrmrtns_KLA_Email_Templates {
     }
     
     /**
+     * Get 2FA notification email template
+     *
+     * @param string $to User email
+     * @param string $user_name User display name
+     * @param int $grace_days Grace period remaining
+     * @param string $setup_url URL to setup 2FA
+     * @return string Email HTML content
+     */
+    public function get_2fa_notification_template($to, $user_name, $grace_days, $setup_url) {
+        $site_name = get_bloginfo('name');
+        $site_url = get_site_url();
+
+        $button_color = get_option('chrmrtns_kla_button_color', '#007bff');
+        $button_hover_color = get_option('chrmrtns_kla_button_hover_color', '#0056b3');
+        $button_text_color = get_option('chrmrtns_kla_button_text_color', '#ffffff');
+
+        $content = '<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>' . esc_html__('Account Security Setup', 'keyless-auth') . ' - ' . esc_html($site_name) . '</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: ' . esc_attr($button_color) . ';
+            color: ' . esc_attr($button_text_color) . ';
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: ' . esc_attr($button_hover_color) . ';
+        }
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .urgent-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .steps {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .steps li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">[Security] ' . esc_html($site_name) . '</div>
+            <h1 class="title">' . esc_html__('Account Security Setup', 'keyless-auth') . '</h1>
+        </div>
+
+        <div class="content">
+            <p>' . sprintf(
+                /* translators: %s: user display name */
+                esc_html__('Hello %s,', 'keyless-auth'),
+                esc_html($user_name)
+            ) . '</p>
+
+            <p>' . esc_html__('We are updating account settings for all users. Your account needs additional verification setup to continue accessing your dashboard.', 'keyless-auth') . '</p>';
+
+        if ($grace_days > 0) {
+            if ($grace_days <= 3) {
+                $content .= '<div class="urgent-box">
+                    <strong>' . esc_html__('Setup Reminder', 'keyless-auth') . '</strong><br>
+                    ' . sprintf(
+                        /* translators: %d: number of days remaining */
+                        esc_html__('Please complete account verification within %d days to maintain access.', 'keyless-auth'),
+                        $grace_days
+                    ) . '
+                </div>';
+            } elseif ($grace_days <= 7) {
+                $content .= '<div class="warning-box">
+                    <strong>' . esc_html__('Setup Reminder', 'keyless-auth') . '</strong><br>
+                    ' . sprintf(
+                        /* translators: %d: number of days remaining */
+                        esc_html__('Please complete account verification within %d days.', 'keyless-auth'),
+                        $grace_days
+                    ) . '
+                </div>';
+            } else {
+                $content .= '<div class="info-box">
+                    <strong>' . esc_html__('Setup Needed', 'keyless-auth') . '</strong><br>
+                    ' . sprintf(
+                        /* translators: %d: number of days remaining */
+                        esc_html__('Please complete account verification within %d days.', 'keyless-auth'),
+                        $grace_days
+                    ) . '
+                </div>';
+            }
+        }
+
+        $content .= '<div class="steps">
+                <h3>' . esc_html__('Setup Steps:', 'keyless-auth') . '</h3>
+                <ol>
+                    <li>' . esc_html__('Download a verification app (Google Authenticator, Authy, or similar)', 'keyless-auth') . '</li>
+                    <li>' . esc_html__('Click the button below to access your account settings', 'keyless-auth') . '</li>
+                    <li>' . esc_html__('Scan the QR code with your verification app', 'keyless-auth') . '</li>
+                    <li>' . esc_html__('Enter the 6-digit code to complete setup', 'keyless-auth') . '</li>
+                    <li>' . esc_html__('Save your backup codes safely', 'keyless-auth') . '</li>
+                </ol>
+            </div>
+
+            <div class="button-container">
+                <a href="' . esc_url($setup_url) . '" class="button">' . esc_html__('Login to Setup', 'keyless-auth') . '</a>
+            </div>
+
+            <p><strong>' . esc_html__('Why is this important?', 'keyless-auth') . '</strong></p>
+            <p>' . esc_html__('Account verification helps protect your data by adding a second step to the login process. This keeps your account safe even if someone knows your password.', 'keyless-auth') . '</p>
+
+            <p>' . esc_html__('If you have any questions or need assistance, please contact our support team.', 'keyless-auth') . '</p>
+        </div>
+
+        <div class="footer">
+            <p>' . sprintf(
+                /* translators: 1: site name, 2: site URL */
+                esc_html__('This email was sent from %1$s (%2$s)', 'keyless-auth'),
+                esc_html($site_name),
+                esc_url($site_url)
+            ) . '</p>
+            <p>' . esc_html__('This is an automated message. Please do not reply to this email.', 'keyless-auth') . '</p>
+        </div>
+    </div>
+</body>
+</html>';
+
+        return $content;
+    }
+
+    /**
      * Enqueue scripts for the settings page
      */
     private function enqueue_scripts() {

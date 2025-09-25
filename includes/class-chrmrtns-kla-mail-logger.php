@@ -25,6 +25,9 @@ class Chrmrtns_KLA_Mail_Logger {
         
         add_action('admin_init', array($this, 'handle_mail_logs_actions'));
         add_filter('wp_mail', array($this, 'log_mail_event'), 10, 1);
+        add_action('wp_mail_failed', array($this, 'log_mail_failure'), 10, 1);
+        // Hook to update successful emails after wp_mail completes
+        add_action('shutdown', array($this, 'update_pending_mail_logs'), 1);
     }
     
     /**
@@ -226,6 +229,85 @@ class Chrmrtns_KLA_Mail_Logger {
                 }
             }
         }
+
+        // Handle resending a mail log
+        if (isset($_POST['chrmrtns_kla_resend_log']) && isset($_POST['chrmrtns_kla_resend_log_id'])) {
+            if (!isset($_POST['chrmrtns_kla_resend_log_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_resend_log_nonce'])), 'chrmrtns_kla_resend_mail_log')) {
+                add_settings_error(
+                    'chrmrtns_kla_mail_logs_settings',
+                    'chrmrtns_kla_resend_log_nonce_failed',
+                    __('Security check failed. Please refresh the page and try again.', 'keyless-auth'),
+                    'error'
+                );
+                return;
+            }
+
+            $log_id = intval($_POST['chrmrtns_kla_resend_log_id']);
+            if ($log_id > 0) {
+                $log_data = $this->get_mail_log_by_id($log_id);
+                if ($log_data) {
+                    // Temporarily disable our logging hooks to prevent double logging
+                    remove_filter('wp_mail', array($this, 'log_mail_event'));
+                    remove_action('wp_mail_failed', array($this, 'log_mail_failure'));
+
+                    // Resend the email
+                    $result = wp_mail(
+                        $log_data['to'],
+                        $log_data['subject'],
+                        $log_data['message'],
+                        $log_data['headers'] ?? '',
+                        $log_data['attachments'] ?? array()
+                    );
+
+                    // Re-enable logging hooks
+                    add_filter('wp_mail', array($this, 'log_mail_event'), 10, 1);
+                    add_action('wp_mail_failed', array($this, 'log_mail_failure'), 10, 1);
+
+                    if ($result) {
+                        add_settings_error(
+                            'chrmrtns_kla_mail_logs_settings',
+                            'chrmrtns_mail_resent',
+                            __('Email resent successfully!', 'keyless-auth'),
+                            'updated'
+                        );
+                    } else {
+                        add_settings_error(
+                            'chrmrtns_kla_mail_logs_settings',
+                            'chrmrtns_mail_resend_failed',
+                            __('Failed to resend email. Please check your SMTP settings.', 'keyless-auth'),
+                            'error'
+                        );
+                    }
+                } else {
+                    add_settings_error(
+                        'chrmrtns_kla_mail_logs_settings',
+                        'chrmrtns_log_not_found',
+                        __('Mail log not found.', 'keyless-auth'),
+                        'error'
+                    );
+                }
+            }
+        }
+
+        // Handle fixing pending mail logs
+        if (isset($_POST['chrmrtns_kla_fix_pending_logs'])) {
+            if (class_exists('Chrmrtns_KLA_Database')) {
+                global $wpdb;
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for bulk status update, no caching needed
+                $updated_count = $wpdb->query("UPDATE {$wpdb->prefix}kla_mail_logs SET status = 'sent' WHERE status = 'pending'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+
+                add_settings_error(
+                    'chrmrtns_kla_mail_logs_settings',
+                    'chrmrtns_kla_pending_logs_fixed',
+                    sprintf(
+                        /* translators: %d: number of fixed mail logs */
+                        __('Successfully marked %d pending emails as sent.', 'keyless-auth'),
+                        $updated_count
+                    ),
+                    'updated'
+                );
+            }
+        }
     }
     
     /**
@@ -298,7 +380,11 @@ class Chrmrtns_KLA_Mail_Logger {
         // Use new database system if available
         if (class_exists('Chrmrtns_KLA_Database')) {
             $database = new Chrmrtns_KLA_Database();
-            $database->log_email($user_id, $to, $subject, $message, 'sent', null, 'default');
+            // Store the log ID for potential failure updating
+            $log_id = $database->log_email($user_id, $to, $subject, $message, 'pending', null, 'default');
+
+            // Store temporarily for failure handler
+            set_transient('chrmrtns_kla_last_mail_log_id', $log_id, 60);
 
             // Clean up old logs
             $size_limit = get_option('chrmrtns_kla_mail_log_size_limit', 100);
@@ -434,6 +520,53 @@ class Chrmrtns_KLA_Mail_Logger {
     }
 
     /**
+     * Get a specific mail log by ID for resending
+     *
+     * @param int $log_id Mail log ID
+     * @return array|null Log data or null if not found
+     */
+    private function get_mail_log_by_id($log_id) {
+        if (class_exists('Chrmrtns_KLA_Database')) {
+            // Use new database system
+            global $wpdb;
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for retrieving single mail log, no caching needed
+            $result = $wpdb->get_row($wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                "SELECT id, user_id, recipient_email as recipient, subject, email_body as message, sent_time, status
+                FROM {$wpdb->prefix}kla_mail_logs
+                WHERE id = %d",
+                $log_id
+            ), ARRAY_A);
+
+            if ($result) {
+                return array(
+                    'id' => $result['id'],
+                    'to' => $result['recipient'],
+                    'subject' => $result['subject'],
+                    'message' => $result['message'],
+                    'headers' => '', // Headers not stored in current schema
+                    'attachments' => array() // Attachments not stored
+                );
+            }
+        } else {
+            // Use legacy post system
+            $post = get_post($log_id);
+            if ($post && $post->post_type === 'chrmrtns_kla_logs') {
+                $meta = get_post_meta($log_id);
+                return array(
+                    'id' => $log_id,
+                    'to' => $meta['to'][0] ?? '',
+                    'subject' => $meta['subject'][0] ?? '',
+                    'message' => $meta['message'][0] ?? '',
+                    'headers' => $meta['headers'][0] ?? '',
+                    'attachments' => maybe_unserialize($meta['attachments'][0] ?? array())
+                );
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Render mail logs page
      */
     public function render_mail_logs_page() {
@@ -514,6 +647,7 @@ class Chrmrtns_KLA_Mail_Logger {
                 <!-- Bulk Actions -->
                 <form method="post" action="" id="chrmrtns-mail-logs-form">
                     <?php wp_nonce_field('chrmrtns_kla_bulk_delete_mail_logs', 'chrmrtns_kla_bulk_delete_nonce'); ?>
+                    <?php wp_nonce_field('chrmrtns_kla_clear_mail_logs', 'chrmrtns_kla_clear_logs_nonce'); ?>
 
                     <div class="tablenav top">
                         <div class="alignleft actions bulkactions">
@@ -528,6 +662,10 @@ class Chrmrtns_KLA_Mail_Logger {
                             <button type="submit" name="chrmrtns_kla_clear_mail_logs" class="button delete"
                                 onclick="return confirm('<?php echo esc_attr(__('Are you sure you want to delete all mail logs? This action cannot be undone.', 'keyless-auth')); ?>');">
                                 <?php esc_html_e('Clear All Logs', 'keyless-auth'); ?>
+                            </button>
+                            <button type="submit" name="chrmrtns_kla_fix_pending_logs" class="button"
+                                onclick="return confirm('<?php echo esc_attr(__('This will mark all pending emails as sent. Are you sure?', 'keyless-auth')); ?>');">
+                                <?php esc_html_e('Fix Pending Status', 'keyless-auth'); ?>
                             </button>
                         </div>
                         <div class="clear"></div>
@@ -571,6 +709,11 @@ class Chrmrtns_KLA_Mail_Logger {
                                     </td>
                                     <td>
                                         <button type="button" class="button button-small" onclick="chrmrtnsShowEmailContent(<?php echo esc_attr($log['id']); ?>)"><?php esc_html_e('View Content', 'keyless-auth'); ?></button>
+                                        <form method="post" style="display: inline;" onsubmit="return confirm('<?php echo esc_attr(__('Are you sure you want to resend this email?', 'keyless-auth')); ?>');">
+                                            <?php wp_nonce_field('chrmrtns_kla_resend_mail_log', 'chrmrtns_kla_resend_log_nonce'); ?>
+                                            <input type="hidden" name="chrmrtns_kla_resend_log_id" value="<?php echo esc_attr($log['id']); ?>">
+                                            <?php submit_button(__('Resend', 'keyless-auth'), 'secondary button-small', 'chrmrtns_kla_resend_log', false); ?>
+                                        </form>
                                         <form method="post" style="display: inline;" onsubmit="return confirm('<?php echo esc_attr(__('Are you sure you want to delete this log?', 'keyless-auth')); ?>');">
                                             <?php wp_nonce_field('chrmrtns_kla_delete_mail_log', 'chrmrtns_kla_delete_log_nonce'); ?>
                                             <input type="hidden" name="chrmrtns_kla_delete_log_id" value="<?php echo esc_attr($log['id']); ?>">
@@ -641,5 +784,68 @@ class Chrmrtns_KLA_Mail_Logger {
             <?php endif; ?>
         </div>
         <?php
+    }
+
+    /**
+     * Handle email sending failures
+     */
+    public function log_mail_failure($wp_error) {
+        if (!get_option('chrmrtns_kla_mail_logging_enabled', '0')) {
+            return;
+        }
+
+        $log_id = get_transient('chrmrtns_kla_last_mail_log_id');
+        if (!$log_id) {
+            return;
+        }
+
+        // Update the status to failed with error message
+        if (class_exists('Chrmrtns_KLA_Database')) {
+            $database = new Chrmrtns_KLA_Database();
+            global $wpdb;
+
+            $error_message = $wp_error->get_error_message();
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for updating mail log status on failure, no caching needed
+            $wpdb->update(
+                $wpdb->prefix . 'chrmrtns_kla_mail_logs',
+                array(
+                    'status' => 'failed',
+                    'smtp_response' => sanitize_text_field($error_message)
+                ),
+                array('id' => $log_id),
+                array('%s', '%s'),
+                array('%d')
+            );
+        }
+
+        // Clean up transient
+        delete_transient('chrmrtns_kla_last_mail_log_id');
+    }
+
+    /**
+     * Update pending mail logs to 'sent' if no failure occurred
+     */
+    public function update_pending_mail_logs() {
+        $log_id = get_transient('chrmrtns_kla_last_mail_log_id');
+        if (!$log_id) {
+            return;
+        }
+
+        // If we reach here and the transient still exists, it means wp_mail didn't fail
+        if (class_exists('Chrmrtns_KLA_Database')) {
+            global $wpdb;
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for updating mail log status on success, no caching needed
+            $wpdb->update(
+                $wpdb->prefix . 'chrmrtns_kla_mail_logs',
+                array('status' => 'sent'),
+                array('id' => $log_id),
+                array('%s'),
+                array('%d')
+            );
+        }
+
+        // Clean up transient
+        delete_transient('chrmrtns_kla_last_mail_log_id');
     }
 }

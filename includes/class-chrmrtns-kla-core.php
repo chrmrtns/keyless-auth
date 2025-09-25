@@ -25,8 +25,8 @@ class Chrmrtns_KLA_Core {
 
         // wp-login.php integration - only add hooks if enabled
         if (get_option('chrmrtns_kla_enable_wp_login', '0') === '1') {
-            add_action('login_form', array($this, 'chrmrtns_kla_add_wp_login_field'));
-            add_action('authenticate', array($this, 'chrmrtns_kla_handle_wp_login_request'), 20, 3);
+            add_action('login_footer', array($this, 'chrmrtns_kla_add_wp_login_field'));
+            add_action('login_init', array($this, 'chrmrtns_kla_handle_wp_login_submission'));
         }
     }
 
@@ -290,8 +290,9 @@ class Chrmrtns_KLA_Core {
                 $user_settings = $chrmrtns_kla_database ? $chrmrtns_kla_database->get_user_2fa_settings($user_id) : null;
                 $role_required = $tfa_core->user_role_requires_2fa($user_id);
 
-                // If user has 2FA enabled OR their role requires it, redirect to 2FA verification
-                if (($user_settings && $user_settings->totp_enabled) || $role_required) {
+                // If user has 2FA enabled, redirect to 2FA verification
+                // If role requires 2FA but user doesn't have it, check grace period first
+                if ($user_settings && $user_settings->totp_enabled) {
                     // Get redirect URL (custom or default)
                     $redirect_url = class_exists('Chrmrtns_KLA_Admin') ? Chrmrtns_KLA_Admin::get_redirect_url($user_id) : admin_url();
                     $redirect_url = apply_filters('chrmrtns_kla_after_login_redirect', $redirect_url, $user_id);
@@ -320,6 +321,26 @@ class Chrmrtns_KLA_Core {
 
                     wp_redirect($tfa_verify_url);
                     exit;
+                } elseif ($role_required) {
+                    // User's role requires 2FA but they don't have it set up yet
+                    // Check grace period before requiring 2FA
+                    $grace_days = intval(get_option('chrmrtns_kla_2fa_grace_period', 10));
+                    $grace_start = get_user_meta($user_id, 'chrmrtns_kla_2fa_required_since', true);
+
+                    if (empty($grace_start)) {
+                        // First time this user's role requires 2FA - start grace period now
+                        $grace_start = current_time('timestamp');
+                        update_user_meta($user_id, 'chrmrtns_kla_2fa_required_since', $grace_start);
+                    }
+
+                    $grace_end = $grace_start + ($grace_days * DAY_IN_SECONDS);
+
+                    // If grace period expired, redirect to 2FA setup
+                    if (time() > $grace_end) {
+                        wp_redirect(add_query_arg(array('action' => 'keyless-2fa-setup', 'magic_login' => '1'), home_url()));
+                        exit;
+                    }
+                    // Grace period still active - allow login to proceed normally
                 }
             }
         }
@@ -423,8 +444,9 @@ class Chrmrtns_KLA_Core {
         }
     }
 
+
     /**
-     * Add magic login field to wp-login.php
+     * Add magic login field to wp-login.php - positioned after main form with CSS order
      */
     public function chrmrtns_kla_add_wp_login_field() {
         // Check emergency disable first
@@ -432,93 +454,105 @@ class Chrmrtns_KLA_Core {
             return;
         }
 
-        // Only add field if the option is enabled
+        // Only add if the option is enabled
         if (get_option('chrmrtns_kla_enable_wp_login', '0') !== '1') {
             return;
         }
+
+        // Show success message if redirected after sending
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Just checking display parameter, not processing form data
+        if (isset($_GET['chrmrtns_kla_sent']) && sanitize_text_field(wp_unslash($_GET['chrmrtns_kla_sent'])) === '1') {
+            ?>
+            <div style="max-width: 320px; margin: 30px auto 40px auto; padding: 20px; border: 2px solid #00a32a; border-radius: 6px; background: #f0f6fc; color: #00a32a; text-align: center;">
+                <p style="margin: 0; font-weight: bold; font-size: 16px;">
+                    <?php esc_html_e('Magic login link sent! Check your email and click the link to login.', 'keyless-auth'); ?>
+                </p>
+            </div>
+            <?php
+            return;
+        }
+
+        $random_id = wp_generate_password(8, false);
         ?>
-        <div id="chrmrtns-kla-wp-login-wrapper" style="margin: 15px 0; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9;">
-            <h3 style="margin: 0 0 10px 0; font-size: 14px; color: #666;"><?php esc_html_e('Magic Login (No Password Required)', 'keyless-auth'); ?></h3>
-            <p style="margin: 0 0 10px 0; font-size: 12px; color: #666;">
-                <?php esc_html_e('Enter your email address to receive a secure login link.', 'keyless-auth'); ?>
+        <div style="max-width: 320px; margin: 30px auto 40px auto; padding: 20px; border: 2px solid #0073aa; border-radius: 6px; background: #f7f9fc;">
+            <h3 style="margin: 0 0 12px 0; font-size: 16px; color: #0073aa; text-align: center; font-weight: 600;">
+                <?php esc_html_e('🔐 Magic Login', 'keyless-auth'); ?>
+            </h3>
+            <p style="margin: 0 0 20px 0; font-size: 13px; color: #555; text-align: center;">
+                <?php esc_html_e('No password required', 'keyless-auth'); ?>
             </p>
 
-            <form id="chrmrtns-kla-wp-login-form" method="post" action="">
+            <form method="post" action="<?php echo esc_url(add_query_arg('chrmrtns_kla_magic_request', '1', isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : '')); ?>" style="margin: 0;">
                 <?php wp_nonce_field('chrmrtns_kla_wp_login', 'chrmrtns_kla_wp_login_nonce'); ?>
                 <input type="hidden" name="chrmrtns_kla_wp_login_request" value="1" />
 
-                <p>
-                    <label for="chrmrtns_kla_wp_login_email" style="display: block; margin-bottom: 5px; font-weight: bold;">
-                        <?php esc_html_e('Email or Username:', 'keyless-auth'); ?>
-                    </label>
-                    <input type="text"
-                           id="chrmrtns_kla_wp_login_email"
-                           name="chrmrtns_kla_wp_login_email"
-                           class="input"
-                           size="20"
-                           style="width: 100%;"
-                           placeholder="<?php esc_attr_e('Enter email or username', 'keyless-auth'); ?>"
-                           required />
-                </p>
+                <label for="chrmrtns_kla_magic_email" style="display: block; margin-bottom: 8px; font-weight: 600; color: #333; font-size: 14px;">
+                    <?php esc_html_e('Email or Username:', 'keyless-auth'); ?>
+                </label>
+                <input type="text"
+                       id="chrmrtns_kla_magic_email"
+                       name="chrmrtns_kla_magic_email"
+                       class="input"
+                       size="20"
+                       style="width: 100%; padding: 8px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;"
+                       placeholder="<?php esc_attr_e('Enter email or username', 'keyless-auth'); ?>"
+                       required />
 
-                <p>
-                    <input type="submit"
-                           name="chrmrtns_kla_wp_login_submit"
-                           id="chrmrtns_kla_wp_login_submit"
-                           class="button button-primary button-large"
-                           value="<?php esc_attr_e('Send Magic Link', 'keyless-auth'); ?>"
-                           style="width: 100%;" />
-                </p>
+                <input type="submit"
+                       name="chrmrtns_kla_wp_login_submit"
+                       class="button button-primary button-large"
+                       value="<?php esc_attr_e('Send Magic Link', 'keyless-auth'); ?>"
+                       style="width: 100%; padding: 10px; font-size: 14px;" />
             </form>
         </div>
+
+        <style>
+        body.login {
+            padding-bottom: 60px;
+        }
+        </style>
         <?php
     }
 
     /**
      * Handle magic login request from wp-login.php
      */
-    public function chrmrtns_kla_handle_wp_login_request($user, $username, $password) {
+    public function chrmrtns_kla_handle_wp_login_submission() {
         // Check if emergency disabled - return early if so
         if ($this->is_emergency_disabled()) {
-            return $user;
+            return;
         }
 
-        // Only handle if this is our magic login request
-        if (!isset($_POST['chrmrtns_kla_wp_login_request']) ||
+        // Only handle if this is our magic login request (check both POST and GET)
+        if (!isset($_GET['chrmrtns_kla_magic_request']) ||
+            !isset($_POST['chrmrtns_kla_wp_login_request']) ||
             !isset($_POST['chrmrtns_kla_wp_login_nonce']) ||
             !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_wp_login_nonce'])), 'chrmrtns_kla_wp_login')) {
-            return $user;
+            return;
         }
 
         // Get the email/username from our custom field
-        if (!isset($_POST['chrmrtns_kla_wp_login_email'])) {
-            return $user;
+        if (!isset($_POST['chrmrtns_kla_magic_email'])) {
+            return;
         }
-        $user_input = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_wp_login_email']));
+        $user_input = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_magic_email']));
 
         if (empty($user_input)) {
-            return new WP_Error('empty_field', __('Please enter your email address or username.', 'keyless-auth'));
+            wp_die(esc_html__('Please enter your email address or username.', 'keyless-auth'));
         }
 
         // Process the magic login request (reuse existing logic)
         // Set the POST data that handle_login_request expects
         $_POST['user_email_username'] = $user_input;
-        $_POST['chrmrtns_kla_login_nonce'] = wp_create_nonce('chrmrtns_kla_login');
+        $_POST['nonce'] = wp_create_nonce('chrmrtns_kla_keyless_login_request');
 
-        ob_start();
+        // Process the request
         $this->handle_login_request();
-        $output = ob_get_clean();
 
-        // Check if there was an error stored
-        $error = get_option('chrmrtns_kla_login_request_error');
-        if (is_wp_error($error)) {
-            return $error;
-        }
-
-        // Don't actually log the user in yet - they need to click the email link
-        // Return an error that will be displayed as a success message
-        return new WP_Error('magic_link_sent',
-            __('Magic login link sent! Check your email and click the link to login.', 'keyless-auth')
-        );
+        // Redirect back to wp-login.php with success message
+        wp_redirect(add_query_arg(array(
+            'chrmrtns_kla_sent' => '1'
+        ), wp_login_url()));
+        exit;
     }
 }

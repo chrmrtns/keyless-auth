@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ Secure keyless authentication - users login via email magic links without passwo
 
 **Keyless Auth - Login without Passwords** allows users to securely login to your WordPress site without remembering passwords. Simply enter their email, and they receive a magic login link - secure, fast, and user-friendly.
 
-**🔧 v2.4.1 - Stability Patch:** Clean, production-ready patch focusing on stability and compliance. Enhanced grace period notifications with dynamic colors, emergency mode functionality fully operational, and all WordPress.org compliance issues resolved. This version ensures stable login functionality for all users.
+**🚀 v2.4.2 - Full Restoration:** Complete restoration of 2FA functionality with enhanced magic login integration and optimized email delivery. All authentication hooks reactivated, grace period logic fixed, custom 2FA verification forms restored, and all PHP fatal errors resolved. Includes immediate 2FA notification emails, spam-filter optimizations for inbox delivery, and comprehensive mail log management tools. Full WordPress coding standards compliance achieved.
 
 **🔐 Feature Overview**
 
@@ -30,11 +30,13 @@ Secure keyless authentication - users login via email magic links without passwo
 • Email Templates – customize your login email content
 • Basic Email Designer – quick styling options directly in the dashboard
 
-**🔧 Enhanced in v2.4.1:**
-• Login Stability – improved authentication flow with conflict resolution
-• Admin Controls – comprehensive emergency mode and grace period management
-• Code Quality – WordPress.org compliant with all debug code removed
-• Performance – optimized class instantiation with singleton pattern
+**🔧 Enhanced in v2.4.2:**
+• Full 2FA Restoration – complete Two-Factor Authentication system with TOTP support reactivated
+• Magic Login Integration – seamless wp-login.php form integration with proper footer positioning
+• Grace Period Logic – fixed magic login bypass during 2FA grace period
+• Custom 2FA Forms – beautiful standalone verification pages with professional styling
+• PHP Error Resolution – all fatal method errors fixed for stable operation
+• WordPress Standards – complete compliance with coding standards and security best practices
 
 **🛠 In Progress:**
 • Role-Based Token Redirects – redirect users based on their role after login
@@ -54,6 +56,21 @@ Secure keyless authentication - users login via email magic links without passwo
 
 == 🚀 Latest Updates ==
 
+= 2.4.2 =
+**Complete restoration of 2FA functionality with enhanced magic login integration**
+
+* **✅ RESTORED:** Full 2FA authentication functionality - all hooks and methods reactivated
+* **🔧 NEW:** Magic login integration on wp-login.php with clean form positioning in footer
+* **✅ FIX:** Resolved username field jumping issue that was causing 2FA validation errors
+* **✅ FIX:** Fixed SMTP mail logging false positive - now properly tracks pending/sent/failed status
+* **✅ FIX:** Fixed magic login redirecting to 2FA when user is still in grace period
+* **✅ FIX:** Restored custom 2FA verification form with better styling (own page, not wp-login.php)
+* **✅ FIX:** Fixed PHP fatal errors - corrected undefined method calls in 2FA verification
+* **🎨 IMPROVEMENT:** Clean magic login form styling with proper spacing and responsive design
+* **🛡️ SECURITY:** Fixed all WordPress coding standards warnings - proper nonce verification, input sanitization, and translator comments
+* **📋 COMPATIBILITY:** Both normal login and magic login work seamlessly without conflicts
+* **🚀 PERFORMANCE:** Optimized 2FA verification flow with proper token cleanup and database operations
+
 = 2.4.1 =
 **Clean, production-ready patch focusing on stability and compliance**
 
@@ -64,7 +81,6 @@ Secure keyless authentication - users login via email magic links without passwo
 * **✅ FIX:** Removed .DS_Store hidden files for full WordPress.org compliance
 * **✅ FIX:** Implemented proper singleton pattern to prevent multiple class instantiation
 * **🛡️ STABILITY:** Clean, production-ready code with all WordPress.org compliance issues resolved
-* **📝 NOTE:** Full 2FA authentication functionality will be restored in v2.4.2 with proper conflict resolution
 
 **🚀 Major Update v2.4.0:**
 * **🔐 Two-Factor Authentication (2FA)** - Complete TOTP-based 2FA system with QR code setup and secure token generation
@@ -310,6 +326,29 @@ Keyless Auth does not replace the default login functionality in WordPress.
 
 
 == Changelog ==
+= 2.4.2 =
+* RESTORED: Full 2FA authentication functionality - all hooks and methods reactivated
+* NEW: Magic login integration on wp-login.php with clean form positioning in footer
+* NEW: Immediate email notifications when 2FA is enabled or roles are configured to require 2FA
+* NEW: Resend button in mail logs for troubleshooting email delivery issues
+* NEW: Fix Pending Status button to resolve stuck email log statuses
+* FIX: Resolved username field jumping issue that was causing 2FA validation errors
+* FIX: Fixed SMTP mail logging false positive - now properly tracks pending/sent/failed status
+* FIX: Fixed mail logs "Clear All Logs" button not working due to missing nonce verification
+* FIX: Fixed magic login redirecting to 2FA when user is still in grace period
+* FIX: Restored custom 2FA verification form with better styling (own page, not wp-login.php)
+* FIX: Fixed PHP fatal errors - corrected undefined method calls in 2FA verification
+* FIX: Optimized 2FA notification emails for better inbox delivery - removed spam trigger words
+* FIX: Updated 2FA email template to use login page URL instead of admin panel direct links
+* FIX: Removed broken emoji display in email templates that appeared as corrupted characters
+* IMPROVEMENT: Clean magic login form styling with proper spacing and responsive design
+* IMPROVEMENT: Spam-filter-friendly 2FA email content with softened language and removed trigger words
+* IMPROVEMENT: Email notifications now sent immediately when 2FA settings change (system enabled, roles added, user role changed)
+* SECURITY: Fixed all WordPress coding standards warnings - proper nonce verification, input sanitization, and translator comments
+* SECURITY: Enhanced email template security with better content sanitization
+* COMPATIBILITY: Both normal login and magic login work seamlessly without conflicts
+* PERFORMANCE: Optimized 2FA verification flow with proper token cleanup and database operations
+
 = 2.4.1 =
 * PATCH: Temporarily disabled 2FA authentication hooks to resolve login conflicts - emergency mode and grace period functionality fully operational
 * IMPROVEMENT: Enhanced grace period notices with dynamic colors and emojis based on urgency (red for <3 days, yellow for 4-7 days, blue for 8+ days)
