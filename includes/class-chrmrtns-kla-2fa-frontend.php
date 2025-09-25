@@ -32,6 +32,11 @@ class Chrmrtns_KLA_2FA_Frontend {
      * Constructor
      */
     public function __construct() {
+        // Check emergency disable first - don't initialize if disabled
+        if ($this->is_emergency_disabled()) {
+            return;
+        }
+
         $this->totp = new Chrmrtns_KLA_TOTP();
 
         global $chrmrtns_kla_database;
@@ -44,6 +49,25 @@ class Chrmrtns_KLA_2FA_Frontend {
         add_action('wp_ajax_chrmrtns_2fa_disable', array($this, 'handle_ajax_disable'));
         add_action('wp_ajax_chrmrtns_2fa_generate_backup_codes', array($this, 'handle_ajax_generate_backup_codes'));
 
+    }
+
+    /**
+     * Check if 2FA is emergency disabled
+     *
+     * @return bool
+     */
+    private function is_emergency_disabled() {
+        // Emergency disable via wp-config.php constant
+        if (defined('CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY') && CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY === true) {
+            return true;
+        }
+
+        // Emergency disable via database option (for easier recovery)
+        if (get_option('chrmrtns_kla_2fa_emergency_disable', false)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

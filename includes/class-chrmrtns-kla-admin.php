@@ -24,6 +24,10 @@ class Chrmrtns_KLA_Admin {
 
         // Add AJAX handler for admin 2FA disable
         add_action('wp_ajax_chrmrtns_kla_admin_disable_2fa', array($this, 'ajax_admin_disable_2fa'));
+
+        // Add AJAX handlers for emergency mode
+        add_action('wp_ajax_chrmrtns_disable_emergency_mode', array($this, 'ajax_disable_emergency_mode'));
+        add_action('wp_ajax_chrmrtns_dismiss_emergency_notice', array($this, 'ajax_dismiss_emergency_notice'));
     }
     
     /**
@@ -360,6 +364,101 @@ class Chrmrtns_KLA_Admin {
      * Display admin notice
      */
     public function display_admin_notice() {
+        // Show emergency disable notice for both wp-config constant AND database option
+        if ((defined('CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY') && CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY === true) ||
+            get_option('chrmrtns_kla_2fa_emergency_disable', false)) {
+            echo '<div class="notice notice-error" style="border-left-color: #dc3232; background: #fef7f7; padding: 15px; margin: 15px 0; box-shadow: 0 2px 5px rgba(220, 50, 50, 0.2);">';
+            echo '<p style="font-size: 16px; margin: 0 0 10px 0;"><strong style="color: #dc3232;">🚨 2FA Emergency Mode Active</strong></p>';
+
+            // Show different content based on how emergency mode was activated
+            if (defined('CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY') && CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY === true) {
+                echo '<p style="margin: 0 0 15px 0; color: #333;">' . esc_html__('Two-Factor Authentication system is disabled via wp-config.php constant for emergency access.', 'keyless-auth') . '</p>';
+                echo '<div style="background: #fff; padding: 10px; border-radius: 5px; border-left: 3px solid #dc3232; margin-bottom: 10px;">';
+                echo '<p style="margin: 0; color: #666;"><strong>wp-config.php constant:</strong> Remove <code>CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY</code> from wp-config.php to disable emergency mode.</p>';
+                echo '</div>';
+            } else {
+                echo '<p style="margin: 0 0 15px 0; color: #333;">' . esc_html__('Two-Factor Authentication is currently disabled because no administrator has 2FA set up and the emergency option is enabled.', 'keyless-auth') . '</p>';
+                echo '<div style="background: #fff; padding: 10px; border-radius: 5px; border-left: 3px solid #dc3232; margin-bottom: 10px;">';
+                echo '<p style="margin: 0 0 8px 0; font-weight: bold; color: #dc3232;">' . esc_html__('Disable emergency mode once you have at least one administrator with 2FA properly configured.', 'keyless-auth') . '</p>';
+                echo '<p style="margin: 0; color: #666;">' . esc_html__('Go to Keyless Auth → Options → Emergency Disable 2FA to turn this off after setting up 2FA.', 'keyless-auth') . '</p>';
+                echo '</div>';
+            }
+
+            echo '<div style="background: #fff; padding: 10px; border-radius: 5px; border-left: 3px solid #dc3232;">';
+            echo '<label style="display: flex; align-items: center; cursor: pointer;">';
+            echo '<input type="checkbox" id="chrmrtns_emergency_dismiss" style="margin-right: 8px;" />';
+            echo '<span>' . esc_html__('I understand this is temporary. Don\'t show this notice for 24 hours.', 'keyless-auth') . '</span>';
+            echo '</label>';
+            echo '</div>';
+            echo '</div>';
+        }
+
+        // Show emergency admin bypass notice (when admin doesn't have 2FA but system requires it)
+        $user_id = get_current_user_id();
+        if (get_transient('chrmrtns_kla_emergency_admin_notice_' . $user_id)) {
+            echo '<div class="notice notice-warning" style="border-left-color: #ffb900; background: #fffbf0; padding: 15px; margin: 15px 0; box-shadow: 0 2px 5px rgba(255, 185, 0, 0.2);">';
+            echo '<p style="font-size: 16px; margin: 0 0 10px 0;"><strong style="color: #b26500;">⚠️ Admin 2FA Setup Needed</strong></p>';
+            echo '<p style="margin: 0 0 8px 0; color: #333;">' . esc_html__('You\'re the only administrator and don\'t have 2FA set up yet. You have emergency access for now.', 'keyless-auth') . '</p>';
+            echo '<p style="margin: 0 0 15px 0; color: #666;">' . esc_html__('Set up 2FA when convenient to secure your account.', 'keyless-auth') . '</p>';
+            /* translators: %s: shortcode name in code tags */
+            echo '<p style="margin: 0 0 15px 0;"><em style="color: #666;">' . sprintf(esc_html__('Use the shortcode %s to set up 2FA.', 'keyless-auth'), '<code style="background: #f1f1f1; padding: 2px 4px; border-radius: 3px;">[keyless-auth-2fa]</code>') . '</em></p>';
+            echo '<div style="background: #fff; padding: 10px; border-radius: 5px; border-left: 3px solid #ffb900;">';
+            echo '<label style="display: flex; align-items: center; cursor: pointer;">';
+            echo '<input type="checkbox" id="chrmrtns_grace_dismiss" style="margin-right: 8px;" />';
+            echo '<span>' . esc_html__('Remind me again tomorrow (24-hour grace period)', 'keyless-auth') . '</span>';
+            echo '</label>';
+            echo '</div>';
+            echo '</div>';
+        }
+
+        // Add JavaScript for handling emergency notice dismissal
+        if ((defined('CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY') && CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY === true) ||
+            get_option('chrmrtns_kla_2fa_emergency_disable', false) ||
+            get_transient('chrmrtns_kla_emergency_admin_notice_' . get_current_user_id())) {
+            ?>
+            <script>
+            jQuery(document).ready(function($) {
+                $('#chrmrtns_disable_emergency').on('click', function() {
+                    if (confirm('<?php echo esc_js(__('Are you sure you want to disable emergency mode? The 2FA system will be re-enabled.', 'keyless-auth')); ?>')) {
+                        $.post(ajaxurl, {
+                            action: 'chrmrtns_disable_emergency_mode',
+                            nonce: '<?php echo esc_js(wp_create_nonce('chrmrtns_disable_emergency')); ?>'
+                        }, function(response) {
+                            if (response.success) {
+                                location.reload();
+                            } else {
+                                alert('<?php echo esc_js(__('Error disabling emergency mode. Please try again.', 'keyless-auth')); ?>');
+                            }
+                        });
+                    }
+                });
+
+                $('#chrmrtns_emergency_dismiss').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $.post(ajaxurl, {
+                            action: 'chrmrtns_dismiss_emergency_notice',
+                            nonce: '<?php echo esc_js(wp_create_nonce('chrmrtns_emergency_dismiss')); ?>',
+                            type: 'emergency'
+                        });
+                        $(this).closest('.notice').fadeOut();
+                    }
+                });
+
+                $('#chrmrtns_grace_dismiss').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $.post(ajaxurl, {
+                            action: 'chrmrtns_dismiss_emergency_notice',
+                            nonce: '<?php echo esc_js(wp_create_nonce('chrmrtns_emergency_dismiss')); ?>',
+                            type: 'grace'
+                        });
+                        $(this).closest('.notice').fadeOut();
+                    }
+                });
+            });
+            </script>
+            <?php
+        }
+
         if (!get_option('chrmrtns_kla_learn_more_dismiss_notification')) {
             $learn_more_url = admin_url('admin.php?page=keyless-auth');
             $dismiss_url = wp_nonce_url(
@@ -670,6 +769,16 @@ class Chrmrtns_KLA_Admin {
             $max_attempts = isset($_POST['chrmrtns_kla_2fa_max_attempts']) ? intval($_POST['chrmrtns_kla_2fa_max_attempts']) : 5;
             update_option('chrmrtns_kla_2fa_max_attempts', $max_attempts);
 
+            // Handle emergency mode setting
+            $emergency_mode = isset($_POST['chrmrtns_kla_2fa_emergency_disable']) ? true : false;
+            update_option('chrmrtns_kla_2fa_emergency_disable', $emergency_mode);
+
+            if ($emergency_mode) {
+                echo '<div class="notice notice-warning"><p>' . esc_html__('Emergency mode is now enabled. 2FA system is disabled for all users.', 'keyless-auth') . '</p></div>';
+            } else {
+                echo '<div class="notice notice-success"><p>' . esc_html__('Emergency mode is disabled. 2FA system is now active.', 'keyless-auth') . '</p></div>';
+            }
+
             $lockout_duration = isset($_POST['chrmrtns_kla_2fa_lockout_duration']) ? intval($_POST['chrmrtns_kla_2fa_lockout_duration']) : 15;
             update_option('chrmrtns_kla_2fa_lockout_duration', $lockout_duration);
 
@@ -684,6 +793,7 @@ class Chrmrtns_KLA_Admin {
 
         // Get 2FA settings
         $enable_2fa = get_option('chrmrtns_kla_2fa_enabled', false);
+        $emergency_disable = get_option('chrmrtns_kla_2fa_emergency_disable', false);
         $required_roles = get_option('chrmrtns_kla_2fa_required_roles', array());
         $grace_period = get_option('chrmrtns_kla_2fa_grace_period', 10);
         $grace_message = get_option('chrmrtns_kla_2fa_grace_message', __('Your account requires 2FA setup within {days} days for security.', 'keyless-auth'));
@@ -757,6 +867,37 @@ class Chrmrtns_KLA_Admin {
                                 <?php esc_html_e('Enable TOTP authenticator app support for all WordPress logins. Only enable if you don\'t have other 2FA solutions active.', 'keyless-auth'); ?>
                                 <br><strong><?php esc_html_e('API Access:', 'keyless-auth'); ?></strong> <?php esc_html_e('REST API and XML-RPC automatically bypass 2FA when using Application Passwords.', 'keyless-auth'); ?>
                                 <br><strong><?php esc_html_e('User Setup:', 'keyless-auth'); ?></strong> <?php esc_html_e('Users can access 2FA setup using the [keyless-auth-2fa] shortcode on any page.', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_2fa_emergency_disable"><?php esc_html_e('Emergency Disable 2FA', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <?php if (defined('CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY') && CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY === true) { ?>
+                                <div style="padding: 15px; background: #fef7f7; border-radius: 5px; border-left: 4px solid #dc3232; margin-bottom: 10px;">
+                                    <p style="margin: 0; color: #dc3232; font-weight: bold;">
+                                        🚨 <?php esc_html_e('Emergency mode is enabled via wp-config.php constant.', 'keyless-auth'); ?>
+                                    </p>
+                                    <p style="margin: 10px 0 0 0; color: #666;">
+                                        <?php esc_html_e('Remove the CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY constant from wp-config.php to manage emergency mode here.', 'keyless-auth'); ?>
+                                    </p>
+                                </div>
+                                <input type="checkbox" id="chrmrtns_kla_2fa_emergency_disable" name="chrmrtns_kla_2fa_emergency_disable" value="1" disabled />
+                                <span style="color: #666;"><?php esc_html_e('Controlled by wp-config.php', 'keyless-auth'); ?></span>
+                            <?php } else { ?>
+                                <input type="checkbox" id="chrmrtns_kla_2fa_emergency_disable" name="chrmrtns_kla_2fa_emergency_disable" value="1" <?php checked($emergency_disable, true); ?> />
+                                <?php if ($emergency_disable) { ?>
+                                    <span style="color: #dc3232; font-weight: bold;"><?php esc_html_e('2FA system is currently disabled', 'keyless-auth'); ?></span>
+                                <?php } else { ?>
+                                    <span><?php esc_html_e('Disable 2FA system temporarily', 'keyless-auth'); ?></span>
+                                <?php } ?>
+                            <?php } ?>
+                            <p class="description">
+                                <?php esc_html_e('Temporarily disable all 2FA requirements for troubleshooting or emergency access. Users can login normally without 2FA when enabled.', 'keyless-auth'); ?>
+                                <br><strong><?php esc_html_e('Warning:', 'keyless-auth'); ?></strong> <?php esc_html_e('This reduces security. Only use when necessary.', 'keyless-auth'); ?>
                             </p>
                         </td>
                     </tr>

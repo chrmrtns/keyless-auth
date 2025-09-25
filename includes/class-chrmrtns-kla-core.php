@@ -23,11 +23,32 @@ class Chrmrtns_KLA_Core {
         add_shortcode('keyless-auth', array($this, 'render_login_form'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
 
-        // wp-login.php integration
-        add_action('login_form', array($this, 'chrmrtns_kla_add_wp_login_field'));
-        add_action('authenticate', array($this, 'chrmrtns_kla_handle_wp_login_request'), 20, 3);
+        // wp-login.php integration - only add hooks if enabled
+        if (get_option('chrmrtns_kla_enable_wp_login', '0') === '1') {
+            add_action('login_form', array($this, 'chrmrtns_kla_add_wp_login_field'));
+            add_action('authenticate', array($this, 'chrmrtns_kla_handle_wp_login_request'), 20, 3);
+        }
     }
-    
+
+    /**
+     * Check if 2FA is emergency disabled
+     *
+     * @return bool
+     */
+    private function is_emergency_disabled() {
+        // Emergency disable via wp-config.php constant
+        if (defined('CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY') && CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY === true) {
+            return true;
+        }
+
+        // Emergency disable via database option (for easier recovery)
+        if (get_option('chrmrtns_kla_2fa_emergency_disable', false)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Render login form shortcode
      */
@@ -261,7 +282,7 @@ class Chrmrtns_KLA_Core {
         // Check if 2FA is required for this user
         $user = get_user_by('ID', $user_id);
         if ($user && class_exists('Chrmrtns_KLA_2FA_Core')) {
-            $tfa_core = new Chrmrtns_KLA_2FA_Core();
+            $tfa_core = Chrmrtns_KLA_2FA_Core::get_instance();
 
             // Check if 2FA is enabled and required for this user
             if (get_option('chrmrtns_kla_2fa_enabled', false)) {
@@ -406,6 +427,11 @@ class Chrmrtns_KLA_Core {
      * Add magic login field to wp-login.php
      */
     public function chrmrtns_kla_add_wp_login_field() {
+        // Check emergency disable first
+        if ($this->is_emergency_disabled()) {
+            return;
+        }
+
         // Only add field if the option is enabled
         if (get_option('chrmrtns_kla_enable_wp_login', '0') !== '1') {
             return;
@@ -452,6 +478,11 @@ class Chrmrtns_KLA_Core {
      * Handle magic login request from wp-login.php
      */
     public function chrmrtns_kla_handle_wp_login_request($user, $username, $password) {
+        // Check if emergency disabled - return early if so
+        if ($this->is_emergency_disabled()) {
+            return $user;
+        }
+
         // Only handle if this is our magic login request
         if (!isset($_POST['chrmrtns_kla_wp_login_request']) ||
             !isset($_POST['chrmrtns_kla_wp_login_nonce']) ||
@@ -470,10 +501,18 @@ class Chrmrtns_KLA_Core {
         }
 
         // Process the magic login request (reuse existing logic)
-        $result = $this->process_login_request($user_input);
+        // Set the POST data that handle_login_request expects
+        $_POST['user_email_username'] = $user_input;
+        $_POST['chrmrtns_kla_login_nonce'] = wp_create_nonce('chrmrtns_kla_login');
 
-        if (is_wp_error($result)) {
-            return $result;
+        ob_start();
+        $this->handle_login_request();
+        $output = ob_get_clean();
+
+        // Check if there was an error stored
+        $error = get_option('chrmrtns_kla_login_request_error');
+        if (is_wp_error($error)) {
+            return $error;
         }
 
         // Don't actually log the user in yet - they need to click the email link

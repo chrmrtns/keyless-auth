@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,18 +17,23 @@ Secure keyless authentication - users login via email magic links without passwo
 
 **Keyless Auth - Login without Passwords** allows users to securely login to your WordPress site without remembering passwords. Simply enter their email, and they receive a magic login link - secure, fast, and user-friendly.
 
+**🔧 PATCH v2.4.1 STATUS:** This is a stability patch that temporarily disables 2FA authentication hooks to resolve login conflicts. Emergency mode, grace period notifications (with beautiful colors!), and core passwordless login functionality are fully operational. Complete 2FA authentication will be restored in v2.4.2.
+
 **🔐 Feature Overview**
 
 **✅ Ready:**
 • Passwordless Login via Email – secure, simple, password-free
-• Two-Factor Authentication (2FA) – TOTP-based authentication with QR code setup
-• Role-Based 2FA Requirements – enforce 2FA for specific user roles
+• Emergency Mode & Grace Period System – enhanced with colorful notifications and proper admin controls
 • Token Expiry + Security Rules – one-time login links with expiration and abuse protection
 • SMTP Integration – send emails via your own mail server
 • Simple Mail Log – track when and to whom login links were sent
 • Email Templates – customize your login email content
 • Basic Email Designer – quick styling options directly in the dashboard
-• Comprehensive User Management – search and manage 2FA users with detailed stats
+
+**🔧 Temporarily Disabled (v2.4.1):**
+• Two-Factor Authentication (2FA) – authentication hooks disabled to resolve login conflicts
+• Role-Based 2FA Requirements – feature paused pending authentication hook fixes
+• Comprehensive User Management – 2FA user management temporarily unavailable
 
 **🛠 In Progress:**
 • Role-Based Token Redirects – redirect users based on their role after login
@@ -288,6 +293,15 @@ Keyless Auth does not replace the default login functionality in WordPress.
 
 
 == Changelog ==
+= 2.4.1 =
+* PATCH: Temporarily disabled 2FA authentication hooks to resolve login conflicts - emergency mode and grace period functionality fully operational
+* IMPROVEMENT: Enhanced grace period notices with dynamic colors and emojis based on urgency (red for <3 days, yellow for 4-7 days, blue for 8+ days)
+* FIX: Removed all debug code to comply with WordPress.org Plugin Check requirements
+* FIX: Fixed timezone function warnings by removing development date() calls
+* FIX: Removed .DS_Store hidden files for full WordPress.org compliance
+* FIX: Implemented proper singleton pattern to prevent multiple class instantiation
+* STABILITY: Clean, production-ready code with all WordPress.org compliance issues resolved
+* NOTE: Full 2FA authentication functionality will be restored in v2.4.2 with proper conflict resolution
 = 2.4.0 =
 * NEW: Complete Two-Factor Authentication (2FA) system with TOTP support using Google Authenticator, Authy, or similar apps
 * NEW: QR code generation for easy 2FA setup with automatic secret key generation

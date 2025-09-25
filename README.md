@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.4.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.4.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -25,9 +25,11 @@
 • Comprehensive User Management – search and manage 2FA users with detailed stats
 
 **🛠 In Progress:**
+• Newsletter/Lead Collection System – internal priority for business development and user engagement
+• Enhanced Grace Period System – improved user experience with colorful notifications (✅ Completed in v2.4.1)
+• Authentication Hook Conflict Resolution – fixing 2FA login interference for v2.4.2
+• Admin QR Generation – generate QR codes directly in admin backend without shortcode dependency
 • Role-Based Token Redirects – redirect users based on their role after login
-• Webhook Support – trigger external actions after login (e.g., automation tools)
-• Simple CSS Styling – easily adjust button & container styles
 
 **🧠 Planned:**
 • BricksBuilder Login Element – full BricksBuilder integration
@@ -39,7 +41,22 @@
 • Telegram Support – receive login links via Telegram Bot
 • Backup Codes for 2FA – alternative recovery method when TOTP is unavailable
 
-## 🚀 Major Update v2.4.0
+## 🚀 Latest Updates
+
+### v2.4.1 - Stability Patch (September 25, 2024)
+**Clean, production-ready patch focusing on stability and compliance**
+
+* **🔧 PATCH:** Temporarily disabled 2FA authentication hooks to resolve login conflicts - emergency mode and grace period functionality fully operational
+* **🎨 IMPROVEMENT:** Enhanced grace period notices with dynamic colors and emojis based on urgency (red for <3 days, yellow for 4-7 days, blue for 8+ days)
+* **✅ FIX:** Removed all debug code to comply with WordPress.org Plugin Check requirements
+* **✅ FIX:** Fixed timezone function warnings by removing development date() calls
+* **✅ FIX:** Removed .DS_Store hidden files for full WordPress.org compliance
+* **✅ FIX:** Implemented proper singleton pattern to prevent multiple class instantiation
+* **🛡️ STABILITY:** Clean, production-ready code with all WordPress.org compliance issues resolved
+* **📝 NOTE:** Full 2FA authentication functionality will be restored in v2.4.2 with proper conflict resolution
+
+### v2.4.0 - Complete 2FA System (September 25, 2024)
+**Successfully released September 25, 2024 with complete SVN deployment**
 
 * **🔐 Two-Factor Authentication (2FA)** - Complete TOTP-based 2FA system with QR code setup and secure token generation
 * **👥 Role-Based 2FA Requirements** - Configure specific user roles to require 2FA authentication
@@ -47,6 +64,12 @@
 * **🔒 Enhanced Magic Link Security** - Magic links now properly integrate with 2FA verification flow
 * **⚙️ Customizable Login URLs** - Configure custom login page and post-login redirect URLs
 * **🚨 Critical Timezone Fix** - Resolved token expiration issues caused by UTC/local timezone mismatches
+* **📸 New Screenshots** - Added 4 new screenshots (8-11) showcasing complete 2FA functionality
+* **🏗️ Asset Reorganization** - Moved all assets to organized structure (CSS, JS, screenshots)
+
+**GitHub Release:** [v2.4.0](https://github.com/chrmrtns/keyless-auth/releases/tag/v2.4.0)
+**WordPress.org Status:** ✅ Live and available for download
+**SVN Revisions:** 3367782 (trunk), 3367789 (tag), 3367796 (screenshots)
 
 ## 🔧 Latest Patch v2.3.1
 
