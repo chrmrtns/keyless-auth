@@ -10,225 +10,165 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 
-Secure keyless authentication - users login via email magic links without passwords. Customizable templates and enhanced security.
+Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.
 
 
 == Description ==
 
-**Keyless Auth - Login without Passwords** allows users to securely login to your WordPress site without remembering passwords. Simply enter their email, and they receive a magic login link - secure, fast, and user-friendly.
+Transform your WordPress login experience with passwordless authentication. Users simply enter their email address and receive a secure magic link – click to login instantly. It's more secure than weak passwords and infinitely more user-friendly.
 
-**🚀 v2.4.2 - Full Restoration:** Complete restoration of 2FA functionality with enhanced magic login integration and optimized email delivery. All authentication hooks reactivated, grace period logic fixed, custom 2FA verification forms restored, and all PHP fatal errors resolved. Includes immediate 2FA notification emails, spam-filter optimizations for inbox delivery, and comprehensive mail log management tools. Full WordPress coding standards compliance achieved.
+= Why Choose Passwordless Login? =
 
-**🔐 Feature Overview**
+* **Enhanced Security**: No more weak, reused, or compromised passwords
+* **Better User Experience**: One click instead of remembering complex passwords
+* **Reduced Support**: Eliminate "forgot password" requests
+* **Modern Authentication**: Enterprise-grade security used by Slack, Medium, and others
 
-**✅ Ready:**
-• Passwordless Login via Email – secure, simple, password-free
-• Emergency Mode & Grace Period System – enhanced with colorful notifications and proper admin controls
-• Token Expiry + Security Rules – one-time login links with expiration and abuse protection
-• SMTP Integration – send emails via your own mail server
-• Simple Mail Log – track when and to whom login links were sent
-• Email Templates – customize your login email content
-• Basic Email Designer – quick styling options directly in the dashboard
+= Quick Start =
 
-**🔧 Enhanced in v2.4.2:**
-• Full 2FA Restoration – complete Two-Factor Authentication system with TOTP support reactivated
-• Magic Login Integration – seamless wp-login.php form integration with proper footer positioning
-• Grace Period Logic – fixed magic login bypass during 2FA grace period
-• Custom 2FA Forms – beautiful standalone verification pages with professional styling
-• PHP Error Resolution – all fatal method errors fixed for stable operation
-• WordPress Standards – complete compliance with coding standards and security best practices
+1. Install and activate the plugin
+2. Create a new page and add the shortcode `[keyless-auth]`
+3. Configure email templates in **Keyless Auth → Templates**
+4. Done! Users can now login passwordlessly
 
-**🛠 In Progress:**
-• Role-Based Token Redirects – redirect users based on their role after login
-• Webhook Support – trigger external actions after login (e.g., automation tools)
-• Simple CSS Styling – easily adjust button & container styles
+= Core Features =
 
-**🧠 Planned:**
-• BricksBuilder Login Element – full BricksBuilder integration
-• Visual Email Designer (Bricks-Based) – design login emails visually with Bricks
-• White-Label / Branding Removal – perfect for agencies & white-label solutions
-• REST API – access login functionality via secure API endpoints
-• KLA Companion App (PWA) – receive login links in an app instead of email
-• Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
-• Telegram Support – receive login links via Telegram Bot
+**Ready to Use**
+* **Magic Link Authentication** – Secure, one-time login links via email
+* **Two-Factor Authentication (2FA)** – Complete TOTP support with Google Authenticator
+* **Role-Based 2FA** – Require 2FA for specific user roles (admins, editors, etc.)
+* **Custom 2FA Setup URLs** – Direct users to branded frontend 2FA setup pages
+* **SMTP Integration** – Reliable email delivery through your mail server
+* **Email Templates** – Professional, customizable login emails
+* **Mail Logging** – Track all sent emails with delivery status
+* **Custom Database Tables** – Scalable architecture with dedicated audit logs
 
+**Advanced Security**
+* **Token Security**: 10-minute expiration, single-use tokens
+* **Audit Logging**: IP addresses, device types, login attempts
+* **Emergency Mode**: Grace period system with admin controls
+* **Secure Storage**: SMTP credentials in wp-config.php option
 
+**Customization**
+* **WYSIWYG Email Editor**: Full HTML support with live preview
+* **Advanced Color Controls**: Hex, RGB, HSL color formats
+* **Template System**: German, English, and custom templates
+* **Branding Options**: Custom sender names and professional styling
 
-== 🚀 Latest Updates ==
+= Installation & Setup =
 
-= 2.4.2 =
-**Complete restoration of 2FA functionality with enhanced magic login integration**
+**Basic Installation**
+1. WordPress Admin → Plugins → Add New
+2. Search for "Keyless Auth"
+3. Install and activate
+4. Add [keyless-auth] shortcode to any page
 
-* **✅ RESTORED:** Full 2FA authentication functionality - all hooks and methods reactivated
-* **🔧 NEW:** Magic login integration on wp-login.php with clean form positioning in footer
-* **✅ FIX:** Resolved username field jumping issue that was causing 2FA validation errors
-* **✅ FIX:** Fixed SMTP mail logging false positive - now properly tracks pending/sent/failed status
-* **✅ FIX:** Fixed magic login redirecting to 2FA when user is still in grace period
-* **✅ FIX:** Restored custom 2FA verification form with better styling (own page, not wp-login.php)
-* **✅ FIX:** Fixed PHP fatal errors - corrected undefined method calls in 2FA verification
-* **🎨 IMPROVEMENT:** Clean magic login form styling with proper spacing and responsive design
-* **🛡️ SECURITY:** Fixed all WordPress coding standards warnings - proper nonce verification, input sanitization, and translator comments
-* **📋 COMPATIBILITY:** Both normal login and magic login work seamlessly without conflicts
-* **🚀 PERFORMANCE:** Optimized 2FA verification flow with proper token cleanup and database operations
+**SMTP Configuration (Recommended)**
+1. Navigate to Keyless Auth → SMTP
+2. Configure your email provider (Gmail, Outlook, SendGrid, etc.)
+3. Test email delivery
+4. Save settings
 
-= 2.4.1 =
-**Clean, production-ready patch focusing on stability and compliance**
+**Two-Factor Authentication Setup**
+1. Go to Keyless Auth → Options
+2. Enable "Two-Factor Authentication"
+3. Select required user roles
+4. Users scan QR code with authenticator app
 
-* **🔧 PATCH:** Temporarily disabled 2FA authentication hooks to resolve login conflicts - emergency mode and grace period functionality fully operational
-* **🎨 IMPROVEMENT:** Enhanced grace period notices with dynamic colors and emojis based on urgency (red for <3 days, yellow for 4-7 days, blue for 8+ days)
-* **✅ FIX:** Removed all debug code to comply with WordPress.org Plugin Check requirements
-* **✅ FIX:** Fixed timezone function warnings by removing development date() calls
-* **✅ FIX:** Removed .DS_Store hidden files for full WordPress.org compliance
-* **✅ FIX:** Implemented proper singleton pattern to prevent multiple class instantiation
-* **🛡️ STABILITY:** Clean, production-ready code with all WordPress.org compliance issues resolved
+= Email Templates =
 
-**🚀 Major Update v2.4.0:**
-* **🔐 Two-Factor Authentication (2FA)** - Complete TOTP-based 2FA system with QR code setup and secure token generation
-* **👥 Role-Based 2FA Requirements** - Configure specific user roles to require 2FA authentication
-* **🔧 2FA User Management** - Dedicated admin page to search and manage users with 2FA enabled
-* **🔒 Enhanced Magic Link Security** - Magic links now properly integrate with 2FA verification flow
-* **⚙️ Customizable Login URLs** - Configure custom login page and post-login redirect URLs
-* **🎯 Timezone Fix** - Resolved token expiration issues caused by UTC/local timezone mismatches
+**Template Options**
+* **German Professional**: Sleek German-language template
+* **English Simple**: Clean, minimalist design
+* **Custom HTML**: Create your own with WYSIWYG editor
 
-**🚀 Latest Patch v2.3.1:**
-* **🎨 Fixed Admin Interface Consistency** - Resolved header styling issues on Options and Help pages
-* **🔧 Enhanced CSS Loading** - Admin styles and JavaScript now properly loaded on all admin pages
-* **📐 Logo Display Improvements** - Consistent 40x40px logo sizing across all admin interfaces
+**Customization Features**
+* Full HTML and CSS support
+* Color picker for buttons and links
+* Responsive email design
+* Live template preview
+* Placeholder system for dynamic content
 
-**🚀 Major Features v2.3.0:**
-* **🔐 WordPress Login Integration** - Added optional magic login field to wp-login.php with toggle control
-* **⚙️ Enhanced Options Screen** - New dedicated Options page with feature toggles and controls
-* **📖 Comprehensive Help System** - New Help & Instructions page with getting started guide and troubleshooting
-* **🛠️ Admin Interface Improvements** - Better organized settings with clear navigation and user guidance
+= Security & Compliance =
 
-**🔧 Security Patch v2.2.1:**
-* **🔒 WordPress.org Plugin Check Compliance** - Fixed all remaining security warnings and database query issues
-* **🛡️ Enhanced Database Security** - Added comprehensive phpcs annotations for legitimate direct database operations
-* **⚙️ Improved Code Quality** - Fixed timezone-dependent date functions and SQL preparation warnings
-* **📝 Better Documentation** - Clear explanations for security exceptions and database operations
+**Token Security**
+* Generated using WordPress security standards
+* Based on user ID, timestamp, and wp-config.php salt
+* 10-minute expiration with single-use enforcement
+* Secure database storage with automatic cleanup
 
-**🚀 Major Update in v2.2.0:**
-* **🗄️ Custom Database Tables** - Migrated from wp_options to dedicated database tables for scalability
-* **📊 Enhanced Login Audit Log** - Comprehensive logging with IP addresses, device types, and user agents
-* **⚡ Performance Improvements** - Optimized database queries and reduced wp_posts table bloat
-* **🔒 Advanced Token Management** - Secure token storage with attempt tracking and automatic cleanup
-* **📧 Enhanced Mail Logging** - Improved email tracking with status monitoring and delivery insights
-* **🔄 Backwards Compatibility** - Seamless upgrade path with legacy system fallbacks
-* **🛡️ Security Enhancements** - Better audit trails and login attempt monitoring
+**Two-Factor Authentication**
+* TOTP-based system compatible with Google Authenticator, Authy
+* Role-based requirements for granular control
+* Grace period system for smooth user transitions
+* Custom verification forms with professional styling
 
-**🔧 Fixes in v2.1.1:**
-* **🏷️ Consistent Branding** - All "Passwordless Authentication" references updated to "Keyless Auth"
-* **🔒 Updated Security Nonces** - Changed from passwordless_login_request to keyless_login_request
-* **📧 Fixed SMTP Test Emails** - Test emails now properly show "Keyless Auth" branding
-* **📁 Correct Installation Path** - Documentation now references correct "keyless-auth" folder
-* **📝 Fixed Menu References** - Updated from "PA Settings" to proper "Templates" menu name
-* **🔗 Updated Repository URLs** - All GitHub links now point to correct keyless-auth repository
-* **🌐 Clean Translation Template** - Regenerated keyless-auth.pot with only current strings
-* **🧹 Removed Legacy Strings** - Cleaned up obsolete translation references from original fork
+**Database Architecture**
+* Custom tables for optimal performance
+* Comprehensive audit logging
+* Device tracking and IP monitoring
+* Automatic maintenance and cleanup routines
 
-**✨ New Features in v2.1.0:**
-* **📧 Optional From Email Field** - Added optional "From Email" field in SMTP settings for flexible sender configuration
-* **⚙️ Enhanced SMTP Flexibility** - Support scenarios where SMTP authentication email differs from desired sender email
-* **📬 Maintained Deliverability** - Proper Message-ID domain alignment for SPF/DKIM/DMARC compliance preserved
-* **🔄 Backwards Compatible** - Empty From Email field defaults to SMTP username, ensuring existing installations work unchanged
+= SMTP & Email Delivery =
 
-**✨ Features from v2.0.12:**
-* **🔗 Settings Link Added** - Direct settings link in WordPress plugin list for easier access
-* **📧 Fixed Mail Logs View Button** - View Content button now properly displays email content
-* **🎯 Improved Admin JavaScript** - Added missing functions for mail logs interaction
-* **🔄 SMTP Cache Management** - Added "Clear SMTP Cache" button to resolve configuration issues when settings aren't updating
-* **📧 Enhanced Email Deliverability** - Message-ID domain now matches authenticated sender for better SPF/DKIM/DMARC alignment
-* **🛠️ Automatic Cache Clearing** - SMTP settings now automatically clear cache when saved to ensure fresh configuration
-* **☑️ Bulk Delete Mail Logs** - Select multiple mail logs with checkboxes and delete them in one action
-* **✅ Select All Checkbox** - Quickly select/deselect all mail logs for bulk operations
+**Supported Providers**
+* Gmail / Google Workspace
+* Outlook / Microsoft 365
+* Mailgun, SendGrid, Amazon SES
+* Any SMTP-compatible service
 
-**Features in v2.0.11:**
-* **📧 Critical SMTP Fix** - Fixed sender email not being used, emails now properly send from configured SMTP address
-* **📝 Fixed Mail Logging** - Resolved post type name length issue preventing mail logs from being saved
-* **🔧 Fixed wp-config.php Instructions** - Restored missing JavaScript for credential storage toggle display  
-* **🐛 Fixed Fatal Errors** - Resolved multiple undefined function errors in Mail Logger page
-* **🔍 Enhanced Diagnostics** - Added diagnostic information to help troubleshoot mail logging issues
+**Advanced Email Features**
+* Message-ID domain alignment for deliverability
+* SPF/DKIM/DMARC compliance
+* Custom sender names and addresses
+* Bulk email log management
+* Delivery status tracking
 
-**Features in v2.0.10:**
-* **🛡️ WordPress.org Plugin Check Compliance** - Resolved all input validation and sanitization warnings
-* **🔒 Enhanced Security** - Fixed wp_unslash() issues and removed insecure duplicate form processing
-* **⚡ Improved Code Quality** - Eliminated security vulnerabilities in POST data handling
-* **🧹 Code Cleanup** - Removed redundant save_settings() method that bypassed security checks
+**Secure Credential Storage**
+Store SMTP credentials securely in wp-config.php:
 
-**Features in v2.0.9:**
-* **🏷️ WordPress.org Ready** - Complete rebrand to "Keyless Auth" for WordPress.org compliance
-* **🔧 Enhanced Prefixes** - All functions/classes use unique "chrmrtns_kla_" prefixes
-* **🛡️ Security Hardening** - Improved nonce verification with proper sanitization
-* **⚡ Performance Optimized** - Converted inline JS/CSS to proper wp_enqueue system
-* **📋 Code Compliance** - Full WordPress.org Plugin Check compliance
-* **🎯 Simplified Shortcode** - New [keyless-auth] shortcode
+`define('CHRMRTNS_PA_SMTP_USERNAME', 'your-email@example.com');`
+`define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');`
 
-**Features in v2.0.8:**
-* **🔒 Security Improvements** - Enhanced output escaping compliance with esc_html_e() and wp_kses()
-* **🎨 Template Preview Security** - Email template previews use controlled HTML allowlists
-* **🖱️ Button Text Colors** - Fixed button text color controls to prevent blue hover text issues
-* **🛡️ WordPress.org Compliance** - Comprehensive escaping improvements for enhanced security
+= WordPress Integration =
 
-**Features in v2.0.7:**
-* **🛡️ WordPress.org Compliance** - Full Plugin Check compliance for WordPress.org submission
-* **🔒 Security Hardening** - Enhanced output escaping and input validation
-* **⚡ Performance Optimized** - Improved database queries and conditional debug logging
-* **📋 Code Quality** - Complete adherence to WordPress coding and security standards
-* **🔐 Enhanced Protection** - Advanced CSRF and timing attack mitigation
+**Login Page Integration**
+* Optional magic login field on wp-login.php
+* Seamless integration with existing login flow
+* Toggle control for easy enable/disable
+* Clean, responsive form styling
 
-**Features in v2.0.6:**
-* **🔧 Fixed Placeholder Token Rendering** - Button backgrounds now display correctly in custom templates
-* **📝 WYSIWYG-Safe Placeholders** - Changed from {{PLACEHOLDER}} to [PLACEHOLDER] format to prevent editor corruption
-* **🎨 Better Email Structure** - Full-width gradient background with 600px content area for professional appearance
-* **✅ Reliable Color Replacement** - Template placeholders are properly replaced with actual colors in all scenarios
+**Shortcode Usage**
+Use `[keyless-auth]` anywhere: pages, posts, widgets, or custom templates.
 
-**Features in v2.0.5:**
-* **✨ Two-Field Email Template System** - Separate WYSIWYG body content from optional CSS styles
-* **🎨 Enhanced Template Editor** - Body content uses inline styles, CSS styles go in head section
-* **🔧 WYSIWYG Compatibility** - No more editor corruption of HTML structure or CSS classes
-* **📐 2x2 Grid Preview Layout** - Template previews now display in compact grid instead of vertical stack
-* **🎯 Advanced Customization** - Choose inline-only styles OR use CSS classes with separate stylesheet field
+= Developer Features =
 
-**Features in v2.0.4:**
-* **🔐 Secure Credential Storage** - Choose between database or wp-config.php storage for SMTP credentials
-* **🛡️ Enhanced Security** - wp-config.php option keeps sensitive credentials outside the web root
-* **⚙️ Flexible Configuration** - Toggle between storage methods with clear visual indicators
+**Hooks & Filters**
 
-**Features in v2.0.3:**
-* **🔗 Login Link Reliability** - Fixed critical issue where login links weren't processing correctly
-* **🔌 Enhanced Hook System** - Improved WordPress hook integration for better compatibility
-* **🧹 Streamlined Code** - Removed debug logging for production-ready performance
+Customize login redirect:
+`add_filter('wpa_after_login_redirect', 'custom_redirect_function');`
 
-**Features in v2.0.2:**
-* **👤 Custom Sender Names** - Force custom "From" names for all emails with toggle control
-* **📊 Login Success Tracking** - Dynamic counter showing total successful passwordless logins
-* **📧 Enhanced Mail Logging** - Fixed compatibility issues with other SMTP plugins
+Modify email headers:
+`add_filter('wpa_email_headers', 'custom_email_headers');`
 
-**Features in v2.0.1:**
-* **🏗️ Modular Architecture** - Complete code refactoring with clean, maintainable class structure
-* **📨 SMTP Configuration** - Full SMTP support for reliable email delivery with major providers
-* **📋 Email Logging & Monitoring** - Track and monitor all emails sent from WordPress
-* **🎨 Visual Email Editor** - WYSIWYG editor with HTML support for custom templates
-* **🎨 Advanced Color Controls** - Support for hex, RGB, HSL, and HSLA color formats
-* **👁️ Template Previews** - Live preview of email templates before selection
-* **🔗 Link Color Customization** - Separate color controls for buttons and text links
-* **🎛️ Enhanced Menu Structure** - Dedicated top-level admin menu with subpages
-* **💼 Professional Email Templates** - Styled German and Simple English templates
-* **🔒 Enhanced Security** - Comprehensive nonce verification and input sanitization
+Change token expiration:
+`add_filter('wpa_change_link_expiration', 'custom_expiration_time');`
 
-**How it works:**
+**Modular Architecture**
+* Clean, organized class structure
+* Separated concerns for easy maintenance
+* WordPress coding standards compliance
+* Extensive documentation and comments
 
-* Instead of asking users for a password when they try to log in to your website, we simply ask them for their username or email
-* The plugin creates a temporary authorization token and saves it securely with enhanced validation
-* Then we send the user a beautifully styled email with a login button
-* The user clicks the button and is automatically logged in
-* Tokens expire after 10 minutes and can only be used once for maximum security
+= Requirements =
 
-You can use the shortcode [keyless-auth] in a page or widget.
+* **WordPress**: 3.9 or higher (tested up to 6.8)
+* **PHP**: 7.4 or higher
+* **Email Delivery**: SMTP recommended for reliability
 
-NOTE:
+**Note**: Keyless Auth complements WordPress's default login system – it doesn't replace it.
 
-Keyless Auth does not replace the default login functionality in WordPress.
+**Developed by Chris Martens | Based on the original Passwordless Login plugin by Cozmoslabs**
 
 
 == Installation ==
@@ -305,9 +245,13 @@ Keyless Auth does not replace the default login functionality in WordPress.
 
 	In v2.0.1, we completely refactored the plugin from a single 1868-line file into clean, organized classes. Each functionality (authentication, SMTP, mail logging, email templates, admin interface) is now in its own dedicated class file. This makes the code much easier to maintain, extend, and debug. Developers can now easily customize specific features without affecting others.
 
+= Why did you create this plugin? What inspired Keyless Auth? =
+
+	Great question! We built Keyless Auth out of real-world frustration with password complexity and user experience challenges. The story involves too many plugins, security concerns, and the quest for the perfect balance between usability and security. Read the full story behind the plugin's creation: [How Many Plugins Are Too Many? Just One More: Why We Built Keyless Auth](https://chris-martens.com/blog/how-many-plugins-are-too-many-just-one-more-why-we-built-keyless-auth/)
+
 = I can't find a question similar to my issue; Where can I find support? =
 
-	For support with the original functionality, visit http://www.cozmoslabs.com. For issues specific to this enhanced version, please check the GitHub repository.
+	For plugin support, please use the WordPress.org support forum for Keyless Auth. For bug reports and feature requests, you can also visit our GitHub repository. For support with the original Passwordless Login functionality, visit http://www.cozmoslabs.com.
 
 
 == Screenshots ==

@@ -1,43 +1,79 @@
-# Keyless Auth - Login without Passwords
+# Keyless Auth – Login without Passwords
 
-**Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
+**Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
 ![Version](https://img.shields.io/badge/version-2.4.2-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
 
-## 🚀 Description
+## What is Keyless Auth?
 
-**Forget passwords. Let your users log in with a secure magic link sent to their email — fast, stylish, and hassle-free.** Includes customizable email templates, SMTP support, full logging, and a beautiful WYSIWYG editor.
+Transform your WordPress login experience with passwordless authentication. Users simply enter their email address and receive a secure magic link – click to login instantly. It's more secure than weak passwords and infinitely more user-friendly.
 
-### 🔐 Feature Overview
+### Why Choose Passwordless Login?
 
-**✅ Ready:**
-• Passwordless Login via Email – secure, simple, password-free
-• Two-Factor Authentication (2FA) – TOTP-based authentication with QR code setup
-• Role-Based 2FA Requirements – enforce 2FA for specific user roles
-• Token Expiry + Security Rules – one-time login links with expiration and abuse protection
-• SMTP Integration – send emails via your own mail server
-• Simple Mail Log – track when and to whom login links were sent
-• Email Templates – customize your login email content
-• Basic Email Designer – quick styling options directly in the dashboard
-• Comprehensive User Management – search and manage 2FA users with detailed stats
+- **Enhanced Security**: No more weak, reused, or compromised passwords
+- **Better User Experience**: One click instead of remembering complex passwords
+- **Reduced Support**: Eliminate "forgot password" requests
+- **Modern Authentication**: Enterprise-grade security used by Slack, Medium, and others
 
-**🛠 In Progress:**
-• Newsletter/Lead Collection System – internal priority for business development and user engagement
-• Admin QR Generation – generate QR codes directly in admin backend without shortcode dependency
-• Role-Based Token Redirects – redirect users based on their role after login
+### The Story Behind Keyless Auth
 
-**🧠 Planned:**
-• BricksBuilder Login Element – full BricksBuilder integration
-• Visual Email Designer (Bricks-Based) – design login emails visually with Bricks
-• White-Label / Branding Removal – perfect for agencies & white-label solutions
-• REST API – access login functionality via secure API endpoints
-• KLA Companion App (PWA) – receive login links in an app instead of email
-• Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
-• Telegram Support – receive login links via Telegram Bot
-• Backup Codes for 2FA – alternative recovery method when TOTP is unavailable
+Born from real-world frustration with password complexity and user experience challenges, Keyless Auth represents our commitment to making WordPress authentication both more secure and more user-friendly.
+
+**Read the full story**: [How Many Plugins Are Too Many? Just One More: Why We Built Keyless Auth](https://chris-martens.com/blog/how-many-plugins-are-too-many-just-one-more-why-we-built-keyless-auth/)
+
+## Core Features
+
+### Ready to Use
+- **Magic Link Authentication** – Secure, one-time login links via email
+- **Two-Factor Authentication (2FA)** – Complete TOTP support with Google Authenticator
+- **Role-Based 2FA** – Require 2FA for specific user roles (admins, editors, etc.)
+- **Custom 2FA Setup URLs** – Direct users to branded frontend 2FA setup pages
+- **SMTP Integration** – Reliable email delivery through your mail server
+- **Email Templates** – Professional, customizable login emails
+- **Mail Logging** – Track all sent emails with delivery status
+- **Custom Database Tables** – Scalable architecture with dedicated audit logs
+
+### Advanced Security
+- **Token Security**: 10-minute expiration, single-use tokens
+- **Audit Logging**: IP addresses, device types, login attempts
+- **Emergency Mode**: Grace period system with admin controls
+- **Secure Storage**: SMTP credentials in wp-config.php option
+
+### Customization
+- **WYSIWYG Email Editor**: Full HTML support with live preview
+- **Advanced Color Controls**: Hex, RGB, HSL color formats
+- **Template System**: German, English, and custom templates
+- **Branding Options**: Custom sender names and professional styling
+
+### Future Features
+- **Newsletter Integration Form** – Admin-requested feature for user engagement
+- **Enhanced Mail Log Management** – Additional filtering and search capabilities
+- **Admin QR Generation** – Backend tools for managing user 2FA setups
+- **Role-Based Redirects** – Automatic redirection based on user roles
+- **REST API** – Secure API endpoints for external access
+- **White-Label Solution** – Agency-ready with branding removal options
+
+## Quick Start
+
+1. Install and activate the plugin
+2. Create a new page and add the shortcode `[keyless-auth]`
+3. Configure email templates in **Keyless Auth → Templates**
+4. Done! Users can now login passwordlessly
+
+### SMTP Configuration (Recommended)
+1. Navigate to Keyless Auth → SMTP
+2. Configure your email provider (Gmail, Outlook, SendGrid, etc.)
+3. Test email delivery
+4. Save settings
+
+### Two-Factor Authentication Setup
+1. Go to Keyless Auth → Options
+2. Enable "Two-Factor Authentication"
+3. Select required user roles
+4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
 
@@ -570,6 +606,18 @@ This plugin is officially available on WordPress.org!
 **[📦 Install from WordPress.org](https://wordpress.org/plugins/keyless-auth/)**
 
 ## 🤝 Contributing
+
+## 📚 Documentation & Support
+
+### Getting Help
+- **WordPress.org Support Forum**: Primary support channel for plugin issues
+- **GitHub Repository**: Bug reports and feature requests welcome
+- **WordPress.org Plugin Page**: [https://wordpress.org/plugins/keyless-auth/](https://wordpress.org/plugins/keyless-auth/)
+
+### Requirements
+- **WordPress**: 3.9 or higher (tested up to 6.8)
+- **PHP**: 7.4 or higher
+- **Email Delivery**: SMTP recommended for reliability
 
 Issues and pull requests are welcome on [GitHub](https://github.com/chrmrtns/keyless-auth).
 
