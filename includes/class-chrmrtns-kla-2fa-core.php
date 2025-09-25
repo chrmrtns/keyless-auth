@@ -731,8 +731,13 @@ class Chrmrtns_KLA_2FA_Core {
         $grace_end = $grace_start + ($grace_days * DAY_IN_SECONDS);
         $days_remaining = ceil(($grace_end - time()) / DAY_IN_SECONDS);
 
-        // Setup URL - use login page instead of admin page
-        $setup_url = wp_login_url();
+        // Setup URL - use custom 2FA setup page if configured, otherwise login page
+        $custom_2fa_setup_url = get_option('chrmrtns_kla_custom_2fa_setup_url', '');
+        if (!empty($custom_2fa_setup_url)) {
+            $setup_url = esc_url($custom_2fa_setup_url);
+        } else {
+            $setup_url = wp_login_url();
+        }
 
         // Get email template
         if (class_exists('Chrmrtns_KLA_Email_Templates')) {

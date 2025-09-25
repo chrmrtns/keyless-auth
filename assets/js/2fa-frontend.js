@@ -12,6 +12,19 @@ jQuery(document).ready(function($) {
     'use strict';
 
     console.log('2FA Frontend script loaded');
+
+    // Debug: Check if backup codes button exists FIRST
+    const $generateBackupBtn = $('#chrmrtns-generate-backup-codes');
+    console.log('Generate backup codes button found:', $generateBackupBtn.length > 0);
+    console.log('Button element:', $generateBackupBtn.length > 0 ? $generateBackupBtn[0] : 'not found');
+    console.log('Button text:', $generateBackupBtn.length > 0 ? $generateBackupBtn.text() : 'N/A');
+
+    // Debug: Check if required JavaScript objects are available
+    console.log('chrmrtns_2fa object available:', typeof chrmrtns_2fa !== 'undefined');
+    console.log('chrmrtns_2fa contents:', typeof chrmrtns_2fa !== 'undefined' ? chrmrtns_2fa : 'undefined');
+
+    // Add flag to prevent accidental reloads
+    window.chrmrtnsPreventReload = false;
     console.log('QRCode available on DOM ready:', typeof QRCode !== 'undefined');
     console.log('QRCode object:', typeof QRCode !== 'undefined' ? QRCode : 'undefined');
 
@@ -88,6 +101,8 @@ jQuery(document).ready(function($) {
         }
     }
 
+    console.log('DEBUG: After QR code section, continuing with form handlers');
+
     // 2FA Setup Form
     $('#chrmrtns-2fa-setup-form').on('submit', function(e) {
         e.preventDefault();
@@ -115,13 +130,15 @@ jQuery(document).ready(function($) {
 
                     // Show backup codes modal
                     if (response.data.backup_codes) {
-                        showBackupCodesModal(response.data.backup_codes);
+                        showBackupCodesModal(response.data.backup_codes, true); // true = reload on close
+                    } else {
+                        // Only reload immediately if no backup codes to show
+                        setTimeout(function() {
+                            if (!window.chrmrtnsPreventReload) {
+                                location.reload();
+                            }
+                        }, 2000);
                     }
-
-                    // Reload page after showing backup codes
-                    setTimeout(function() {
-                        location.reload();
-                    }, 5000);
                 } else {
                     showMessage(response.data || chrmrtns_2fa.strings.error, 'error');
                     $submitBtn.prop('disabled', false).text(originalText);
@@ -170,11 +187,33 @@ jQuery(document).ready(function($) {
         }
     });
 
+    console.log('DEBUG: Reached backup codes section');
+
     // Generate Backup Codes
+    console.log('Attempting to bind click handler to backup codes button');
+
+    // Try multiple approaches to ensure the handler gets bound
+    // Approach 1: Direct binding
     $('#chrmrtns-generate-backup-codes').on('click', function() {
+        console.log('CLICK HANDLER TRIGGERED: Generate backup codes clicked (direct binding)!');
+        handleGenerateBackupCodes.call(this);
+    });
+
+    // Approach 2: Delegated event binding (in case button is dynamically loaded)
+    $(document).on('click', '#chrmrtns-generate-backup-codes', function() {
+        console.log('CLICK HANDLER TRIGGERED: Generate backup codes clicked (delegated binding)!');
+        handleGenerateBackupCodes.call(this);
+    });
+
+    // Function to handle backup code generation
+    function handleGenerateBackupCodes() {
         if (!confirm('This will generate new backup codes and invalidate all existing codes. Continue?')) {
             return;
         }
+
+        // Set flag to prevent any automatic reloads
+        window.chrmrtnsPreventReload = true;
+        console.log('Set chrmrtnsPreventReload to true');
 
         const $button = $(this);
         const originalText = $button.text();
@@ -189,28 +228,29 @@ jQuery(document).ready(function($) {
                 nonce: chrmrtns_2fa.nonce
             },
             success: function(response) {
+                console.log('Backup codes generation response:', response);
                 if (response.success) {
-                    showMessage(response.data.message, 'success');
+                    console.log('SUCCESS: Showing backup codes modal');
+                    // Don't show success message to avoid any interference
                     if (response.data.backup_codes) {
-                        showBackupCodesModal(response.data.backup_codes);
+                        console.log('Opening modal with codes:', response.data.backup_codes.length);
+                        showBackupCodesModal(response.data.backup_codes, false); // false = don't auto-reload
                     }
-
-                    // Reload page after modal
-                    setTimeout(function() {
-                        location.reload();
-                    }, 5000);
                 } else {
+                    console.log('ERROR:', response.data);
                     showMessage(response.data || chrmrtns_2fa.strings.error, 'error');
                 }
             },
             error: function() {
+                console.log('AJAX ERROR');
                 showMessage(chrmrtns_2fa.strings.error, 'error');
             },
             complete: function() {
+                console.log('AJAX COMPLETE');
                 $button.prop('disabled', false).text(originalText);
             }
         });
-    });
+    }
 
     // Disable 2FA
     $('#chrmrtns-disable-2fa').on('click', function() {
@@ -234,7 +274,9 @@ jQuery(document).ready(function($) {
                 if (response.success) {
                     showMessage(response.data.message, 'success');
                     setTimeout(function() {
-                        location.reload();
+                        if (!window.chrmrtnsPreventReload) {
+                            location.reload();
+                        }
                     }, 2000);
                 } else {
                     showMessage(response.data || chrmrtns_2fa.strings.error, 'error');
@@ -279,8 +321,16 @@ jQuery(document).ready(function($) {
 
     /**
      * Show backup codes in a modal
+     * @param {Array} codes - Array of backup codes
+     * @param {boolean} reloadOnClose - Whether to reload page when modal is closed
      */
-    function showBackupCodesModal(codes) {
+    function showBackupCodesModal(codes, reloadOnClose = false) {
+        console.log('showBackupCodesModal called with reloadOnClose:', reloadOnClose);
+        console.log('Number of codes:', codes.length);
+
+        // Remove any existing modals first
+        $('#chrmrtns-backup-modal').remove();
+
         // Create modal HTML
         const modalHtml = `
             <div id="chrmrtns-backup-modal" class="chrmrtns-modal-overlay">
@@ -308,10 +358,24 @@ jQuery(document).ready(function($) {
 
         $('body').append(modalHtml);
 
-        // Handle modal close
-        $('.chrmrtns-modal-close, .chrmrtns-modal-overlay').on('click', function(e) {
-            if (e.target === this) {
+        // Handle modal close - close button
+        $('.chrmrtns-modal-close').on('click', function(e) {
+            e.preventDefault();
+            $('#chrmrtns-backup-modal').remove();
+            // Reload page if requested (e.g., after initial 2FA setup)
+            if (reloadOnClose) {
+                location.reload();
+            }
+        });
+
+        // Handle modal close - clicking overlay background
+        $('.chrmrtns-modal-overlay').on('click', function(e) {
+            if (e.target === this) { // Only close when clicking the overlay itself, not child elements
                 $('#chrmrtns-backup-modal').remove();
+                // Reload page if requested (e.g., after initial 2FA setup)
+                if (reloadOnClose) {
+                    location.reload();
+                }
             }
         });
 

@@ -144,6 +144,10 @@ class Chrmrtns_KLA_Admin {
             'sanitize_callback' => 'esc_url_raw',
             'default' => ''
         ));
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_custom_2fa_setup_url', array(
+            'sanitize_callback' => 'esc_url_raw',
+            'default' => ''
+        ));
 
         add_action('wp_ajax_chrmrtns_kla_save_settings', array($this, 'save_settings'));
         add_action('admin_post_chrmrtns_kla_save_settings', array($this, 'save_settings'));
@@ -753,6 +757,9 @@ class Chrmrtns_KLA_Admin {
             $custom_redirect_url = isset($_POST['chrmrtns_kla_custom_redirect_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_custom_redirect_url'])) : '';
             update_option('chrmrtns_kla_custom_redirect_url', $custom_redirect_url);
 
+            $custom_2fa_setup_url = isset($_POST['chrmrtns_kla_custom_2fa_setup_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_custom_2fa_setup_url'])) : '';
+            update_option('chrmrtns_kla_custom_2fa_setup_url', $custom_2fa_setup_url);
+
             // Handle 2FA settings
             $enable_2fa = isset($_POST['chrmrtns_kla_2fa_enabled']) ? true : false;
             update_option('chrmrtns_kla_2fa_enabled', $enable_2fa);
@@ -790,6 +797,7 @@ class Chrmrtns_KLA_Admin {
         $enable_wp_login = get_option('chrmrtns_kla_enable_wp_login', '0');
         $custom_login_url = get_option('chrmrtns_kla_custom_login_url', '');
         $custom_redirect_url = get_option('chrmrtns_kla_custom_redirect_url', '');
+        $custom_2fa_setup_url = get_option('chrmrtns_kla_custom_2fa_setup_url', '');
 
         // Get 2FA settings
         $enable_2fa = get_option('chrmrtns_kla_2fa_enabled', false);
@@ -845,6 +853,17 @@ class Chrmrtns_KLA_Admin {
                             <input type="url" id="chrmrtns_kla_custom_redirect_url" name="chrmrtns_kla_custom_redirect_url" value="<?php echo esc_attr($custom_redirect_url); ?>" class="regular-text" placeholder="<?php echo esc_attr(admin_url()); ?>" />
                             <p class="description">
                                 <?php esc_html_e('Optional: Specify where users should be redirected after successful login via magic link or 2FA. This applies to all users regardless of role. Leave empty to use default WordPress behavior (admin dashboard for admins, homepage for others).', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_custom_2fa_setup_url"><?php esc_html_e('2FA Setup Page URL', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <input type="url" id="chrmrtns_kla_custom_2fa_setup_url" name="chrmrtns_kla_custom_2fa_setup_url" value="<?php echo esc_attr($custom_2fa_setup_url); ?>" class="regular-text" placeholder="<?php echo esc_attr(home_url('/2fa/')); ?>" />
+                            <p class="description">
+                                <?php esc_html_e('Optional: Specify a custom page where users can set up 2FA using the [keyless-auth-2fa] shortcode. When users need to configure 2FA, email notifications will link here instead of wp-login.php. Leave empty to use the default WordPress login page.', 'keyless-auth'); ?>
                             </p>
                         </td>
                     </tr>
