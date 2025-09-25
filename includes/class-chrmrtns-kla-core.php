@@ -188,7 +188,7 @@ class Chrmrtns_KLA_Core {
         // Generate secure token
         $expiration_time = time() + apply_filters('chrmrtns_kla_change_link_expiration', 600); // 10 minutes default
         $token = $this->generate_secure_token($user_id, $expiration_time);
-        
+
         // Store token in database
         if (class_exists('Chrmrtns_KLA_Database')) {
             $database = new Chrmrtns_KLA_Database();
@@ -258,20 +258,66 @@ class Chrmrtns_KLA_Core {
             exit;
         }
         
-        // Log in user
+        // Check if 2FA is required for this user
+        $user = get_user_by('ID', $user_id);
+        if ($user && class_exists('Chrmrtns_KLA_2FA_Core')) {
+            $tfa_core = new Chrmrtns_KLA_2FA_Core();
+
+            // Check if 2FA is enabled and required for this user
+            if (get_option('chrmrtns_kla_2fa_enabled', false)) {
+                global $chrmrtns_kla_database;
+                $user_settings = $chrmrtns_kla_database ? $chrmrtns_kla_database->get_user_2fa_settings($user_id) : null;
+                $role_required = $tfa_core->user_role_requires_2fa($user_id);
+
+                // If user has 2FA enabled OR their role requires it, redirect to 2FA verification
+                if (($user_settings && $user_settings->totp_enabled) || $role_required) {
+                    // Get redirect URL (custom or default)
+                    $redirect_url = class_exists('Chrmrtns_KLA_Admin') ? Chrmrtns_KLA_Admin::get_redirect_url($user_id) : admin_url();
+                    $redirect_url = apply_filters('chrmrtns_kla_after_login_redirect', $redirect_url, $user_id);
+
+                    // Store the magic link token info for after 2FA verification
+                    set_transient('chrmrtns_kla_pending_magic_login_' . $user_id, array(
+                        'token' => $token,
+                        'redirect_url' => $redirect_url,
+                        'timestamp' => time()
+                    ), 300); // 5 minutes
+
+                    // Don't clean up the login token yet - we'll do it after 2FA verification
+
+                    // Set up session for 2FA verification
+                    if (!session_id()) {
+                        session_start();
+                    }
+                    $_SESSION['chrmrtns_kla_2fa_user_id'] = $user_id;
+                    $_SESSION['chrmrtns_kla_2fa_redirect'] = $redirect_url;
+
+                    // Redirect to 2FA verification page
+                    $tfa_verify_url = add_query_arg(array(
+                        'action' => 'keyless-2fa-verify',
+                        'magic_login' => '1'
+                    ), home_url());
+
+                    wp_redirect($tfa_verify_url);
+                    exit;
+                }
+            }
+        }
+
+        // If no 2FA required, proceed with normal login
         wp_set_current_user($user_id);
         wp_set_auth_cookie($user_id, true);
-        
+
         // Increment successful logins counter
         $current_count = get_option('chrmrtns_kla_successful_logins', 0);
         update_option('chrmrtns_kla_successful_logins', $current_count + 1);
-        
+
         // Clean up token
         delete_user_meta($user_id, 'chrmrtns_kla_login_token');
         delete_user_meta($user_id, 'chrmrtns_kla_login_token_expiration');
-        
-        // Redirect
-        $redirect_url = apply_filters('chrmrtns_kla_after_login_redirect', $this->get_current_page_url(), $user_id);
+
+        // Get redirect URL (custom or default)
+        $redirect_url = class_exists('Chrmrtns_KLA_Admin') ? Chrmrtns_KLA_Admin::get_redirect_url($user_id) : admin_url();
+        $redirect_url = apply_filters('chrmrtns_kla_after_login_redirect', $redirect_url, $user_id);
         wp_redirect($redirect_url);
         exit;
     }
@@ -350,8 +396,8 @@ class Chrmrtns_KLA_Core {
      * Enqueue frontend scripts
      */
     public function enqueue_frontend_scripts() {
-        if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . '/assets/style-front-end.css')) {
-            wp_register_style('chrmrtns_frontend_stylesheet', CHRMRTNS_KLA_PLUGIN_URL . 'assets/style-front-end.css', array(), CHRMRTNS_KLA_VERSION);
+        if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . '/assets/css/style-front-end.css')) {
+            wp_register_style('chrmrtns_frontend_stylesheet', CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/style-front-end.css', array(), CHRMRTNS_KLA_VERSION);
             wp_enqueue_style('chrmrtns_frontend_stylesheet');
         }
     }

@@ -3,7 +3,7 @@
 * Plugin Name: Keyless Auth - Login without Passwords
 * Plugin URI: https://github.com/chrmrtns/keyless-auth
 * Description: Enhanced passwordless authentication allowing users to login securely without passwords via email magic links. Fork of Passwordless Login by Cozmoslabs with additional security features.
-* Version: 2.3.1
+* Version: 2.4.0
 * Author: Chris Martens
 * Author URI: https://github.com/chrmrtns
 * License: GPL2
@@ -37,7 +37,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('CHRMRTNS_KLA_VERSION', '2.3.1');
+define('CHRMRTNS_KLA_VERSION', '2.4.0');
 define('CHRMRTNS_KLA_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CHRMRTNS_KLA_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('CHRMRTNS_KLA_PLUGIN_FILE', __FILE__);
@@ -100,7 +100,10 @@ class Chrmrtns_KLA_Main {
             'class-chrmrtns-kla-admin.php',
             'class-chrmrtns-kla-smtp.php',
             'class-chrmrtns-kla-mail-logger.php',
-            'class-chrmrtns-kla-email-templates.php'
+            'class-chrmrtns-kla-email-templates.php',
+            'class-chrmrtns-kla-totp.php',
+            'class-chrmrtns-kla-2fa-core.php',
+            'class-chrmrtns-kla-2fa-frontend.php'
         );
         
         foreach ($classes as $class_file) {
@@ -116,8 +119,9 @@ class Chrmrtns_KLA_Main {
      */
     private function init_components() {
         // Initialize database functionality
+        global $chrmrtns_kla_database;
         if (class_exists('Chrmrtns_KLA_Database')) {
-            new Chrmrtns_KLA_Database();
+            $chrmrtns_kla_database = new Chrmrtns_KLA_Database();
         }
 
         // Initialize core functionality
@@ -138,6 +142,16 @@ class Chrmrtns_KLA_Main {
         // Initialize mail logging
         if (class_exists('Chrmrtns_KLA_Mail_Logger')) {
             new Chrmrtns_KLA_Mail_Logger();
+        }
+
+        // Initialize 2FA functionality
+        if (class_exists('Chrmrtns_KLA_2FA_Core')) {
+            new Chrmrtns_KLA_2FA_Core();
+        }
+
+        // Initialize 2FA frontend
+        if (class_exists('Chrmrtns_KLA_2FA_Frontend')) {
+            new Chrmrtns_KLA_2FA_Frontend();
         }
     }
     
@@ -196,6 +210,14 @@ function chrmrtns_kla_activation_hook() {
     add_option('chrmrtns_kla_mail_logging_enabled', '1');
     add_option('chrmrtns_kla_mail_log_size_limit', '100');
     add_option('chrmrtns_kla_successful_logins', 0);
+
+    // Set default 2FA options (disabled by default)
+    add_option('chrmrtns_kla_2fa_enabled', false);
+    add_option('chrmrtns_kla_2fa_required_roles', array());
+    add_option('chrmrtns_kla_2fa_grace_period', 10);
+    add_option('chrmrtns_kla_2fa_grace_message', __('Your account requires 2FA setup within {days} days for security.', 'keyless-auth'));
+    add_option('chrmrtns_kla_2fa_max_attempts', 5);
+    add_option('chrmrtns_kla_2fa_lockout_duration', 15);
 
     // Flush rewrite rules
     flush_rewrite_rules();
@@ -261,6 +283,14 @@ function chrmrtns_kla_uninstall_hook() {
     delete_option('chrmrtns_kla_login_request_error');
     delete_option('chrmrtns_kla_learn_more_dismiss_notification');
     delete_option('chrmrtns_kla_db_version');
+
+    // Remove 2FA options
+    delete_option('chrmrtns_kla_2fa_enabled');
+    delete_option('chrmrtns_kla_2fa_required_roles');
+    delete_option('chrmrtns_kla_2fa_grace_period');
+    delete_option('chrmrtns_kla_2fa_grace_message');
+    delete_option('chrmrtns_kla_2fa_max_attempts');
+    delete_option('chrmrtns_kla_2fa_lockout_duration');
     
     // Remove all mail logs
     $args = array(

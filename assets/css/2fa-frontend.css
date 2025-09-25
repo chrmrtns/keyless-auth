@@ -1,0 +1,660 @@
+/**
+ * Frontend CSS for 2FA management
+ * Styles for the [keyless-auth-2fa] shortcode interface
+ *
+ * @since 2.4.0
+ */
+
+/* Main container */
+.chrmrtns-2fa-container {
+    width: 100%;
+    max-width: 1400px;
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    box-sizing: border-box;
+}
+
+/* Header */
+.chrmrtns-2fa-header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+}
+
+.chrmrtns-2fa-header h3 {
+    margin: 0 0 10px 0;
+    color: #23282d;
+    font-size: 24px;
+}
+
+.chrmrtns-2fa-header p {
+    color: #666;
+    margin: 10px 0;
+}
+
+/* Status indicators */
+.chrmrtns-2fa-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.chrmrtns-2fa-status.chrmrtns-2fa-enabled {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.chrmrtns-2fa-status-icon {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+/* Required notice */
+.chrmrtns-2fa-required-notice {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.chrmrtns-2fa-required-notice p {
+    margin: 0;
+    color: #856404;
+}
+
+/* Setup steps */
+.chrmrtns-2fa-step {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    border-left: 4px solid #0073aa;
+}
+
+.chrmrtns-2fa-step h4 {
+    margin-top: 0;
+    color: #0073aa;
+    font-size: 18px;
+}
+
+.chrmrtns-2fa-step h5 {
+    color: #23282d;
+    margin-bottom: 10px;
+}
+
+/* App list */
+.chrmrtns-2fa-apps {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.chrmrtns-2fa-apps li {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #e1e1e1;
+    text-align: center;
+}
+
+/* QR Code section */
+.chrmrtns-2fa-qr-section {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.chrmrtns-2fa-qr {
+    flex: 0 0 200px;
+    text-align: center;
+}
+
+.chrmrtns-2fa-qr #chrmrtns-2fa-qrcode {
+    display: inline-block;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 10px;
+    background: #ffffff;
+}
+
+.chrmrtns-2fa-qr .chrmrtns-qr-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    color: #666;
+    font-style: italic;
+}
+
+.chrmrtns-2fa-qr .chrmrtns-qr-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    color: #d63638;
+    background: #fef7f7;
+    border: 1px solid #f5c2c7;
+    border-radius: 5px;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.chrmrtns-2fa-manual {
+    flex: 1;
+    min-width: 250px;
+}
+
+.chrmrtns-2fa-secret {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 5px;
+    flex-wrap: wrap;
+}
+
+.chrmrtns-2fa-secret code {
+    background: #ffffff;
+    padding: 8px 12px;
+    border-radius: 3px;
+    border: 1px solid #e1e1e1;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    word-break: break-all;
+    flex: 1;
+    min-width: 200px;
+}
+
+.chrmrtns-copy-button {
+    background: #0073aa;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+
+.chrmrtns-copy-button:hover {
+    background: #005a87;
+}
+
+.chrmrtns-copy-button.copied {
+    background: #46b450;
+}
+
+/* Form styles */
+.chrmrtns-2fa-step form {
+    margin-top: 20px;
+}
+
+.chrmrtns-2fa-step label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.chrmrtns-2fa-step input[type="text"] {
+    width: 100%;
+    max-width: 200px;
+    padding: 12px;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 2px;
+    border: 2px solid #e1e1e1;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+}
+
+.chrmrtns-2fa-step input[type="text"]:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 115, 170, 0.3);
+}
+
+.chrmrtns-2fa-setup-btn {
+    background: #0073aa;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.chrmrtns-2fa-setup-btn:hover:not(:disabled) {
+    background: #005a87;
+}
+
+.chrmrtns-2fa-setup-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Info section */
+.chrmrtns-2fa-info {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f0f6fc;
+    border-left: 4px solid #0073aa;
+    border-radius: 5px;
+}
+
+.chrmrtns-2fa-info h4 {
+    margin-top: 0;
+    color: #0073aa;
+}
+
+/* Active view styles */
+.chrmrtns-2fa-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.chrmrtns-2fa-info-item {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.chrmrtns-2fa-info-item h4 {
+    margin: 0 0 10px 0;
+    color: #666;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.chrmrtns-2fa-info-item p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+/* Actions */
+.chrmrtns-2fa-actions {
+    margin-top: 30px;
+}
+
+.chrmrtns-2fa-actions > h4 {
+    margin-bottom: 20px;
+    color: #23282d;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 10px;
+}
+
+.chrmrtns-2fa-action {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.chrmrtns-2fa-action h5 {
+    margin: 0 0 10px 0;
+    color: #23282d;
+}
+
+.chrmrtns-2fa-action p {
+    margin: 10px 0;
+    color: #666;
+}
+
+.chrmrtns-2fa-action .button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* Backup codes */
+.chrmrtns-2fa-backup-codes {
+    margin: 15px 0;
+    padding: 15px;
+    background: white;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+}
+
+.chrmrtns-backup-codes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.chrmrtns-backup-code {
+    background: #f0f0f0;
+    padding: 8px;
+    text-align: center;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+/* Messages */
+.chrmrtns-2fa-message {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid;
+}
+
+.chrmrtns-2fa-success {
+    background: #d4edda;
+    color: #155724;
+    border-left-color: #28a745;
+}
+
+.chrmrtns-2fa-error {
+    background: #f8d7da;
+    color: #721c24;
+    border-left-color: #dc3545;
+}
+
+.chrmrtns-2fa-message p {
+    margin: 0;
+}
+
+/* Modal styles */
+.chrmrtns-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.chrmrtns-modal-content {
+    background: white;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.chrmrtns-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.chrmrtns-modal-header h3 {
+    margin: 0;
+    color: #23282d;
+}
+
+.chrmrtns-modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chrmrtns-modal-close:hover {
+    color: #000;
+}
+
+.chrmrtns-modal-body {
+    padding: 30px;
+}
+
+.chrmrtns-backup-warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.chrmrtns-backup-warning p {
+    margin: 5px 0;
+    color: #856404;
+}
+
+.chrmrtns-backup-codes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.chrmrtns-backup-codes-grid .chrmrtns-backup-code {
+    background: #f8f9fa;
+    border: 1px solid #e1e1e1;
+    padding: 12px 8px;
+    font-size: 14px;
+}
+
+.chrmrtns-modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* Notice styles */
+.chrmrtns-2fa-notice {
+    background: #f0f6fc;
+    border: 1px solid #c6e2ff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .chrmrtns-2fa-container {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .chrmrtns-2fa-qr-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .chrmrtns-2fa-secret {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .chrmrtns-2fa-secret code {
+        min-width: auto;
+        margin-bottom: 10px;
+    }
+
+    .chrmrtns-2fa-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chrmrtns-modal-content {
+        margin: 10px;
+        max-height: calc(100vh - 40px);
+    }
+
+    .chrmrtns-modal-header,
+    .chrmrtns-modal-body {
+        padding: 20px;
+    }
+
+    .chrmrtns-backup-codes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Button Styling */
+.chrmrtns-kla-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 5px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.chrmrtns-kla-btn:focus {
+    outline: 2px solid #0073aa;
+    outline-offset: 2px;
+}
+
+.chrmrtns-kla-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Primary Button */
+.chrmrtns-kla-btn-primary {
+    background: #0073aa;
+    color: #ffffff;
+    border: 1px solid #0073aa;
+}
+
+.chrmrtns-kla-btn-primary:hover {
+    background: #005a87;
+    border-color: #005a87;
+    color: #ffffff;
+}
+
+.chrmrtns-kla-btn-primary:active {
+    background: #004a70;
+    border-color: #004a70;
+}
+
+/* Secondary Button */
+.chrmrtns-kla-btn-secondary {
+    background: #ffffff;
+    color: #0073aa;
+    border: 1px solid #0073aa;
+}
+
+.chrmrtns-kla-btn-secondary:hover {
+    background: #f0f8ff;
+    border-color: #005a87;
+    color: #005a87;
+}
+
+.chrmrtns-kla-btn-secondary:active {
+    background: #e6f3ff;
+    border-color: #004a70;
+    color: #004a70;
+}
+
+/* Danger Button */
+.chrmrtns-kla-btn-danger {
+    background: #d63638;
+    color: #ffffff;
+    border: 1px solid #d63638;
+}
+
+.chrmrtns-kla-btn-danger:hover {
+    background: #b32d2e;
+    border-color: #b32d2e;
+    color: #ffffff;
+}
+
+.chrmrtns-kla-btn-danger:active {
+    background: #8a2424;
+    border-color: #8a2424;
+}
+
+/* Success Button */
+.chrmrtns-kla-btn-success {
+    background: #46b450;
+    color: #ffffff;
+    border: 1px solid #46b450;
+}
+
+.chrmrtns-kla-btn-success:hover {
+    background: #2e7d32;
+    border-color: #2e7d32;
+    color: #ffffff;
+}
+
+.chrmrtns-kla-btn-success:active {
+    background: #1b5e20;
+    border-color: #1b5e20;
+}
+
+/* Small buttons */
+.chrmrtns-kla-btn-small {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* Large buttons */
+.chrmrtns-kla-btn-large {
+    padding: 16px 32px;
+    font-size: 16px;
+}
+
+/* Copy button specific styling */
+.chrmrtns-copy-button {
+    background: #f0f0f1;
+    color: #2c3338;
+    border: 1px solid #c3c4c7;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 10px;
+}
+
+.chrmrtns-copy-button:hover {
+    background: #e0e0e0;
+    border-color: #8c8f94;
+}
+
+.chrmrtns-copy-button.copied {
+    background: #46b450;
+    color: #ffffff;
+    border-color: #46b450;
+}

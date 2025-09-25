@@ -2,7 +2,7 @@
 
 **Secure keyless authentication allowing users to login without passwords via email magic links. Enhanced with customizable templates and improved security.**
 
-![Version](https://img.shields.io/badge/version-2.3.1-blue.svg)
+![Version](https://img.shields.io/badge/version-2.4.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -15,16 +15,18 @@
 
 **✅ Ready:**
 • Passwordless Login via Email – secure, simple, password-free
+• Two-Factor Authentication (2FA) – TOTP-based authentication with QR code setup
+• Role-Based 2FA Requirements – enforce 2FA for specific user roles
 • Token Expiry + Security Rules – one-time login links with expiration and abuse protection
 • SMTP Integration – send emails via your own mail server
 • Simple Mail Log – track when and to whom login links were sent
 • Email Templates – customize your login email content
 • Basic Email Designer – quick styling options directly in the dashboard
+• Comprehensive User Management – search and manage 2FA users with detailed stats
 
 **🛠 In Progress:**
 • Role-Based Token Redirects – redirect users based on their role after login
 • Webhook Support – trigger external actions after login (e.g., automation tools)
-• Telegram Support – receive login links via Telegram Bot
 • Simple CSS Styling – easily adjust button & container styles
 
 **🧠 Planned:**
@@ -34,7 +36,17 @@
 • REST API – access login functionality via secure API endpoints
 • KLA Companion App (PWA) – receive login links in an app instead of email
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
-• Two-Factor Authentication – extra security via Telegram, app-based code, or similar
+• Telegram Support – receive login links via Telegram Bot
+• Backup Codes for 2FA – alternative recovery method when TOTP is unavailable
+
+## 🚀 Major Update v2.4.0
+
+* **🔐 Two-Factor Authentication (2FA)** - Complete TOTP-based 2FA system with QR code setup and secure token generation
+* **👥 Role-Based 2FA Requirements** - Configure specific user roles to require 2FA authentication
+* **🔧 2FA User Management** - Dedicated admin page to search and manage users with 2FA enabled
+* **🔒 Enhanced Magic Link Security** - Magic links now properly integrate with 2FA verification flow
+* **⚙️ Customizable Login URLs** - Configure custom login page and post-login redirect URLs
+* **🚨 Critical Timezone Fix** - Resolved token expiration issues caused by UTC/local timezone mismatches
 
 ## 🔧 Latest Patch v2.3.1
 
@@ -247,14 +259,24 @@ Simply add the shortcode to any page or widget:
 - Preview email content for troubleshooting
 - Automatic log cleanup with size limits
 
+### Two-Factor Authentication (2FA)
+- TOTP-based authentication using Google Authenticator, Authy, or similar apps
+- QR code setup for easy configuration
+- Role-based 2FA requirements (enforce for specific user roles)
+- Comprehensive user management with search functionality
+- Automatic integration with magic link authentication flow
+
 ## 🔒 Security Features
 
 - **Secure token generation** using `wp_hash()` with user ID, timestamp, and salt
 - **Timing attack protection** with `hash_equals()`
 - **Token expiration** - 10 minutes maximum
 - **One-time use** tokens automatically deleted after use
+- **Two-Factor Authentication** - TOTP-based 2FA with role-based enforcement
+- **Enhanced magic link security** - 2FA integration prevents authentication bypass
 - **Enhanced input sanitization** for all form fields
 - **Comprehensive nonce verification** for all admin actions
+- **UTC timezone consistency** - Prevents token expiration issues across different server timezones
 
 ## 🎨 Customization
 
@@ -298,6 +320,19 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.4.0
+- **NEW:** Complete Two-Factor Authentication (2FA) system with TOTP support using Google Authenticator, Authy, or similar apps
+- **NEW:** QR code generation for easy 2FA setup with automatic secret key generation
+- **NEW:** Role-based 2FA requirements - configure specific user roles to require 2FA authentication
+- **NEW:** Dedicated 2FA user management page with search functionality and detailed user statistics
+- **NEW:** Customizable login and post-login redirect URLs for enhanced user experience
+- **SECURITY:** Enhanced magic link security - proper 2FA integration prevents authentication bypass vulnerability
+- **CRITICAL:** Token expiration timezone issue - fixed UTC/local timezone mismatch causing premature token expiry
+- **FIX:** 2FA users page header rendering - consistent styling across all admin pages
+- **IMPROVEMENT:** Comprehensive session management for 2FA verification flow
+- **IMPROVEMENT:** Frontend and admin context compatibility for 2FA verification forms
+- **IMPROVEMENT:** Clean admin interface with removal of duplicate user management sections
 
 ### v2.3.1
 - **FIX:** Fixed inconsistent header styling on Options and Help admin pages

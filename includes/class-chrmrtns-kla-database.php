@@ -20,7 +20,7 @@ class Chrmrtns_KLA_Database {
     /**
      * Database version
      */
-    const DB_VERSION = '1.0.0';
+    const DB_VERSION = '1.1.0';
 
     /**
      * Constructor
@@ -95,7 +95,7 @@ class Chrmrtns_KLA_Database {
             KEY token_hash (token_hash)
         ) $charset_collate;";
 
-        // User devices table (for future 2FA and companion app)
+        // User devices table (with 2FA support)
         $devices_table = $wpdb->prefix . 'kla_user_devices';
         $devices_sql = "CREATE TABLE $devices_table (
             id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -110,12 +110,19 @@ class Chrmrtns_KLA_Database {
             trust_level enum('untrusted','trusted','verified') DEFAULT 'untrusted',
             app_version varchar(20),
             push_token varchar(500),
+            totp_secret varchar(32) NULL,
+            totp_enabled tinyint(1) DEFAULT 0,
+            totp_backup_codes text NULL,
+            totp_last_used datetime NULL,
+            totp_failed_attempts int(3) DEFAULT 0,
+            totp_locked_until datetime NULL,
             PRIMARY KEY (id),
             UNIQUE KEY unique_device (user_id, device_fingerprint),
             KEY user_id (user_id),
             KEY device_token (device_token),
             KEY last_used (last_used),
-            KEY is_active (is_active)
+            KEY is_active (is_active),
+            KEY totp_enabled (totp_enabled)
         ) $charset_collate;";
 
         // Login tokens table (replace user_meta storage)
@@ -342,7 +349,7 @@ class Chrmrtns_KLA_Database {
         $sql = "SELECT * FROM {$wpdb->prefix}kla_login_tokens
                 WHERE user_id = %d
                 AND token_hash = %s
-                AND expires_at > NOW()
+                AND expires_at > UTC_TIMESTAMP()
                 AND is_used = 0
                 LIMIT 1";
 
@@ -382,7 +389,7 @@ class Chrmrtns_KLA_Database {
     public function cleanup_expired_tokens($user_id = null) {
         global $wpdb;
 
-        $where_clause = "expires_at < NOW()";
+        $where_clause = "expires_at < UTC_TIMESTAMP()";
         $where_values = array();
 
         if ($user_id) {
@@ -510,6 +517,221 @@ class Chrmrtns_KLA_Database {
         );
 
         return hash('sha256', serialize($fingerprint_data));
+    }
+
+    /**
+     * 2FA Management Methods
+     */
+
+    /**
+     * Enable 2FA for user with secret key
+     */
+    public function enable_user_2fa($user_id, $totp_secret, $backup_codes = array()) {
+        global $wpdb;
+
+        $device_fingerprint = $this->generate_device_fingerprint();
+
+        // Check if device record exists
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Querying custom devices table
+        $existing = $wpdb->get_row($wpdb->prepare(
+            "SELECT id FROM {$wpdb->prefix}kla_user_devices WHERE user_id = %d AND device_fingerprint = %s",
+            $user_id, $device_fingerprint
+        ));
+
+        $backup_codes_json = !empty($backup_codes) ? wp_json_encode($backup_codes) : null;
+
+        if ($existing) {
+            // Update existing device record
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
+            return $wpdb->update(
+                $wpdb->prefix . 'kla_user_devices',
+                array(
+                    'totp_secret' => $totp_secret,
+                    'totp_enabled' => 1,
+                    'totp_backup_codes' => $backup_codes_json,
+                    'totp_failed_attempts' => 0,
+                    'totp_locked_until' => null,
+                    'last_used' => current_time('mysql')
+                ),
+                array('id' => $existing->id),
+                array('%s', '%d', '%s', '%d', '%s', '%s'),
+                array('%d')
+            );
+        } else {
+            // Create new device record
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Inserting into custom devices table
+            return $wpdb->insert(
+                $wpdb->prefix . 'kla_user_devices',
+                array(
+                    'user_id' => $user_id,
+                    'device_fingerprint' => $device_fingerprint,
+                    'device_type' => $this->detect_device_type($this->get_user_agent()),
+                    'totp_secret' => $totp_secret,
+                    'totp_enabled' => 1,
+                    'totp_backup_codes' => $backup_codes_json,
+                    'registered_at' => current_time('mysql'),
+                    'last_used' => current_time('mysql')
+                ),
+                array('%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s')
+            );
+        }
+    }
+
+    /**
+     * Disable 2FA for user
+     */
+    public function disable_user_2fa($user_id) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
+        return $wpdb->update(
+            $wpdb->prefix . 'kla_user_devices',
+            array(
+                'totp_enabled' => 0,
+                'totp_secret' => null,
+                'totp_backup_codes' => null,
+                'totp_failed_attempts' => 0,
+                'totp_locked_until' => null
+            ),
+            array('user_id' => $user_id),
+            array('%d', '%s', '%s', '%d', '%s'),
+            array('%d')
+        );
+    }
+
+    /**
+     * Get user 2FA settings
+     */
+    public function get_user_2fa_settings($user_id) {
+        global $wpdb;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Querying custom devices table
+        $result = $wpdb->get_row($wpdb->prepare(
+            "SELECT totp_secret, totp_enabled, totp_backup_codes, totp_last_used, totp_failed_attempts, totp_locked_until
+             FROM {$wpdb->prefix}kla_user_devices
+             WHERE user_id = %d AND totp_enabled = 1
+             LIMIT 1",
+            $user_id
+        ));
+
+        if ($result && !empty($result->totp_backup_codes)) {
+            $result->totp_backup_codes = json_decode($result->totp_backup_codes, true);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Record 2FA attempt (success or failure)
+     */
+    public function record_2fa_attempt($user_id, $success = false) {
+        global $wpdb;
+
+        if ($success) {
+            // Reset failed attempts on success
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
+            return $wpdb->update(
+                $wpdb->prefix . 'kla_user_devices',
+                array(
+                    'totp_last_used' => current_time('mysql'),
+                    'totp_failed_attempts' => 0,
+                    'totp_locked_until' => null,
+                    'last_used' => current_time('mysql')
+                ),
+                array('user_id' => $user_id, 'totp_enabled' => 1),
+                array('%s', '%d', '%s', '%s'),
+                array('%d', '%d')
+            );
+        } else {
+            // Increment failed attempts
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
+            $wpdb->query($wpdb->prepare(
+                "UPDATE {$wpdb->prefix}kla_user_devices
+                 SET totp_failed_attempts = totp_failed_attempts + 1,
+                     totp_locked_until = CASE
+                         WHEN totp_failed_attempts >= %d THEN DATE_ADD(NOW(), INTERVAL %d MINUTE)
+                         ELSE totp_locked_until
+                     END
+                 WHERE user_id = %d AND totp_enabled = 1",
+                get_option('chrmrtns_kla_2fa_max_attempts', 5),
+                get_option('chrmrtns_kla_2fa_lockout_duration', 15),
+                $user_id
+            ));
+        }
+    }
+
+    /**
+     * Use backup code
+     */
+    public function use_backup_code($user_id, $code) {
+        global $wpdb;
+
+        $settings = $this->get_user_2fa_settings($user_id);
+
+        if (!$settings || empty($settings->totp_backup_codes)) {
+            return false;
+        }
+
+        $backup_codes = $settings->totp_backup_codes;
+        $code_hash = wp_hash_password($code);
+
+        // Check if code exists and remove it
+        foreach ($backup_codes as $index => $stored_hash) {
+            if (wp_check_password($code, $stored_hash)) {
+                // Remove used code
+                unset($backup_codes[$index]);
+                $backup_codes = array_values($backup_codes); // Re-index array
+
+                // Update database
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
+                $wpdb->update(
+                    $wpdb->prefix . 'kla_user_devices',
+                    array(
+                        'totp_backup_codes' => wp_json_encode($backup_codes),
+                        'totp_last_used' => current_time('mysql'),
+                        'totp_failed_attempts' => 0,
+                        'totp_locked_until' => null
+                    ),
+                    array('user_id' => $user_id, 'totp_enabled' => 1),
+                    array('%s', '%s', '%d', '%s'),
+                    array('%d', '%d')
+                );
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all users with 2FA enabled (for admin management)
+     */
+    public function get_2fa_users($search = '') {
+        global $wpdb;
+
+        $base_query = "SELECT u.ID, u.user_login, u.user_email, u.display_name, d.totp_enabled, d.totp_last_used, d.totp_failed_attempts, d.totp_locked_until
+                       FROM {$wpdb->users} u
+                       INNER JOIN {$wpdb->prefix}kla_user_devices d ON u.ID = d.user_id AND d.totp_enabled = 1";
+
+        if (!empty($search)) {
+            $search_term = '%' . $wpdb->esc_like($search) . '%';
+            $query = $base_query . " WHERE (u.user_login LIKE %s OR u.user_email LIKE %s OR u.display_name LIKE %s) ORDER BY u.user_login ASC";
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Querying custom devices table for admin interface with search, query properly prepared with placeholders
+            $prepared_query = $wpdb->prepare($query, $search_term, $search_term, $search_term);
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query already prepared with placeholders above
+            $results = $wpdb->get_results($prepared_query);
+        } else {
+            $query = $base_query . " ORDER BY u.user_login ASC";
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Querying custom devices table for admin interface, query properly prepared
+            $prepared_query = $wpdb->prepare($query);
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query already prepared above
+            $results = $wpdb->get_results($prepared_query);
+        }
+
+        return $results;
     }
 
     /**

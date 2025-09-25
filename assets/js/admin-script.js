@@ -110,6 +110,17 @@ jQuery(document).ready(function($) {
     // Check on page load
     handleCredentialStorage();
 
+    // 2FA Settings functionality
+    // Show/hide 2FA settings based on enable checkbox
+    $('#chrmrtns_kla_2fa_enabled').on('change', function() {
+        var settingsDiv = $('#chrmrtns-2fa-settings');
+        if ($(this).is(':checked')) {
+            settingsDiv.slideDown();
+        } else {
+            settingsDiv.slideUp();
+        }
+    });
+
     // Test email functionality
     $('#chrmrtns_kla_smtp_send_test').click(function(e) {
         e.preventDefault();
@@ -146,4 +157,28 @@ function chrmrtnsHideEmailContent(logId) {
     if (contentDiv) {
         contentDiv.style.display = 'none';
     }
+}
+
+// 2FA Admin functions (global scope for onclick handlers)
+function chrmrtnsDisable2FA(userId, username) {
+    if (!confirm('Are you sure you want to disable 2FA for user "' + username + '"? This will make their account less secure.')) {
+        return;
+    }
+
+    var data = {
+        action: 'chrmrtns_kla_admin_disable_2fa',
+        user_id: userId,
+        nonce: chrmrtns_kla_ajax.nonce
+    };
+
+    jQuery.post(ajaxurl, data, function(response) {
+        if (response.success) {
+            alert('2FA has been disabled for ' + username);
+            location.reload(); // Refresh page to update user list
+        } else {
+            alert('Error: ' + (response.data || 'Failed to disable 2FA'));
+        }
+    }).fail(function() {
+        alert('Network error occurred. Please try again.');
+    });
 }

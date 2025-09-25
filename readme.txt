@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.3.1
+Stable tag: 2.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,16 +21,18 @@ Secure keyless authentication - users login via email magic links without passwo
 
 **✅ Ready:**
 • Passwordless Login via Email – secure, simple, password-free
+• Two-Factor Authentication (2FA) – TOTP-based authentication with QR code setup
+• Role-Based 2FA Requirements – enforce 2FA for specific user roles
 • Token Expiry + Security Rules – one-time login links with expiration and abuse protection
 • SMTP Integration – send emails via your own mail server
 • Simple Mail Log – track when and to whom login links were sent
 • Email Templates – customize your login email content
 • Basic Email Designer – quick styling options directly in the dashboard
+• Comprehensive User Management – search and manage 2FA users with detailed stats
 
 **🛠 In Progress:**
 • Role-Based Token Redirects – redirect users based on their role after login
 • Webhook Support – trigger external actions after login (e.g., automation tools)
-• Telegram Support – receive login links via Telegram Bot
 • Simple CSS Styling – easily adjust button & container styles
 
 **🧠 Planned:**
@@ -40,7 +42,15 @@ Secure keyless authentication - users login via email magic links without passwo
 • REST API – access login functionality via secure API endpoints
 • KLA Companion App (PWA) – receive login links in an app instead of email
 • Login Audit Log – comprehensive tracking of all login attempts with IP addresses, device types, and security insights
-• Two-Factor Authentication – extra security via Telegram, app-based code, or similar
+• Telegram Support – receive login links via Telegram Bot
+
+**🚀 Major Update v2.4.0:**
+* **🔐 Two-Factor Authentication (2FA)** - Complete TOTP-based 2FA system with QR code setup and secure token generation
+* **👥 Role-Based 2FA Requirements** - Configure specific user roles to require 2FA authentication
+* **🔧 2FA User Management** - Dedicated admin page to search and manage users with 2FA enabled
+* **🔒 Enhanced Magic Link Security** - Magic links now properly integrate with 2FA verification flow
+* **⚙️ Customizable Login URLs** - Configure custom login page and post-login redirect URLs
+* **🎯 Timezone Fix** - Resolved token expiration issues caused by UTC/local timezone mismatches
 
 **🚀 Latest Patch v2.3.1:**
 * **🎨 Fixed Admin Interface Consistency** - Resolved header styling issues on Options and Help pages
@@ -237,9 +247,21 @@ Keyless Auth does not replace the default login functionality in WordPress.
 	
 	Then select "Store in wp-config.php" in the SMTP settings.
 
+= How do I set up Two-Factor Authentication (2FA)? =
+
+	Go to Keyless Auth > Options in your WordPress admin and enable "Two-Factor Authentication". You can then configure which user roles require 2FA and manage individual users who have 2FA enabled. Users can set up 2FA by visiting their profile page where they'll see a QR code to scan with Google Authenticator, Authy, or any TOTP-compatible app.
+
+= Can I require 2FA for specific user roles only? =
+
+	Yes! In the 2FA settings, you can select which user roles should be required to use 2FA. For example, you might require 2FA for Administrators and Editors while leaving it optional for Subscribers. Users in required roles will be prompted to set up 2FA on their next login.
+
+= How does 2FA work with magic links? =
+
+	When 2FA is enabled, the magic link authentication flow is enhanced for security. If a user has 2FA enabled (or their role requires it), they'll first receive the magic link email, but after clicking the link, they'll be prompted to enter their 2FA code before being logged in. This prevents 2FA bypass vulnerabilities.
+
 = What's different from the original Passwordless Login plugin? =
 
-	This enhanced version includes: modular class-based architecture, SMTP configuration, email logging & monitoring, WYSIWYG email editor, visual template previews, advanced color controls (hex/RGB/HSL), separate button and link colors, dedicated admin menu, enhanced security with comprehensive nonce verification, HTML email support, and professional styling options.
+	This enhanced version includes: modular class-based architecture, complete Two-Factor Authentication system, SMTP configuration, email logging & monitoring, WYSIWYG email editor, visual template previews, advanced color controls (hex/RGB/HSL), separate button and link colors, dedicated admin menu, enhanced security with comprehensive nonce verification, HTML email support, and professional styling options.
 
 = What does the modular architecture mean for developers? =
 
@@ -259,10 +281,26 @@ Keyless Auth does not replace the default login functionality in WordPress.
 5. SMTP configuration - Secure credential storage with wp-config.php option
 6. Mail logs - Track all sent emails with timestamps and preview
 7. Test email functionality - Verify SMTP settings with one-click testing
-8. Email preview - See exactly how your login emails will look
+8. 2FA active status - User dashboard showing active Two-Factor Authentication with backup codes and management options
+9. 2FA setup process - QR code generation for easy setup with Google Authenticator, Authy, or similar TOTP apps
+10. 2FA admin options - Administrative interface for configuring role-based 2FA requirements and user management
+11. Custom link settings - Options page for configuring custom login and post-login redirect URLs
 
 
 == Changelog ==
+= 2.4.0 =
+* NEW: Complete Two-Factor Authentication (2FA) system with TOTP support using Google Authenticator, Authy, or similar apps
+* NEW: QR code generation for easy 2FA setup with automatic secret key generation
+* NEW: Role-based 2FA requirements - configure specific user roles to require 2FA authentication
+* NEW: Dedicated 2FA user management page with search functionality and detailed user statistics
+* NEW: Customizable login and post-login redirect URLs for enhanced user experience
+* SECURITY: Enhanced magic link security - proper 2FA integration prevents authentication bypass vulnerability
+* CRITICAL: Token expiration timezone issue - fixed UTC/local timezone mismatch causing premature token expiry
+* FIX: 2FA users page header rendering - consistent styling across all admin pages
+* IMPROVEMENT: Comprehensive session management for 2FA verification flow
+* IMPROVEMENT: Frontend and admin context compatibility for 2FA verification forms
+* IMPROVEMENT: Clean admin interface with removal of duplicate user management sections
+
 = 2.3.1 =
 * FIX: Fixed inconsistent header styling on Options and Help admin pages
 * FIX: Admin CSS and JavaScript now properly loaded on all admin pages
