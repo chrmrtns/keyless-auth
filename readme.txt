@@ -52,9 +52,9 @@ Secure keyless authentication - users login via email magic links without passwo
 
 
 
-## 🚀 Latest Updates
+== 🚀 Latest Updates ==
 
-### v2.4.1 - Stability Patch (September 25, 2024)
+= 2.4.1 =
 **Clean, production-ready patch focusing on stability and compliance**
 
 * **🔧 PATCH:** Temporarily disabled 2FA authentication hooks to resolve login conflicts - emergency mode and grace period functionality fully operational
