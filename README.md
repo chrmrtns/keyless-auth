@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-2.4.2-blue.svg)
+![Version](https://img.shields.io/badge/version-2.5.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -49,7 +49,6 @@ Born from real-world frustration with password complexity and user experience ch
 - **Branding Options**: Custom sender names and professional styling
 
 ### Future Features
-- **Newsletter Integration Form** – Admin-requested feature for user engagement
 - **Enhanced Mail Log Management** – Additional filtering and search capabilities
 - **Admin QR Generation** – Backend tools for managing user 2FA setups
 - **Role-Based Redirects** – Automatic redirection based on user roles
@@ -76,6 +75,18 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v2.5.0 - Enhanced Shortcode & Login Fix (September 29, 2024)
+**Enhanced shortcode functionality with redirect support and critical password login fixes**
+
+* **🚀 NEW:** [keyless-auth] shortcode now supports redirect parameter like [keyless-auth-full]
+* **📖 NEW:** Enhanced admin help documentation with comprehensive shortcode usage examples
+* **🔧 FIX:** Fixed critical wp-login.php redirect preventing standard password login
+* **🔧 FIX:** Resolved [keyless-auth-full] password login conflicts with magic link processing
+* **🔒 SECURITY:** Fixed WordPress coding standards violations with proper phpcs annotations
+* **⚡ IMPROVEMENT:** Better form handling prevents conflicts between authentication methods
+* **📚 IMPROVEMENT:** Updated help system with detailed options and examples
+* **🔄 COMPATIBILITY:** Both shortcodes now fully support password and magic link authentication
 
 ### v2.4.2 - Full Restoration Patch (September 25, 2024)
 **Complete restoration of 2FA functionality with enhanced magic login integration and email improvements**
@@ -401,6 +412,19 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.5.0
+- **NEW:** Added redirect parameter support to [keyless-auth] shortcode - now supports custom redirects like [keyless-auth-full]
+- **NEW:** Enhanced shortcode documentation in admin help with comprehensive usage examples and options
+- **FIX:** Fixed critical wp-login.php redirect interference preventing standard password login from working
+- **FIX:** Resolved password login issues in [keyless-auth-full] shortcode caused by form submission conflicts
+- **FIX:** Fixed WordPress coding standards violations - added proper phpcs:ignore comments for nonce verification warnings
+- **IMPROVEMENT:** Enhanced form submission handling to prevent conflicts between magic link and standard WordPress login
+- **IMPROVEMENT:** Updated admin help documentation with detailed shortcode options and usage examples
+- **IMPROVEMENT:** Better hook timing using 'init' instead of 'template_redirect' for improved WordPress compatibility
+- **IMPROVEMENT:** Enhanced wp-login.php redirect logic to preserve POST requests while redirecting GET requests
+- **SECURITY:** Improved form identification system to prevent cross-form processing interference
+- **COMPATIBILITY:** Both [keyless-auth] and [keyless-auth-full] now fully support password and magic link authentication
 
 ### v2.4.2
 - **RESTORED:** Full 2FA authentication functionality - all hooks and methods reactivated

@@ -140,6 +140,10 @@ class Chrmrtns_KLA_Admin {
             'sanitize_callback' => 'esc_url_raw',
             'default' => ''
         ));
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_redirect_wp_login', array(
+            'sanitize_callback' => array($this, 'sanitize_checkbox'),
+            'default' => '0'
+        ));
         register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_custom_redirect_url', array(
             'sanitize_callback' => 'esc_url_raw',
             'default' => ''
@@ -754,6 +758,9 @@ class Chrmrtns_KLA_Admin {
             $custom_login_url = isset($_POST['chrmrtns_kla_custom_login_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_custom_login_url'])) : '';
             update_option('chrmrtns_kla_custom_login_url', $custom_login_url);
 
+            $redirect_wp_login = isset($_POST['chrmrtns_kla_redirect_wp_login']) ? '1' : '0';
+            update_option('chrmrtns_kla_redirect_wp_login', $redirect_wp_login);
+
             $custom_redirect_url = isset($_POST['chrmrtns_kla_custom_redirect_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_custom_redirect_url'])) : '';
             update_option('chrmrtns_kla_custom_redirect_url', $custom_redirect_url);
 
@@ -842,6 +849,18 @@ class Chrmrtns_KLA_Admin {
                             <input type="url" id="chrmrtns_kla_custom_login_url" name="chrmrtns_kla_custom_login_url" value="<?php echo esc_attr($custom_login_url); ?>" class="regular-text" placeholder="<?php echo esc_attr(wp_login_url()); ?>" />
                             <p class="description">
                                 <?php esc_html_e('Optional: Specify a custom login page URL. When users need to login (like in 2FA flow), they\'ll be redirected here instead of wp-login.php. Leave empty to use the default WordPress login page.', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_redirect_wp_login"><?php esc_html_e('Redirect wp-login.php', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <input type="checkbox" id="chrmrtns_kla_redirect_wp_login" name="chrmrtns_kla_redirect_wp_login" value="1" <?php checked(get_option('chrmrtns_kla_redirect_wp_login', '0'), '1'); ?> />
+                            <label for="chrmrtns_kla_redirect_wp_login"><?php esc_html_e('Redirect all wp-login.php requests to custom login page', 'keyless-auth'); ?></label>
+                            <p class="description">
+                                <?php esc_html_e('When enabled, all requests to wp-login.php will be redirected to your custom login page. Emergency bypass: add ?kla_use_wp_login=1 to access wp-login.php directly.', 'keyless-auth'); ?>
                             </p>
                         </td>
                     </tr>
@@ -1066,7 +1085,11 @@ class Chrmrtns_KLA_Admin {
                     <tbody>
                         <tr>
                             <td><code>[keyless-auth]</code></td>
-                            <td><?php esc_html_e('Main passwordless login form', 'keyless-auth'); ?></td>
+                            <td><?php esc_html_e('Main passwordless login form (magic link only). Supports redirect attribute.', 'keyless-auth'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><code>[keyless-auth-full]</code></td>
+                            <td><?php esc_html_e('Complete login form with both password and magic link options. Supports attributes: redirect, show_title, title_text', 'keyless-auth'); ?></td>
                         </tr>
                         <tr>
                             <td><code>[keyless-auth-2fa]</code></td>
@@ -1074,6 +1097,25 @@ class Chrmrtns_KLA_Admin {
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Shortcode Usage Examples', 'keyless-auth'); ?></h2>
+                <p><?php esc_html_e('Here are some examples of how to use the shortcodes:', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('Basic Usage:', 'keyless-auth'); ?></h4>
+                <p><code>[keyless-auth]</code> - <?php esc_html_e('Magic link login form only', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-full]</code> - <?php esc_html_e('Both password and magic link options', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-2fa]</code> - <?php esc_html_e('2FA setup interface (when 2FA is enabled)', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('[keyless-auth] Options:', 'keyless-auth'); ?></h4>
+                <p><code>[keyless-auth redirect="/dashboard/"]</code><br><?php esc_html_e('Redirect to dashboard after magic link login', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('Advanced [keyless-auth-full] Options:', 'keyless-auth'); ?></h4>
+                <p><code>[keyless-auth-full redirect="/dashboard/"]</code><br><?php esc_html_e('Redirect to dashboard after login', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-full show_title="no"]</code><br><?php esc_html_e('Hide the main title', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-full title_text="Member Login"]</code><br><?php esc_html_e('Custom title text', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-full title_text="Member Login" redirect="/members/" show_title="yes"]</code><br><?php esc_html_e('Combined options example', 'keyless-auth'); ?></p>
             </div>
 
             <div class="chrmrtns_kla_card">

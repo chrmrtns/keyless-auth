@@ -582,6 +582,20 @@ class Chrmrtns_KLA_Mail_Logger {
         settings_errors('chrmrtns_kla_mail_logs_settings');
 
         ?>
+        <style>
+            .status-sent {
+                color: #008000;
+                font-weight: bold;
+            }
+            .status-pending {
+                color: #ff9800;
+                font-weight: bold;
+            }
+            .status-failed {
+                color: #dc3545;
+                font-weight: bold;
+            }
+        </style>
         <div class="wrap chrmrtns-wrap">
             <h1 class="chrmrtns-header">
                 <img src="<?php echo esc_url(CHRMRTNS_KLA_PLUGIN_URL . 'assets/logo_150_150.png'); ?>" alt="<?php esc_attr_e('Keyless Auth Logo', 'keyless-auth'); ?>" class="chrmrtns-header-logo" />
@@ -635,6 +649,14 @@ class Chrmrtns_KLA_Mail_Logger {
                         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Simple count query for diagnostics, no caching needed
                         $total_logs = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
                         echo 'Total mail logs in database: ' . esc_html($total_logs) . '<br>';
+
+                        // Count by status
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Simple count query for diagnostics, no caching needed
+                        $sent_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs WHERE status = 'sent'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                        $pending_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs WHERE status = 'pending'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                        $failed_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs WHERE status = 'failed'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+
+                        echo 'Status breakdown - Sent: ' . esc_html($sent_count) . ', Pending: ' . esc_html($pending_count) . ', <span style="color: #dc3545;">Failed: ' . esc_html($failed_count) . '</span><br>';
                         echo 'Storage system: Custom database tables<br>';
                     } else {
                         $total_logs = wp_count_posts('chrmrtns_kla_logs');
