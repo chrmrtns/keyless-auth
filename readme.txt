@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.4.2
+Stable tag: 2.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -270,6 +270,19 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.5.0 =
+* NEW: Added redirect parameter support to [keyless-auth] shortcode - now supports custom redirects like [keyless-auth-full]
+* NEW: Enhanced shortcode documentation in admin help with comprehensive usage examples and options
+* FIX: Fixed critical wp-login.php redirect interference preventing standard password login from working
+* FIX: Resolved password login issues in [keyless-auth-full] shortcode caused by form submission conflicts
+* FIX: Fixed WordPress coding standards violations - added proper phpcs:ignore comments for nonce verification warnings
+* IMPROVEMENT: Enhanced form submission handling to prevent conflicts between magic link and standard WordPress login
+* IMPROVEMENT: Updated admin help documentation with detailed shortcode options and usage examples
+* IMPROVEMENT: Better hook timing using 'init' instead of 'template_redirect' for improved WordPress compatibility
+* IMPROVEMENT: Enhanced wp-login.php redirect logic to preserve POST requests while redirecting GET requests
+* SECURITY: Improved form identification system to prevent cross-form processing interference
+* COMPATIBILITY: Both [keyless-auth] and [keyless-auth-full] now fully support password and magic link authentication
+
 = 2.4.2 =
 * RESTORED: Full 2FA authentication functionality - all hooks and methods reactivated
 * NEW: Magic login integration on wp-login.php with clean form positioning in footer
