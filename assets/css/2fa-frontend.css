@@ -3,17 +3,32 @@
  * Styles for the [keyless-auth-2fa] shortcode interface
  *
  * @since 2.4.0
+ * @updated 2.6.0 - Added dark mode support
  */
+
+/* CSS Custom Properties for theming */
+:root {
+    --2fa-bg-primary: #ffffff;
+    --2fa-bg-secondary: #f9f9f9;
+    --2fa-bg-tertiary: #f0f0f0;
+    --2fa-bg-info: #f0f6fc;
+    --2fa-text-primary: #23282d;
+    --2fa-text-secondary: #666;
+    --2fa-text-light: #555;
+    --2fa-border-primary: #e1e1e1;
+    --2fa-border-secondary: #ddd;
+    --2fa-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
 /* Main container */
 .chrmrtns-2fa-container {
     width: 100%;
     max-width: 1400px;
-    background: #ffffff;
-    border: 1px solid #e1e1e1;
+    background: var(--2fa-bg-primary);
+    border: 1px solid var(--2fa-border-primary);
     border-radius: 8px;
     padding: 30px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--2fa-shadow);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     box-sizing: border-box;
 }
@@ -22,18 +37,18 @@
 .chrmrtns-2fa-header {
     text-align: center;
     margin-bottom: 30px;
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: 1px solid var(--2fa-border-primary);
     padding-bottom: 20px;
 }
 
 .chrmrtns-2fa-header h3 {
     margin: 0 0 10px 0;
-    color: #23282d;
+    color: var(--2fa-text-primary);
     font-size: 24px;
 }
 
 .chrmrtns-2fa-header p {
-    color: #666;
+    color: var(--2fa-text-secondary);
     margin: 10px 0;
 }
 
@@ -76,7 +91,7 @@
 .chrmrtns-2fa-step {
     margin-bottom: 30px;
     padding: 20px;
-    background: #f9f9f9;
+    background: var(--2fa-bg-secondary);
     border-radius: 5px;
     border-left: 4px solid #0073aa;
 }
@@ -88,7 +103,7 @@
 }
 
 .chrmrtns-2fa-step h5 {
-    color: #23282d;
+    color: var(--2fa-text-primary);
     margin-bottom: 10px;
 }
 
@@ -102,11 +117,12 @@
 }
 
 .chrmrtns-2fa-apps li {
-    background: white;
+    background: var(--2fa-bg-primary);
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #e1e1e1;
+    border: 1px solid var(--2fa-border-primary);
     text-align: center;
+    color: var(--2fa-text-primary);
 }
 
 /* QR Code section */
@@ -124,10 +140,10 @@
 
 .chrmrtns-2fa-qr #chrmrtns-2fa-qrcode {
     display: inline-block;
-    border: 1px solid #e1e1e1;
+    border: 1px solid var(--2fa-border-primary);
     border-radius: 5px;
     padding: 10px;
-    background: #ffffff;
+    background: var(--2fa-bg-primary);
 }
 
 .chrmrtns-2fa-qr .chrmrtns-qr-loading {
@@ -136,7 +152,7 @@
     justify-content: center;
     width: 200px;
     height: 200px;
-    color: #666;
+    color: var(--2fa-text-secondary);
     font-style: italic;
 }
 
@@ -167,21 +183,22 @@
     gap: 10px;
     margin: 10px 0;
     padding: 10px;
-    background: #f0f0f0;
+    background: var(--2fa-bg-tertiary);
     border-radius: 5px;
     flex-wrap: wrap;
 }
 
 .chrmrtns-2fa-secret code {
-    background: #ffffff;
+    background: var(--2fa-bg-primary);
     padding: 8px 12px;
     border-radius: 3px;
-    border: 1px solid #e1e1e1;
+    border: 1px solid var(--2fa-border-primary);
     font-family: 'Courier New', monospace;
     font-size: 14px;
     word-break: break-all;
     flex: 1;
     min-width: 200px;
+    color: var(--2fa-text-primary);
 }
 
 .chrmrtns-copy-button {
@@ -221,9 +238,11 @@
     font-size: 18px;
     text-align: center;
     letter-spacing: 2px;
-    border: 2px solid #e1e1e1;
+    border: 2px solid var(--2fa-border-primary);
     border-radius: 5px;
     font-family: 'Courier New', monospace;
+    background: var(--2fa-bg-primary);
+    color: var(--2fa-text-primary);
 }
 
 .chrmrtns-2fa-step input[type="text"]:focus {
@@ -257,7 +276,7 @@
 .chrmrtns-2fa-info {
     margin-top: 30px;
     padding: 20px;
-    background: #f0f6fc;
+    background: var(--2fa-bg-info);
     border-left: 4px solid #0073aa;
     border-radius: 5px;
 }
@@ -276,7 +295,7 @@
 }
 
 .chrmrtns-2fa-info-item {
-    background: #f9f9f9;
+    background: var(--2fa-bg-secondary);
     padding: 15px;
     border-radius: 5px;
     text-align: center;
@@ -284,7 +303,7 @@
 
 .chrmrtns-2fa-info-item h4 {
     margin: 0 0 10px 0;
-    color: #666;
+    color: var(--2fa-text-secondary);
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -294,7 +313,7 @@
     margin: 0;
     font-size: 18px;
     font-weight: 600;
-    color: #23282d;
+    color: var(--2fa-text-primary);
 }
 
 /* Actions */
@@ -304,26 +323,26 @@
 
 .chrmrtns-2fa-actions > h4 {
     margin-bottom: 20px;
-    color: #23282d;
-    border-bottom: 1px solid #e1e1e1;
+    color: var(--2fa-text-primary);
+    border-bottom: 1px solid var(--2fa-border-primary);
     padding-bottom: 10px;
 }
 
 .chrmrtns-2fa-action {
     margin-bottom: 30px;
     padding: 20px;
-    background: #f9f9f9;
+    background: var(--2fa-bg-secondary);
     border-radius: 5px;
 }
 
 .chrmrtns-2fa-action h5 {
     margin: 0 0 10px 0;
-    color: #23282d;
+    color: var(--2fa-text-primary);
 }
 
 .chrmrtns-2fa-action p {
     margin: 10px 0;
-    color: #666;
+    color: var(--2fa-text-secondary);
 }
 
 .chrmrtns-2fa-action .button {
@@ -335,8 +354,8 @@
 .chrmrtns-2fa-backup-codes {
     margin: 15px 0;
     padding: 15px;
-    background: white;
-    border: 1px solid #e1e1e1;
+    background: var(--2fa-bg-primary);
+    border: 1px solid var(--2fa-border-primary);
     border-radius: 5px;
 }
 
@@ -348,12 +367,13 @@
 }
 
 .chrmrtns-backup-code {
-    background: #f0f0f0;
+    background: var(--2fa-bg-tertiary);
     padding: 8px;
     text-align: center;
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     font-weight: bold;
+    color: var(--2fa-text-primary);
 }
 
 /* Messages */
@@ -396,7 +416,7 @@
 }
 
 .chrmrtns-modal-content {
-    background: white;
+    background: var(--2fa-bg-primary);
     border-radius: 8px;
     max-width: 600px;
     width: 100%;
@@ -410,12 +430,12 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 30px;
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: 1px solid var(--2fa-border-primary);
 }
 
 .chrmrtns-modal-header h3 {
     margin: 0;
-    color: #23282d;
+    color: var(--2fa-text-primary);
 }
 
 .chrmrtns-modal-close {
@@ -423,7 +443,7 @@
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #666;
+    color: var(--2fa-text-secondary);
     padding: 0;
     width: 30px;
     height: 30px;
@@ -433,7 +453,7 @@
 }
 
 .chrmrtns-modal-close:hover {
-    color: #000;
+    color: var(--2fa-text-primary);
 }
 
 .chrmrtns-modal-body {
@@ -461,10 +481,11 @@
 }
 
 .chrmrtns-backup-codes-grid .chrmrtns-backup-code {
-    background: #f8f9fa;
-    border: 1px solid #e1e1e1;
+    background: var(--2fa-bg-secondary);
+    border: 1px solid var(--2fa-border-primary);
     padding: 12px 8px;
     font-size: 14px;
+    color: var(--2fa-text-primary);
 }
 
 .chrmrtns-modal-actions {
@@ -657,4 +678,75 @@
     background: #46b450;
     color: #ffffff;
     border-color: #46b450;
+}
+
+/* ========================================
+   DARK MODE SUPPORT
+   ======================================== */
+
+/* System dark mode preference */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --2fa-bg-primary: #1e1e1e;
+        --2fa-bg-secondary: #2c3338;
+        --2fa-bg-tertiary: #3c434a;
+        --2fa-bg-info: #2c3338;
+        --2fa-text-primary: #f0f0f1;
+        --2fa-text-secondary: #c3c4c7;
+        --2fa-text-light: #a7aaad;
+        --2fa-border-primary: #646970;
+        --2fa-border-secondary: #3c434a;
+        --2fa-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Custom dark mode classes - HTML element */
+html.cf-theme-dark,
+html.dark-mode,
+html.dark,
+html.theme-dark,
+html.is-dark-theme,
+html[data-theme="dark"],
+html[data-color-scheme="dark"],
+html[data-mode="dark"],
+/* Body element */
+body.cf-theme-dark,
+body.dark-mode,
+body.dark,
+body.theme-dark,
+body.is-dark-theme,
+body[data-theme="dark"],
+body[data-color-scheme="dark"],
+body[data-mode="dark"] {
+    --2fa-bg-primary: #1e1e1e;
+    --2fa-bg-secondary: #2c3338;
+    --2fa-bg-tertiary: #3c434a;
+    --2fa-bg-info: #2c3338;
+    --2fa-text-primary: #f0f0f1;
+    --2fa-text-secondary: #c3c4c7;
+    --2fa-text-light: #a7aaad;
+    --2fa-border-primary: #646970;
+    --2fa-border-secondary: #3c434a;
+    --2fa-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Container-level dark mode classes */
+.cf-theme-dark .chrmrtns-2fa-container,
+.dark-mode .chrmrtns-2fa-container,
+.dark .chrmrtns-2fa-container,
+.theme-dark .chrmrtns-2fa-container,
+.is-dark-theme .chrmrtns-2fa-container,
+[data-theme="dark"] .chrmrtns-2fa-container,
+[data-color-scheme="dark"] .chrmrtns-2fa-container,
+[data-mode="dark"] .chrmrtns-2fa-container {
+    --2fa-bg-primary: #1e1e1e;
+    --2fa-bg-secondary: #2c3338;
+    --2fa-bg-tertiary: #3c434a;
+    --2fa-bg-info: #2c3338;
+    --2fa-text-primary: #f0f0f1;
+    --2fa-text-secondary: #c3c4c7;
+    --2fa-text-light: #a7aaad;
+    --2fa-border-primary: #646970;
+    --2fa-border-secondary: #3c434a;
+    --2fa-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }

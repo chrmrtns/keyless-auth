@@ -389,7 +389,9 @@
     }
 }
 
-/* Dark mode support */
+/* Dark mode support - Multiple implementations */
+
+/* 1. System dark mode preference */
 @media (prefers-color-scheme: dark) {
     .chrmrtns-kla-form-wrapper {
         --kla-background: #1e1e1e;
@@ -408,6 +410,112 @@
         background-color: var(--kla-background-alt);
         color: var(--kla-text);
     }
+}
+
+/* 2. Custom dark mode classes - Common implementations */
+/* HTML element with dark mode classes */
+html.cf-theme-dark .chrmrtns-kla-form-wrapper,
+html.dark-mode .chrmrtns-kla-form-wrapper,
+html.dark .chrmrtns-kla-form-wrapper,
+html.theme-dark .chrmrtns-kla-form-wrapper,
+html.is-dark-theme .chrmrtns-kla-form-wrapper,
+html[data-theme="dark"] .chrmrtns-kla-form-wrapper,
+html[data-color-scheme="dark"] .chrmrtns-kla-form-wrapper,
+html[data-mode="dark"] .chrmrtns-kla-form-wrapper,
+/* Body element with dark mode classes */
+body.cf-theme-dark .chrmrtns-kla-form-wrapper,
+body.dark-mode .chrmrtns-kla-form-wrapper,
+body.dark .chrmrtns-kla-form-wrapper,
+body.theme-dark .chrmrtns-kla-form-wrapper,
+body.is-dark-theme .chrmrtns-kla-form-wrapper,
+body[data-theme="dark"] .chrmrtns-kla-form-wrapper,
+body[data-color-scheme="dark"] .chrmrtns-kla-form-wrapper,
+body[data-mode="dark"] .chrmrtns-kla-form-wrapper,
+/* Parent container with dark mode classes */
+.cf-theme-dark .chrmrtns-kla-form-wrapper,
+.dark-mode .chrmrtns-kla-form-wrapper,
+.dark .chrmrtns-kla-form-wrapper,
+.theme-dark .chrmrtns-kla-form-wrapper,
+.is-dark-theme .chrmrtns-kla-form-wrapper,
+[data-theme="dark"] .chrmrtns-kla-form-wrapper,
+[data-color-scheme="dark"] .chrmrtns-kla-form-wrapper,
+[data-mode="dark"] .chrmrtns-kla-form-wrapper {
+    --kla-background: #1e1e1e;
+    --kla-background-alt: #2c3338;
+    --kla-text: #f0f0f1;
+    --kla-text-light: #c3c4c7;
+    --kla-border: #646970;
+    --kla-border-light: #3c434a;
+}
+
+/* Input fields in dark mode */
+html.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="text"],
+html.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="password"],
+html.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="email"],
+html.cf-theme-dark .chrmrtns-kla-form-wrapper select,
+html.cf-theme-dark .chrmrtns-kla-form-wrapper textarea,
+body.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="text"],
+body.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="password"],
+body.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="email"],
+body.cf-theme-dark .chrmrtns-kla-form-wrapper select,
+body.cf-theme-dark .chrmrtns-kla-form-wrapper textarea,
+.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="text"],
+.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="password"],
+.cf-theme-dark .chrmrtns-kla-form-wrapper input[type="email"],
+.cf-theme-dark .chrmrtns-kla-form-wrapper select,
+.cf-theme-dark .chrmrtns-kla-form-wrapper textarea,
+.dark-mode .chrmrtns-kla-form-wrapper input[type="text"],
+.dark-mode .chrmrtns-kla-form-wrapper input[type="password"],
+.dark-mode .chrmrtns-kla-form-wrapper input[type="email"],
+.dark-mode .chrmrtns-kla-form-wrapper select,
+.dark-mode .chrmrtns-kla-form-wrapper textarea,
+.dark .chrmrtns-kla-form-wrapper input[type="text"],
+.dark .chrmrtns-kla-form-wrapper input[type="password"],
+.dark .chrmrtns-kla-form-wrapper input[type="email"],
+.dark .chrmrtns-kla-form-wrapper select,
+.dark .chrmrtns-kla-form-wrapper textarea,
+.theme-dark .chrmrtns-kla-form-wrapper input[type="text"],
+.theme-dark .chrmrtns-kla-form-wrapper input[type="password"],
+.theme-dark .chrmrtns-kla-form-wrapper input[type="email"],
+.theme-dark .chrmrtns-kla-form-wrapper select,
+.theme-dark .chrmrtns-kla-form-wrapper textarea,
+.is-dark-theme .chrmrtns-kla-form-wrapper input[type="text"],
+.is-dark-theme .chrmrtns-kla-form-wrapper input[type="password"],
+.is-dark-theme .chrmrtns-kla-form-wrapper input[type="email"],
+.is-dark-theme .chrmrtns-kla-form-wrapper select,
+.is-dark-theme .chrmrtns-kla-form-wrapper textarea,
+body.dark .chrmrtns-kla-form-wrapper input[type="text"],
+body.dark .chrmrtns-kla-form-wrapper input[type="password"],
+body.dark .chrmrtns-kla-form-wrapper input[type="email"],
+body.dark .chrmrtns-kla-form-wrapper select,
+body.dark .chrmrtns-kla-form-wrapper textarea,
+html.dark .chrmrtns-kla-form-wrapper input[type="text"],
+html.dark .chrmrtns-kla-form-wrapper input[type="password"],
+html.dark .chrmrtns-kla-form-wrapper input[type="email"],
+html.dark .chrmrtns-kla-form-wrapper select,
+html.dark .chrmrtns-kla-form-wrapper textarea,
+[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="text"],
+[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="password"],
+[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="email"],
+[data-theme="dark"] .chrmrtns-kla-form-wrapper select,
+[data-theme="dark"] .chrmrtns-kla-form-wrapper textarea,
+[data-color-scheme="dark"] .chrmrtns-kla-form-wrapper input[type="text"],
+[data-color-scheme="dark"] .chrmrtns-kla-form-wrapper input[type="password"],
+[data-color-scheme="dark"] .chrmrtns-kla-form-wrapper input[type="email"],
+[data-color-scheme="dark"] .chrmrtns-kla-form-wrapper select,
+[data-color-scheme="dark"] .chrmrtns-kla-form-wrapper textarea,
+html[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="text"],
+html[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="password"],
+html[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="email"],
+html[data-theme="dark"] .chrmrtns-kla-form-wrapper select,
+html[data-theme="dark"] .chrmrtns-kla-form-wrapper textarea,
+body[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="text"],
+body[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="password"],
+body[data-theme="dark"] .chrmrtns-kla-form-wrapper input[type="email"],
+body[data-theme="dark"] .chrmrtns-kla-form-wrapper select,
+body[data-theme="dark"] .chrmrtns-kla-form-wrapper textarea {
+    background-color: var(--kla-background-alt);
+    color: var(--kla-text);
 }
 
 /* Print styles */

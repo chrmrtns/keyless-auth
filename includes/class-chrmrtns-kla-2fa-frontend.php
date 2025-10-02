@@ -126,7 +126,7 @@ class Chrmrtns_KLA_2FA_Frontend {
         wp_enqueue_style('chrmrtns-kla-2fa-frontend',
             CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/2fa-frontend.css',
             array(),
-            CHRMRTNS_KLA_VERSION
+            CHRMRTNS_KLA_VERSION . '.1' // Added .1 to force cache bust for dark mode
         );
     }
 

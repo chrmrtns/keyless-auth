@@ -738,7 +738,7 @@ class Chrmrtns_KLA_Core {
                 'chrmrtns_kla_forms_enhanced',
                 CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/forms-enhanced.css',
                 array('chrmrtns_frontend_stylesheet'), // Load after the base stylesheet
-                CHRMRTNS_KLA_VERSION . '.1', // Added .1 to force cache bust
+                CHRMRTNS_KLA_VERSION . '.3', // Added .3 to force cache bust for enhanced dark mode
                 'all'
             );
         }
