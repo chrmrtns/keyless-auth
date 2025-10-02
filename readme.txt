@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.5.0
+Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -270,6 +270,24 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.6.0 =
+* NEW: Enhanced CSS system using CSS custom properties for consistent theming across all forms
+* NEW: Block theme compatibility - forms now work perfectly with Twenty Twenty-Five and other block themes
+* NEW: Professional blue color scheme (#0073aa) aligned with WordPress admin UI standards
+* NEW: Dark mode support with automatic color adjustments based on system preferences
+* NEW: High contrast mode support for improved accessibility
+* NEW: Reduced motion support for users with motion sensitivity
+* IMPROVEMENT: Higher CSS specificity without using !important rules for better maintainability
+* IMPROVEMENT: Responsive mobile-first design with proper touch targets (16px minimum on mobile)
+* IMPROVEMENT: Enhanced accessibility with proper focus states, ARIA support, and keyboard navigation
+* IMPROVEMENT: Added wrapper classes (chrmrtns-kla-form-wrapper) for better style isolation
+* FIX: Form styling conflicts with block themes completely resolved
+* FIX: Input field styling now consistent across all WordPress themes
+* FIX: Button hover, active, and focus states properly styled with visual feedback
+* FIX: Checkbox styling enhanced with custom SVG checkmark
+* COMPATIBILITY: Full responsive design optimized for mobile devices
+* ACCESSIBILITY: Comprehensive accessibility improvements including focus indicators and screen reader support
+
 = 2.5.0 =
 * NEW: Added redirect parameter support to [keyless-auth] shortcode - now supports custom redirects like [keyless-auth-full]
 * NEW: Enhanced shortcode documentation in admin help with comprehensive usage examples and options

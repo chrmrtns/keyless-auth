@@ -119,20 +119,22 @@ class Chrmrtns_KLA_Core {
         }
         
         ?>
-        <form method="post" class="chrmrtns-form">
-            <p>
-                <label for="user_email_username"><?php echo esc_html(apply_filters('chrmrtns_kla_change_form_label', $login_label)); ?></label><br>
-                <input type="text" name="user_email_username" id="user_email_username" class="input" value="" size="20" required />
-            </p>
-            <?php wp_nonce_field('chrmrtns_kla_keyless_login_request', 'nonce', false); ?>
-            <input type="hidden" name="chrmrtns_kla_magic_form" value="1" />
-            <?php if (!empty($atts['redirect'])): ?>
-                <input type="hidden" name="chrmrtns_kla_redirect" value="<?php echo esc_url($atts['redirect']); ?>" />
-            <?php endif; ?>
-            <p class="submit">
-                <input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="<?php esc_html_e('Send me the link', 'keyless-auth'); ?>" />
-            </p>
-        </form>
+        <div class="chrmrtns-kla-form-wrapper">
+            <form method="post" class="chrmrtns-form">
+                <p>
+                    <label for="user_email_username"><?php echo esc_html(apply_filters('chrmrtns_kla_change_form_label', $login_label)); ?></label><br>
+                    <input type="text" name="user_email_username" id="user_email_username" class="input" value="" size="20" required />
+                </p>
+                <?php wp_nonce_field('chrmrtns_kla_keyless_login_request', 'nonce', false); ?>
+                <input type="hidden" name="chrmrtns_kla_magic_form" value="1" />
+                <?php if (!empty($atts['redirect'])): ?>
+                    <input type="hidden" name="chrmrtns_kla_redirect" value="<?php echo esc_url($atts['redirect']); ?>" />
+                <?php endif; ?>
+                <p class="submit">
+                    <input type="submit" name="wp-submit" id="chrmrtns-submit" class="button-primary" value="<?php esc_html_e('Send me the link', 'keyless-auth'); ?>" />
+                </p>
+            </form>
+        </div>
         <?php
     }
 
@@ -212,9 +214,10 @@ class Chrmrtns_KLA_Core {
 
         $redirect_to = !empty($atts['redirect']) ? esc_url($atts['redirect']) : $this->get_current_page_url();
         ?>
+        <div class="chrmrtns-kla-form-wrapper">
         <div class="chrmrtns-full-login-container">
             <!-- Standard WordPress Login Form -->
-            <div class="chrmrtns-standard-login">
+            <div class="chrmrtns-standard-login" data-form-type="password">
                 <h4><?php esc_html_e('Login with Password', 'keyless-auth'); ?></h4>
                 <?php
                 wp_login_form(array(
@@ -243,7 +246,7 @@ class Chrmrtns_KLA_Core {
             </div>
 
             <!-- Magic Link Login Form -->
-            <div class="chrmrtns-magic-login">
+            <div class="chrmrtns-magic-login" data-form-type="magic">
                 <h4><?php esc_html_e('Magic Link Login', 'keyless-auth'); ?></h4>
                 <p class="chrmrtns-magic-description"><?php esc_html_e('No password required - we\'ll send you a secure login link via email.', 'keyless-auth'); ?></p>
                 <form method="post" class="chrmrtns-form">
@@ -323,6 +326,7 @@ class Chrmrtns_KLA_Core {
             color: #333;
         }
         </style>
+        </div><!-- .chrmrtns-kla-form-wrapper -->
         <?php
     }
 
@@ -722,9 +726,21 @@ class Chrmrtns_KLA_Core {
      * Enqueue frontend scripts
      */
     public function enqueue_frontend_scripts() {
+        // Enqueue legacy styles for backward compatibility
         if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . '/assets/css/style-front-end.css')) {
             wp_register_style('chrmrtns_frontend_stylesheet', CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/style-front-end.css', array(), CHRMRTNS_KLA_VERSION);
             wp_enqueue_style('chrmrtns_frontend_stylesheet');
+        }
+
+        // Enqueue enhanced forms stylesheet with higher priority
+        if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . '/assets/css/forms-enhanced.css')) {
+            wp_enqueue_style(
+                'chrmrtns_kla_forms_enhanced',
+                CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/forms-enhanced.css',
+                array('chrmrtns_frontend_stylesheet'), // Load after the base stylesheet
+                CHRMRTNS_KLA_VERSION . '.1', // Added .1 to force cache bust
+                'all'
+            );
         }
     }
 

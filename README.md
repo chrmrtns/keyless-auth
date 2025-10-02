@@ -76,6 +76,23 @@ Born from real-world frustration with password complexity and user experience ch
 
 ## 🚀 Latest Updates
 
+### v2.6.0 - Enhanced Form Styling for Block Themes (December 2024)
+**Complete form styling overhaul for compatibility with block themes like Twenty Twenty-Five**
+
+* **🎨 NEW:** Enhanced CSS system using CSS custom properties for consistent theming
+* **🎨 NEW:** Block theme compatibility - forms now work perfectly with Twenty Twenty-Five and other block themes
+* **🎨 NEW:** Professional blue color scheme (#0073aa) aligned with WordPress admin UI
+* **🎨 NEW:** Dark mode support with automatic color adjustments
+* **✨ IMPROVEMENT:** Higher CSS specificity without using !important rules
+* **✨ IMPROVEMENT:** Responsive mobile-first design with proper touch targets
+* **✨ IMPROVEMENT:** Accessibility improvements with proper focus states and ARIA support
+* **✨ IMPROVEMENT:** Added wrapper classes for better style isolation
+* **🔧 FIX:** Form styling conflicts with block themes resolved
+* **🔧 FIX:** Input field styling now consistent across all themes
+* **🔧 FIX:** Button hover and active states properly styled
+* **📱 COMPATIBILITY:** Full responsive design for mobile devices
+* **♿ ACCESSIBILITY:** High contrast mode support and reduced motion preferences
+
 ### v2.5.0 - Enhanced Shortcode & Login Fix (September 29, 2024)
 **Enhanced shortcode functionality with redirect support and critical password login fixes**
 
@@ -412,6 +429,24 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v2.6.0
+- **NEW:** Enhanced CSS system using CSS custom properties for consistent theming across all forms
+- **NEW:** Block theme compatibility - forms now work perfectly with Twenty Twenty-Five and other block themes
+- **NEW:** Professional blue color scheme (#0073aa) aligned with WordPress admin UI standards
+- **NEW:** Dark mode support with automatic color adjustments based on system preferences
+- **NEW:** High contrast mode support for improved accessibility
+- **NEW:** Reduced motion support for users with motion sensitivity
+- **IMPROVEMENT:** Higher CSS specificity without using !important rules for better maintainability
+- **IMPROVEMENT:** Responsive mobile-first design with proper touch targets (16px minimum on mobile)
+- **IMPROVEMENT:** Enhanced accessibility with proper focus states, ARIA support, and keyboard navigation
+- **IMPROVEMENT:** Added wrapper classes (chrmrtns-kla-form-wrapper) for better style isolation
+- **FIX:** Form styling conflicts with block themes completely resolved
+- **FIX:** Input field styling now consistent across all WordPress themes
+- **FIX:** Button hover, active, and focus states properly styled with visual feedback
+- **FIX:** Checkbox styling enhanced with custom SVG checkmark
+- **COMPATIBILITY:** Full responsive design optimized for mobile devices
+- **ACCESSIBILITY:** Comprehensive accessibility improvements including focus indicators and screen reader support
 
 ### v2.5.0
 - **NEW:** Added redirect parameter support to [keyless-auth] shortcode - now supports custom redirects like [keyless-auth-full]
