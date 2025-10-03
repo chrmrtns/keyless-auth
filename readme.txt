@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -270,6 +270,13 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.6.2 =
+* FIX: Replaced hardcoded colors in style-front-end.css with CSS variables for proper dark mode support
+* FIX: Added max-width (400px) to .chrmrtns-box for consistent message box width matching form width
+* NEW: Added shortcode customization parameters to [keyless-auth]: button_text, description, label
+* IMPROVEMENT: Alert/success/error boxes now support dark mode and can be customized via CSS variables
+* ENHANCEMENT: Shortcode now allows custom button text, field labels, and description text for better branding
+
 = 2.6.1 =
 * FIX: Dark mode CSS variable inheritance - fixed --kla-primary-light not defined for dark mode causing light backgrounds in 2FA info boxes
 * FIX: Replaced all remaining hardcoded colors in 2fa-frontend.css with CSS variables for proper dark mode support

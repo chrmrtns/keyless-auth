@@ -19,10 +19,13 @@
     --kla-primary-light: #f0f6fc;
     --kla-success: #46b450;
     --kla-success-hover: #2e7d32;
+    --kla-success-text: #155724;
     --kla-error: #d63638;
     --kla-error-light: #f8d7da;
+    --kla-error-text: #721c24;
     --kla-warning: #dba617;
     --kla-warning-light: #fff3cd;
+    --kla-warning-text: #856404;
     --kla-text: #2c3338;
     --kla-text-light: #646970;
     --kla-border: #8c8f94;
@@ -39,6 +42,9 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --kla-primary-light: #1a3a4a;
+        --kla-success-text: #155724;
+        --kla-error-text: #721c24;
+        --kla-warning-text: #856404;
         --kla-background: #1e1e1e;
         --kla-background-alt: #2c3338;
         --kla-text: #f0f0f1;
@@ -58,6 +64,9 @@
 :root[data-color-scheme="dark"],
 :root[data-mode="dark"] {
     --kla-primary-light: #1a3a4a;
+    --kla-success-text: #155724;
+    --kla-error-text: #721c24;
+    --kla-warning-text: #856404;
     --kla-background: #1e1e1e;
     --kla-background-alt: #2c3338;
     --kla-text: #f0f0f1;
@@ -326,19 +335,19 @@
 }
 
 .chrmrtns-kla-form-wrapper .chrmrtns-error {
-    color: #721c24;
+    color: var(--kla-error-text);
     background-color: var(--kla-error-light);
     border: 1px solid var(--kla-error);
 }
 
 .chrmrtns-kla-form-wrapper .chrmrtns-success {
-    color: #155724;
+    color: var(--kla-success-text);
     background-color: #d4edda;
     border: 1px solid var(--kla-success);
 }
 
 .chrmrtns-kla-form-wrapper .chrmrtns-alert {
-    color: #856404;
+    color: var(--kla-warning-text);
     background-color: var(--kla-warning-light);
     border: 1px solid var(--kla-warning);
 }

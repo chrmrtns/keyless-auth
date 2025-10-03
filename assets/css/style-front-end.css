@@ -3,21 +3,25 @@
 	margin: 0 auto 25px;
 	display: block;
 	width: 100%;
+	max-width: 400px;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 .chrmrtns-error{
-	background: #ffebe8;
-	border: 1px solid #C00;
+	background: var(--kla-error-light, #ffebe8);
+	border: 1px solid var(--kla-error, #C00);
+	color: var(--kla-error-text, #721c24);
 }
 .chrmrtns-success{
-	background: #e7f7d3;
-	border: 1px solid #6c3;
+	background: #d4edda;
+	border: 1px solid var(--kla-success, #6c3);
+	color: var(--kla-success-text, #155724);
 }
 .chrmrtns-alert{
-	background: #fffbbc;
-	border: 1px solid #E6DB55;
+	background: var(--kla-warning-light, #fffbbc);
+	border: 1px solid var(--kla-warning, #E6DB55);
+	color: var(--kla-warning-text, #856404);
 }
 /* Last paragraph, no bottom margin */
 .chrmrtns-box p:last-child {

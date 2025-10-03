@@ -59,7 +59,10 @@ class Chrmrtns_KLA_Core {
     public function render_login_form($atts = array()) {
         // Parse attributes with defaults
         $atts = shortcode_atts(array(
-            'redirect' => ''
+            'redirect' => '',
+            'button_text' => '',
+            'description' => '',
+            'label' => ''
         ), $atts, 'keyless-auth');
         ob_start();
         
@@ -117,12 +120,21 @@ class Chrmrtns_KLA_Core {
                 $login_label = __('Login with username', 'keyless-auth');
             }
         }
-        
+
+        // Determine label text
+        $label_text = !empty($atts['label']) ? $atts['label'] : $login_label;
+
+        // Determine button text
+        $button_text = !empty($atts['button_text']) ? $atts['button_text'] : __('Send me the link', 'keyless-auth');
+
         ?>
         <div class="chrmrtns-kla-form-wrapper">
+            <?php if (!empty($atts['description'])): ?>
+                <p class="chrmrtns-kla-description"><?php echo wp_kses_post($atts['description']); ?></p>
+            <?php endif; ?>
             <form method="post" class="chrmrtns-form">
                 <p>
-                    <label for="user_email_username"><?php echo esc_html(apply_filters('chrmrtns_kla_change_form_label', $login_label)); ?></label><br>
+                    <label for="user_email_username"><?php echo esc_html(apply_filters('chrmrtns_kla_change_form_label', $label_text)); ?></label><br>
                     <input type="text" name="user_email_username" id="user_email_username" class="input" value="" size="20" required />
                 </p>
                 <?php wp_nonce_field('chrmrtns_kla_keyless_login_request', 'nonce', false); ?>
@@ -131,7 +143,7 @@ class Chrmrtns_KLA_Core {
                     <input type="hidden" name="chrmrtns_kla_redirect" value="<?php echo esc_url($atts['redirect']); ?>" />
                 <?php endif; ?>
                 <p class="submit">
-                    <input type="submit" name="wp-submit" id="chrmrtns-submit" class="button-primary" value="<?php esc_html_e('Send me the link', 'keyless-auth'); ?>" />
+                    <input type="submit" name="wp-submit" id="chrmrtns-submit" class="button-primary" value="<?php echo esc_attr($button_text); ?>" />
                 </p>
             </form>
         </div>
@@ -728,7 +740,7 @@ class Chrmrtns_KLA_Core {
     public function enqueue_frontend_scripts() {
         // Enqueue legacy styles for backward compatibility
         if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . '/assets/css/style-front-end.css')) {
-            wp_register_style('chrmrtns_frontend_stylesheet', CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/style-front-end.css', array(), CHRMRTNS_KLA_VERSION);
+            wp_register_style('chrmrtns_frontend_stylesheet', CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/style-front-end.css', array(), CHRMRTNS_KLA_VERSION . '.1');
             wp_enqueue_style('chrmrtns_frontend_stylesheet');
         }
 
@@ -738,7 +750,7 @@ class Chrmrtns_KLA_Core {
                 'chrmrtns_kla_forms_enhanced',
                 CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/forms-enhanced.css',
                 array('chrmrtns_frontend_stylesheet'), // Load after the base stylesheet
-                CHRMRTNS_KLA_VERSION . '.4', // Added .4 to force cache bust for --kla-primary-light dark mode fix
+                CHRMRTNS_KLA_VERSION . '.1', // Added .1 to force cache bust for message box colors and dark mode
                 'all'
             );
         }

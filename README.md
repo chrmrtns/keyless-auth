@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-2.6.1-blue.svg)
+![Version](https://img.shields.io/badge/version-2.6.2-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -140,6 +140,16 @@ Born from real-world frustration with password complexity and user experience ch
 * **✅ FIX:** Removed .DS_Store hidden files for full WordPress.org compliance
 * **✅ FIX:** Implemented proper singleton pattern to prevent multiple class instantiation
 * **🛡️ STABILITY:** Clean, production-ready code with all WordPress.org compliance issues resolved
+
+### v2.6.2 - CSS Fixes & Shortcode Enhancements (October 3, 2025)
+
+* **🎨 FIX:** Replaced hardcoded colors in style-front-end.css with CSS variables for proper dark mode support
+* **📏 FIX:** Added max-width (400px) to `.chrmrtns-box` for consistent message box width
+* **✨ NEW:** Added shortcode customization parameters: `button_text`, `description`, `label`
+* **🌙 IMPROVEMENT:** Alert/success/error boxes now fully support dark mode
+* **🔧 ENHANCEMENT:** Better branding control with customizable shortcode text
+
+**Example**: `[keyless-auth button_text="Email login link" description="Secure passwordless access" label="Your Email"]`
 
 ### v2.6.1 - Dark Mode CSS Fixes (October 3, 2025)
 
