@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-2.5.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.6.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -140,6 +140,31 @@ Born from real-world frustration with password complexity and user experience ch
 * **✅ FIX:** Removed .DS_Store hidden files for full WordPress.org compliance
 * **✅ FIX:** Implemented proper singleton pattern to prevent multiple class instantiation
 * **🛡️ STABILITY:** Clean, production-ready code with all WordPress.org compliance issues resolved
+
+### v2.6.1 - Dark Mode CSS Fixes (October 3, 2025)
+
+* **🎨 FIX:** Dark mode CSS variable inheritance - fixed `--kla-primary-light` not defined for dark mode causing light backgrounds in 2FA info boxes
+* **🌙 FIX:** Replaced all remaining hardcoded colors in 2fa-frontend.css with CSS variables for proper dark mode support
+* **🔘 FIX:** Secondary button hover states now use CSS variables instead of hardcoded light blue colors
+* **📋 FIX:** Copy button styling now uses CSS variables for proper theme adaptation
+* **📢 FIX:** Notice sections (.chrmrtns-2fa-notice) now use CSS variables instead of hardcoded #f0f6fc
+* **⚡ IMPROVEMENT:** Added cache busters to CSS file enqueues (forms-enhanced.css .4, 2fa-frontend.css .2) to force browser refresh
+* **🎨 IMPROVEMENT:** All CSS variables now properly cascade from :root level for easy theme customization via WPCodeBox or custom CSS
+* **🔧 COMPATIBILITY:** CSS variables can now be easily overridden using custom CSS snippets for complete color control
+
+### v2.6.0 - Block Theme Compatibility & Dark Mode (October 2024)
+
+* **🎨 NEW:** Enhanced CSS system using CSS custom properties for consistent theming across all forms
+* **🧱 NEW:** Block theme compatibility - forms now work perfectly with Twenty Twenty-Five and other block themes
+* **🔵 NEW:** Professional blue color scheme (#0073aa) aligned with WordPress admin UI standards
+* **🌙 NEW:** Dark mode support with automatic color adjustments based on system preferences
+* **♿ NEW:** High contrast mode support for improved accessibility
+* **🎯 NEW:** Reduced motion support for users with motion sensitivity
+* **📱 IMPROVEMENT:** Responsive mobile-first design with proper touch targets (16px minimum on mobile)
+* **🔒 IMPROVEMENT:** Enhanced accessibility with proper focus states, ARIA support, and keyboard navigation
+* **✅ FIX:** Form styling conflicts with block themes completely resolved
+* **✅ FIX:** Input field styling now consistent across all WordPress themes
+* **✅ FIX:** Button hover, active, and focus states properly styled with visual feedback
 
 ### v2.4.0 - Complete 2FA System (September 25, 2024)
 **Successfully released September 25, 2024 with complete SVN deployment**

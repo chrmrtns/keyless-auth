@@ -1,11 +1,11 @@
 === Keyless Auth - Login without Passwords ===
 
-Contributors: chrmrtns, sareiodata, cozmoslabs
+Contributors: chrmrtns
 Donate link: https://paypal.me/chrmrtns
 Tags: passwordless, login, authentication, security, email
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.6.0
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -270,6 +270,16 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.6.1 =
+* FIX: Dark mode CSS variable inheritance - fixed --kla-primary-light not defined for dark mode causing light backgrounds in 2FA info boxes
+* FIX: Replaced all remaining hardcoded colors in 2fa-frontend.css with CSS variables for proper dark mode support
+* FIX: Secondary button hover states now use CSS variables instead of hardcoded light blue colors
+* FIX: Copy button styling now uses CSS variables for proper theme adaptation
+* FIX: Notice sections (.chrmrtns-2fa-notice) now use CSS variables instead of hardcoded #f0f6fc
+* IMPROVEMENT: Added cache busters to CSS file enqueues (forms-enhanced.css .4, 2fa-frontend.css .2) to force browser refresh
+* IMPROVEMENT: All CSS variables now properly cascade from :root level for easy theme customization via WPCodeBox or custom CSS
+* COMPATIBILITY: CSS variables can now be easily overridden using custom CSS snippets for complete color control
+
 = 2.6.0 =
 * NEW: Enhanced CSS system using CSS custom properties for consistent theming across all forms
 * NEW: Block theme compatibility - forms now work perfectly with Twenty Twenty-Five and other block themes

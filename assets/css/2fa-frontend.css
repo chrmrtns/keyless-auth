@@ -4,31 +4,20 @@
  *
  * @since 2.4.0
  * @updated 2.6.0 - Added dark mode support
+ * @updated 2.6.1 - Unified CSS variables with --kla-* system
  */
 
-/* CSS Custom Properties for theming */
-:root {
-    --2fa-bg-primary: #ffffff;
-    --2fa-bg-secondary: #f9f9f9;
-    --2fa-bg-tertiary: #f0f0f0;
-    --2fa-bg-info: #f0f6fc;
-    --2fa-text-primary: #23282d;
-    --2fa-text-secondary: #666;
-    --2fa-text-light: #555;
-    --2fa-border-primary: #e1e1e1;
-    --2fa-border-secondary: #ddd;
-    --2fa-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+/* Uses the unified --kla-* variables defined in forms-enhanced.css or at :root */
 
 /* Main container */
 .chrmrtns-2fa-container {
     width: 100%;
     max-width: 1400px;
-    background: var(--2fa-bg-primary);
-    border: 1px solid var(--2fa-border-primary);
-    border-radius: 8px;
+    background: var(--kla-background);
+    border: 1px solid var(--kla-border-light);
+    border-radius: var(--kla-radius);
     padding: 30px;
-    box-shadow: var(--2fa-shadow);
+    box-shadow: var(--kla-shadow-hover);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     box-sizing: border-box;
 }
@@ -37,18 +26,18 @@
 .chrmrtns-2fa-header {
     text-align: center;
     margin-bottom: 30px;
-    border-bottom: 1px solid var(--2fa-border-primary);
+    border-bottom: 1px solid var(--kla-border-light);
     padding-bottom: 20px;
 }
 
 .chrmrtns-2fa-header h3 {
     margin: 0 0 10px 0;
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
     font-size: 24px;
 }
 
 .chrmrtns-2fa-header p {
-    color: var(--2fa-text-secondary);
+    color: var(--kla-text-light);
     margin: 10px 0;
 }
 
@@ -65,7 +54,7 @@
 .chrmrtns-2fa-status.chrmrtns-2fa-enabled {
     background: #d4edda;
     color: #155724;
-    border: 1px solid #c3e6cb;
+    border: 1px solid var(--kla-success);
 }
 
 .chrmrtns-2fa-status-icon {
@@ -91,19 +80,19 @@
 .chrmrtns-2fa-step {
     margin-bottom: 30px;
     padding: 20px;
-    background: var(--2fa-bg-secondary);
+    background: var(--kla-background-alt);
     border-radius: 5px;
-    border-left: 4px solid #0073aa;
+    border-left: 4px solid var(--kla-primary);
 }
 
 .chrmrtns-2fa-step h4 {
     margin-top: 0;
-    color: #0073aa;
+    color: var(--kla-primary);
     font-size: 18px;
 }
 
 .chrmrtns-2fa-step h5 {
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
     margin-bottom: 10px;
 }
 
@@ -117,12 +106,12 @@
 }
 
 .chrmrtns-2fa-apps li {
-    background: var(--2fa-bg-primary);
+    background: var(--kla-background);
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid var(--2fa-border-primary);
+    border: 1px solid var(--kla-border-light);
     text-align: center;
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
 }
 
 /* QR Code section */
@@ -140,10 +129,10 @@
 
 .chrmrtns-2fa-qr #chrmrtns-2fa-qrcode {
     display: inline-block;
-    border: 1px solid var(--2fa-border-primary);
+    border: 1px solid var(--kla-border-light);
     border-radius: 5px;
     padding: 10px;
-    background: var(--2fa-bg-primary);
+    background: var(--kla-background);
 }
 
 .chrmrtns-2fa-qr .chrmrtns-qr-loading {
@@ -152,7 +141,7 @@
     justify-content: center;
     width: 200px;
     height: 200px;
-    color: var(--2fa-text-secondary);
+    color: var(--kla-text-light);
     font-style: italic;
 }
 
@@ -162,7 +151,7 @@
     justify-content: center;
     width: 200px;
     height: 200px;
-    color: #d63638;
+    color: var(--kla-error);
     background: #fef7f7;
     border: 1px solid #f5c2c7;
     border-radius: 5px;
@@ -183,26 +172,26 @@
     gap: 10px;
     margin: 10px 0;
     padding: 10px;
-    background: var(--2fa-bg-tertiary);
+    background: var(--kla-background-alt);
     border-radius: 5px;
     flex-wrap: wrap;
 }
 
 .chrmrtns-2fa-secret code {
-    background: var(--2fa-bg-primary);
+    background: var(--kla-background);
     padding: 8px 12px;
     border-radius: 3px;
-    border: 1px solid var(--2fa-border-primary);
+    border: 1px solid var(--kla-border-light);
     font-family: 'Courier New', monospace;
     font-size: 14px;
     word-break: break-all;
     flex: 1;
     min-width: 200px;
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
 }
 
 .chrmrtns-copy-button {
-    background: #0073aa;
+    background: var(--kla-primary);
     color: white;
     border: none;
     padding: 8px 12px;
@@ -213,11 +202,11 @@
 }
 
 .chrmrtns-copy-button:hover {
-    background: #005a87;
+    background: var(--kla-primary-hover);
 }
 
 .chrmrtns-copy-button.copied {
-    background: #46b450;
+    background: var(--kla-success);
 }
 
 /* Form styles */
@@ -238,21 +227,21 @@
     font-size: 18px;
     text-align: center;
     letter-spacing: 2px;
-    border: 2px solid var(--2fa-border-primary);
+    border: 2px solid var(--kla-border-light);
     border-radius: 5px;
     font-family: 'Courier New', monospace;
-    background: var(--2fa-bg-primary);
-    color: var(--2fa-text-primary);
+    background: var(--kla-background);
+    color: var(--kla-text);
 }
 
 .chrmrtns-2fa-step input[type="text"]:focus {
-    border-color: #0073aa;
+    border-color: var(--kla-primary);
     outline: none;
     box-shadow: 0 0 5px rgba(0, 115, 170, 0.3);
 }
 
 .chrmrtns-2fa-setup-btn {
-    background: #0073aa;
+    background: var(--kla-primary);
     color: white;
     border: none;
     padding: 12px 24px;
@@ -264,7 +253,7 @@
 }
 
 .chrmrtns-2fa-setup-btn:hover:not(:disabled) {
-    background: #005a87;
+    background: var(--kla-primary-hover);
 }
 
 .chrmrtns-2fa-setup-btn:disabled {
@@ -276,14 +265,14 @@
 .chrmrtns-2fa-info {
     margin-top: 30px;
     padding: 20px;
-    background: var(--2fa-bg-info);
-    border-left: 4px solid #0073aa;
+    background: var(--kla-primary-light);
+    border-left: 4px solid var(--kla-primary);
     border-radius: 5px;
 }
 
 .chrmrtns-2fa-info h4 {
     margin-top: 0;
-    color: #0073aa;
+    color: var(--kla-primary);
 }
 
 /* Active view styles */
@@ -295,7 +284,7 @@
 }
 
 .chrmrtns-2fa-info-item {
-    background: var(--2fa-bg-secondary);
+    background: var(--kla-background-alt);
     padding: 15px;
     border-radius: 5px;
     text-align: center;
@@ -303,7 +292,7 @@
 
 .chrmrtns-2fa-info-item h4 {
     margin: 0 0 10px 0;
-    color: var(--2fa-text-secondary);
+    color: var(--kla-text-light);
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -313,7 +302,7 @@
     margin: 0;
     font-size: 18px;
     font-weight: 600;
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
 }
 
 /* Actions */
@@ -323,26 +312,26 @@
 
 .chrmrtns-2fa-actions > h4 {
     margin-bottom: 20px;
-    color: var(--2fa-text-primary);
-    border-bottom: 1px solid var(--2fa-border-primary);
+    color: var(--kla-text);
+    border-bottom: 1px solid var(--kla-border-light);
     padding-bottom: 10px;
 }
 
 .chrmrtns-2fa-action {
     margin-bottom: 30px;
     padding: 20px;
-    background: var(--2fa-bg-secondary);
+    background: var(--kla-background-alt);
     border-radius: 5px;
 }
 
 .chrmrtns-2fa-action h5 {
     margin: 0 0 10px 0;
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
 }
 
 .chrmrtns-2fa-action p {
     margin: 10px 0;
-    color: var(--2fa-text-secondary);
+    color: var(--kla-text-light);
 }
 
 .chrmrtns-2fa-action .button {
@@ -354,8 +343,8 @@
 .chrmrtns-2fa-backup-codes {
     margin: 15px 0;
     padding: 15px;
-    background: var(--2fa-bg-primary);
-    border: 1px solid var(--2fa-border-primary);
+    background: var(--kla-background);
+    border: 1px solid var(--kla-border-light);
     border-radius: 5px;
 }
 
@@ -367,13 +356,13 @@
 }
 
 .chrmrtns-backup-code {
-    background: var(--2fa-bg-tertiary);
+    background: var(--kla-background-alt);
     padding: 8px;
     text-align: center;
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     font-weight: bold;
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
 }
 
 /* Messages */
@@ -416,7 +405,7 @@
 }
 
 .chrmrtns-modal-content {
-    background: var(--2fa-bg-primary);
+    background: var(--kla-background);
     border-radius: 8px;
     max-width: 600px;
     width: 100%;
@@ -430,12 +419,12 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 30px;
-    border-bottom: 1px solid var(--2fa-border-primary);
+    border-bottom: 1px solid var(--kla-border-light);
 }
 
 .chrmrtns-modal-header h3 {
     margin: 0;
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
 }
 
 .chrmrtns-modal-close {
@@ -443,7 +432,7 @@
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: var(--2fa-text-secondary);
+    color: var(--kla-text-light);
     padding: 0;
     width: 30px;
     height: 30px;
@@ -453,7 +442,7 @@
 }
 
 .chrmrtns-modal-close:hover {
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
 }
 
 .chrmrtns-modal-body {
@@ -481,11 +470,11 @@
 }
 
 .chrmrtns-backup-codes-grid .chrmrtns-backup-code {
-    background: var(--2fa-bg-secondary);
-    border: 1px solid var(--2fa-border-primary);
+    background: var(--kla-background-alt);
+    border: 1px solid var(--kla-border-light);
     padding: 12px 8px;
     font-size: 14px;
-    color: var(--2fa-text-primary);
+    color: var(--kla-text);
 }
 
 .chrmrtns-modal-actions {
@@ -497,8 +486,8 @@
 
 /* Notice styles */
 .chrmrtns-2fa-notice {
-    background: #f0f6fc;
-    border: 1px solid #c6e2ff;
+    background: var(--kla-primary-light);
+    border: 1px solid var(--kla-border-light);
     padding: 20px;
     border-radius: 5px;
     text-align: center;
@@ -562,7 +551,7 @@
 }
 
 .chrmrtns-kla-btn:focus {
-    outline: 2px solid #0073aa;
+    outline: 2px solid var(--kla-primary);
     outline-offset: 2px;
 }
 
@@ -573,46 +562,46 @@
 
 /* Primary Button */
 .chrmrtns-kla-btn-primary {
-    background: #0073aa;
+    background: var(--kla-primary);
     color: #ffffff;
-    border: 1px solid #0073aa;
+    border: 1px solid var(--kla-primary);
 }
 
 .chrmrtns-kla-btn-primary:hover {
-    background: #005a87;
-    border-color: #005a87;
+    background: var(--kla-primary-hover);
+    border-color: var(--kla-primary-hover);
     color: #ffffff;
 }
 
 .chrmrtns-kla-btn-primary:active {
-    background: #004a70;
-    border-color: #004a70;
+    background: var(--kla-primary-active);
+    border-color: var(--kla-primary-active);
 }
 
 /* Secondary Button */
 .chrmrtns-kla-btn-secondary {
-    background: #ffffff;
-    color: #0073aa;
-    border: 1px solid #0073aa;
+    background: var(--kla-background);
+    color: var(--kla-primary);
+    border: 1px solid var(--kla-primary);
 }
 
 .chrmrtns-kla-btn-secondary:hover {
-    background: #f0f8ff;
-    border-color: #005a87;
-    color: #005a87;
+    background: var(--kla-primary-light);
+    border-color: var(--kla-primary-hover);
+    color: var(--kla-primary-hover);
 }
 
 .chrmrtns-kla-btn-secondary:active {
-    background: #e6f3ff;
-    border-color: #004a70;
-    color: #004a70;
+    background: var(--kla-primary-light);
+    border-color: var(--kla-primary-active);
+    color: var(--kla-primary-active);
 }
 
 /* Danger Button */
 .chrmrtns-kla-btn-danger {
-    background: #d63638;
+    background: var(--kla-error);
     color: #ffffff;
-    border: 1px solid #d63638;
+    border: 1px solid var(--kla-error);
 }
 
 .chrmrtns-kla-btn-danger:hover {
@@ -628,14 +617,14 @@
 
 /* Success Button */
 .chrmrtns-kla-btn-success {
-    background: #46b450;
+    background: var(--kla-success);
     color: #ffffff;
-    border: 1px solid #46b450;
+    border: 1px solid var(--kla-success);
 }
 
 .chrmrtns-kla-btn-success:hover {
-    background: #2e7d32;
-    border-color: #2e7d32;
+    background: var(--kla-success-hover);
+    border-color: var(--kla-success-hover);
     color: #ffffff;
 }
 
@@ -658,9 +647,9 @@
 
 /* Copy button specific styling */
 .chrmrtns-copy-button {
-    background: #f0f0f1;
-    color: #2c3338;
-    border: 1px solid #c3c4c7;
+    background: var(--kla-background-alt);
+    color: var(--kla-text);
+    border: 1px solid var(--kla-border-light);
     padding: 6px 12px;
     font-size: 12px;
     border-radius: 4px;
@@ -670,83 +659,18 @@
 }
 
 .chrmrtns-copy-button:hover {
-    background: #e0e0e0;
-    border-color: #8c8f94;
+    background: var(--kla-background-alt);
+    border-color: var(--kla-border);
 }
 
 .chrmrtns-copy-button.copied {
-    background: #46b450;
+    background: var(--kla-success);
     color: #ffffff;
-    border-color: #46b450;
+    border-color: var(--kla-success);
 }
 
 /* ========================================
    DARK MODE SUPPORT
    ======================================== */
 
-/* System dark mode preference */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --2fa-bg-primary: #1e1e1e;
-        --2fa-bg-secondary: #2c3338;
-        --2fa-bg-tertiary: #3c434a;
-        --2fa-bg-info: #2c3338;
-        --2fa-text-primary: #f0f0f1;
-        --2fa-text-secondary: #c3c4c7;
-        --2fa-text-light: #a7aaad;
-        --2fa-border-primary: #646970;
-        --2fa-border-secondary: #3c434a;
-        --2fa-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-}
-
-/* Custom dark mode classes - HTML element */
-html.cf-theme-dark,
-html.dark-mode,
-html.dark,
-html.theme-dark,
-html.is-dark-theme,
-html[data-theme="dark"],
-html[data-color-scheme="dark"],
-html[data-mode="dark"],
-/* Body element */
-body.cf-theme-dark,
-body.dark-mode,
-body.dark,
-body.theme-dark,
-body.is-dark-theme,
-body[data-theme="dark"],
-body[data-color-scheme="dark"],
-body[data-mode="dark"] {
-    --2fa-bg-primary: #1e1e1e;
-    --2fa-bg-secondary: #2c3338;
-    --2fa-bg-tertiary: #3c434a;
-    --2fa-bg-info: #2c3338;
-    --2fa-text-primary: #f0f0f1;
-    --2fa-text-secondary: #c3c4c7;
-    --2fa-text-light: #a7aaad;
-    --2fa-border-primary: #646970;
-    --2fa-border-secondary: #3c434a;
-    --2fa-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Container-level dark mode classes */
-.cf-theme-dark .chrmrtns-2fa-container,
-.dark-mode .chrmrtns-2fa-container,
-.dark .chrmrtns-2fa-container,
-.theme-dark .chrmrtns-2fa-container,
-.is-dark-theme .chrmrtns-2fa-container,
-[data-theme="dark"] .chrmrtns-2fa-container,
-[data-color-scheme="dark"] .chrmrtns-2fa-container,
-[data-mode="dark"] .chrmrtns-2fa-container {
-    --2fa-bg-primary: #1e1e1e;
-    --2fa-bg-secondary: #2c3338;
-    --2fa-bg-tertiary: #3c434a;
-    --2fa-bg-info: #2c3338;
-    --2fa-text-primary: #f0f0f1;
-    --2fa-text-secondary: #c3c4c7;
-    --2fa-text-light: #a7aaad;
-    --2fa-border-primary: #646970;
-    --2fa-border-secondary: #3c434a;
-    --2fa-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
+/* Dark mode variables are inherited from forms-enhanced.css :root definitions */

@@ -288,30 +288,60 @@ class Chrmrtns_KLA_2FA_Core {
                 __('Your account requires 2FA setup within {days} days for security.', 'keyless-auth'));
             $message = str_replace('{days}', $days_remaining, $message);
 
-            // Choose notice class and colors based on days remaining
+            // Choose notice class and urgency level based on days remaining
             $notice_class = 'notice-info';
-            $bg_color = '#e8f4fd';
-            $border_color = '#0073aa';
+            $urgency_class = 'kla-notice-normal';
             $icon = '🔐';
 
             if ($days_remaining <= 3) {
                 $notice_class = 'notice-error';
-                $bg_color = '#fef7f7';
-                $border_color = '#dc3232';
+                $urgency_class = 'kla-notice-urgent';
                 $icon = '🚨';
             } elseif ($days_remaining <= 7) {
                 $notice_class = 'notice-warning';
-                $bg_color = '#fff8e5';
-                $border_color = '#ffb900';
+                $urgency_class = 'kla-notice-warning';
                 $icon = '⚠️';
             }
 
-            echo '<div class="notice ' . esc_attr($notice_class) . ' is-dismissible" style="background-color: ' . esc_attr($bg_color) . '; border-left-color: ' . esc_attr($border_color) . '; padding: 15px; margin: 15px 0; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">';
+            // Output notice with CSS class for styling via variables
+            echo '<div class="notice chrmrtns-kla-grace-notice ' . esc_attr($notice_class) . ' ' . esc_attr($urgency_class) . ' is-dismissible">';
             echo '<p><strong>' . esc_html($icon) . ' ' . esc_html__('Two-Factor Authentication Required', 'keyless-auth') . '</strong></p>';
             echo '<p>⏰ ' . esc_html($message) . '</p>';
             /* translators: %s: shortcode name in code tags */
             echo '<p><em>🚀 ' . sprintf(esc_html__('Use the shortcode %s to set up 2FA.', 'keyless-auth'), '<code>[keyless-auth-2fa]</code>') . '</em></p>';
             echo '</div>';
+
+            // Add inline styles using CSS variables (only output once)
+            static $grace_notice_styles_added = false;
+            if (!$grace_notice_styles_added) {
+                echo '<style>
+                    :root {
+                        --kla-primary: #0073aa;
+                        --kla-error: #d63638;
+                        --kla-warning: #dba617;
+                        --kla-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+                    }
+                    .chrmrtns-kla-grace-notice {
+                        padding: 15px !important;
+                        margin: 15px 0 !important;
+                        box-shadow: var(--kla-shadow) !important;
+                        border-left: 4px solid var(--kla-primary) !important;
+                    }
+                    .chrmrtns-kla-grace-notice.kla-notice-normal {
+                        background-color: #f0f6fc !important;
+                        border-left-color: var(--kla-primary) !important;
+                    }
+                    .chrmrtns-kla-grace-notice.kla-notice-warning {
+                        background-color: #fff8e5 !important;
+                        border-left-color: var(--kla-warning) !important;
+                    }
+                    .chrmrtns-kla-grace-notice.kla-notice-urgent {
+                        background-color: #fef7f7 !important;
+                        border-left-color: var(--kla-error) !important;
+                    }
+                </style>';
+                $grace_notice_styles_added = true;
+            }
         }
     }
 
@@ -476,9 +506,28 @@ class Chrmrtns_KLA_2FA_Core {
                 </div>
 
                 <style>
+                    /* CSS Custom Properties for 2FA forms - Uses :root variables, defines fallbacks if not loaded */
+                    :root {
+                        --kla-primary: #0073aa;
+                        --kla-primary-hover: #005a87;
+                        --kla-primary-active: #004a70;
+                        --kla-error: #d63638;
+                        --kla-error-light: #f8d7da;
+                        --kla-text: #2c3338;
+                        --kla-text-light: #646970;
+                        --kla-border: #8c8f94;
+                        --kla-border-light: #dcdcde;
+                        --kla-background: #ffffff;
+                        --kla-background-alt: #f6f7f7;
+                        --kla-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+                        --kla-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.1);
+                        --kla-radius: 4px;
+                        --kla-transition: all 0.2s ease;
+                    }
+
                     body {
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-                        background: #f1f1f1;
+                        background: var(--kla-background-alt);
                         margin: 0;
                         padding: 0;
                     }
@@ -488,44 +537,44 @@ class Chrmrtns_KLA_2FA_Core {
                         padding: 20px;
                     }
                     .chrmrtns-2fa-container {
-                        background: white;
+                        background: var(--kla-background);
                         padding: 30px;
-                        border-radius: 8px;
-                        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                        border-radius: var(--kla-radius);
+                        box-shadow: var(--kla-shadow-hover);
                     }
                     .chrmrtns-2fa-header h2 {
                         margin: 0 0 10px 0;
-                        color: #23282d;
+                        color: var(--kla-text);
                         font-size: 24px;
                         text-align: center;
                     }
                     .chrmrtns-2fa-header p {
                         margin: 0 0 25px 0;
-                        color: #666;
+                        color: var(--kla-text-light);
                         text-align: center;
                         font-size: 16px;
                     }
                     .chrmrtns-2fa-error {
-                        background: #fff2f2;
-                        border: 1px solid #dc3232;
-                        border-radius: 4px;
+                        background: var(--kla-error-light);
+                        border: 1px solid var(--kla-error);
+                        border-radius: var(--kla-radius);
                         padding: 15px;
                         margin-bottom: 20px;
                     }
                     .chrmrtns-2fa-error strong {
                         display: block;
                         margin-bottom: 5px;
-                        color: #dc3232;
+                        color: var(--kla-error);
                     }
                     .chrmrtns-2fa-error p {
                         margin: 0;
-                        color: #dc3232;
+                        color: var(--kla-error);
                     }
                     #chrmrtns-2fa-form label {
                         display: block;
                         margin-bottom: 8px;
                         font-weight: 600;
-                        color: #23282d;
+                        color: var(--kla-text);
                     }
                     #chrmrtns_2fa_code {
                         width: 100%;
@@ -533,37 +582,46 @@ class Chrmrtns_KLA_2FA_Core {
                         text-align: center;
                         letter-spacing: 2px;
                         padding: 12px;
-                        border: 2px solid #ddd;
-                        border-radius: 4px;
+                        border: 2px solid var(--kla-border-light);
+                        border-radius: var(--kla-radius);
                         box-sizing: border-box;
                         margin-bottom: 20px;
+                        background: var(--kla-background);
+                        color: var(--kla-text);
                     }
                     #chrmrtns_2fa_code:focus {
                         outline: none;
-                        border-color: #2271b1;
-                        box-shadow: 0 0 0 1px #2271b1;
+                        border-color: var(--kla-primary);
+                        box-shadow: 0 0 0 1px var(--kla-primary);
                     }
                     .button-primary {
-                        background: #2271b1;
-                        border: 1px solid #2271b1;
-                        color: #fff;
-                        border-radius: 4px;
+                        background: var(--kla-primary);
+                        border: 1px solid var(--kla-primary);
+                        color: #ffffff;
+                        border-radius: var(--kla-radius);
                         cursor: pointer;
                         font-size: 16px;
                         padding: 12px 24px;
                         width: 100%;
-                        transition: background-color 0.3s ease;
+                        transition: var(--kla-transition);
                     }
                     .button-primary:hover {
-                        background: #135e96;
-                        border-color: #135e96;
+                        background: var(--kla-primary-hover);
+                        border-color: var(--kla-primary-hover);
+                    }
+                    .button-primary:active,
+                    .button-primary:focus {
+                        background: var(--kla-primary-active);
+                        border-color: var(--kla-primary-active);
+                        outline: 2px solid var(--kla-primary);
+                        outline-offset: 2px;
                     }
                     .chrmrtns-2fa-help {
                         text-align: center;
                         margin: 20px 0;
                     }
                     .chrmrtns-2fa-help small {
-                        color: #666;
+                        color: var(--kla-text-light);
                         font-style: italic;
                         font-size: 14px;
                     }
@@ -572,12 +630,18 @@ class Chrmrtns_KLA_2FA_Core {
                         margin-top: 25px;
                     }
                     .chrmrtns-2fa-back a {
-                        color: #2271b1;
+                        color: var(--kla-primary);
                         text-decoration: none;
                         font-size: 14px;
+                        transition: var(--kla-transition);
                     }
                     .chrmrtns-2fa-back a:hover {
+                        color: var(--kla-primary-hover);
                         text-decoration: underline;
+                    }
+                    .chrmrtns-2fa-back a:focus {
+                        outline: 2px solid var(--kla-primary);
+                        outline-offset: 2px;
                     }
                 </style>
             </div>
