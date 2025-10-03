@@ -1085,7 +1085,7 @@ class Chrmrtns_KLA_Admin {
                     <tbody>
                         <tr>
                             <td><code>[keyless-auth]</code></td>
-                            <td><?php esc_html_e('Main passwordless login form (magic link only). Supports redirect attribute.', 'keyless-auth'); ?></td>
+                            <td><?php esc_html_e('Main passwordless login form (magic link only). Supports attributes: redirect, button_text, description, label', 'keyless-auth'); ?></td>
                         </tr>
                         <tr>
                             <td><code>[keyless-auth-full]</code></td>
@@ -1110,6 +1110,10 @@ class Chrmrtns_KLA_Admin {
 
                 <h4><?php esc_html_e('[keyless-auth] Options:', 'keyless-auth'); ?></h4>
                 <p><code>[keyless-auth redirect="/dashboard/"]</code><br><?php esc_html_e('Redirect to dashboard after magic link login', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth button_text="Email login link"]</code><br><?php esc_html_e('Custom button text', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth label="Your Email"]</code><br><?php esc_html_e('Custom field label', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth description="Secure passwordless access"]</code><br><?php esc_html_e('Add description text above the form', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth button_text="Email login link" description="Secure passwordless access" label="Your Email" redirect="/dashboard/"]</code><br><?php esc_html_e('Combined options example', 'keyless-auth'); ?></p>
 
                 <h4><?php esc_html_e('Advanced [keyless-auth-full] Options:', 'keyless-auth'); ?></h4>
                 <p><code>[keyless-auth-full redirect="/dashboard/"]</code><br><?php esc_html_e('Redirect to dashboard after login', 'keyless-auth'); ?></p>
