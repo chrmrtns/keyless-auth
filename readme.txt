@@ -127,8 +127,8 @@ Transform your WordPress login experience with passwordless authentication. User
 **Secure Credential Storage**
 Store SMTP credentials securely in wp-config.php:
 
-`define('CHRMRTNS_PA_SMTP_USERNAME', 'your-email@example.com');`
-`define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');`
+`define('CHRMRTNS_KLA_SMTP_USERNAME', 'your-email@example.com');`
+`define('CHRMRTNS_KLA_SMTP_PASSWORD', 'your-smtp-password');`
 
 = WordPress Integration =
 
@@ -479,7 +479,7 @@ Change token expiration:
 
 = 2.0.4 =
 * NEW: Secure credential storage options - Choose between database or wp-config.php storage for SMTP credentials
-* NEW: wp-config.php constants support - Use CHRMRTNS_PA_SMTP_USERNAME and CHRMRTNS_PA_SMTP_PASSWORD constants
+* NEW: wp-config.php constants support - Use CHRMRTNS_KLA_SMTP_USERNAME and CHRMRTNS_KLA_SMTP_PASSWORD constants
 * IMPROVEMENT: Enhanced security - Keep sensitive SMTP credentials outside the web root in wp-config.php
 * IMPROVEMENT: Dynamic field toggles - Visual indicators show which storage method is active and if constants are defined
 * IMPROVEMENT: Better credential management - Automatic detection and validation of wp-config.php constants
