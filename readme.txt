@@ -2,7 +2,7 @@
 
 Contributors: chrmrtns
 Donate link: https://paypal.me/chrmrtns
-Tags: passwordless, login, authentication, security, email
+Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
 Stable tag: 2.6.1
