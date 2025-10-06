@@ -144,12 +144,13 @@ Born from real-world frustration with password complexity and user experience ch
 ### v2.6.3 - Performance & Dark Mode Control (October 6, 2025)
 
 * **⚡ PERFORMANCE:** CSS files now load conditionally only when shortcodes are used (saves ~15KB on pages without login forms)
-* **⚡ PERFORMANCE:** CSS no longer loads on every page globally, only when `[keyless-auth]` or `[keyless-auth-full]` shortcodes are rendered
+* **⚡ PERFORMANCE:** 2FA CSS and JS now load conditionally only when `[keyless-auth-2fa]` shortcode is used (saves additional ~38KB)
+* **⚡ PERFORMANCE:** CSS/JS no longer loads on every page globally, only when shortcodes are rendered
 * **⚡ PERFORMANCE:** wp-login.php integration still loads CSS automatically when enabled in Options
 * **🌙 NEW:** Dark Mode Behavior setting in Options page - control how forms appear in dark mode
 * **🎨 NEW:** Three dark mode options: Auto (default, respects system + theme), Light Only (force light), Dark Only (force dark)
 * **📁 NEW:** Separate CSS files for light-only and dark-only modes (forms-enhanced-light.css, forms-enhanced-dark.css)
-* **🚀 ENHANCEMENT:** Better performance for sites with many pages without login forms
+* **🚀 ENHANCEMENT:** Better performance for sites with many pages without login forms (total savings: ~53KB per page)
 * **🎛️ ENHANCEMENT:** Admin can now force light or dark theme regardless of user system preferences
 * **🔧 COMPATIBILITY:** Dark mode setting works with all major WordPress themes and block themes
 
@@ -157,6 +158,8 @@ Born from real-world frustration with password complexity and user experience ch
 - **Auto** (default) - Respects system preference and theme dark mode classes
 - **Light Only** - Forces light theme, no dark mode
 - **Dark Only** - Forces dark theme always
+
+**Performance Impact:** Pages without any login/2FA shortcodes now load ~53KB less (15KB login CSS + 38KB 2FA CSS/JS)
 
 ### v2.6.2 - CSS Fixes & Shortcode Enhancements (October 3, 2025)
 

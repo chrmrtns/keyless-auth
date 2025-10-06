@@ -44,7 +44,6 @@ class Chrmrtns_KLA_2FA_Frontend {
 
         // Initialize hooks
         add_shortcode('keyless-auth-2fa', array($this, 'render_2fa_shortcode'));
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
         add_action('wp_ajax_chrmrtns_2fa_setup', array($this, 'handle_ajax_setup'));
         add_action('wp_ajax_chrmrtns_2fa_disable', array($this, 'handle_ajax_disable'));
         add_action('wp_ajax_chrmrtns_2fa_generate_backup_codes', array($this, 'handle_ajax_generate_backup_codes'));
@@ -72,16 +71,11 @@ class Chrmrtns_KLA_2FA_Frontend {
 
     /**
      * Enqueue frontend scripts and styles
+     * Called when [keyless-auth-2fa] shortcode is rendered
      */
     public function enqueue_frontend_scripts() {
-        // Debug: Log script enqueue attempt
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging when WP_DEBUG is enabled
-            error_log('Keyless Auth Debug: enqueue_frontend_scripts called');
-        }
-
-        // Always enqueue scripts - let WordPress handle conditional loading
-        // This ensures scripts are available when shortcode is used
+        // Only enqueue when shortcode is actually used
+        // This ensures scripts/styles are available when needed without loading globally
 
         // Debug: Log the URLs being used
         $qr_script_url = CHRMRTNS_KLA_PLUGIN_URL . 'assets/js/qrcode.min.js';
@@ -126,18 +120,8 @@ class Chrmrtns_KLA_2FA_Frontend {
         wp_enqueue_style('chrmrtns-kla-2fa-frontend',
             CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/2fa-frontend.css',
             array(),
-            CHRMRTNS_KLA_VERSION . '.2' // Added .2 to force cache bust for --kla-primary-light fix
+            CHRMRTNS_KLA_VERSION
         );
-    }
-
-    /**
-     * Check if current page contains 2FA shortcode
-     *
-     * @return bool
-     */
-    private function is_2fa_page() {
-        global $post;
-        return $post && has_shortcode($post->post_content, 'keyless-auth-2fa');
     }
 
     /**

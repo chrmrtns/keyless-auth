@@ -272,12 +272,13 @@ Change token expiration:
 == Changelog ==
 = 2.6.3 =
 * PERFORMANCE: CSS files now load conditionally only when shortcodes are used (saves ~15KB on pages without login forms)
-* PERFORMANCE: CSS no longer loads on every page globally, only when [keyless-auth] or [keyless-auth-full] shortcodes are rendered
+* PERFORMANCE: 2FA CSS and JS now load conditionally only when [keyless-auth-2fa] shortcode is used (saves additional ~38KB)
+* PERFORMANCE: CSS no longer loads on every page globally, only when [keyless-auth], [keyless-auth-full], or [keyless-auth-2fa] shortcodes are rendered
 * PERFORMANCE: wp-login.php integration still loads CSS automatically when enabled
 * NEW: Dark Mode Behavior setting in Options page - control how forms appear in dark mode
 * NEW: Three dark mode options: Auto (default, respects system + theme), Light Only (force light), Dark Only (force dark)
 * NEW: Separate CSS files for light-only and dark-only modes (forms-enhanced-light.css, forms-enhanced-dark.css)
-* ENHANCEMENT: Better performance for sites with many pages without login forms
+* ENHANCEMENT: Better performance for sites with many pages without login forms (total savings: ~53KB per page)
 * ENHANCEMENT: Admin can now force light or dark theme regardless of user system preferences
 * COMPATIBILITY: Dark mode setting works with all major WordPress themes and block themes
 
