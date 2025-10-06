@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.6.2
+Stable tag: 2.6.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -270,6 +270,17 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.6.3 =
+* PERFORMANCE: CSS files now load conditionally only when shortcodes are used (saves ~15KB on pages without login forms)
+* PERFORMANCE: CSS no longer loads on every page globally, only when [keyless-auth] or [keyless-auth-full] shortcodes are rendered
+* PERFORMANCE: wp-login.php integration still loads CSS automatically when enabled
+* NEW: Dark Mode Behavior setting in Options page - control how forms appear in dark mode
+* NEW: Three dark mode options: Auto (default, respects system + theme), Light Only (force light), Dark Only (force dark)
+* NEW: Separate CSS files for light-only and dark-only modes (forms-enhanced-light.css, forms-enhanced-dark.css)
+* ENHANCEMENT: Better performance for sites with many pages without login forms
+* ENHANCEMENT: Admin can now force light or dark theme regardless of user system preferences
+* COMPATIBILITY: Dark mode setting works with all major WordPress themes and block themes
+
 = 2.6.2 =
 * FIX: Replaced hardcoded colors in style-front-end.css with CSS variables for proper dark mode support
 * FIX: Added max-width (400px) to .chrmrtns-box for consistent message box width matching form width

@@ -152,6 +152,10 @@ class Chrmrtns_KLA_Admin {
             'sanitize_callback' => 'esc_url_raw',
             'default' => ''
         ));
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_dark_mode_setting', array(
+            'sanitize_callback' => array($this, 'sanitize_dark_mode_setting'),
+            'default' => 'auto'
+        ));
 
         add_action('wp_ajax_chrmrtns_kla_save_settings', array($this, 'save_settings'));
         add_action('admin_post_chrmrtns_kla_save_settings', array($this, 'save_settings'));
@@ -767,6 +771,9 @@ class Chrmrtns_KLA_Admin {
             $custom_2fa_setup_url = isset($_POST['chrmrtns_kla_custom_2fa_setup_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_custom_2fa_setup_url'])) : '';
             update_option('chrmrtns_kla_custom_2fa_setup_url', $custom_2fa_setup_url);
 
+            $dark_mode_setting = isset($_POST['chrmrtns_kla_dark_mode_setting']) ? sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_dark_mode_setting'])) : 'auto';
+            update_option('chrmrtns_kla_dark_mode_setting', $this->sanitize_dark_mode_setting($dark_mode_setting));
+
             // Handle 2FA settings
             $enable_2fa = isset($_POST['chrmrtns_kla_2fa_enabled']) ? true : false;
             update_option('chrmrtns_kla_2fa_enabled', $enable_2fa);
@@ -888,8 +895,37 @@ class Chrmrtns_KLA_Admin {
                     </tr>
                 </table>
 
+                <hr style="margin: 40px 0; border: 0; border-top: 1px solid #dcdcde;">
+
+                <!-- Dark Mode Settings Section -->
+                <h2><?php esc_html_e('Appearance & Theme Settings', 'keyless-auth'); ?></h2>
+                <p class="description" style="margin-bottom: 20px;">
+                    <?php esc_html_e('Control how login forms appear in light and dark mode themes.', 'keyless-auth'); ?>
+                </p>
+
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_dark_mode_setting"><?php esc_html_e('Dark Mode Behavior', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <?php $dark_mode_setting = get_option('chrmrtns_kla_dark_mode_setting', 'auto'); ?>
+                            <select id="chrmrtns_kla_dark_mode_setting" name="chrmrtns_kla_dark_mode_setting">
+                                <option value="auto" <?php selected($dark_mode_setting, 'auto'); ?>><?php esc_html_e('Auto (System Preference + Theme Classes)', 'keyless-auth'); ?></option>
+                                <option value="light" <?php selected($dark_mode_setting, 'light'); ?>><?php esc_html_e('Light Only (No Dark Mode)', 'keyless-auth'); ?></option>
+                                <option value="dark" <?php selected($dark_mode_setting, 'dark'); ?>><?php esc_html_e('Dark Only (Force Dark Mode)', 'keyless-auth'); ?></option>
+                            </select>
+                            <p class="description">
+                                <?php esc_html_e('Control how login forms appear in dark mode. Auto detects system preferences and theme dark mode classes. Light Only forces light theme. Dark Only forces dark theme.', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr style="margin: 40px 0; border: 0; border-top: 1px solid #dcdcde;">
+
                 <!-- 2FA Settings Section -->
-                <h2 style="margin-top: 40px;"><?php esc_html_e('Two-Factor Authentication (2FA)', 'keyless-auth'); ?></h2>
+                <h2><?php esc_html_e('Two-Factor Authentication (2FA)', 'keyless-auth'); ?></h2>
                 <p class="description" style="margin-bottom: 20px;">
                     <?php esc_html_e('Add an extra layer of security with TOTP-based two-factor authentication using authenticator apps.', 'keyless-auth'); ?>
                 </p>
@@ -1240,6 +1276,26 @@ class Chrmrtns_KLA_Admin {
             </div>
 
             <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Appearance & Theme Settings', 'keyless-auth'); ?></h2>
+                <p><?php esc_html_e('Control how login forms appear in light and dark mode themes.', 'keyless-auth'); ?></p>
+
+                <h3><?php esc_html_e('Dark Mode Behavior', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('You can control how login forms render in dark mode from the Options page. Three modes are available:', 'keyless-auth'); ?></p>
+
+                <ul>
+                    <li><strong><?php esc_html_e('Auto (Default):', 'keyless-auth'); ?></strong> <?php esc_html_e('Automatically detects system dark mode preference and theme dark mode classes. Forms adapt to match user\'s system settings and theme.', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Light Only:', 'keyless-auth'); ?></strong> <?php esc_html_e('Forces light theme always, disables dark mode completely. Use this if you want consistent light appearance regardless of user preferences.', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Dark Only:', 'keyless-auth'); ?></strong> <?php esc_html_e('Forces dark theme always. Use this if your site has a dark theme and you want forms to always match.', 'keyless-auth'); ?></li>
+                </ul>
+
+                <p><strong><?php esc_html_e('Where to configure:', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to Options → Appearance & Theme Settings → Dark Mode Behavior', 'keyless-auth'); ?></p>
+
+                <div class="notice notice-info inline" style="margin: 15px 0;">
+                    <p><strong><?php esc_html_e('Performance Note:', 'keyless-auth'); ?></strong> <?php esc_html_e('CSS files only load when shortcodes are used on a page, saving bandwidth on pages without login forms.', 'keyless-auth'); ?></p>
+                </div>
+            </div>
+
+            <div class="chrmrtns_kla_card">
                 <h2><?php esc_html_e('Troubleshooting', 'keyless-auth'); ?></h2>
                 <dl>
                     <dt><strong><?php esc_html_e('Emails not being sent?', 'keyless-auth'); ?></strong></dt>
@@ -1559,5 +1615,13 @@ class Chrmrtns_KLA_Admin {
      */
     public function sanitize_checkbox($input) {
         return ($input === '1' || $input === 1 || $input === true) ? '1' : '0';
+    }
+
+    /**
+     * Sanitize dark mode setting
+     */
+    public function sanitize_dark_mode_setting($input) {
+        $valid_options = array('auto', 'light', 'dark');
+        return in_array($input, $valid_options, true) ? $input : 'auto';
     }
 }

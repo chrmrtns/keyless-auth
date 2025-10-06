@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-2.6.2-blue.svg)
+![Version](https://img.shields.io/badge/version-2.6.3-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -140,6 +140,23 @@ Born from real-world frustration with password complexity and user experience ch
 * **✅ FIX:** Removed .DS_Store hidden files for full WordPress.org compliance
 * **✅ FIX:** Implemented proper singleton pattern to prevent multiple class instantiation
 * **🛡️ STABILITY:** Clean, production-ready code with all WordPress.org compliance issues resolved
+
+### v2.6.3 - Performance & Dark Mode Control (October 6, 2025)
+
+* **⚡ PERFORMANCE:** CSS files now load conditionally only when shortcodes are used (saves ~15KB on pages without login forms)
+* **⚡ PERFORMANCE:** CSS no longer loads on every page globally, only when `[keyless-auth]` or `[keyless-auth-full]` shortcodes are rendered
+* **⚡ PERFORMANCE:** wp-login.php integration still loads CSS automatically when enabled in Options
+* **🌙 NEW:** Dark Mode Behavior setting in Options page - control how forms appear in dark mode
+* **🎨 NEW:** Three dark mode options: Auto (default, respects system + theme), Light Only (force light), Dark Only (force dark)
+* **📁 NEW:** Separate CSS files for light-only and dark-only modes (forms-enhanced-light.css, forms-enhanced-dark.css)
+* **🚀 ENHANCEMENT:** Better performance for sites with many pages without login forms
+* **🎛️ ENHANCEMENT:** Admin can now force light or dark theme regardless of user system preferences
+* **🔧 COMPATIBILITY:** Dark mode setting works with all major WordPress themes and block themes
+
+**Admin Control:** New "Dark Mode Behavior" dropdown in Options page lets you choose:
+- **Auto** (default) - Respects system preference and theme dark mode classes
+- **Light Only** - Forces light theme, no dark mode
+- **Dark Only** - Forces dark theme always
 
 ### v2.6.2 - CSS Fixes & Shortcode Enhancements (October 3, 2025)
 

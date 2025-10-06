@@ -1,0 +1,433 @@
+/**
+ * Enhanced Form Styles for Keyless Auth - Dark Mode Only
+ * Designed for compatibility with block themes like Twenty Twenty-Five
+ *
+ * @package Keyless_Auth
+ * @since 2.6.3
+ */
+
+/* ========================================
+   CSS CUSTOM PROPERTIES (CSS VARIABLES)
+   Dark mode colors only
+   ======================================== */
+
+/* Dark mode (forced) */
+:root {
+    --kla-primary: #0073aa;
+    --kla-primary-hover: #005a87;
+    --kla-primary-active: #004a70;
+    --kla-primary-light: #1a3a4a;
+    --kla-success: #46b450;
+    --kla-success-hover: #2e7d32;
+    --kla-success-text: #155724;
+    --kla-error: #d63638;
+    --kla-error-light: #f8d7da;
+    --kla-error-text: #721c24;
+    --kla-warning: #dba617;
+    --kla-warning-light: #fff3cd;
+    --kla-warning-text: #856404;
+    --kla-text: #f0f0f1;
+    --kla-text-light: #c3c4c7;
+    --kla-border: #646970;
+    --kla-border-light: #3c434a;
+    --kla-background: #1e1e1e;
+    --kla-background-alt: #2c3338;
+    --kla-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --kla-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --kla-radius: 4px;
+    --kla-transition: all 0.2s ease;
+}
+
+/* ========================================
+   FORM STYLES
+   ======================================== */
+
+/* Form Container - High specificity wrapper */
+.chrmrtns-kla-form-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--kla-text);
+}
+
+/* Form sections */
+.chrmrtns-kla-form-wrapper .chrmrtns-standard-login,
+.chrmrtns-kla-form-wrapper .chrmrtns-magic-login {
+    background: var(--kla-background);
+    border: 1px solid var(--kla-border-light);
+    border-radius: var(--kla-radius);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--kla-shadow);
+    transition: var(--kla-transition);
+}
+
+.chrmrtns-kla-form-wrapper .chrmrtns-standard-login:hover,
+.chrmrtns-kla-form-wrapper .chrmrtns-magic-login:hover {
+    box-shadow: var(--kla-shadow-hover);
+}
+
+/* Headings */
+.chrmrtns-kla-form-wrapper .chrmrtns-standard-login h4,
+.chrmrtns-kla-form-wrapper .chrmrtns-magic-login h4 {
+    margin: 0 0 16px 0;
+    padding: 0 0 12px 0;
+    color: var(--kla-text);
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--kla-border-light);
+}
+
+/* Description text */
+.chrmrtns-kla-form-wrapper .chrmrtns-magic-description {
+    color: var(--kla-text-light);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+}
+
+/* Form elements */
+.chrmrtns-kla-form-wrapper form {
+    margin: 0;
+    padding: 0;
+}
+
+/* Labels */
+.chrmrtns-kla-form-wrapper label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--kla-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.chrmrtns-kla-form-wrapper label[for="rememberme"] {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+/* Input fields - High specificity to override theme styles */
+.chrmrtns-kla-form-wrapper input[type="text"],
+.chrmrtns-kla-form-wrapper input[type="password"],
+.chrmrtns-kla-form-wrapper input[type="email"],
+.chrmrtns-kla-form-wrapper input[type="url"],
+.chrmrtns-kla-form-wrapper input[type="search"],
+.chrmrtns-kla-form-wrapper input[type="number"],
+.chrmrtns-kla-form-wrapper input[type="tel"],
+.chrmrtns-kla-form-wrapper select,
+.chrmrtns-kla-form-wrapper textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 12px;
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--kla-text);
+    background-color: var(--kla-background);
+    border: 1px solid var(--kla-border);
+    border-radius: var(--kla-radius);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+    transition: var(--kla-transition);
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Input focus states */
+.chrmrtns-kla-form-wrapper input[type="text"]:focus,
+.chrmrtns-kla-form-wrapper input[type="password"]:focus,
+.chrmrtns-kla-form-wrapper input[type="email"]:focus,
+.chrmrtns-kla-form-wrapper input[type="url"]:focus,
+.chrmrtns-kla-form-wrapper input[type="search"]:focus,
+.chrmrtns-kla-form-wrapper input[type="number"]:focus,
+.chrmrtns-kla-form-wrapper input[type="tel"]:focus,
+.chrmrtns-kla-form-wrapper select:focus,
+.chrmrtns-kla-form-wrapper textarea:focus {
+    border-color: var(--kla-primary);
+    outline: 2px solid transparent;
+    outline-offset: 0;
+    box-shadow: 0 0 0 1px var(--kla-primary), inset 0 1px 2px rgba(0, 0, 0, 0.07);
+}
+
+/* Checkbox styling */
+.chrmrtns-kla-form-wrapper input[type="checkbox"] {
+    margin: 0 8px 0 0;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid var(--kla-border);
+    border-radius: var(--kla-radius);
+    background: var(--kla-background);
+    transition: var(--kla-transition);
+}
+
+.chrmrtns-kla-form-wrapper input[type="checkbox"]:checked {
+    background-color: var(--kla-primary);
+    border-color: var(--kla-primary);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+    background-position: center;
+    background-size: 12px;
+    background-repeat: no-repeat;
+}
+
+.chrmrtns-kla-form-wrapper input[type="checkbox"]:focus {
+    outline: 2px solid var(--kla-primary);
+    outline-offset: 2px;
+}
+
+/* Remember me container */
+.chrmrtns-kla-form-wrapper .forgetmenot {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+/* Button styles - Primary buttons */
+.chrmrtns-kla-form-wrapper input[type="submit"],
+.chrmrtns-kla-form-wrapper button[type="submit"],
+.chrmrtns-kla-form-wrapper .button,
+.chrmrtns-kla-form-wrapper .button-primary,
+.chrmrtns-kla-form-wrapper .wp-element-button {
+    display: inline-block;
+    width: 100%;
+    padding: 8px 16px;
+    margin: 8px 0 0 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: var(--kla-primary);
+    border: 1px solid var(--kla-primary);
+    border-radius: var(--kla-radius);
+    cursor: pointer;
+    transition: var(--kla-transition);
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Button hover state */
+.chrmrtns-kla-form-wrapper input[type="submit"]:hover,
+.chrmrtns-kla-form-wrapper button[type="submit"]:hover,
+.chrmrtns-kla-form-wrapper .button:hover,
+.chrmrtns-kla-form-wrapper .button-primary:hover,
+.chrmrtns-kla-form-wrapper .wp-element-button:hover {
+    color: #ffffff;
+    background-color: var(--kla-primary-hover);
+    border-color: var(--kla-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Button active/focus state */
+.chrmrtns-kla-form-wrapper input[type="submit"]:active,
+.chrmrtns-kla-form-wrapper button[type="submit"]:active,
+.chrmrtns-kla-form-wrapper .button:active,
+.chrmrtns-kla-form-wrapper .button-primary:active,
+.chrmrtns-kla-form-wrapper input[type="submit"]:focus,
+.chrmrtns-kla-form-wrapper button[type="submit"]:focus,
+.chrmrtns-kla-form-wrapper .button:focus,
+.chrmrtns-kla-form-wrapper .button-primary:focus {
+    color: #ffffff;
+    background-color: var(--kla-primary-active);
+    border-color: var(--kla-primary-active);
+    outline: 2px solid var(--kla-primary);
+    outline-offset: 2px;
+    transform: translateY(0);
+}
+
+/* Disabled button state */
+.chrmrtns-kla-form-wrapper input[type="submit"]:disabled,
+.chrmrtns-kla-form-wrapper button[type="submit"]:disabled,
+.chrmrtns-kla-form-wrapper .button:disabled,
+.chrmrtns-kla-form-wrapper .button-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Links */
+.chrmrtns-kla-form-wrapper a {
+    color: var(--kla-primary);
+    text-decoration: underline;
+    transition: var(--kla-transition);
+}
+
+.chrmrtns-kla-form-wrapper a:hover {
+    color: var(--kla-primary-hover);
+    text-decoration: none;
+}
+
+.chrmrtns-kla-form-wrapper a:focus {
+    outline: 2px solid var(--kla-primary);
+    outline-offset: 2px;
+}
+
+/* Navigation links */
+.chrmrtns-kla-form-wrapper .login-links,
+.chrmrtns-kla-form-wrapper nav {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--kla-border-light);
+    text-align: center;
+}
+
+.chrmrtns-kla-form-wrapper .login-links a,
+.chrmrtns-kla-form-wrapper nav a {
+    display: inline-block;
+    margin: 0 8px;
+    font-size: 13px;
+}
+
+/* Message boxes */
+.chrmrtns-kla-form-wrapper .chrmrtns-box {
+    padding: 12px;
+    margin: 0 0 20px 0;
+    border-radius: var(--kla-radius);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.chrmrtns-kla-form-wrapper .chrmrtns-error {
+    color: var(--kla-error-text);
+    background-color: var(--kla-error-light);
+    border: 1px solid var(--kla-error);
+}
+
+.chrmrtns-kla-form-wrapper .chrmrtns-success {
+    color: var(--kla-success-text);
+    background-color: #d4edda;
+    border: 1px solid var(--kla-success);
+}
+
+.chrmrtns-kla-form-wrapper .chrmrtns-alert {
+    color: var(--kla-warning-text);
+    background-color: var(--kla-warning-light);
+    border: 1px solid var(--kla-warning);
+}
+
+.chrmrtns-kla-form-wrapper .chrmrtns-box p {
+    margin: 0;
+}
+
+.chrmrtns-kla-form-wrapper .chrmrtns-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* Specific styles for keyless auth shortcode - Override legacy styles */
+.chrmrtns-kla-form-wrapper #user_email_username {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.chrmrtns-kla-form-wrapper #chrmrtns-submit {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    background-color: var(--kla-primary);
+    color: #ffffff;
+    font-size: 14px;
+    padding: 8px 16px;
+    text-transform: none;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.chrmrtns-kla-form-wrapper #chrmrtns-submit:hover {
+    background-color: var(--kla-primary-hover);
+    color: #ffffff;
+}
+
+.chrmrtns-kla-form-wrapper #chrmrtns-submit:focus,
+.chrmrtns-kla-form-wrapper #chrmrtns-submit:active {
+    background-color: var(--kla-primary-active);
+    color: #ffffff;
+}
+
+/* Loading state */
+.chrmrtns-kla-form-wrapper .chrmrtns-loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.chrmrtns-kla-form-wrapper .chrmrtns-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--kla-primary);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: chrmrtns-spin 0.8s linear infinite;
+}
+
+@keyframes chrmrtns-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 600px) {
+    .chrmrtns-kla-form-wrapper {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+
+    .chrmrtns-kla-form-wrapper .chrmrtns-standard-login,
+    .chrmrtns-kla-form-wrapper .chrmrtns-magic-login {
+        padding: 20px;
+    }
+
+    .chrmrtns-kla-form-wrapper input[type="text"],
+    .chrmrtns-kla-form-wrapper input[type="password"],
+    .chrmrtns-kla-form-wrapper input[type="email"],
+    .chrmrtns-kla-form-wrapper input[type="submit"],
+    .chrmrtns-kla-form-wrapper button[type="submit"] {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
+/* Print styles */
+@media print {
+    .chrmrtns-kla-form-wrapper {
+        display: none;
+    }
+}
+
+/* Accessibility - High contrast mode */
+@media (prefers-contrast: high) {
+    .chrmrtns-kla-form-wrapper input[type="text"],
+    .chrmrtns-kla-form-wrapper input[type="password"],
+    .chrmrtns-kla-form-wrapper input[type="email"] {
+        border-width: 2px;
+    }
+
+    .chrmrtns-kla-form-wrapper input[type="submit"],
+    .chrmrtns-kla-form-wrapper button[type="submit"] {
+        border-width: 2px;
+        font-weight: 600;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .chrmrtns-kla-form-wrapper * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

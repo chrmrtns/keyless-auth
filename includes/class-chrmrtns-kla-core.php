@@ -22,12 +22,12 @@ class Chrmrtns_KLA_Core {
         add_action('init', array($this, 'handle_form_submission'));
         add_shortcode('keyless-auth', array($this, 'render_login_form'));
         add_shortcode('keyless-auth-full', array($this, 'render_full_login_form'));
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
 
         // wp-login.php integration - only add hooks if enabled
         if (get_option('chrmrtns_kla_enable_wp_login', '0') === '1') {
             add_action('login_footer', array($this, 'chrmrtns_kla_add_wp_login_field'));
             add_action('login_init', array($this, 'chrmrtns_kla_handle_wp_login_submission'));
+            add_action('login_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
         }
 
         // Hook early to catch wp-login.php requests for redirect
@@ -57,6 +57,9 @@ class Chrmrtns_KLA_Core {
      * Render login form shortcode
      */
     public function render_login_form($atts = array()) {
+        // Enqueue styles when shortcode is rendered
+        $this->enqueue_frontend_scripts();
+
         // Parse attributes with defaults
         $atts = shortcode_atts(array(
             'redirect' => '',
@@ -154,6 +157,9 @@ class Chrmrtns_KLA_Core {
      * Render full login form with both standard and magic link options
      */
     public function render_full_login_form($atts = array()) {
+        // Enqueue styles when shortcode is rendered
+        $this->enqueue_frontend_scripts();
+
         // Parse attributes with defaults
         $atts = shortcode_atts(array(
             'redirect' => '',
@@ -740,17 +746,36 @@ class Chrmrtns_KLA_Core {
     public function enqueue_frontend_scripts() {
         // Enqueue legacy styles for backward compatibility
         if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . '/assets/css/style-front-end.css')) {
-            wp_register_style('chrmrtns_frontend_stylesheet', CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/style-front-end.css', array(), CHRMRTNS_KLA_VERSION . '.1');
+            wp_register_style('chrmrtns_frontend_stylesheet', CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/style-front-end.css', array(), CHRMRTNS_KLA_VERSION);
             wp_enqueue_style('chrmrtns_frontend_stylesheet');
         }
 
-        // Enqueue enhanced forms stylesheet with higher priority
-        if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . '/assets/css/forms-enhanced.css')) {
+        // Get dark mode setting
+        $dark_mode_setting = get_option('chrmrtns_kla_dark_mode_setting', 'auto');
+
+        // Determine which CSS file to load based on dark mode setting
+        $css_file = 'forms-enhanced.css'; // Default: auto mode
+
+        switch ($dark_mode_setting) {
+            case 'light':
+                $css_file = 'forms-enhanced-light.css';
+                break;
+            case 'dark':
+                $css_file = 'forms-enhanced-dark.css';
+                break;
+            case 'auto':
+            default:
+                $css_file = 'forms-enhanced.css';
+                break;
+        }
+
+        // Enqueue the appropriate enhanced forms stylesheet
+        if (file_exists(CHRMRTNS_KLA_PLUGIN_DIR . '/assets/css/' . $css_file)) {
             wp_enqueue_style(
                 'chrmrtns_kla_forms_enhanced',
-                CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/forms-enhanced.css',
+                CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/' . $css_file,
                 array('chrmrtns_frontend_stylesheet'), // Load after the base stylesheet
-                CHRMRTNS_KLA_VERSION . '.1', // Added .1 to force cache bust for message box colors and dark mode
+                CHRMRTNS_KLA_VERSION,
                 'all'
             );
         }
