@@ -17,12 +17,13 @@ Secure, passwordless authentication for WordPress. Your users login via magic em
 
 Transform your WordPress login experience with passwordless authentication. Users simply enter their email address and receive a secure magic link – click to login instantly. It's more secure than weak passwords and infinitely more user-friendly.
 
-= Why Choose Passwordless Login? =
+= Why Choose Keyless Auth? =
 
 * **Enhanced Security**: No more weak, reused, or compromised passwords
 * **Better User Experience**: One click instead of remembering complex passwords
 * **Reduced Support**: Eliminate "forgot password" requests
 * **Modern Authentication**: Enterprise-grade security used by Slack, Medium, and others
+* **Security Hardening**: Built-in protection against brute force attacks and username enumeration
 
 = Quick Start =
 
@@ -48,6 +49,9 @@ Transform your WordPress login experience with passwordless authentication. User
 * **Audit Logging**: IP addresses, device types, login attempts
 * **Emergency Mode**: Grace period system with admin controls
 * **Secure Storage**: SMTP credentials in wp-config.php option
+* **XML-RPC Disable**: Block brute force attacks via XML-RPC interface
+* **Application Passwords Control**: Disable programmatic authentication when not needed
+* **User Enumeration Prevention**: Block username discovery attacks
 
 **Customization**
 * **WYSIWYG Email Editor**: Full HTML support with live preview
@@ -108,6 +112,36 @@ Transform your WordPress login experience with passwordless authentication. User
 * Comprehensive audit logging
 * Device tracking and IP monitoring
 * Automatic maintenance and cleanup routines
+
+= Security Hardening =
+
+Keyless Auth includes comprehensive security hardening features to protect your WordPress site from common attack vectors. All features are optional and can be enabled based on your site's needs.
+
+**XML-RPC Disable**
+* Prevents brute force attacks via WordPress XML-RPC interface
+* Reduces attack surface by disabling legacy API
+* Recommended for sites not using Jetpack, mobile apps, or pingbacks
+
+**Application Passwords Control**
+* Disable REST API and XML-RPC authentication when programmatic access isn't needed
+* Prevents unauthorized API access
+* Recommended for simple sites without third-party integrations
+
+**User Enumeration Prevention**
+* Blocks REST API user endpoints (`/wp-json/wp/v2/users`)
+* Redirects author archives and `?author=N` queries
+* Removes login error messages that reveal usernames
+* Strips comment author CSS classes
+* Removes author data from oEmbed responses
+* Recommended for business/corporate sites without author profiles
+
+**Benefits**
+* Combined protection against brute force attacks
+* Prevents username discovery for targeted attacks
+* Reduces unauthorized API access
+* Easy to configure without code or .htaccess modifications
+* All features include comprehensive documentation
+* FTP recovery available if needed
 
 = SMTP & Email Delivery =
 
