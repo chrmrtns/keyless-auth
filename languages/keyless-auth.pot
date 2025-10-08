@@ -2,167 +2,2390 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Keyless Auth 2.1.0\n"
-"Report-Msgid-Bugs-To: https://github.com/chrmrtns/keyless-auth/issues\n"
-"Last-Translator: Chris Martens\n"
-"Language-Team: Chris Martens <support@keyless-auth.com>\n"
+"Project-Id-Version: Keyless Auth - Login without Passwords 2.7.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/keyless-auth\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-01T00:00:00+00:00\n"
+"POT-Creation-Date: 2025-10-08T01:45:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Language: \n"
-"X-Generator: Keyless Auth\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: keyless-auth\n"
 
 #. Plugin Name of the plugin
+#: keyless-auth.php
 msgid "Keyless Auth - Login without Passwords"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: keyless-auth.php
 msgid "https://github.com/chrmrtns/keyless-auth"
 msgstr ""
 
 #. Description of the plugin
-msgid "Enhanced passwordless authentication allowing users to login securely without passwords via email magic links."
+#: keyless-auth.php
+msgid "Enhanced passwordless authentication allowing users to login securely without passwords via email magic links. Fork of Passwordless Login by Cozmoslabs with additional security features."
 msgstr ""
 
 #. Author of the plugin
+#: keyless-auth.php
 msgid "Chris Martens"
 msgstr ""
 
 #. Author URI of the plugin
+#: keyless-auth.php
 msgid "https://github.com/chrmrtns"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:31
-#: includes/class-chrmrtns-kla-admin.php:32
+#: includes/class-chrmrtns-kla-2fa-core.php:249
+msgid "EMERGENCY: 2FA System Disabled!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:250
+msgid "Two-Factor Authentication is completely disabled via wp-config.php constant CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:251
+msgid "This is for emergency access only. Remove this constant from wp-config.php immediately after resolving the issue."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:259
+msgid "URGENT: Two-Factor Authentication Required!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:260
+msgid "You have bypassed 2FA protection as the only administrator without 2FA setup. This is a security risk!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:261
+msgid "Please set up 2FA immediately to secure your account."
+msgstr ""
+
+#. translators: %s: shortcode name in code tags
+#: includes/class-chrmrtns-kla-2fa-core.php:263
+#: includes/class-chrmrtns-kla-2fa-core.php:311
+#: includes/class-chrmrtns-kla-admin.php:428
+#, php-format
+msgid "Use the shortcode %s to set up 2FA."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:288
+#: includes/class-chrmrtns-kla-admin.php:808
+#: includes/class-chrmrtns-kla-admin.php:842
+#: keyless-auth.php:219
+msgid "Your account requires 2FA setup within {days} days for security."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:308
+#: includes/class-chrmrtns-kla-2fa-core.php:465
+msgid "Two-Factor Authentication Required"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:358
+msgid "Please use the shortcode [keyless-auth-2fa] on a page to set up 2FA."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:440
+msgid "Please enter a verification code."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:443
+#: includes/class-chrmrtns-kla-2fa-frontend.php:116
+#: includes/class-chrmrtns-kla-2fa-frontend.php:419
+msgid "Invalid verification code. Please try again."
+msgstr ""
+
+#. translators: %d: number of minutes until account is unlocked
+#: includes/class-chrmrtns-kla-2fa-core.php:447
+#: includes/class-chrmrtns-kla-2fa-core.php:476
+#, php-format
+msgid "Too many failed attempts. Please try again in %d minutes."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:458
+#: includes/class-chrmrtns-kla-2fa-frontend.php:194
+#: includes/class-chrmrtns-kla-2fa-frontend.php:287
+msgid "Two-Factor Authentication"
+msgstr ""
+
+#. translators: %s: user's display name
+#: includes/class-chrmrtns-kla-2fa-core.php:468
+#, php-format
+msgid "Hi %s, please enter your authenticator code to complete login."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:473
+msgid "Account Locked"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:481
+msgid "Error:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:489
+msgid "Verification Code"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:490
+msgid "Enter 6-digit code or 8-digit backup code"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:494
+msgid "Verify"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:499
+msgid "Open your authenticator app and enter the 6-digit code, or use one of your 8-digit backup codes."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-core.php:504
+msgid "← Back to login"
+msgstr ""
+
+#. translators: 1: user display name, 2: site name, 3: days remaining, 4: setup URL
+#: includes/class-chrmrtns-kla-2fa-core.php:820
+#, php-format
+msgid ""
+"Hello %1$s,\n"
+"\n"
+"Your account on %2$s now requires Two-Factor Authentication (2FA) for enhanced security.\n"
+"\n"
+"You have %3$d days to set up 2FA for your account.\n"
+"\n"
+"Please visit: %4$s\n"
+"\n"
+"Thank you for helping keep our site secure.\n"
+"\n"
+"Best regards,\n"
+"%2$s Team"
+msgstr ""
+
+#. translators: %s: site name
+#: includes/class-chrmrtns-kla-2fa-core.php:841
+#, php-format
+msgid "[%s] Account Security Setup"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:112
+msgid "Are you sure you want to disable 2FA? This will make your account less secure."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:113
+msgid "2FA has been enabled successfully!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:114
+#: includes/class-chrmrtns-kla-2fa-frontend.php:470
+msgid "2FA has been disabled."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:115
+msgid "An error occurred. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:140
+msgid "Two-factor authentication is not available."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:147
+msgid "You must be logged in to manage 2FA settings."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:197
+msgid "2FA is required for your account role."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:200
+msgid "Enhance your account security with two-factor authentication using your smartphone."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:205
+msgid "Step 1: Install an Authenticator App"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:206
+msgid "Download one of these apps on your smartphone:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:216
+msgid "Step 2: Scan QR Code or Enter Secret"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:221
+msgid "Loading QR code..."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:227
+msgid "Can't scan? Enter manually:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:231
+msgid "Copy"
+msgstr ""
+
+#. translators: %s: user's email address
+#: includes/class-chrmrtns-kla-2fa-frontend.php:236
+#, php-format
+msgid "Account: %s"
+msgstr ""
+
+#. translators: %s: website name
+#: includes/class-chrmrtns-kla-2fa-frontend.php:239
+#, php-format
+msgid "Issuer: %s"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:245
+msgid "Step 3: Verify Setup"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:251
+msgid "Enter the 6-digit code from your app:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:259
+msgid "Enable 2FA"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:267
+msgid "What is Two-Factor Authentication?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:268
+msgid "2FA adds an extra layer of security to your account by requiring both your password and a code from your phone to log in. Even if someone gets your password, they can't access your account without your phone."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:283
+#: includes/class-chrmrtns-kla-admin.php:1642
+msgid "Never"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:290
+msgid "2FA is Active"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:292
+msgid "Your account is protected with two-factor authentication."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:297
+#: includes/class-chrmrtns-kla-admin.php:1602
+msgid "Last Used"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:301
+#: includes/class-chrmrtns-kla-2fa-frontend.php:312
+#: includes/class-chrmrtns-kla-admin.php:1604
+msgid "Backup Codes"
+msgstr ""
+
+#. translators: %d: number of backup codes remaining
+#: includes/class-chrmrtns-kla-2fa-frontend.php:304
+#, php-format
+msgid "%d code remaining"
+msgid_plural "%d codes remaining"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:309
+msgid "Manage 2FA"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:313
+msgid "Use these codes if you lose access to your authenticator app. Each code can only be used once."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:317
+msgid "Your Backup Codes:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:323
+msgid "Backup codes are only shown once when first generated for security."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:327
+msgid "View Backup Codes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:332
+msgid "Generate New Backup Codes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:332
+msgid "Generate Backup Codes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:336
+msgid "Generating new codes will invalidate all existing backup codes."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:341
+#: includes/class-chrmrtns-kla-2fa-frontend.php:348
+#: includes/class-chrmrtns-kla-admin.php:1688
+msgid "Disable 2FA"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:343
+#: includes/class-chrmrtns-kla-2fa-frontend.php:462
+msgid "2FA is required for your account role and cannot be disabled."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:344
+msgid "Contact your site administrator if you need to disable 2FA."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:346
+msgid "Disabling 2FA will make your account less secure. Only disable if absolutely necessary."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:378
+#: includes/class-chrmrtns-kla-2fa-frontend.php:450
+#: includes/class-chrmrtns-kla-2fa-frontend.php:483
+#: includes/class-chrmrtns-kla-admin.php:575
+#: includes/class-chrmrtns-kla-admin.php:1504
+msgid "Security check failed."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:387
+#: includes/class-chrmrtns-kla-2fa-frontend.php:455
+#: includes/class-chrmrtns-kla-2fa-frontend.php:488
+msgid "You must be logged in."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:393
+msgid "Missing required fields."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:410
+msgid "Please enter a 6-digit code."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:436
+msgid "2FA enabled successfully!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:440
+msgid "Failed to enable 2FA. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:473
+#: includes/class-chrmrtns-kla-admin.php:1529
+msgid "Failed to disable 2FA. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:496
+msgid "2FA is not enabled for your account."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:508
+msgid "New backup codes generated successfully!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-2fa-frontend.php:512
+msgid "Failed to generate backup codes. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:38
+#: includes/class-chrmrtns-kla-admin.php:39
+#: includes/class-chrmrtns-kla-admin.php:292
 msgid "Keyless Auth"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:42
-#: includes/class-chrmrtns-kla-admin.php:43
-msgid "Templates"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:51
-#: includes/class-chrmrtns-kla-admin.php:52
-#: includes/class-chrmrtns-kla-smtp.php:31
-msgid "SMTP"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:60
-#: includes/class-chrmrtns-kla-admin.php:61
-msgid "Mail Logs"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:112
-#: includes/class-chrmrtns-kla-admin.php:126
-#: includes/class-chrmrtns-kla-admin.php:140
-#: includes/class-chrmrtns-kla-admin.php:200
-#: includes/class-chrmrtns-kla-mail-logger.php:308
-msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:216
-msgid "Keyless Auth"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:223
-msgid "Secure keyless authentication allowing users to login without passwords via email magic links."
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:237
-msgid "How to Use"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:242
-msgid "Use the shortcode"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:244
-msgid "in any page or widget to display the keyless login form."
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:251
-msgid "Key Features"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:253
-msgid "No passwords needed - login via email"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:254
-msgid "Secure magic links valid for 10 minutes"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:255
-msgid "One-time use tokens for enhanced security"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:256
-msgid "Customizable email templates"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:257
-msgid "Color customization for buttons and links"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:258
-msgid "SMTP configuration for reliable email delivery"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:259
-msgid "Comprehensive email logging and monitoring"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:262
-msgid "Keyless Auth <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel."
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:270
-msgid "Quick Links"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:273
+#: includes/class-chrmrtns-kla-admin.php:49
 msgid "Email Templates"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:274
-msgid "Configure your login email templates and colors"
+#: includes/class-chrmrtns-kla-admin.php:50
+msgid "Templates"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:275
-msgid "Go to Templates"
-msgstr ""
-
-#: includes/class-chrmrtns-kla-admin.php:278
+#: includes/class-chrmrtns-kla-admin.php:58
+#: includes/class-chrmrtns-kla-admin.php:228
+#: includes/class-chrmrtns-kla-smtp.php:31
 msgid "SMTP Settings"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:279
-msgid "Set up SMTP for reliable email delivery"
+#: includes/class-chrmrtns-kla-admin.php:59
+msgid "SMTP"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:280
+#: includes/class-chrmrtns-kla-admin.php:67
+#: includes/class-chrmrtns-kla-admin.php:68
+#: includes/class-chrmrtns-kla-mail-logger.php:602
+msgid "Mail Logs"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:76
+#: includes/class-chrmrtns-kla-admin.php:77
+msgid "Options"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:85
+#: includes/class-chrmrtns-kla-admin.php:1556
+msgid "2FA User Management"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:86
+msgid "2FA Users"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:94
+msgid "Help & Instructions"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:95
+msgid "Help"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:184
+#: includes/class-chrmrtns-kla-admin.php:198
+#: includes/class-chrmrtns-kla-admin.php:212
+#: includes/class-chrmrtns-kla-admin.php:275
+#: includes/class-chrmrtns-kla-admin.php:766
+#: includes/class-chrmrtns-kla-admin.php:1161
+#: includes/class-chrmrtns-kla-admin.php:1538
+#: includes/class-chrmrtns-kla-mail-logger.php:575
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:227
+#: includes/class-chrmrtns-kla-admin.php:291
+#: includes/class-chrmrtns-kla-admin.php:852
+#: includes/class-chrmrtns-kla-admin.php:1166
+#: includes/class-chrmrtns-kla-admin.php:1555
+#: includes/class-chrmrtns-kla-email-templates.php:340
+#: includes/class-chrmrtns-kla-mail-logger.php:601
+msgid "Keyless Auth Logo"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:230
+msgid "Configure SMTP settings to ensure reliable email delivery for your passwordless login emails."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:242
+#: includes/class-chrmrtns-kla-admin.php:255
+msgid "Send Test Email"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:243
+msgid "Send a test email to verify your SMTP configuration is working correctly."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:248
+msgid "Test Email Address"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:251
+msgid "Email address to send the test email to. Defaults to admin email."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:259
+msgid "Clear Settings Cache"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:260
+msgid "If your SMTP settings are not updating properly, clear the cache to force the plugin to reload settings from the database."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:263
+msgid "Clear SMTP Cache"
+msgstr ""
+
+#. translators: %d: number of successful passwordless logins
+#: includes/class-chrmrtns-kla-admin.php:301
+#, php-format
+msgid "<p>A front-end login form without a password.</p><p><strong style=\"font-size: 16px; color:#d54e21;\">%d</strong> successful logins so far.</p>"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:315
+msgid "One time password for WordPress"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:320
+msgid "[keyless-auth] shortcode"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:322
+msgid "Just place <strong class=\"nowrap\">[keyless-auth]</strong> shortcode in a page or a widget and you're good to go."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:329
+msgid "An alternative to passwords"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:331
+msgid "Visual email template selection with live previews"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:332
+msgid "WYSIWYG email editor with HTML support"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:333
+msgid "Advanced color controls (hex, RGB, HSL, HSLA)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:334
+msgid "Separate button and link color customization"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:335
+msgid "Enhanced security with timing attack protection"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:336
+msgid "SMTP configuration for reliable email delivery"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:337
+msgid "Comprehensive email logging and monitoring"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:340
+msgid "Keyless Auth <strong>does not</strong> replace the default login functionality in WordPress. Instead you can have the two work in parallel."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:348
+msgid "Advanced Email Features"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:351
+msgid "SMTP Configuration"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:352
+msgid "Configure SMTP settings to ensure reliable email delivery with support for major providers like Gmail, Outlook, Mailgun, and SendGrid."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:353
 msgid "Configure SMTP"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:323
-msgid "Enjoying Keyless Auth?"
+#: includes/class-chrmrtns-kla-admin.php:356
+msgid "Mail Logging"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:325
-msgid "Please consider supporting the development!"
+#: includes/class-chrmrtns-kla-admin.php:357
+msgid "Track and monitor all emails sent from your WordPress site with detailed logging including timestamps, recipients, and content."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:411
+#: includes/class-chrmrtns-kla-admin.php:358
+msgid "View Mail Logs"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:399
+msgid "Two-Factor Authentication system is disabled via wp-config.php constant for emergency access."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:404
+msgid "Two-Factor Authentication is currently disabled because no administrator has 2FA set up and the emergency option is enabled."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:406
+msgid "Disable emergency mode once you have at least one administrator with 2FA properly configured."
+msgstr ""
+
 #: includes/class-chrmrtns-kla-admin.php:407
-msgid "Security check failed"
+msgid "Go to Keyless Auth → Options → Emergency Disable 2FA to turn this off after setting up 2FA."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-admin.php:478
-msgid "Settings saved successfully!"
+#: includes/class-chrmrtns-kla-admin.php:414
+msgid "I understand this is temporary. Don't show this notice for 24 hours."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:425
+msgid "You're the only administrator and don't have 2FA set up yet. You have emergency access for now."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:426
+msgid "Set up 2FA when convenient to secure your account."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:432
+msgid "Remind me again tomorrow (24-hour grace period)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:446
+msgid "Are you sure you want to disable emergency mode? The 2FA system will be re-enabled."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:454
+msgid "Error disabling emergency mode. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:495
+msgid "Use [keyless-auth] shortcode in your pages or widgets."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:496
+msgid "Learn more."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:498
+msgid "Dismiss"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:579
+#: includes/class-chrmrtns-kla-admin.php:1509
+msgid "You do not have sufficient permissions."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:606
+msgid "Template Reset Complete: All email template settings have been reset to defaults."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:698
+msgid "Settings saved successfully."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:819
+msgid "Emergency mode is now enabled. 2FA system is disabled for all users."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:821
+msgid "Emergency mode is disabled. 2FA system is now active."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:827
+msgid "Options saved successfully!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:853
+msgid "Keyless Auth - Options"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:855
+msgid "Plugin Options"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:863
+msgid "Enable Login on wp-login.php"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:868
+msgid "Add a magic login field to the WordPress login page (wp-login.php)."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:874
+msgid "Custom Login Page URL"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:879
+msgid "Optional: Specify a custom login page URL. When users need to login (like in 2FA flow), they'll be redirected here instead of wp-login.php. Leave empty to use the default WordPress login page."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:885
+msgid "Redirect wp-login.php"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:889
+msgid "Redirect all wp-login.php requests to custom login page"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:891
+msgid "When enabled, all requests to wp-login.php will be redirected to your custom login page. Emergency bypass: add ?kla_use_wp_login=1 to access wp-login.php directly."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:897
+msgid "Post-Login Redirect URL"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:902
+msgid "Optional: Specify where users should be redirected after successful login via magic link or 2FA. This applies to all users regardless of role. Leave empty to use default WordPress behavior (admin dashboard for admins, homepage for others)."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:908
+msgid "2FA Setup Page URL"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:913
+msgid "Optional: Specify a custom page where users can set up 2FA using the [keyless-auth-2fa] shortcode. When users need to configure 2FA, email notifications will link here instead of wp-login.php. Leave empty to use the default WordPress login page."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:922
+#: includes/class-chrmrtns-kla-admin.php:1350
+msgid "Appearance & Theme Settings"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:924
+#: includes/class-chrmrtns-kla-admin.php:1351
+msgid "Control how login forms appear in light and dark mode themes."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:930
+#: includes/class-chrmrtns-kla-admin.php:1353
+msgid "Dark Mode Behavior"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:935
+msgid "Auto (System Preference + Theme Classes)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:936
+msgid "Light Only (No Dark Mode)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:937
+msgid "Dark Only (Force Dark Mode)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:940
+msgid "Control how login forms appear in dark mode. Auto detects system preferences and theme dark mode classes. Light Only forces light theme. Dark Only forces dark theme."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:949
+#: includes/class-chrmrtns-kla-admin.php:1106
+#: includes/class-chrmrtns-kla-admin.php:1370
+msgid "Security Settings"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:951
+#: includes/class-chrmrtns-kla-admin.php:1371
+msgid "Additional security options to harden your WordPress installation."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:957
+#: includes/class-chrmrtns-kla-admin.php:1373
+msgid "Disable XML-RPC"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:963
+msgid "Disable WordPress XML-RPC interface to prevent brute force attacks and reduce attack surface. Only disable if you don't use XML-RPC features (Jetpack, mobile apps, pingbacks)."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:970
+#: includes/class-chrmrtns-kla-admin.php:1397
+msgid "Disable Application Passwords"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:976
+msgid "Disable WordPress Application Passwords to prevent REST API and XML-RPC authentication. Only disable if you don't use programmatic access (mobile apps, CI/CD tools, third-party integrations)."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:977
+#: includes/class-chrmrtns-kla-admin.php:1045
+msgid "Warning:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:977
+msgid "Disabling this will break REST API and XML-RPC authentication. Users will not be able to authenticate via Application Passwords."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:984
+#: includes/class-chrmrtns-kla-admin.php:1428
+msgid "Prevent User Enumeration"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:990
+msgid "Prevent attackers from discovering usernames via REST API, author archives, login errors, and comment author classes. Blocks common user enumeration techniques used to gather usernames for brute force attacks."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:999
+#: includes/class-chrmrtns-kla-admin.php:1255
+msgid "Two-Factor Authentication (2FA)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1001
+msgid "Add an extra layer of security with TOTP-based two-factor authentication using authenticator apps."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1007
+msgid "Enable 2FA System"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1012
+msgid "Enable TOTP authenticator app support for all WordPress logins. Only enable if you don't have other 2FA solutions active."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1013
+msgid "API Access:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1013
+msgid "REST API and XML-RPC automatically bypass 2FA when using Application Passwords."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1014
+#: includes/class-chrmrtns-kla-admin.php:1263
+msgid "User Setup:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1014
+msgid "Users can access 2FA setup using the [keyless-auth-2fa] shortcode on any page."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1021
+msgid "Emergency Disable 2FA"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1027
+msgid "Emergency mode is enabled via wp-config.php constant."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1030
+msgid "Remove the CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY constant from wp-config.php to manage emergency mode here."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1034
+msgid "Controlled by wp-config.php"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1038
+msgid "2FA system is currently disabled"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1040
+msgid "Disable 2FA system temporarily"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1044
+msgid "Temporarily disable all 2FA requirements for troubleshooting or emergency access. Users can login normally without 2FA when enabled."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1045
+msgid "This reduces security. Only use when necessary."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1056
+msgid "Required for User Roles"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1060
+msgid "Required User Roles"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1068
+msgid "Users with these roles MUST set up 2FA. Other users can optionally enable 2FA for enhanced security."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1076
+msgid "Grace Period"
+msgstr ""
+
+#. translators: %d: number of days for grace period
+#: includes/class-chrmrtns-kla-admin.php:1083
+#, php-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-chrmrtns-kla-admin.php:1087
+msgid "How many days users have to set up 2FA after role requirement is enabled."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1094
+msgid "Grace Period Message"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1099
+msgid "Message shown to users during grace period. Use {days} placeholder for remaining days."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1110
+msgid "Max Failed Attempts"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1119
+msgid "Number of failed 2FA attempts before user is temporarily locked out."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1126
+msgid "Lockout Duration"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1137
+msgid "How long to lock users out after too many failed 2FA attempts."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1144
+msgid "User Management"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1145
+msgid "2FA user management has been moved to a dedicated page for better usability."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1146
+msgid "Manage 2FA Users"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1149
+msgid "Save Options"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1167
+msgid "Keyless Auth - Help & Instructions"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1171
+msgid "Getting Started"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1172
+msgid "Keyless Auth allows your users to login without passwords using secure email magic links. Here's how to get started:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1175
+msgid "Configure SMTP Settings:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1175
+msgid "Go to SMTP tab and configure your email settings for reliable delivery."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1176
+msgid "Customize Email Templates:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1176
+msgid "Use the Templates tab to customize how your login emails look."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1177
+msgid "Add Login Form:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1177
+msgid "Use the shortcode [keyless-auth] on any page or post."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1178
+msgid "Enable wp-login.php (Optional):"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1178
+msgid "Go to Options to add magic login to the WordPress login page."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1179
+msgid "Enable Two-Factor Authentication (Optional):"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1179
+msgid "Go to Options to enable 2FA system and use [keyless-auth-2fa] shortcode for user setup."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1184
+msgid "Available Shortcodes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1188
+msgid "Shortcode"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1189
+msgid "Description"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1195
+msgid "Main passwordless login form (magic link only). Supports attributes: redirect, button_text, description, label"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1199
+msgid "Complete login form with both password and magic link options. Supports attributes: redirect, show_title, title_text"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1203
+msgid "Two-factor authentication setup and management interface (requires 2FA system to be enabled in Options)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1210
+msgid "Shortcode Usage Examples"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1211
+msgid "Here are some examples of how to use the shortcodes:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1213
+msgid "Basic Usage:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1214
+msgid "Magic link login form only"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1215
+msgid "Both password and magic link options"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1216
+msgid "2FA setup interface (when 2FA is enabled)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1218
+msgid "[keyless-auth] Options:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1219
+msgid "Redirect to dashboard after magic link login"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1220
+msgid "Custom button text"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1221
+msgid "Custom field label"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1222
+msgid "Add description text above the form"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1223
+#: includes/class-chrmrtns-kla-admin.php:1229
+msgid "Combined options example"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1225
+msgid "Advanced [keyless-auth-full] Options:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1226
+msgid "Redirect to dashboard after login"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1227
+msgid "Hide the main title"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1228
+msgid "Custom title text"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1233
+msgid "How It Works"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1235
+msgid "User enters their email address or username"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1236
+msgid "System generates a secure, time-limited token"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1237
+msgid "Email is sent with a magic login link"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1238
+msgid "User clicks the link and is automatically logged in"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1239
+msgid "Token expires after 10 minutes for security"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1244
+msgid "Security Features"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1246
+msgid "Token Expiration:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1246
+msgid "All login links expire after 10 minutes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1247
+msgid "One-Time Use:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1247
+msgid "Each token can only be used once"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1248
+msgid "IP Tracking:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1248
+msgid "Login attempts are logged with IP addresses"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1249
+msgid "Device Fingerprinting:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1249
+msgid "Tracks device information for audit purposes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1250
+msgid "Database Logging:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1250
+msgid "All attempts are logged for security analysis"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1256
+msgid "Add an extra layer of security with TOTP-based two-factor authentication using smartphone authenticator apps."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1258
+msgid "Setup Instructions"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1260
+msgid "Enable 2FA System:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1260
+msgid "Go to Options → Enable 2FA System checkbox"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1261
+msgid "Configure Role Requirements:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1261
+msgid "Select user roles that require 2FA (optional)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1262
+msgid "Add User Interface:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1262
+msgid "Place [keyless-auth-2fa] shortcode on a page for user setup"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1263
+msgid "Users scan QR code with authenticator app and verify setup"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1266
+msgid "Supported Authenticator Apps"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1272
+msgid "Any RFC 6238 compliant TOTP app"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1275
+msgid "Key Features"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1277
+msgid "Universal Coverage:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1277
+msgid "Works with ALL login methods (magic links, passwords, SSO)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1278
+msgid "Backup Codes:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1278
+msgid "10 single-use recovery codes for emergency access"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1279
+msgid "Admin Controls:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1279
+msgid "Admins can disable 2FA for any user"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1280
+msgid "Grace Periods:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1280
+msgid "Configurable setup time for required users (1-30 days)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1281
+msgid "Failed Attempt Protection:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1281
+msgid "Automatic lockouts after too many failed attempts"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1284
+msgid "API and Programmatic Access"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1286
+#: includes/class-chrmrtns-kla-admin.php:1421
+msgid "Important:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1286
+msgid "REST API and XML-RPC requests bypass 2FA when using Application Passwords."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1288
+msgid "Application Password Requirements"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1289
+msgid "For programmatic access to WordPress, you MUST use Application Passwords:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1291
+msgid "REST API:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1291
+msgid "All REST API requests must authenticate using Application Passwords"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1292
+msgid "XML-RPC:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1292
+msgid "XML-RPC requests must use Application Passwords (not regular passwords)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1293
+msgid "WP-CLI:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1293
+msgid "Command-line tools automatically bypass 2FA"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1294
+msgid "Third-party Apps:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1294
+msgid "Mobile apps, CI/CD tools, integrations must use Application Passwords"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1297
+msgid "How to Create Application Passwords"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1299
+msgid "Go to Users → Your Profile"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1300
+msgid "Scroll to \"Application Passwords\" section"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1301
+msgid "Enter a name for your application (e.g., \"Mobile App\", \"API Script\")"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1302
+msgid "Click \"Add New Application Password\""
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1303
+msgid "Copy the generated password and use it for API authentication"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1306
+msgid "Authentication Methods Overview"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1310
+msgid "Login Method"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1311
+msgid "2FA Required?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1312
+msgid "Notes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1317
+msgid "Interactive Login"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1317
+msgid "(Web browser, admin panel)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1318
+msgid "YES"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1319
+msgid "All interactive logins require 2FA when enabled (magic links, passwords, SSO)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1322
+msgid "REST API"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1322
+#: includes/class-chrmrtns-kla-admin.php:1327
+msgid "(with Application Passwords)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1323
+#: includes/class-chrmrtns-kla-admin.php:1328
+#: includes/class-chrmrtns-kla-admin.php:1333
+msgid "NO"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1324
+msgid "Application Passwords provide separate secure authentication"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1327
+msgid "XML-RPC"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1329
+msgid "Must use Application Passwords, not regular passwords"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1332
+msgid "WP-CLI"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1332
+msgid "(Command line)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1334
+msgid "Automatically detected and bypassed"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1337
+msgid "Legacy API Access"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1337
+msgid "(using regular passwords)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1338
+msgid "BLOCKED"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1339
+msgid "Will fail - must upgrade to Application Passwords"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1345
+msgid "Security Note:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1345
+msgid "Application Passwords are time-limited tokens that can be revoked individually. They provide better security than using regular passwords for API access."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1354
+msgid "You can control how login forms render in dark mode from the Options page. Three modes are available:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1357
+msgid "Auto (Default):"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1357
+msgid "Automatically detects system dark mode preference and theme dark mode classes. Forms adapt to match user's system settings and theme."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1358
+msgid "Light Only:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1358
+msgid "Forces light theme always, disables dark mode completely. Use this if you want consistent light appearance regardless of user preferences."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1359
+msgid "Dark Only:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1359
+msgid "Forces dark theme always. Use this if your site has a dark theme and you want forms to always match."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1362
+#: includes/class-chrmrtns-kla-admin.php:1391
+#: includes/class-chrmrtns-kla-admin.php:1418
+#: includes/class-chrmrtns-kla-admin.php:1455
+msgid "Where to configure:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1362
+msgid "Go to Options → Appearance & Theme Settings → Dark Mode Behavior"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1365
+msgid "Performance Note:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1365
+msgid "CSS files only load when shortcodes are used on a page, saving bandwidth on pages without login forms."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1374
+msgid "WordPress includes an XML-RPC interface (xmlrpc.php) that allows remote access to your site. While useful for some features, it's often targeted by attackers for brute force attacks."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1376
+msgid "When to disable XML-RPC:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1378
+msgid "You don't use Jetpack or similar plugins that require XML-RPC"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1379
+#: includes/class-chrmrtns-kla-admin.php:1403
+msgid "You don't use WordPress mobile apps"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1380
+msgid "You don't need pingbacks or trackbacks"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1381
+msgid "You want to reduce your site's attack surface"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1384
+msgid "When to keep XML-RPC enabled:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1386
+msgid "You use Jetpack for stats, security, or other features"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1387
+#: includes/class-chrmrtns-kla-admin.php:1411
+msgid "You use WordPress mobile apps to manage your site"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1388
+msgid "You have third-party integrations that require XML-RPC"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1391
+msgid "Go to Options → Security Settings → Disable XML-RPC"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1394
+#: includes/class-chrmrtns-kla-admin.php:1458
+msgid "Security Tip:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1394
+msgid "If you use REST API instead of XML-RPC, you can safely disable XML-RPC. Modern WordPress features use the REST API, which is more secure."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1398
+msgid "Application Passwords are special passwords used for authenticating to REST API and XML-RPC endpoints without using your main account password. Introduced in WordPress 5.6, they provide secure programmatic access."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1400
+msgid "When to disable Application Passwords:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1402
+msgid "You don't use REST API authentication"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1404
+msgid "You don't have CI/CD pipelines or automated deployments"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1405
+msgid "You don't use third-party integrations requiring API access"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1406
+msgid "You want maximum security and don't need programmatic access"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1409
+msgid "When to keep Application Passwords enabled:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1412
+msgid "You have automated scripts or tools that access your site via REST API"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1413
+msgid "You use third-party services that require API authentication"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1414
+msgid "You have CI/CD pipelines that deploy to WordPress"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1415
+msgid "Your 2FA is enabled and users need API access"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1418
+msgid "Go to Options → Security Settings → Disable Application Passwords"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1421
+msgid "Disabling Application Passwords will break REST API and XML-RPC authentication. If you have 2FA enabled, this will prevent all programmatic access as regular passwords are blocked by 2FA."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1425
+msgid "Recovery Note:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1425
+msgid "If you get locked out, you can always deactivate the Keyless Auth plugin via FTP to regain access and disable this setting."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1429
+msgid "User enumeration is a technique attackers use to discover valid usernames on your WordPress site. Once they have usernames, they can launch targeted brute force attacks. This feature blocks all common enumeration methods."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1431
+msgid "What this feature blocks:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1433
+msgid "REST API User Endpoints:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1433
+msgid "Blocks /wp-json/wp/v2/users and /wp-json/wp/v2/users/{id} for non-logged-in users"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1434
+msgid "Author Archives:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1434
+msgid "Redirects author archive pages and ?author=N queries to homepage"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1435
+msgid "Login Error Messages:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1435
+msgid "Removes specific error messages that reveal whether username exists"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1436
+msgid "Comment Author Classes:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1436
+msgid "Removes comment-author-{username} CSS classes from comments"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1437
+msgid "oEmbed Data:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1437
+msgid "Removes author name and URL from oEmbed responses"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1440
+msgid "When to enable:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1442
+msgid "You want to prevent username discovery attacks"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1443
+msgid "You don't need public author archives"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1444
+msgid "You want maximum security against brute force attacks"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1445
+msgid "Your site is a business/corporate site without author profiles"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1448
+msgid "When to keep disabled:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1450
+msgid "You run a multi-author blog with author profiles"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1451
+msgid "You need author archives for SEO or navigation"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1452
+msgid "Third-party tools need access to user data via REST API"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1455
+msgid "Go to Options → Security Settings → Prevent User Enumeration"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1458
+msgid "Combine with strong passwords or magic link authentication for best security. User enumeration prevention makes brute force attacks significantly harder."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1463
+msgid "Troubleshooting"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1465
+msgid "Emails not being sent?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1466
+msgid "Check your SMTP settings and test with the built-in email tester. Make sure your hosting provider allows email sending."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1468
+msgid "Login links not working?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1469
+msgid "Verify that tokens haven't expired (10 minute limit) and check that the link hasn't been used already."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1471
+msgid "Users not receiving emails?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1472
+msgid "Check spam folders and verify the user's email address is correct. Consider configuring DKIM/SPF records."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1477
+msgid "Advanced Configuration"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1478
+msgid "Developer Functions"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1479
+msgid "For developers, these functions are available:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1481
+msgid "Display login form in templates"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1482
+msgid "Display 2FA setup interface in templates"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1485
+msgid "Database Tables"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1486
+msgid "Keyless Auth creates these custom tables for optimal performance:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1488
+msgid "Login attempt tracking"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1489
+msgid "Email sending logs"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1490
+msgid "Secure token storage"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1491
+msgid "Device fingerprinting"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1515
+msgid "Invalid user ID."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1521
+#: includes/class-chrmrtns-kla-admin.php:1544
+msgid "Database not available."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1527
+msgid "2FA has been disabled for the user."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1560
+msgid "Manage 2FA settings for individual users. You can search for specific users and disable 2FA if needed."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1566
+msgid "Search Users:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1567
+msgid "Search by username or email..."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1568
+msgid "Search Users"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1570
+msgid "Clear"
+msgstr ""
+
+#. translators: %s: search query term
+#: includes/class-chrmrtns-kla-admin.php:1579
+#, php-format
+msgid "No users found matching \"%s\"."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1580
+msgid "Show all 2FA users"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1582
+msgid "No users with 2FA enabled yet. Users can set up 2FA using the [keyless-auth-2fa] shortcode."
+msgstr ""
+
+#. translators: 1: search query, 2: number of users found
+#: includes/class-chrmrtns-kla-admin.php:1588
+#, php-format
+msgid "Search results for \"%1$s\" (%2$d users found):"
+msgstr ""
+
+#. translators: %d: total number of users with 2FA enabled
+#: includes/class-chrmrtns-kla-admin.php:1592
+#, php-format
+msgid "Total users with 2FA: %d"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1598
+msgid "User"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1599
+msgid "Email"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1600
+msgid "Role"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1601
+msgid "2FA Status"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1603
+msgid "Failed Attempts"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1605
+#: includes/class-chrmrtns-kla-mail-logger.php:714
+msgid "Actions"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1629
+msgid "Enabled"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1631
+msgid "Locked"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1678
+#: includes/class-chrmrtns-kla-smtp.php:149
+msgid "None"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1692
+msgid "Unlock"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1709
+msgid "Are you sure you want to disable 2FA for"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1709
+msgid "This action will:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1709
+msgid "Remove their TOTP secret"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1709
+msgid "Delete all backup codes"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1709
+msgid "Clear any lockouts"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1730
+msgid "Are you sure you want to unlock 2FA for"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-admin.php:1735
+msgid "Unlock functionality can be added if needed."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:97
+#: includes/class-chrmrtns-kla-core.php:198
+msgid "Please check your email. You will soon receive an email with a login link."
+msgstr ""
+
+#. translators: %1$s: user display name with link, %2$s: logout link
+#: includes/class-chrmrtns-kla-core.php:102
+#: includes/class-chrmrtns-kla-core.php:203
+#, php-format
+msgid "You are currently logged in as %1$s. %2$s"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:104
+#: includes/class-chrmrtns-kla-core.php:205
+msgid "Log out of this account"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:104
+#: includes/class-chrmrtns-kla-core.php:205
+msgid "Log out"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:111
+msgid "Your token has probably expired. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:114
+msgid "Your account needs to be approved by an admin before you can log-in."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:131
+#: includes/class-chrmrtns-kla-core.php:237
+msgid "Login with email or username"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:136
+#: includes/class-chrmrtns-kla-core.php:242
+msgid "Login with email"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:138
+#: includes/class-chrmrtns-kla-core.php:244
+msgid "Login with username"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:146
+#: includes/class-chrmrtns-kla-core.php:293
+msgid "Send me the link"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:182
+msgid "Login"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:210
+msgid "Your login link has expired. Please request a new one."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:212
+msgid "Your login link is invalid. Please request a new one."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:214
+msgid "Login failed. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:216
+msgid "Email could not be sent. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:254
+msgid "Login with Password"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:259
+msgid "Username or Email"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:260
+msgid "Password"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:261
+msgid "Remember Me"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:262
+msgid "Log In"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:273
+msgid "Forgot your password?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:278
+msgid "OR"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:283
+msgid "Magic Link Login"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:284
+msgid "No password required - we'll send you a secure login link via email."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:390
+#: includes/class-chrmrtns-kla-email-templates.php:333
+msgid "Security check failed. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:401
+msgid "The username or email you provided do not exist. Please try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:414
+msgid "There was a problem sending your email. Please try again or contact an admin."
+msgstr ""
+
+#. translators: %1$s: site name, %2$s: login URL for href attribute, %3$s: login URL for display text
+#: includes/class-chrmrtns-kla-core.php:486
+#, php-format
+msgid "Hello! <br><br>Login at %1$s by visiting this url: <a href=\"%2$s\" target=\"_blank\">%3$s</a>"
+msgstr ""
+
+#. translators: %s: site name
+#: includes/class-chrmrtns-kla-core.php:495
+#, php-format
+msgid "Login at %s"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:905
+msgid "Magic login link sent! Check your email and click the link to login."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:916
+msgid "🔐 Magic Login"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:919
+msgid "No password required"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:927
+msgid "Email or Username:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:935
+msgid "Enter email or username"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:941
+msgid "Send Magic Link"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-core.php:978
+msgid "Please enter your email address or username."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:341
+msgid "Email Template Settings"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:352
+msgid "Customize the appearance and content of your passwordless login emails."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:357
+msgid "Email Template"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:360
+msgid "Color Settings"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:363
+msgid "Custom Template Editor"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:368
+#: includes/class-chrmrtns-kla-mail-logger.php:633
+msgid "Save Settings"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:375
+msgid "Reset Custom Template"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:391
+msgid "Default Template"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:392
+msgid "German Template"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:393
+msgid "Simple Template"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:394
+msgid "Custom Template"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:498
+msgid "Button Color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:505
+msgid "Button Hover Color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:512
+msgid "Button Text Color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:519
+msgid "Button Hover Text Color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:526
+msgid "Link Color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:533
+msgid "Link Hover Color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:581
+msgid "Email Body Content"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:582
+msgid "Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:617
+msgid "Custom CSS Styles (Optional)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:619
+msgid "Add custom CSS that will be placed in the &lt;head&gt; section. This is for advanced users who want to use CSS classes instead of inline styles."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:629
+msgid "The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like [TO], [LOGIN_URL], [BUTTON_COLOR], etc."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:643
+msgid "Template Placeholders"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:644
+msgid "Use these placeholders in your custom template:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:646
+msgid "Recipient email address"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:647
+msgid "Login URL"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:648
+msgid "Button color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:649
+msgid "Button hover color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:650
+msgid "Link color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:651
+msgid "Link hover color"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:653
+msgid "Example HTML:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:701
+#: includes/class-chrmrtns-kla-email-templates.php:803
+msgid "Account Security Setup"
+msgstr ""
+
+#. translators: %s: user display name
+#: includes/class-chrmrtns-kla-email-templates.php:809
+#, php-format
+msgid "Hello %s,"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:813
+msgid "We are updating account settings for all users. Your account needs additional verification setup to continue accessing your dashboard."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:818
+#: includes/class-chrmrtns-kla-email-templates.php:827
+msgid "Setup Reminder"
+msgstr ""
+
+#. translators: %d: number of days remaining
+#: includes/class-chrmrtns-kla-email-templates.php:821
+#, php-format
+msgid "Please complete account verification within %d days to maintain access."
+msgstr ""
+
+#. translators: %d: number of days remaining
+#: includes/class-chrmrtns-kla-email-templates.php:830
+#: includes/class-chrmrtns-kla-email-templates.php:839
+#, php-format
+msgid "Please complete account verification within %d days."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:836
+msgid "Setup Needed"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:847
+msgid "Setup Steps:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:849
+msgid "Download a verification app (Google Authenticator, Authy, or similar)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:850
+msgid "Click the button below to access your account settings"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:851
+msgid "Scan the QR code with your verification app"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:852
+msgid "Enter the 6-digit code to complete setup"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:853
+msgid "Save your backup codes safely"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:858
+msgid "Login to Setup"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:861
+msgid "Why is this important?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:862
+msgid "Account verification helps protect your data by adding a second step to the login process. This keeps your account safe even if someone knows your password."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:864
+msgid "If you have any questions or need assistance, please contact our support team."
+msgstr ""
+
+#. translators: 1: site name, 2: site URL
+#: includes/class-chrmrtns-kla-email-templates.php:870
+#, php-format
+msgid "This email was sent from %1$s (%2$s)"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-email-templates.php:874
+msgid "This is an automated message. Please do not reply to this email."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:58
+#: includes/class-chrmrtns-kla-mail-logger.php:94
+#: includes/class-chrmrtns-kla-mail-logger.php:139
+#: includes/class-chrmrtns-kla-mail-logger.php:198
+#: includes/class-chrmrtns-kla-mail-logger.php:239
+#: includes/class-chrmrtns-kla-smtp.php:459
+#: includes/class-chrmrtns-kla-smtp.php:497
+msgid "Security check failed. Please refresh the page and try again."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:74
+msgid "Mail logging settings saved successfully!"
+msgstr ""
+
+#. translators: %d: number of deleted mail logs
+#: includes/class-chrmrtns-kla-mail-logger.php:126
+#, php-format
+msgid "Successfully deleted %d mail logs."
+msgstr ""
+
+#. translators: %d: number of deleted mail logs
+#: includes/class-chrmrtns-kla-mail-logger.php:183
+#, php-format
+msgid "Successfully deleted %d selected mail log(s)."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:226
+msgid "Mail log deleted successfully."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:270
+msgid "Email resent successfully!"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:277
+msgid "Failed to resend email. Please check your SMTP settings."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:285
+msgid "Mail log not found."
+msgstr ""
+
+#. translators: %d: number of fixed mail logs
+#: includes/class-chrmrtns-kla-mail-logger.php:304
+#, php-format
+msgid "Successfully marked %d pending emails as sent."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:412
+msgid "Mail Log"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:604
+msgid "Track and monitor all emails sent from your WordPress site. Enable logging to see detailed information about sent emails including recipients, subjects, and content."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:607
+msgid "Privacy Notice:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:608
+msgid "Mail logs may contain personal information including email addresses and message content. Ensure compliance with applicable privacy laws (GDPR, CCPA, etc.) when enabling this feature. Logs are automatically cleaned up based on your retention settings."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:616
+msgid "Enable Mail Logging"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:620
+msgid "Enable mail logging for all emails sent from WordPress"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:622
+msgid "When enabled, all emails sent via wp_mail() will be logged and stored."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:626
+msgid "Log Storage Limit"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:629
+msgid "Maximum number of mail logs to keep. Older logs will be automatically deleted when this limit is reached."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:641
+msgid "Diagnostic Information:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:677
+msgid "Bulk Actions"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:678
+#: includes/class-chrmrtns-kla-mail-logger.php:742
+msgid "Delete"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:680
+msgid "Apply"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:685
+msgid "Are you sure you want to delete all mail logs? This action cannot be undone."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:686
+msgid "Clear All Logs"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:689
+msgid "This will mark all pending emails as sent. Are you sure?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:690
+msgid "Fix Pending Status"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:701
+msgid "No mail logs found. Emails will appear here once they are sent."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:709
+msgid "Date & Time"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:710
+msgid "From"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:711
+msgid "To"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:712
+msgid "Subject"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:713
+msgid "Status"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:733
+msgid "View Content"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:734
+msgid "Are you sure you want to resend this email?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:737
+msgid "Resend"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:739
+msgid "Are you sure you want to delete this log?"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:746
+msgid "Email Content:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:751
+msgid "Hide Content"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:780
+msgid "Please select at least one log to delete."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:783
+msgid "Are you sure you want to delete the selected logs? This action cannot be undone."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-mail-logger.php:805
+msgid "Mail logging is currently disabled. Enable it above to start tracking emails."
 msgstr ""
 
 #: includes/class-chrmrtns-kla-smtp.php:44
@@ -209,53 +2432,142 @@ msgstr ""
 msgid "SMTP Password"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-mail-logger.php:55
-#: includes/class-chrmrtns-kla-mail-logger.php:91
-#: includes/class-chrmrtns-kla-mail-logger.php:125
-#: includes/class-chrmrtns-kla-mail-logger.php:163
-msgid "Security check failed. Please refresh the page and try again."
+#: includes/class-chrmrtns-kla-smtp.php:72
+msgid "Configure your SMTP settings below. Test your configuration using the test email feature."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-mail-logger.php:71
-msgid "Mail logging settings saved successfully!"
+#: includes/class-chrmrtns-kla-smtp.php:83
+msgid "Enable SMTP for email delivery instead of PHP mail()."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-mail-logger.php:112
-msgid "Successfully deleted %d mail logs."
+#: includes/class-chrmrtns-kla-smtp.php:95
+msgid "Force a custom \"From\" name for all emails sent via SMTP."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-mail-logger.php:148
-msgid "Successfully deleted %d selected mail log(s)."
+#: includes/class-chrmrtns-kla-smtp.php:109
+msgid "The name that will appear as the sender (e.g., \"Your Website Name\")."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-mail-logger.php:175
-msgid "Mail log deleted successfully."
+#: includes/class-chrmrtns-kla-smtp.php:123
+msgid "Optional: Specify a different \"From\" email address. If empty, SMTP username will be used as the sender email."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-mail-logger.php:248
-msgid "Mail Log"
+#: includes/class-chrmrtns-kla-smtp.php:137
+msgid "Your SMTP server hostname (e.g., smtp.gmail.com, smtp.mailgun.org)."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-core.php:151
-msgid "Username or Email"
+#: includes/class-chrmrtns-kla-smtp.php:150
+msgid "SSL"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-core.php:154
-msgid "Send Magic Link"
+#: includes/class-chrmrtns-kla-smtp.php:151
+msgid "TLS"
 msgstr ""
 
-#: includes/class-chrmrtns-kla-core.php:244
-msgid "Login Link for %s"
+#: includes/class-chrmrtns-kla-smtp.php:153
+msgid "Encryption type. SSL uses port 465, TLS uses port 587."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-core.php:301
-msgid "A login email has been sent to your email address."
+#: includes/class-chrmrtns-kla-smtp.php:167
+msgid "SMTP port number. Common ports: 25 (none), 587 (TLS), 465 (SSL)."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-core.php:303
-msgid "Invalid username or email address."
+#: includes/class-chrmrtns-kla-smtp.php:179
+msgid "Enable SMTP authentication (recommended for most providers)."
 msgstr ""
 
-#: includes/class-chrmrtns-kla-email-templates.php:42
-msgid "Click here to login"
+#: includes/class-chrmrtns-kla-smtp.php:193
+msgid "Store in Database"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:199
+msgid "Store in wp-config.php"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:203
+msgid "Choose where to store SMTP credentials. wp-config.php is more secure as it's outside the web root."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:211
+msgid "To use wp-config.php storage, add these lines to your wp-config.php file:"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:216
+msgid "Replace the values with your actual SMTP credentials. The fields below will be disabled when using wp-config.php storage."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:256
+msgid "✓ Using username from wp-config.php"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:258
+msgid "⚠ CHRMRTNS_KLA_SMTP_USERNAME not defined in wp-config.php"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:262
+msgid "Your SMTP username (usually your email address)."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:288
+msgid "✓ Using password from wp-config.php"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:290
+msgid "⚠ CHRMRTNS_KLA_SMTP_PASSWORD not defined in wp-config.php"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:294
+msgid "Your SMTP password or app-specific password."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:334
+msgid "Invalid port number. Using default port 25."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:480
+msgid "SMTP settings cache has been cleared successfully."
+msgstr ""
+
+#. translators: %1$s: SMTP hostname, %2$d: port number
+#: includes/class-chrmrtns-kla-smtp.php:521
+#, php-format
+msgid "Could not connect to %1$s on port %2$d. It may be blocked by your hosting environment."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:531
+msgid "SMTP Test Email - Keyless Auth"
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:532
+msgid "This is a test email sent via your SMTP settings from the Keyless Auth plugin."
+msgstr ""
+
+#. translators: %s: recipient email address
+#: includes/class-chrmrtns-kla-smtp.php:543
+#, php-format
+msgid "Test email sent successfully to %s! Check the inbox."
+msgstr ""
+
+#: includes/class-chrmrtns-kla-smtp.php:552
+msgid "Failed to send test email. Check your SMTP settings or server logs for more information."
+msgstr ""
+
+#. translators: %d: number of seconds
+#: includes/class-chrmrtns-kla-totp.php:278
+#, php-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of minutes
+#: includes/class-chrmrtns-kla-totp.php:282
+#, php-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: keyless-auth.php:174
+msgid "Settings"
 msgstr ""

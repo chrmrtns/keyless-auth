@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-2.6.3-blue.svg)
+![Version](https://img.shields.io/badge/version-2.7.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,38 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v2.7.0 - Security Hardening (October 8, 2025)
+
+* **🔒 NEW:** XML-RPC disable option for enhanced security - prevent brute force attacks via XML-RPC
+* **🔒 NEW:** Application Passwords disable option - block REST API and XML-RPC authentication when not needed
+* **🔒 NEW:** User Enumeration Prevention - comprehensive protection against username discovery attacks
+* **🛡️ NEW:** Security Settings section in Options page with three hardening options
+* **🛡️ SECURITY:** Block REST API user endpoints, author archives, login errors, and comment author classes
+* **🛡️ SECURITY:** Option to disable WordPress XML-RPC interface to reduce attack surface
+* **🛡️ SECURITY:** Option to disable Application Passwords for sites not requiring programmatic access
+* **✨ ENHANCEMENT:** Admin can now easily harden WordPress without code or .htaccess modifications
+* **📚 ENHANCEMENT:** Comprehensive Help page documentation for all security features
+* **🔧 COMPATIBILITY:** All security options are optional and respect existing integrations
+* **🔧 COMPATIBILITY:** Recovery via FTP deactivation if needed
+
+**Security Control:** New "Security Settings" section in Options page lets you:
+- **Disable XML-RPC** - Prevent brute force attacks and reduce attack surface
+- **Disable Application Passwords** - Block programmatic authentication when not needed
+- **Prevent User Enumeration** - Block REST API user endpoints, author archives, login errors, comment author classes, and oEmbed data
+
+**User Enumeration Protection blocks:**
+- REST API user endpoints (`/wp-json/wp/v2/users`)
+- Author archives and `?author=N` queries
+- Login error messages that reveal username validity
+- Comment author CSS classes
+- Author data in oEmbed responses
+
+**Use Cases:**
+- Sites not using Jetpack, mobile apps, or pingbacks can safely disable XML-RPC
+- Sites without API integrations can disable Application Passwords
+- Business/corporate sites without author profiles should enable User Enumeration Prevention
+- All options include comprehensive help documentation
 
 ### v2.6.0 - Enhanced Form Styling for Block Themes (December 2024)
 **Complete form styling overhaul for compatibility with block themes like Twenty Twenty-Five**

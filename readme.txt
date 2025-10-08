@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.6.3
+Stable tag: 2.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -270,6 +270,19 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.7.0 =
+* NEW: XML-RPC disable option for enhanced security - prevent brute force attacks via XML-RPC
+* NEW: Application Passwords disable option - block REST API and XML-RPC authentication when not needed
+* NEW: User Enumeration Prevention - comprehensive protection against username discovery attacks
+* NEW: Security Settings section in Options page with three hardening options
+* SECURITY: Block REST API user endpoints, author archives, login errors, and comment author classes
+* SECURITY: Option to disable WordPress XML-RPC interface to reduce attack surface
+* SECURITY: Option to disable Application Passwords for sites not requiring programmatic access
+* ENHANCEMENT: Admin can now easily harden WordPress without code or .htaccess modifications
+* ENHANCEMENT: Comprehensive Help page documentation for all security features
+* COMPATIBILITY: All security options are optional and respect existing integrations
+* COMPATIBILITY: Recovery via FTP deactivation if needed
+
 = 2.6.3 =
 * PERFORMANCE: CSS files now load conditionally only when shortcodes are used (saves ~15KB on pages without login forms)
 * PERFORMANCE: 2FA CSS and JS now load conditionally only when [keyless-auth-2fa] shortcode is used (saves additional ~38KB)

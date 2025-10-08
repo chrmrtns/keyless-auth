@@ -156,6 +156,18 @@ class Chrmrtns_KLA_Admin {
             'sanitize_callback' => array($this, 'sanitize_dark_mode_setting'),
             'default' => 'auto'
         ));
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_disable_xmlrpc', array(
+            'sanitize_callback' => array($this, 'sanitize_checkbox'),
+            'default' => '0'
+        ));
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_disable_app_passwords', array(
+            'sanitize_callback' => array($this, 'sanitize_checkbox'),
+            'default' => '0'
+        ));
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_prevent_user_enumeration', array(
+            'sanitize_callback' => array($this, 'sanitize_checkbox'),
+            'default' => '0'
+        ));
 
         add_action('wp_ajax_chrmrtns_kla_save_settings', array($this, 'save_settings'));
         add_action('admin_post_chrmrtns_kla_save_settings', array($this, 'save_settings'));
@@ -774,6 +786,15 @@ class Chrmrtns_KLA_Admin {
             $dark_mode_setting = isset($_POST['chrmrtns_kla_dark_mode_setting']) ? sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_dark_mode_setting'])) : 'auto';
             update_option('chrmrtns_kla_dark_mode_setting', $this->sanitize_dark_mode_setting($dark_mode_setting));
 
+            $disable_xmlrpc = isset($_POST['chrmrtns_kla_disable_xmlrpc']) ? '1' : '0';
+            update_option('chrmrtns_kla_disable_xmlrpc', $disable_xmlrpc);
+
+            $disable_app_passwords = isset($_POST['chrmrtns_kla_disable_app_passwords']) ? '1' : '0';
+            update_option('chrmrtns_kla_disable_app_passwords', $disable_app_passwords);
+
+            $prevent_user_enumeration = isset($_POST['chrmrtns_kla_prevent_user_enumeration']) ? '1' : '0';
+            update_option('chrmrtns_kla_prevent_user_enumeration', $prevent_user_enumeration);
+
             // Handle 2FA settings
             $enable_2fa = isset($_POST['chrmrtns_kla_2fa_enabled']) ? true : false;
             update_option('chrmrtns_kla_2fa_enabled', $enable_2fa);
@@ -917,6 +938,56 @@ class Chrmrtns_KLA_Admin {
                             </select>
                             <p class="description">
                                 <?php esc_html_e('Control how login forms appear in dark mode. Auto detects system preferences and theme dark mode classes. Light Only forces light theme. Dark Only forces dark theme.', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr style="margin: 40px 0; border: 0; border-top: 1px solid #dcdcde;">
+
+                <!-- Security Settings Section -->
+                <h2><?php esc_html_e('Security Settings', 'keyless-auth'); ?></h2>
+                <p class="description" style="margin-bottom: 20px;">
+                    <?php esc_html_e('Additional security options to harden your WordPress installation.', 'keyless-auth'); ?>
+                </p>
+
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_disable_xmlrpc"><?php esc_html_e('Disable XML-RPC', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <?php $disable_xmlrpc = get_option('chrmrtns_kla_disable_xmlrpc', '0'); ?>
+                            <input type="checkbox" id="chrmrtns_kla_disable_xmlrpc" name="chrmrtns_kla_disable_xmlrpc" value="1" <?php checked($disable_xmlrpc, '1'); ?> />
+                            <p class="description">
+                                <?php esc_html_e('Disable WordPress XML-RPC interface to prevent brute force attacks and reduce attack surface. Only disable if you don\'t use XML-RPC features (Jetpack, mobile apps, pingbacks).', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_disable_app_passwords"><?php esc_html_e('Disable Application Passwords', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <?php $disable_app_passwords = get_option('chrmrtns_kla_disable_app_passwords', '0'); ?>
+                            <input type="checkbox" id="chrmrtns_kla_disable_app_passwords" name="chrmrtns_kla_disable_app_passwords" value="1" <?php checked($disable_app_passwords, '1'); ?> />
+                            <p class="description">
+                                <?php esc_html_e('Disable WordPress Application Passwords to prevent REST API and XML-RPC authentication. Only disable if you don\'t use programmatic access (mobile apps, CI/CD tools, third-party integrations).', 'keyless-auth'); ?>
+                                <br><strong style="color: #d63638;"><?php esc_html_e('Warning:', 'keyless-auth'); ?></strong> <?php esc_html_e('Disabling this will break REST API and XML-RPC authentication. Users will not be able to authenticate via Application Passwords.', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_prevent_user_enumeration"><?php esc_html_e('Prevent User Enumeration', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <?php $prevent_user_enumeration = get_option('chrmrtns_kla_prevent_user_enumeration', '0'); ?>
+                            <input type="checkbox" id="chrmrtns_kla_prevent_user_enumeration" name="chrmrtns_kla_prevent_user_enumeration" value="1" <?php checked($prevent_user_enumeration, '1'); ?> />
+                            <p class="description">
+                                <?php esc_html_e('Prevent attackers from discovering usernames via REST API, author archives, login errors, and comment author classes. Blocks common user enumeration techniques used to gather usernames for brute force attacks.', 'keyless-auth'); ?>
                             </p>
                         </td>
                     </tr>
@@ -1292,6 +1363,99 @@ class Chrmrtns_KLA_Admin {
 
                 <div class="notice notice-info inline" style="margin: 15px 0;">
                     <p><strong><?php esc_html_e('Performance Note:', 'keyless-auth'); ?></strong> <?php esc_html_e('CSS files only load when shortcodes are used on a page, saving bandwidth on pages without login forms.', 'keyless-auth'); ?></p>
+                </div>
+            </div>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Security Settings', 'keyless-auth'); ?></h2>
+                <p><?php esc_html_e('Additional security options to harden your WordPress installation.', 'keyless-auth'); ?></p>
+
+                <h3><?php esc_html_e('Disable XML-RPC', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('WordPress includes an XML-RPC interface (xmlrpc.php) that allows remote access to your site. While useful for some features, it\'s often targeted by attackers for brute force attacks.', 'keyless-auth'); ?></p>
+
+                <p><strong><?php esc_html_e('When to disable XML-RPC:', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><?php esc_html_e('You don\'t use Jetpack or similar plugins that require XML-RPC', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You don\'t use WordPress mobile apps', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You don\'t need pingbacks or trackbacks', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You want to reduce your site\'s attack surface', 'keyless-auth'); ?></li>
+                </ul>
+
+                <p><strong><?php esc_html_e('When to keep XML-RPC enabled:', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><?php esc_html_e('You use Jetpack for stats, security, or other features', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You use WordPress mobile apps to manage your site', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You have third-party integrations that require XML-RPC', 'keyless-auth'); ?></li>
+                </ul>
+
+                <p><strong><?php esc_html_e('Where to configure:', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to Options → Security Settings → Disable XML-RPC', 'keyless-auth'); ?></p>
+
+                <div class="notice notice-info inline" style="margin: 15px 0;">
+                    <p><strong><?php esc_html_e('Security Tip:', 'keyless-auth'); ?></strong> <?php esc_html_e('If you use REST API instead of XML-RPC, you can safely disable XML-RPC. Modern WordPress features use the REST API, which is more secure.', 'keyless-auth'); ?></p>
+                </div>
+
+                <h3><?php esc_html_e('Disable Application Passwords', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('Application Passwords are special passwords used for authenticating to REST API and XML-RPC endpoints without using your main account password. Introduced in WordPress 5.6, they provide secure programmatic access.', 'keyless-auth'); ?></p>
+
+                <p><strong><?php esc_html_e('When to disable Application Passwords:', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><?php esc_html_e('You don\'t use REST API authentication', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You don\'t use WordPress mobile apps', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You don\'t have CI/CD pipelines or automated deployments', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You don\'t use third-party integrations requiring API access', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You want maximum security and don\'t need programmatic access', 'keyless-auth'); ?></li>
+                </ul>
+
+                <p><strong><?php esc_html_e('When to keep Application Passwords enabled:', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><?php esc_html_e('You use WordPress mobile apps to manage your site', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You have automated scripts or tools that access your site via REST API', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You use third-party services that require API authentication', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You have CI/CD pipelines that deploy to WordPress', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Your 2FA is enabled and users need API access', 'keyless-auth'); ?></li>
+                </ul>
+
+                <p><strong><?php esc_html_e('Where to configure:', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to Options → Security Settings → Disable Application Passwords', 'keyless-auth'); ?></p>
+
+                <div class="notice notice-warning inline" style="margin: 15px 0;">
+                    <p><strong><?php esc_html_e('Important:', 'keyless-auth'); ?></strong> <?php esc_html_e('Disabling Application Passwords will break REST API and XML-RPC authentication. If you have 2FA enabled, this will prevent all programmatic access as regular passwords are blocked by 2FA.', 'keyless-auth'); ?></p>
+                </div>
+
+                <div class="notice notice-info inline" style="margin: 15px 0;">
+                    <p><strong><?php esc_html_e('Recovery Note:', 'keyless-auth'); ?></strong> <?php esc_html_e('If you get locked out, you can always deactivate the Keyless Auth plugin via FTP to regain access and disable this setting.', 'keyless-auth'); ?></p>
+                </div>
+
+                <h3><?php esc_html_e('Prevent User Enumeration', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('User enumeration is a technique attackers use to discover valid usernames on your WordPress site. Once they have usernames, they can launch targeted brute force attacks. This feature blocks all common enumeration methods.', 'keyless-auth'); ?></p>
+
+                <p><strong><?php esc_html_e('What this feature blocks:', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><strong><?php esc_html_e('REST API User Endpoints:', 'keyless-auth'); ?></strong> <?php esc_html_e('Blocks /wp-json/wp/v2/users and /wp-json/wp/v2/users/{id} for non-logged-in users', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Author Archives:', 'keyless-auth'); ?></strong> <?php esc_html_e('Redirects author archive pages and ?author=N queries to homepage', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Login Error Messages:', 'keyless-auth'); ?></strong> <?php esc_html_e('Removes specific error messages that reveal whether username exists', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('Comment Author Classes:', 'keyless-auth'); ?></strong> <?php esc_html_e('Removes comment-author-{username} CSS classes from comments', 'keyless-auth'); ?></li>
+                    <li><strong><?php esc_html_e('oEmbed Data:', 'keyless-auth'); ?></strong> <?php esc_html_e('Removes author name and URL from oEmbed responses', 'keyless-auth'); ?></li>
+                </ul>
+
+                <p><strong><?php esc_html_e('When to enable:', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><?php esc_html_e('You want to prevent username discovery attacks', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You don\'t need public author archives', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You want maximum security against brute force attacks', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Your site is a business/corporate site without author profiles', 'keyless-auth'); ?></li>
+                </ul>
+
+                <p><strong><?php esc_html_e('When to keep disabled:', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><?php esc_html_e('You run a multi-author blog with author profiles', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('You need author archives for SEO or navigation', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Third-party tools need access to user data via REST API', 'keyless-auth'); ?></li>
+                </ul>
+
+                <p><strong><?php esc_html_e('Where to configure:', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to Options → Security Settings → Prevent User Enumeration', 'keyless-auth'); ?></p>
+
+                <div class="notice notice-info inline" style="margin: 15px 0;">
+                    <p><strong><?php esc_html_e('Security Tip:', 'keyless-auth'); ?></strong> <?php esc_html_e('Combine with strong passwords or magic link authentication for best security. User enumeration prevention makes brute force attacks significantly harder.', 'keyless-auth'); ?></p>
                 </div>
             </div>
 

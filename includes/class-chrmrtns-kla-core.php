@@ -32,6 +32,21 @@ class Chrmrtns_KLA_Core {
 
         // Hook early to catch wp-login.php requests for redirect
         add_action('init', array($this, 'chrmrtns_kla_maybe_redirect_wp_login'), 1);
+
+        // Disable XML-RPC if option is enabled
+        if (get_option('chrmrtns_kla_disable_xmlrpc', '0') === '1') {
+            add_filter('xmlrpc_enabled', '__return_false');
+        }
+
+        // Disable Application Passwords if option is enabled
+        if (get_option('chrmrtns_kla_disable_app_passwords', '0') === '1') {
+            add_filter('wp_is_application_passwords_available', '__return_false');
+        }
+
+        // Prevent user enumeration if option is enabled
+        if (get_option('chrmrtns_kla_prevent_user_enumeration', '0') === '1') {
+            add_action('init', array($this, 'prevent_user_enumeration'));
+        }
     }
 
     /**
@@ -740,6 +755,92 @@ class Chrmrtns_KLA_Core {
         return home_url(add_query_arg(array(), $wp->request));
     }
     
+    /**
+     * Prevent user enumeration
+     * Blocks common methods attackers use to discover usernames
+     */
+    public function prevent_user_enumeration() {
+        // Block REST API user endpoints
+        add_filter('rest_endpoints', array($this, 'block_rest_user_endpoints'));
+
+        // Block author archive access
+        add_action('template_redirect', array($this, 'block_author_archives'));
+
+        // Remove login error messages
+        add_filter('login_errors', array($this, 'remove_login_errors'));
+
+        // Remove comment author classes that expose usernames
+        add_filter('comment_class', array($this, 'remove_comment_author_class'));
+
+        // Block oembed user data
+        add_filter('oembed_response_data', array($this, 'remove_oembed_author_data'), 10, 2);
+    }
+
+    /**
+     * Block REST API user endpoints
+     */
+    public function block_rest_user_endpoints($endpoints) {
+        if (!is_user_logged_in()) {
+            if (isset($endpoints['/wp/v2/users'])) {
+                unset($endpoints['/wp/v2/users']);
+            }
+            if (isset($endpoints['/wp/v2/users/(?P<id>[\d]+)'])) {
+                unset($endpoints['/wp/v2/users/(?P<id>[\d]+)']);
+            }
+        }
+        return $endpoints;
+    }
+
+    /**
+     * Block author archive access
+     */
+    public function block_author_archives() {
+        if (is_admin()) {
+            return;
+        }
+
+        // Block author archives
+        if (is_author()) {
+            wp_safe_redirect(home_url(), 301);
+            exit;
+        }
+
+        // Block ?author=N queries
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Blocking enumeration attack, not processing form data
+        if (isset($_GET['author']) && !empty($_GET['author'])) {
+            wp_safe_redirect(home_url(), 301);
+            exit;
+        }
+    }
+
+    /**
+     * Remove login error messages
+     */
+    public function remove_login_errors($error) {
+        return '';
+    }
+
+    /**
+     * Remove comment author classes that expose usernames
+     */
+    public function remove_comment_author_class($classes) {
+        foreach ($classes as $key => $class) {
+            if (strpos($class, 'comment-author-') === 0) {
+                unset($classes[$key]);
+            }
+        }
+        return $classes;
+    }
+
+    /**
+     * Remove author data from oembed responses
+     */
+    public function remove_oembed_author_data($data, $post) {
+        unset($data['author_name']);
+        unset($data['author_url']);
+        return $data;
+    }
+
     /**
      * Enqueue frontend scripts
      */
