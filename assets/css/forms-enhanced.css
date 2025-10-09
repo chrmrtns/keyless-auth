@@ -4,10 +4,7 @@
  *
  * @package Keyless_Auth
  * @since 2.6.0
- * @layer kla - Allows theme customization without !important rules
  */
-
-@layer kla {
 
 /* ========================================
    CSS CUSTOM PROPERTIES (CSS VARIABLES)
@@ -473,5 +470,3 @@
         transition-duration: 0.01ms !important;
     }
 }
-
-} /* End @layer kla */

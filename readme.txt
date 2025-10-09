@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.7.1
+Stable tag: 2.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,12 +304,6 @@ Change token expiration:
 
 
 == Changelog ==
-= 2.7.1 =
-* ENHANCEMENT: Added CSS @layer support for easier theme customization without !important rules
-* ENHANCEMENT: All form CSS now wrapped in @layer kla for better CSS cascade control
-* ENHANCEMENT: Themes can now override KLA CSS variables cleanly without specificity battles
-* COMPATIBILITY: Improved integration with custom themes and design systems
-
 = 2.7.0 =
 * NEW: XML-RPC disable option for enhanced security - prevent brute force attacks via XML-RPC
 * NEW: Application Passwords disable option - block REST API and XML-RPC authentication when not needed
