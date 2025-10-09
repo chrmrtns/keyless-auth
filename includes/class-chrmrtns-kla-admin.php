@@ -1482,6 +1482,36 @@ class Chrmrtns_KLA_Admin {
                     <li><code>do_shortcode('[keyless-auth-2fa]')</code> - <?php esc_html_e('Display 2FA setup interface in templates', 'keyless-auth'); ?></li>
                 </ul>
 
+                <h3><?php esc_html_e('CSS Customization (Theme Integration)', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('As of v2.7.1, all Keyless Auth CSS is wrapped in @layer kla, making theme customization easy without !important rules.', 'keyless-auth'); ?></p>
+
+                <p><strong><?php esc_html_e('How it works:', 'keyless-auth'); ?></strong></p>
+                <p><?php esc_html_e('CSS layers create a cascade priority system. Keyless Auth styles are in @layer kla (lower priority), so your theme\'s unlayered CSS automatically wins without specificity battles.', 'keyless-auth'); ?></p>
+
+                <p><strong><?php esc_html_e('Example - Override KLA colors with your theme:', 'keyless-auth'); ?></strong></p>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 4px; overflow-x: auto;"><code>/* Add to your theme's CSS - no !important needed! */
+:root {
+  --kla-primary: var(--your-theme-primary);
+  --kla-primary-hover: var(--your-theme-primary-hover);
+  --kla-background: var(--your-theme-background);
+  --kla-text: var(--your-theme-text);
+  --kla-border: var(--your-theme-border);
+  /* ...override any KLA variable */
+}</code></pre>
+
+                <p><strong><?php esc_html_e('Available CSS Variables:', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><code>--kla-primary</code>, <code>--kla-primary-hover</code>, <code>--kla-primary-active</code> - <?php esc_html_e('Button and link colors', 'keyless-auth'); ?></li>
+                    <li><code>--kla-success</code>, <code>--kla-error</code>, <code>--kla-warning</code> - <?php esc_html_e('Message box colors', 'keyless-auth'); ?></li>
+                    <li><code>--kla-text</code>, <code>--kla-text-light</code> - <?php esc_html_e('Text colors', 'keyless-auth'); ?></li>
+                    <li><code>--kla-background</code>, <code>--kla-background-alt</code> - <?php esc_html_e('Background colors', 'keyless-auth'); ?></li>
+                    <li><code>--kla-border</code>, <code>--kla-border-light</code> - <?php esc_html_e('Border colors', 'keyless-auth'); ?></li>
+                </ul>
+
+                <div class="notice notice-info inline" style="margin: 15px 0;">
+                    <p><strong><?php esc_html_e('Pro Tip:', 'keyless-auth'); ?></strong> <?php esc_html_e('Because KLA CSS is in a layer, your theme CSS doesn\'t need !important, higher specificity, or any tricks. Just define the variables and they work!', 'keyless-auth'); ?></p>
+                </div>
+
                 <h3><?php esc_html_e('Database Tables', 'keyless-auth'); ?></h3>
                 <p><?php esc_html_e('Keyless Auth creates these custom tables for optimal performance:', 'keyless-auth'); ?></p>
                 <ul>
