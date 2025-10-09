@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-2.7.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.7.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,27 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v2.7.1 - CSS Layer Support (October 8, 2025)
+
+* **✨ ENHANCEMENT:** Added CSS @layer support for easier theme customization without !important rules
+* **✨ ENHANCEMENT:** All form CSS now wrapped in @layer kla for better CSS cascade control
+* **✨ ENHANCEMENT:** Themes can now override KLA CSS variables cleanly without specificity battles
+* **🔧 COMPATIBILITY:** Improved integration with custom themes and design systems
+
+**Theme Customization Made Easy:**
+Themes can now override Keyless Auth CSS variables without using !important:
+
+```css
+/* Your theme CSS - no !important needed! */
+:root {
+  --kla-primary: var(--your-theme-primary);
+  --kla-background: var(--your-theme-background);
+  /* ...all other KLA variables */
+}
+```
+
+**How it works:** All KLA CSS is wrapped in `@layer kla { ... }`, which has lower priority than unlayered theme CSS. This means your theme styles automatically win without specificity battles.
 
 ### v2.7.0 - Security Hardening (October 8, 2025)
 
