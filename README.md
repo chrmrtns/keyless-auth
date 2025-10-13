@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-2.7.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.7.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,20 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v2.7.1 - Bug Fixes (October 13, 2025)
+
+* **🐛 FIX:** User Enumeration Prevention now properly blocks `?author=N` queries before WordPress canonical redirect
+* **🐛 FIX:** Misleading "2FA system is now active" message no longer appears when saving unrelated settings (XML-RPC, User Enumeration)
+* **⚡ ENHANCEMENT:** Author queries now blocked earlier using `parse_request` hook (more reliable than `template_redirect`)
+* **⚡ ENHANCEMENT:** Emergency mode message only displays when emergency mode checkbox is actually toggled
+* **🔧 TECHNICAL:** Added `block_author_query_early()` function to intercept author queries before `redirect_canonical()` runs
+* **🔧 TECHNICAL:** Fixed boolean type comparison in emergency mode setting change detection
+
+**Why This Matters:**
+- Sites with User Enumeration Prevention enabled now properly block `?author=1` queries
+- No more confusing "2FA active" messages when enabling security features
+- More reliable protection against username enumeration attacks
 
 ### v2.7.0 - Security Hardening (October 8, 2025)
 

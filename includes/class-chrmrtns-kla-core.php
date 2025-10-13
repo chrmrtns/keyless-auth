@@ -763,6 +763,9 @@ class Chrmrtns_KLA_Core {
         // Block REST API user endpoints
         add_filter('rest_endpoints', array($this, 'block_rest_user_endpoints'));
 
+        // Block ?author=N queries early (before canonical redirect)
+        add_action('parse_request', array($this, 'block_author_query_early'));
+
         // Block author archive access
         add_action('template_redirect', array($this, 'block_author_archives'));
 
@@ -792,6 +795,18 @@ class Chrmrtns_KLA_Core {
     }
 
     /**
+     * Block ?author=N queries early (before WordPress canonical redirect)
+     * This fires on parse_request hook to catch author queries before redirect_canonical
+     */
+    public function block_author_query_early($wp) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Blocking enumeration attack, not processing form data
+        if (isset($_GET['author']) && !empty($_GET['author'])) {
+            wp_safe_redirect(home_url(), 301);
+            exit;
+        }
+    }
+
+    /**
      * Block author archive access
      */
     public function block_author_archives() {
@@ -799,15 +814,8 @@ class Chrmrtns_KLA_Core {
             return;
         }
 
-        // Block author archives
+        // Block author archives (catches /author/username/ URLs)
         if (is_author()) {
-            wp_safe_redirect(home_url(), 301);
-            exit;
-        }
-
-        // Block ?author=N queries
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Blocking enumeration attack, not processing form data
-        if (isset($_GET['author']) && !empty($_GET['author'])) {
             wp_safe_redirect(home_url(), 301);
             exit;
         }

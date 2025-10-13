@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,6 +304,14 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.7.1 =
+* FIX: User Enumeration Prevention now blocks ?author=N queries before WordPress canonical redirect
+* FIX: Misleading "2FA system is now active" message no longer appears when saving unrelated settings
+* ENHANCEMENT: ?author=N queries now blocked earlier using parse_request hook (more reliable)
+* ENHANCEMENT: Emergency mode message only displays when emergency mode checkbox is actually toggled
+* TECHNICAL: Added block_author_query_early() function to catch author queries before redirect_canonical()
+* TECHNICAL: Fixed boolean type comparison in emergency mode setting change detection
+
 = 2.7.0 =
 * NEW: XML-RPC disable option for enhanced security - prevent brute force attacks via XML-RPC
 * NEW: Application Passwords disable option - block REST API and XML-RPC authentication when not needed

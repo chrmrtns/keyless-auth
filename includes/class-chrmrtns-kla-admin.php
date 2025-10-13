@@ -811,14 +811,22 @@ class Chrmrtns_KLA_Admin {
             $max_attempts = isset($_POST['chrmrtns_kla_2fa_max_attempts']) ? intval($_POST['chrmrtns_kla_2fa_max_attempts']) : 5;
             update_option('chrmrtns_kla_2fa_max_attempts', $max_attempts);
 
-            // Handle emergency mode setting
+            // Handle emergency mode setting - only show message if it actually changed
+            $old_emergency_mode = get_option('chrmrtns_kla_2fa_emergency_disable', false);
             $emergency_mode = isset($_POST['chrmrtns_kla_2fa_emergency_disable']) ? true : false;
+
+            // Convert to boolean for consistent comparison (in case stored as string)
+            $old_emergency_mode = (bool) $old_emergency_mode;
+
             update_option('chrmrtns_kla_2fa_emergency_disable', $emergency_mode);
 
-            if ($emergency_mode) {
-                echo '<div class="notice notice-warning"><p>' . esc_html__('Emergency mode is now enabled. 2FA system is disabled for all users.', 'keyless-auth') . '</p></div>';
-            } else {
-                echo '<div class="notice notice-success"><p>' . esc_html__('Emergency mode is disabled. 2FA system is now active.', 'keyless-auth') . '</p></div>';
+            // Only show message if emergency mode setting actually changed (strict comparison)
+            if ($old_emergency_mode !== $emergency_mode) {
+                if ($emergency_mode) {
+                    echo '<div class="notice notice-warning"><p>' . esc_html__('Emergency mode is now enabled. 2FA system is disabled for all users.', 'keyless-auth') . '</p></div>';
+                } else {
+                    echo '<div class="notice notice-success"><p>' . esc_html__('Emergency mode is disabled. 2FA system is now active.', 'keyless-auth') . '</p></div>';
+                }
             }
 
             $lockout_duration = isset($_POST['chrmrtns_kla_2fa_lockout_duration']) ? intval($_POST['chrmrtns_kla_2fa_lockout_duration']) : 15;
