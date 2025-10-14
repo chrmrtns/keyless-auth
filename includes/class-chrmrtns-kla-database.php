@@ -20,7 +20,7 @@ class Chrmrtns_KLA_Database {
     /**
      * Database version
      */
-    const DB_VERSION = '1.1.0';
+    const DB_VERSION = '1.2.0';
 
     /**
      * Constructor
@@ -36,8 +36,58 @@ class Chrmrtns_KLA_Database {
         $installed_version = get_option('chrmrtns_kla_db_version');
 
         if ($installed_version !== self::DB_VERSION) {
+            // Migrate old tables if upgrading from pre-1.2.0
+            if ($installed_version && version_compare($installed_version, '1.2.0', '<')) {
+                $this->migrate_old_tables();
+            }
+
             $this->create_tables();
             update_option('chrmrtns_kla_db_version', self::DB_VERSION);
+        }
+    }
+
+    /**
+     * Migrate old kla_* tables to chrmrtns_kla_* tables
+     * This ensures backward compatibility when upgrading from version < 1.2.0
+     *
+     * @since 1.2.0
+     */
+    private function migrate_old_tables() {
+        global $wpdb;
+
+        $old_new_table_map = array(
+            'kla_login_logs' => 'chrmrtns_kla_login_logs',
+            'kla_mail_logs' => 'chrmrtns_kla_mail_logs',
+            'kla_user_devices' => 'chrmrtns_kla_user_devices',
+            'kla_login_tokens' => 'chrmrtns_kla_login_tokens',
+            'kla_webhook_logs' => 'chrmrtns_kla_webhook_logs'
+        );
+
+        foreach ($old_new_table_map as $old_suffix => $new_suffix) {
+            $old_table = $wpdb->prefix . $old_suffix;
+            $new_table = $wpdb->prefix . $new_suffix;
+
+            // Check if old table exists
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Migration check for table existence
+            $old_table_exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $old_table)) === $old_table;
+
+            if ($old_table_exists) {
+                // Check if new table already exists
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Migration check for table existence
+                $new_table_exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $new_table)) === $new_table;
+
+                if (!$new_table_exists) {
+                    // Rename old table to new table name (faster than copy + delete)
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Renaming table during migration, table names are safely constructed
+                    $wpdb->query("RENAME TABLE `{$old_table}` TO `{$new_table}`");
+                } else {
+                    // If both exist, copy data from old to new, then drop old
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Migration data copy, table names are safely constructed
+                    $wpdb->query("INSERT IGNORE INTO `{$new_table}` SELECT * FROM `{$old_table}`");
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Dropping old table after migration, table name is safely constructed
+                    $wpdb->query("DROP TABLE IF EXISTS `{$old_table}`");
+                }
+            }
         }
     }
 
@@ -50,7 +100,7 @@ class Chrmrtns_KLA_Database {
         $charset_collate = $wpdb->get_charset_collate();
 
         // Login audit log table
-        $login_logs_table = $wpdb->prefix . 'kla_login_logs';
+        $login_logs_table = $wpdb->prefix . 'chrmrtns_kla_login_logs';
         $login_logs_sql = "CREATE TABLE $login_logs_table (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             user_id bigint(20) NOT NULL,
@@ -71,7 +121,7 @@ class Chrmrtns_KLA_Database {
         ) $charset_collate;";
 
         // Enhanced mail log table
-        $mail_logs_table = $wpdb->prefix . 'kla_mail_logs';
+        $mail_logs_table = $wpdb->prefix . 'chrmrtns_kla_mail_logs';
         $mail_logs_sql = "CREATE TABLE $mail_logs_table (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             user_id bigint(20),
@@ -96,7 +146,7 @@ class Chrmrtns_KLA_Database {
         ) $charset_collate;";
 
         // User devices table (with 2FA support)
-        $devices_table = $wpdb->prefix . 'kla_user_devices';
+        $devices_table = $wpdb->prefix . 'chrmrtns_kla_user_devices';
         $devices_sql = "CREATE TABLE $devices_table (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             user_id bigint(20) NOT NULL,
@@ -126,7 +176,7 @@ class Chrmrtns_KLA_Database {
         ) $charset_collate;";
 
         // Login tokens table (replace user_meta storage)
-        $tokens_table = $wpdb->prefix . 'kla_login_tokens';
+        $tokens_table = $wpdb->prefix . 'chrmrtns_kla_login_tokens';
         $tokens_sql = "CREATE TABLE $tokens_table (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             user_id bigint(20) NOT NULL,
@@ -148,7 +198,7 @@ class Chrmrtns_KLA_Database {
         ) $charset_collate;";
 
         // Webhook logs table (for future webhook support)
-        $webhooks_table = $wpdb->prefix . 'kla_webhook_logs';
+        $webhooks_table = $wpdb->prefix . 'chrmrtns_kla_webhook_logs';
         $webhooks_sql = "CREATE TABLE $webhooks_table (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             user_id bigint(20),
@@ -189,13 +239,13 @@ class Chrmrtns_KLA_Database {
 
         // Composite indexes for common queries
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Creating performance indexes for custom tables
-        $wpdb->query("CREATE INDEX IF NOT EXISTS idx_mail_logs_user_status ON {$wpdb->prefix}kla_mail_logs (user_id, status)");
+        $wpdb->query("CREATE INDEX IF NOT EXISTS idx_mail_logs_user_status ON {$wpdb->prefix}chrmrtns_kla_mail_logs (user_id, status)");
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Creating performance indexes for custom tables
-        $wpdb->query("CREATE INDEX IF NOT EXISTS idx_login_logs_user_time ON {$wpdb->prefix}kla_login_logs (user_id, login_time)");
+        $wpdb->query("CREATE INDEX IF NOT EXISTS idx_login_logs_user_time ON {$wpdb->prefix}chrmrtns_kla_login_logs (user_id, login_time)");
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Creating performance indexes for custom tables
-        $wpdb->query("CREATE INDEX IF NOT EXISTS idx_tokens_user_expires ON {$wpdb->prefix}kla_login_tokens (user_id, expires_at)");
+        $wpdb->query("CREATE INDEX IF NOT EXISTS idx_tokens_user_expires ON {$wpdb->prefix}chrmrtns_kla_login_tokens (user_id, expires_at)");
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Creating performance indexes for custom tables
-        $wpdb->query("CREATE INDEX IF NOT EXISTS idx_devices_user_active ON {$wpdb->prefix}kla_user_devices (user_id, is_active)");
+        $wpdb->query("CREATE INDEX IF NOT EXISTS idx_devices_user_active ON {$wpdb->prefix}chrmrtns_kla_user_devices (user_id, is_active)");
     }
 
     /**
@@ -268,7 +318,7 @@ class Chrmrtns_KLA_Database {
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Logging to custom login audit table
         return $wpdb->insert(
-            $wpdb->prefix . 'kla_login_logs',
+            $wpdb->prefix . 'chrmrtns_kla_login_logs',
             array(
                 'user_id' => $user_id,
                 'user_email' => $user_email,
@@ -294,7 +344,7 @@ class Chrmrtns_KLA_Database {
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Logging to custom mail logs table
         return $wpdb->insert(
-            $wpdb->prefix . 'kla_mail_logs',
+            $wpdb->prefix . 'chrmrtns_kla_mail_logs',
             array(
                 'user_id' => $user_id,
                 'recipient_email' => $recipient_email,
@@ -325,7 +375,7 @@ class Chrmrtns_KLA_Database {
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Storing tokens in custom table
         return $wpdb->insert(
-            $wpdb->prefix . 'kla_login_tokens',
+            $wpdb->prefix . 'chrmrtns_kla_login_tokens',
             array(
                 'user_id' => $user_id,
                 'token_hash' => $token_hash,
@@ -359,7 +409,7 @@ class Chrmrtns_KLA_Database {
             // Mark token as used
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating token usage in custom table
             $wpdb->update(
-                $wpdb->prefix . 'kla_login_tokens',
+                $wpdb->prefix . 'chrmrtns_kla_login_tokens',
                 array(
                     'is_used' => 1,
                     'used_at' => current_time('mysql')
@@ -544,7 +594,7 @@ class Chrmrtns_KLA_Database {
             // Update existing device record
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
             return $wpdb->update(
-                $wpdb->prefix . 'kla_user_devices',
+                $wpdb->prefix . 'chrmrtns_kla_user_devices',
                 array(
                     'totp_secret' => $totp_secret,
                     'totp_enabled' => 1,
@@ -561,7 +611,7 @@ class Chrmrtns_KLA_Database {
             // Create new device record
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Inserting into custom devices table
             return $wpdb->insert(
-                $wpdb->prefix . 'kla_user_devices',
+                $wpdb->prefix . 'chrmrtns_kla_user_devices',
                 array(
                     'user_id' => $user_id,
                     'device_fingerprint' => $device_fingerprint,
@@ -585,7 +635,7 @@ class Chrmrtns_KLA_Database {
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
         return $wpdb->update(
-            $wpdb->prefix . 'kla_user_devices',
+            $wpdb->prefix . 'chrmrtns_kla_user_devices',
             array(
                 'totp_enabled' => 0,
                 'totp_secret' => null,
@@ -631,7 +681,7 @@ class Chrmrtns_KLA_Database {
             // Reset failed attempts on success
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
             return $wpdb->update(
-                $wpdb->prefix . 'kla_user_devices',
+                $wpdb->prefix . 'chrmrtns_kla_user_devices',
                 array(
                     'totp_last_used' => current_time('mysql'),
                     'totp_failed_attempts' => 0,
@@ -685,7 +735,7 @@ class Chrmrtns_KLA_Database {
                 // Update database
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
                 $wpdb->update(
-                    $wpdb->prefix . 'kla_user_devices',
+                    $wpdb->prefix . 'chrmrtns_kla_user_devices',
                     array(
                         'totp_backup_codes' => wp_json_encode($backup_codes),
                         'totp_last_used' => current_time('mysql'),
@@ -741,11 +791,11 @@ class Chrmrtns_KLA_Database {
         global $wpdb;
 
         $tables = array(
-            $wpdb->prefix . 'kla_login_logs',
-            $wpdb->prefix . 'kla_mail_logs',
-            $wpdb->prefix . 'kla_user_devices',
-            $wpdb->prefix . 'kla_login_tokens',
-            $wpdb->prefix . 'kla_webhook_logs'
+            $wpdb->prefix . 'chrmrtns_kla_login_logs',
+            $wpdb->prefix . 'chrmrtns_kla_mail_logs',
+            $wpdb->prefix . 'chrmrtns_kla_user_devices',
+            $wpdb->prefix . 'chrmrtns_kla_login_tokens',
+            $wpdb->prefix . 'chrmrtns_kla_webhook_logs'
         );
 
         foreach ($tables as $table) {

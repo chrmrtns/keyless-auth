@@ -103,7 +103,7 @@ class Chrmrtns_KLA_Mail_Logger {
                 // Clear from database
                 global $wpdb;
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for bulk log cleanup, no caching needed
-                $deleted_count = $wpdb->query("DELETE FROM {$wpdb->prefix}kla_mail_logs"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                $deleted_count = $wpdb->query("DELETE FROM {$wpdb->prefix}chrmrtns_kla_mail_logs"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
             } else {
                 // Clear from legacy posts
                 $args = array(
@@ -294,7 +294,7 @@ class Chrmrtns_KLA_Mail_Logger {
             if (class_exists('Chrmrtns_KLA_Database')) {
                 global $wpdb;
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for bulk status update, no caching needed
-                $updated_count = $wpdb->query("UPDATE {$wpdb->prefix}kla_mail_logs SET status = 'sent' WHERE status = 'pending'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                $updated_count = $wpdb->query("UPDATE {$wpdb->prefix}chrmrtns_kla_mail_logs SET status = 'sent' WHERE status = 'pending'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
                 add_settings_error(
                     'chrmrtns_kla_mail_logs_settings',
@@ -471,7 +471,7 @@ class Chrmrtns_KLA_Mail_Logger {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for retrieving mail logs, no caching needed for transactional data
             $results = $wpdb->get_results($wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
                 "SELECT id, user_id, recipient_email as recipient, subject, email_body as message, sent_time, status, 'N/A' as from_email
-                FROM {$wpdb->prefix}kla_mail_logs
+                FROM {$wpdb->prefix}chrmrtns_kla_mail_logs
                 ORDER BY sent_time DESC
                 LIMIT %d",
                 $limit
@@ -532,7 +532,7 @@ class Chrmrtns_KLA_Mail_Logger {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Necessary for retrieving single mail log, no caching needed
             $result = $wpdb->get_row($wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
                 "SELECT id, user_id, recipient_email as recipient, subject, email_body as message, sent_time, status
-                FROM {$wpdb->prefix}kla_mail_logs
+                FROM {$wpdb->prefix}chrmrtns_kla_mail_logs
                 WHERE id = %d",
                 $log_id
             ), ARRAY_A);
@@ -647,14 +647,14 @@ class Chrmrtns_KLA_Mail_Logger {
                     if (class_exists('Chrmrtns_KLA_Database')) {
                         global $wpdb;
                         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Simple count query for diagnostics, no caching needed
-                        $total_logs = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                        $total_logs = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_mail_logs"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
                         echo 'Total mail logs in database: ' . esc_html($total_logs) . '<br>';
 
                         // Count by status
                         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Simple count query for diagnostics, no caching needed
-                        $sent_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs WHERE status = 'sent'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-                        $pending_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs WHERE status = 'pending'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-                        $failed_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs WHERE status = 'failed'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                        $sent_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_mail_logs WHERE status = 'sent'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                        $pending_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_mail_logs WHERE status = 'pending'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+                        $failed_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_mail_logs WHERE status = 'failed'"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
                         echo 'Status breakdown - Sent: ' . esc_html($sent_count) . ', Pending: ' . esc_html($pending_count) . ', <span style="color: #dc3545;">Failed: ' . esc_html($failed_count) . '</span><br>';
                         echo 'Storage system: Custom database tables<br>';

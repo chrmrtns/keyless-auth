@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.7.1
+Stable tag: 2.7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,6 +304,13 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.7.2 =
+* FIX: Database table naming - Renamed all tables from kla_* to chrmrtns_kla_* for unique namespace and collision prevention
+* IMPROVEMENT: Automatic migration - Old kla_* tables automatically renamed to chrmrtns_kla_* on plugin update (zero data loss)
+* IMPROVEMENT: WordPress best practices - Tables now use unique plugin identifier prefix following WordPress.org guidelines
+* TECHNICAL: Database version bumped to 1.2.0 with automatic version detection and migration
+* TECHNICAL: Added migrate_old_tables() method for seamless backward compatibility
+
 = 2.7.1 =
 * FIX: User Enumeration Prevention now blocks ?author=N queries before WordPress canonical redirect
 * FIX: Misleading "2FA system is now active" message no longer appears when saving unrelated settings
