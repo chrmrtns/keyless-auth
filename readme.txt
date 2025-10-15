@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.7.2
+Stable tag: 2.7.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,6 +304,15 @@ Change token expiration:
 
 
 == Changelog ==
+= 2.7.3 =
+* CRITICAL FIX: Magic link token validation - Fixed database table name mismatches causing "token expired" errors
+* CRITICAL FIX: 2FA grace period redirect - Fixed malformed URL when grace period expires (proper use of add_query_arg)
+* FIX: Database queries now correctly reference chrmrtns_kla_* tables instead of kla_* tables (10 query fixes)
+* FIX: Removed unused variable $code_hash in backup code validation function
+* TECHNICAL: Token validation was querying non-existent kla_login_tokens table instead of chrmrtns_kla_login_tokens
+* TECHNICAL: Fixed inconsistency between table creation (chrmrtns_kla_*) and queries (kla_*)
+* IMPACT: Users experiencing immediate token expiration on magic links should now login successfully
+
 = 2.7.2 =
 * FIX: Database table naming - Renamed all tables from kla_* to chrmrtns_kla_* for unique namespace and collision prevention
 * IMPROVEMENT: Automatic migration - Old kla_* tables automatically renamed to chrmrtns_kla_* on plugin update (zero data loss)

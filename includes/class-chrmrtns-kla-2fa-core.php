@@ -724,7 +724,7 @@ class Chrmrtns_KLA_2FA_Core {
             // If grace period expired, force logout
             if (time() > $grace_end) {
                 wp_logout();
-                wp_redirect(wp_login_url('?chrmrtns_kla_2fa_required=1'));
+                wp_redirect(add_query_arg('chrmrtns_kla_2fa_required', '1', wp_login_url()));
                 exit;
             }
         }

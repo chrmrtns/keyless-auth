@@ -297,7 +297,7 @@ class Chrmrtns_KLA_Database {
         $where_values[] = (int) $args['offset'];
 
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_clause and $order_by are properly sanitized above
-        $sql = "SELECT * FROM {$wpdb->prefix}kla_login_logs
+        $sql = "SELECT * FROM {$wpdb->prefix}chrmrtns_kla_login_logs
                 WHERE $where_clause
                 ORDER BY $order_by
                 LIMIT %d OFFSET %d";
@@ -396,7 +396,7 @@ class Chrmrtns_KLA_Database {
         global $wpdb;
 
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is hardcoded with proper placeholders, no dynamic content
-        $sql = "SELECT * FROM {$wpdb->prefix}kla_login_tokens
+        $sql = "SELECT * FROM {$wpdb->prefix}chrmrtns_kla_login_tokens
                 WHERE user_id = %d
                 AND token_hash = %s
                 AND expires_at > UTC_TIMESTAMP()
@@ -424,7 +424,7 @@ class Chrmrtns_KLA_Database {
 
         // Increment attempt count for failed attempts
         $wpdb->query($wpdb->prepare(
-            "UPDATE {$wpdb->prefix}kla_login_tokens
+            "UPDATE {$wpdb->prefix}chrmrtns_kla_login_tokens
              SET attempt_count = attempt_count + 1
              WHERE user_id = %d AND token_hash = %s",
             $user_id, $token_hash
@@ -448,7 +448,7 @@ class Chrmrtns_KLA_Database {
         }
 
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_clause is safely constructed above
-        $sql = "DELETE FROM {$wpdb->prefix}kla_login_tokens WHERE $where_clause"; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        $sql = "DELETE FROM {$wpdb->prefix}chrmrtns_kla_login_tokens WHERE $where_clause"; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
         if (!empty($where_values)) {
             return $wpdb->query($wpdb->prepare($sql, $where_values)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -467,27 +467,27 @@ class Chrmrtns_KLA_Database {
 
         // Total logins
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
-        $stats['total_logins'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_login_logs WHERE status = 'success'");
+        $stats['total_logins'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_login_logs WHERE status = 'success'");
 
         // Logins this month
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
         $stats['logins_this_month'] = $wpdb->get_var(
-            "SELECT COUNT(*) FROM {$wpdb->prefix}kla_login_logs
+            "SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_login_logs
              WHERE status = 'success'
              AND login_time >= DATE_FORMAT(NOW(), '%Y-%m-01')"
         );
 
         // Failed attempts
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
-        $stats['failed_attempts'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_login_logs WHERE status = 'failed'");
+        $stats['failed_attempts'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_login_logs WHERE status = 'failed'");
 
         // Total emails sent
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
-        $stats['emails_sent'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_mail_logs WHERE status = 'sent'");
+        $stats['emails_sent'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_mail_logs WHERE status = 'sent'");
 
         // Active tokens
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Statistics query for custom table
-        $stats['active_tokens'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}kla_login_tokens WHERE expires_at > NOW() AND is_used = 0");
+        $stats['active_tokens'] = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}chrmrtns_kla_login_tokens WHERE expires_at > NOW() AND is_used = 0");
 
         return $stats;
     }
@@ -503,14 +503,14 @@ class Chrmrtns_KLA_Database {
         // Clean login logs
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Maintenance cleanup of old logs
         $login_deleted = $wpdb->query($wpdb->prepare(
-            "DELETE FROM {$wpdb->prefix}kla_login_logs WHERE login_time < %s",
+            "DELETE FROM {$wpdb->prefix}chrmrtns_kla_login_logs WHERE login_time < %s",
             $date_threshold
         ));
 
         // Clean mail logs
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Maintenance cleanup of old logs
         $mail_deleted = $wpdb->query($wpdb->prepare(
-            "DELETE FROM {$wpdb->prefix}kla_mail_logs WHERE sent_time < %s",
+            "DELETE FROM {$wpdb->prefix}chrmrtns_kla_mail_logs WHERE sent_time < %s",
             $date_threshold
         ));
 
@@ -584,7 +584,7 @@ class Chrmrtns_KLA_Database {
         // Check if device record exists
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Querying custom devices table
         $existing = $wpdb->get_row($wpdb->prepare(
-            "SELECT id FROM {$wpdb->prefix}kla_user_devices WHERE user_id = %d AND device_fingerprint = %s",
+            "SELECT id FROM {$wpdb->prefix}chrmrtns_kla_user_devices WHERE user_id = %d AND device_fingerprint = %s",
             $user_id, $device_fingerprint
         ));
 
@@ -658,7 +658,7 @@ class Chrmrtns_KLA_Database {
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Querying custom devices table
         $result = $wpdb->get_row($wpdb->prepare(
             "SELECT totp_secret, totp_enabled, totp_backup_codes, totp_last_used, totp_failed_attempts, totp_locked_until
-             FROM {$wpdb->prefix}kla_user_devices
+             FROM {$wpdb->prefix}chrmrtns_kla_user_devices
              WHERE user_id = %d AND totp_enabled = 1
              LIMIT 1",
             $user_id
@@ -696,7 +696,7 @@ class Chrmrtns_KLA_Database {
             // Increment failed attempts
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Updating custom devices table
             $wpdb->query($wpdb->prepare(
-                "UPDATE {$wpdb->prefix}kla_user_devices
+                "UPDATE {$wpdb->prefix}chrmrtns_kla_user_devices
                  SET totp_failed_attempts = totp_failed_attempts + 1,
                      totp_locked_until = CASE
                          WHEN totp_failed_attempts >= %d THEN DATE_ADD(NOW(), INTERVAL %d MINUTE)
@@ -723,7 +723,6 @@ class Chrmrtns_KLA_Database {
         }
 
         $backup_codes = $settings->totp_backup_codes;
-        $code_hash = wp_hash_password($code);
 
         // Check if code exists and remove it
         foreach ($backup_codes as $index => $stored_hash) {
@@ -762,7 +761,7 @@ class Chrmrtns_KLA_Database {
 
         $base_query = "SELECT u.ID, u.user_login, u.user_email, u.display_name, d.totp_enabled, d.totp_last_used, d.totp_failed_attempts, d.totp_locked_until
                        FROM {$wpdb->users} u
-                       INNER JOIN {$wpdb->prefix}kla_user_devices d ON u.ID = d.user_id AND d.totp_enabled = 1";
+                       INNER JOIN {$wpdb->prefix}chrmrtns_kla_user_devices d ON u.ID = d.user_id AND d.totp_enabled = 1";
 
         if (!empty($search)) {
             $search_term = '%' . $wpdb->esc_like($search) . '%';
