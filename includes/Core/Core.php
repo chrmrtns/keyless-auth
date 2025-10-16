@@ -103,10 +103,10 @@ class Core {
         $sent_link = get_option('chrmrtns_kla_login_request_error');
 
         if ($account && !is_wp_error($sent_link)) {
-            echo '<p class="chrmrtns-box chrmrtns-success">' . wp_kses_post(apply_filters('chrmrtns_kla_success_link_msg', esc_html__('Please check your email. You will soon receive an email with a login link.', 'keyless-auth'))) . '</p>';
+            echo '<p class="chrmrtns-box chrmrtns-success" role="status" aria-live="polite">' . wp_kses_post(apply_filters('chrmrtns_kla_success_link_msg', esc_html__('Please check your email. You will soon receive an email with a login link.', 'keyless-auth'))) . '</p>';
         } elseif (is_user_logged_in()) {
             $current_user = wp_get_current_user();
-            echo '<p class="chrmrtns-box chrmrtns-alert">' . wp_kses_post(apply_filters('chrmrtns_kla_success_login_msg', sprintf(
+            echo '<p class="chrmrtns-box chrmrtns-alert" role="status" aria-live="polite">' . wp_kses_post(apply_filters('chrmrtns_kla_success_login_msg', sprintf(
                 /* translators: %1$s: user display name with link, %2$s: logout link */
                 esc_html__('You are currently logged in as %1$s. %2$s', 'keyless-auth'), 
                 '<a href="' . esc_url(get_author_posts_url($current_user->ID)) . '" title="' . esc_attr($current_user->display_name) . '">' . esc_html($current_user->display_name) . '</a>', 
@@ -114,13 +114,13 @@ class Core {
             ))) . '</p><!-- .alert-->';
         } else {
             if (is_wp_error($sent_link)) {
-                echo '<p class="chrmrtns-box chrmrtns-error">' . esc_html(apply_filters('chrmrtns_error', $sent_link->get_error_message())) . '</p>';
+                echo '<p class="chrmrtns-box chrmrtns-error" role="alert" aria-live="assertive">' . esc_html(apply_filters('chrmrtns_error', $sent_link->get_error_message())) . '</p>';
             }
             if ($error_token) {
-                echo '<p class="chrmrtns-box chrmrtns-error">' . wp_kses_post(apply_filters('chrmrtns_kla_invalid_token_error', __('Your token has probably expired. Please try again.', 'keyless-auth'))) . '</p>';
+                echo '<p class="chrmrtns-box chrmrtns-error" role="alert" aria-live="assertive">' . wp_kses_post(apply_filters('chrmrtns_kla_invalid_token_error', __('Your token has probably expired. Please try again.', 'keyless-auth'))) . '</p>';
             }
             if ($adminapp_error) { // admin approval compatibility
-                echo '<p class="chrmrtns-box chrmrtns-error">' . wp_kses_post(apply_filters('chrmrtns_kla_admin_approval_error', __('Your account needs to be approved by an admin before you can log-in.', 'keyless-auth'))) . '</p>';
+                echo '<p class="chrmrtns-box chrmrtns-error" role="alert" aria-live="assertive">' . wp_kses_post(apply_filters('chrmrtns_kla_admin_approval_error', __('Your account needs to be approved by an admin before you can log-in.', 'keyless-auth'))) . '</p>';
             }
             
             // Render the login form
@@ -159,10 +159,10 @@ class Core {
             <?php if (!empty($atts['description'])): ?>
                 <p class="chrmrtns-kla-description"><?php echo wp_kses_post($atts['description']); ?></p>
             <?php endif; ?>
-            <form method="post" class="chrmrtns-form">
+            <form method="post" class="chrmrtns-form" aria-label="<?php esc_attr_e('Magic link login form', 'keyless-auth'); ?>">
                 <p>
                     <label for="user_email_username"><?php echo esc_html(apply_filters('chrmrtns_kla_change_form_label', $label_text)); ?></label><br>
-                    <input type="text" name="user_email_username" id="user_email_username" class="input" value="" size="20" required />
+                    <input type="text" name="user_email_username" id="user_email_username" class="input" value="" size="20" required aria-required="true" />
                 </p>
                 <?php wp_nonce_field('chrmrtns_kla_keyless_login_request', 'nonce', false); ?>
                 <input type="hidden" name="chrmrtns_kla_magic_form" value="1" />
@@ -204,10 +204,10 @@ class Core {
 
         // Show success message for magic link
         if ($account && !is_wp_error($sent_link)) {
-            echo '<p class="chrmrtns-box chrmrtns-success">' . wp_kses_post(apply_filters('chrmrtns_kla_success_link_msg', esc_html__('Please check your email. You will soon receive an email with a login link.', 'keyless-auth'))) . '</p>';
+            echo '<p class="chrmrtns-box chrmrtns-success" role="status" aria-live="polite">' . wp_kses_post(apply_filters('chrmrtns_kla_success_link_msg', esc_html__('Please check your email. You will soon receive an email with a login link.', 'keyless-auth'))) . '</p>';
         } elseif (is_user_logged_in()) {
             $current_user = wp_get_current_user();
-            echo '<p class="chrmrtns-box chrmrtns-alert">' . wp_kses_post(apply_filters('chrmrtns_kla_success_login_msg', sprintf(
+            echo '<p class="chrmrtns-box chrmrtns-alert" role="status" aria-live="polite">' . wp_kses_post(apply_filters('chrmrtns_kla_success_login_msg', sprintf(
                 /* translators: %1$s: user display name with link, %2$s: logout link */
                 esc_html__('You are currently logged in as %1$s. %2$s', 'keyless-auth'),
                 '<a href="' . esc_url(get_author_posts_url($current_user->ID)) . '" title="' . esc_attr($current_user->display_name) . '">' . esc_html($current_user->display_name) . '</a>',
@@ -259,7 +259,7 @@ class Core {
         <div class="chrmrtns-kla-form-wrapper">
         <div class="chrmrtns-full-login-container">
             <!-- Standard WordPress Login Form -->
-            <div class="chrmrtns-standard-login" data-form-type="password">
+            <div class="chrmrtns-standard-login" data-form-type="password" role="region" aria-label="<?php esc_attr_e('Password login', 'keyless-auth'); ?>">
                 <h4><?php esc_html_e('Login with Password', 'keyless-auth'); ?></h4>
                 <?php
                 wp_login_form(array(
@@ -288,13 +288,13 @@ class Core {
             </div>
 
             <!-- Magic Link Login Form -->
-            <div class="chrmrtns-magic-login" data-form-type="magic">
+            <div class="chrmrtns-magic-login" data-form-type="magic" role="region" aria-label="<?php esc_attr_e('Magic link login', 'keyless-auth'); ?>">
                 <h4><?php esc_html_e('Magic Link Login', 'keyless-auth'); ?></h4>
                 <p class="chrmrtns-magic-description"><?php esc_html_e('No password required - we\'ll send you a secure login link via email.', 'keyless-auth'); ?></p>
-                <form method="post" class="chrmrtns-form">
+                <form method="post" class="chrmrtns-form" aria-label="<?php esc_attr_e('Magic link login form', 'keyless-auth'); ?>">
                     <p>
                         <label for="user_email_username_magic"><?php echo esc_html(apply_filters('chrmrtns_kla_change_form_label', $login_label)); ?></label><br>
-                        <input type="text" name="user_email_username" id="user_email_username_magic" class="input" value="" size="20" required />
+                        <input type="text" name="user_email_username" id="user_email_username_magic" class="input" value="" size="20" required aria-required="true" />
                     </p>
                     <?php wp_nonce_field('chrmrtns_kla_keyless_login_request', 'nonce', false); ?>
                     <input type="hidden" name="chrmrtns_kla_magic_form" value="1" />

@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-3.0.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,30 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v3.0.1 - WCAG 2.1 AA Accessibility Compliance (October 16, 2025)
+
+* **♿ ACCESSIBILITY:** Full WCAG 2.1 Level AA compliance achieved
+* **♿ ACCESSIBILITY:** Added ARIA live regions for error/success messages (role="alert", role="status")
+* **♿ ACCESSIBILITY:** Added aria-label to all forms and interactive elements for screen readers
+* **♿ ACCESSIBILITY:** Added aria-required="true" to required form inputs
+* **♿ ACCESSIBILITY:** Added aria-describedby linking form inputs to helper text
+* **♿ ACCESSIBILITY:** Added screen reader only text (.sr-only) utility class to all CSS files
+* **♿ ACCESSIBILITY:** QR code containers now have proper role="img" and descriptive labels
+* **♿ ACCESSIBILITY:** 2FA verification inputs include screen reader hints for code format
+* **♿ ACCESSIBILITY:** Copy buttons now have contextual aria-label for better screen reader support
+* **♿ ACCESSIBILITY:** All status indicators use aria-live for dynamic content announcements
+* **⚡ IMPROVEMENT:** Enhanced keyboard navigation with visible focus states throughout
+* **⚡ IMPROVEMENT:** Error messages now properly announced to assistive technology
+* **⚡ IMPROVEMENT:** Loading states communicated to screen readers with appropriate ARIA
+* **✅ COMPATIBILITY:** Admin page logos already compliant with proper alt attributes
+
+**What This Means:**
+- Plugin is now fully accessible to users with disabilities
+- Screen readers properly announce all status changes and errors
+- Keyboard navigation has clear context and focus indicators
+- No visual changes - purely enhanced accessibility
+- Complies with accessibility standards for government and enterprise use
 
 ### v3.0.0 - PSR-4 Refactoring & Critical Fixes (October 16, 2025)
 

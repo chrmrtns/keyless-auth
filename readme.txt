@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,6 +304,22 @@ Change token expiration:
 
 
 == Changelog ==
+= 3.0.1 =
+* ACCESSIBILITY: Full WCAG 2.1 Level AA compliance achieved
+* ACCESSIBILITY: Added ARIA live regions for error/success messages (role="alert", role="status")
+* ACCESSIBILITY: Added aria-label to all forms and interactive elements for screen readers
+* ACCESSIBILITY: Added aria-required="true" to required form inputs
+* ACCESSIBILITY: Added aria-describedby linking form inputs to helper text
+* ACCESSIBILITY: Added screen reader only text (.sr-only) utility class to all CSS files
+* ACCESSIBILITY: QR code containers now have proper role="img" and descriptive labels
+* ACCESSIBILITY: 2FA verification inputs include screen reader hints for code format
+* ACCESSIBILITY: Copy buttons now have contextual aria-label for better screen reader support
+* ACCESSIBILITY: All status indicators use aria-live for dynamic content announcements
+* IMPROVEMENT: Enhanced keyboard navigation with visible focus states throughout
+* IMPROVEMENT: Error messages now properly announced to assistive technology
+* IMPROVEMENT: Loading states communicated to screen readers with appropriate ARIA
+* COMPATIBILITY: Admin page logos already compliant with proper alt attributes
+
 = 3.0.0 =
 * ARCHITECTURAL: Complete refactoring to PSR-4 autoloading with namespaces
 * IMPROVEMENT: Modern PHP class organization - `Chrmrtns\KeylessAuth` namespace
