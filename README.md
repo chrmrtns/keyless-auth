@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-2.7.2-blue.svg)
+![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,28 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v3.0.0 - PSR-4 Refactoring & Critical Fixes (October 16, 2025)
+
+* **🏗️ ARCHITECTURAL:** Complete refactoring to PSR-4 autoloading with namespaces
+* **⚡ IMPROVEMENT:** Modern PHP class organization - `Chrmrtns\KeylessAuth` namespace
+* **💡 IMPROVEMENT:** Better IDE support and code intelligence
+* **📁 IMPROVEMENT:** Cleaner code structure organized by functionality
+* **🔧 TECHNICAL:** Autoloader replaces manual class loading
+* **📂 TECHNICAL:** Classes organized: Core/, Admin/, Email/, Security/TwoFA/
+* **⚠️ BREAKING:** Internal class names changed (no impact on users, data preserved)
+* **🔄 MAINTENANCE:** All database tables, options, and user data remain unchanged
+* **✅ MAINTENANCE:** Seamless upgrade - no manual steps required
+* **🐛 FIX:** Mail logging status tracking - Fixed critical bug where failed emails showed as "Sent"
+* **🐛 FIX:** DNS validation for invalid email domains - Emails with non-existent domains now marked as "Failed"
+* **🐛 FIX:** Database.php log_email() now returns actual insert_id instead of row count
+
+**What This Means:**
+- Modern, maintainable codebase following PSR-4 standards
+- Better code organization for future development
+- Fixed critical mail logging bug where SMTP failures weren't properly tracked
+- Invalid email domains (typos like `.commm`) now properly detected and logged as failed
+- All your data, settings, and functionality remain exactly the same
 
 ### v2.7.1 - Bug Fixes (October 13, 2025)
 

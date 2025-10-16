@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 2.7.3
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,6 +304,20 @@ Change token expiration:
 
 
 == Changelog ==
+= 3.0.0 =
+* ARCHITECTURAL: Complete refactoring to PSR-4 autoloading with namespaces
+* IMPROVEMENT: Modern PHP class organization - `Chrmrtns\KeylessAuth` namespace
+* IMPROVEMENT: Better IDE support and code intelligence
+* IMPROVEMENT: Cleaner code structure organized by functionality
+* TECHNICAL: Autoloader replaces manual class loading
+* TECHNICAL: Classes organized: Core/, Admin/, Email/, Security/TwoFA/
+* BREAKING: Internal class names changed (no impact on users, data preserved)
+* MAINTENANCE: All database tables, options, and user data remain unchanged
+* MAINTENANCE: Seamless upgrade - no manual steps required
+* FIX: Mail logging status tracking - Fixed critical bug where failed emails showed as "Sent"
+* FIX: DNS validation for invalid email domains - Emails with non-existent domains now marked as "Failed"
+* FIX: Database.php log_email() now returns actual insert_id instead of row count
+
 = 2.7.3 =
 * CRITICAL FIX: Magic link token validation - Fixed database table name mismatches causing "token expired" errors
 * CRITICAL FIX: 2FA grace period redirect - Fixed malformed URL when grace period expires (proper use of add_query_arg)
