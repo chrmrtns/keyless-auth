@@ -76,3 +76,10 @@ composer.lock
 # Private project documentation
 PROJECT_SUMMARY.md
 SVN_SUBMISSION_GUIDE.md
+
+# Development and refactoring files
+COMMIT_MESSAGE.md
+CONTRIBUTING.md
+REFACTORING_GUIDE.md
+refactor-to-namespaces.sh
+test-namespace.php
