@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-3.0.1-blue.svg)
+![Version](https://img.shields.io/badge/version-3.0.2-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,21 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v3.0.2 - Critical 2FA Fixes (October 22, 2025)
+
+* **🐛 FIX:** Critical - Fixed fatal error in 2FA magic link login flow (Core::get_instance() namespace confusion)
+* **🐛 FIX:** Critical - Fixed incorrect get_redirect_url() method call (Admin vs OptionsPage class reference)
+* **🐛 FIX:** WooCommerce compatibility - Changed 2FA verification hook from 'init' to 'template_redirect' to prevent cart warnings
+* **⚡ IMPROVEMENT:** Better timing for 2FA verification page rendering to ensure compatibility with WooCommerce and other plugins
+* **🔧 TECHNICAL:** Added OptionsPage import to Core class for proper redirect URL handling
+* **🔧 TECHNICAL:** Updated TwoFA Core class to use template_redirect hook for proper WordPress hook sequence
+
+**What This Means:**
+- Magic link login with 2FA now works correctly without fatal errors
+- Custom redirect URLs properly function after 2FA verification
+- WooCommerce sites no longer see "cart called incorrectly" warnings
+- Better plugin compatibility with improved hook timing
 
 ### v3.0.1 - WCAG 2.1 AA Accessibility Compliance (October 16, 2025)
 

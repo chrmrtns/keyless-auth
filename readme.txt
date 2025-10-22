@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,6 +304,15 @@ Change token expiration:
 
 
 == Changelog ==
+
+= 3.0.2 =
+* FIX: Critical - Fixed fatal error in 2FA magic link login flow (Core::get_instance() namespace confusion)
+* FIX: Critical - Fixed incorrect get_redirect_url() method call (Admin vs OptionsPage class reference)
+* FIX: WooCommerce compatibility - Changed 2FA verification hook from 'init' to 'template_redirect' to prevent cart warnings
+* IMPROVEMENT: Better timing for 2FA verification page rendering to ensure compatibility with WooCommerce and other plugins
+* TECHNICAL: Added OptionsPage import to Core class for proper redirect URL handling
+* TECHNICAL: Updated TwoFA Core class to use template_redirect hook for proper WordPress hook sequence
+
 = 3.0.1 =
 * ACCESSIBILITY: Full WCAG 2.1 Level AA compliance achieved
 * ACCESSIBILITY: Added ARIA live regions for error/success messages (role="alert", role="status")
