@@ -99,8 +99,8 @@ class Core {
             return;
         }
 
-        // Handle 2FA verification page
-        add_action('init', array($this, 'handle_2fa_verification'));
+        // Handle 2FA verification page (use template_redirect to ensure WooCommerce cart is ready)
+        add_action('template_redirect', array($this, 'handle_2fa_verification'));
 
         // Add grace period notices
         add_action('admin_notices', array($this, 'show_grace_period_notices'));

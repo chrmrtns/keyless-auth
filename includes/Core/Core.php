@@ -17,6 +17,7 @@ if (!defined('ABSPATH')) {
 use Chrmrtns\KeylessAuth\Security\TwoFA\Core as TwoFACore;
 use Chrmrtns\KeylessAuth\Email\Templates;
 use Chrmrtns\KeylessAuth\Admin\Admin;
+use Chrmrtns\KeylessAuth\Admin\Pages\OptionsPage;
 
 
 class Core {
@@ -595,7 +596,7 @@ class Core {
         // Check if 2FA is required for this user
         $user = get_user_by('ID', $user_id);
         if ($user && class_exists('Chrmrtns\\KeylessAuth\\Security\\TwoFA\\Core')) {
-            $tfa_core = Core::get_instance();
+            $tfa_core = TwoFACore::get_instance();
 
             // Check if 2FA is enabled and required for this user
             if (get_option('chrmrtns_kla_2fa_enabled', false)) {
@@ -614,7 +615,7 @@ class Core {
                         $redirect_url = $custom_redirect;
                     } else {
                         // Get redirect URL (custom or default)
-                        $redirect_url = class_exists('Chrmrtns\\KeylessAuth\\Admin\\Admin') ? Admin::get_redirect_url($user_id) : admin_url();
+                        $redirect_url = class_exists('Chrmrtns\\KeylessAuth\\Admin\\Pages\\OptionsPage') ? OptionsPage::get_redirect_url($user_id) : admin_url();
                     }
                     $redirect_url = apply_filters('chrmrtns_kla_after_login_redirect', $redirect_url, $user_id);
 
@@ -686,7 +687,7 @@ class Core {
             $redirect_url = $custom_redirect;
         } else {
             // Get redirect URL (custom or default)
-            $redirect_url = class_exists('Chrmrtns\\KeylessAuth\\Admin\\Admin') ? Admin::get_redirect_url($user_id) : admin_url();
+            $redirect_url = class_exists('Chrmrtns\\KeylessAuth\\Admin\\Pages\\OptionsPage') ? OptionsPage::get_redirect_url($user_id) : admin_url();
         }
 
         $redirect_url = apply_filters('chrmrtns_kla_after_login_redirect', $redirect_url, $user_id);
