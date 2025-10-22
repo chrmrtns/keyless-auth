@@ -81,6 +81,7 @@ Born from real-world frustration with password complexity and user experience ch
 * **🐛 FIX:** Critical - Fixed fatal error in 2FA magic link login flow (Core::get_instance() namespace confusion)
 * **🐛 FIX:** Critical - Fixed incorrect get_redirect_url() method call (Admin vs OptionsPage class reference)
 * **🐛 FIX:** WooCommerce compatibility - Changed 2FA verification hook from 'init' to 'template_redirect' to prevent cart warnings
+* **🐛 FIX:** Database query - Fixed wpdb::prepare() called without placeholder in get_2fa_users() causing PHP notice
 * **⚡ IMPROVEMENT:** Better timing for 2FA verification page rendering to ensure compatibility with WooCommerce and other plugins
 * **🔧 TECHNICAL:** Added OptionsPage import to Core class for proper redirect URL handling
 * **🔧 TECHNICAL:** Updated TwoFA Core class to use template_redirect hook for proper WordPress hook sequence
@@ -89,6 +90,7 @@ Born from real-world frustration with password complexity and user experience ch
 - Magic link login with 2FA now works correctly without fatal errors
 - Custom redirect URLs properly function after 2FA verification
 - WooCommerce sites no longer see "cart called incorrectly" warnings
+- No more PHP notices when viewing 2FA users admin page
 - Better plugin compatibility with improved hook timing
 
 ### v3.0.1 - WCAG 2.1 AA Accessibility Compliance (October 16, 2025)
