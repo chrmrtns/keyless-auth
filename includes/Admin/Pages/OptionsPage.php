@@ -130,8 +130,17 @@ class OptionsPage {
                         <td>
                             <input type="checkbox" id="chrmrtns_kla_enable_wp_login" name="chrmrtns_kla_enable_wp_login" value="1" <?php checked($enable_wp_login, '1'); ?> />
                             <p class="description">
-                                <?php esc_html_e('Add a magic login field to the WordPress login page (wp-login.php).', 'keyless-auth'); ?>
+                                <?php esc_html_e('Add a magic login field to the WordPress login page (wp-login.php). Note: This option is incompatible with the wp-login.php redirect option below.', 'keyless-auth'); ?>
                             </p>
+                            <?php
+                            $redirect_wp_login = get_option('chrmrtns_kla_redirect_wp_login', '0') === '1';
+                            if ($enable_wp_login === '1' && $redirect_wp_login): ?>
+                                <div class="notice notice-warning inline" style="margin: 10px 0 0 0; padding: 10px;">
+                                    <p><strong><?php esc_html_e('Notice:', 'keyless-auth'); ?></strong>
+                                    <?php esc_html_e('This option is currently inactive because "Redirect all wp-login.php requests" is enabled below. The redirect takes priority and prevents the magic login field from appearing on wp-login.php.', 'keyless-auth'); ?></p>
+                                    <p style="margin-bottom: 0;"><?php esc_html_e('To use magic login on wp-login.php, disable the redirect option below.', 'keyless-auth'); ?></p>
+                                </div>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <tr>
@@ -153,7 +162,7 @@ class OptionsPage {
                             <input type="checkbox" id="chrmrtns_kla_redirect_wp_login" name="chrmrtns_kla_redirect_wp_login" value="1" <?php checked(get_option('chrmrtns_kla_redirect_wp_login', '0'), '1'); ?> />
                             <label for="chrmrtns_kla_redirect_wp_login"><?php esc_html_e('Redirect all wp-login.php requests to custom login page', 'keyless-auth'); ?></label>
                             <p class="description">
-                                <?php esc_html_e('When enabled, all requests to wp-login.php will be redirected to your custom login page. Emergency bypass: add ?kla_use_wp_login=1 to access wp-login.php directly.', 'keyless-auth'); ?>
+                                <?php esc_html_e('When enabled, all requests to wp-login.php will be redirected to your custom login page. Note: When enabled, this automatically disables magic login integration on wp-login.php since users will be redirected away. Emergency bypass: add ?kla_use_wp_login=1 to access wp-login.php directly.', 'keyless-auth'); ?>
                             </p>
                         </td>
                     </tr>

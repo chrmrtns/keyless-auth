@@ -275,27 +275,35 @@
     color: var(--kla-primary);
 }
 
-/* Active view styles */
+/* Active view - Info grid for Security Status */
 .chrmrtns-2fa-info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin: 20px 0;
+    gap: 15px;
+    margin: 20px 0 0 0;
 }
 
 .chrmrtns-2fa-info-item {
-    background: var(--kla-background-alt);
-    padding: 15px;
-    border-radius: 5px;
+    background: var(--kla-background);
+    padding: 20px;
+    border-radius: 8px;
     text-align: center;
+    border: 1px solid var(--kla-border-light);
+    transition: all 0.2s ease;
 }
 
-.chrmrtns-2fa-info-item h4 {
+.chrmrtns-2fa-info-item:hover {
+    border-color: var(--kla-primary);
+    box-shadow: 0 2px 8px rgba(0, 115, 170, 0.1);
+}
+
+.chrmrtns-2fa-info-item h5 {
     margin: 0 0 10px 0;
     color: var(--kla-text-light);
-    font-size: 14px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 600;
 }
 
 .chrmrtns-2fa-info-item p {
@@ -305,38 +313,12 @@
     color: var(--kla-text);
 }
 
-/* Actions */
-.chrmrtns-2fa-actions {
-    margin-top: 30px;
-}
-
-.chrmrtns-2fa-actions > h4 {
-    margin-bottom: 20px;
-    color: var(--kla-text);
-    border-bottom: 1px solid var(--kla-border-light);
-    padding-bottom: 10px;
-}
-
-.chrmrtns-2fa-action {
-    margin-bottom: 30px;
-    padding: 20px;
-    background: var(--kla-background-alt);
-    border-radius: 5px;
-}
-
-.chrmrtns-2fa-action h5 {
-    margin: 0 0 10px 0;
-    color: var(--kla-text);
-}
-
-.chrmrtns-2fa-action p {
-    margin: 10px 0;
+/* Help text styling */
+.chrmrtns-help-text {
     color: var(--kla-text-light);
-}
-
-.chrmrtns-2fa-action .button {
-    margin-right: 10px;
-    margin-bottom: 10px;
+    font-style: italic;
+    display: block;
+    margin-top: 10px;
 }
 
 /* Backup codes */

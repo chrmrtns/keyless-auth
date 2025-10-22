@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-3.0.2-blue.svg)
+![Version](https://img.shields.io/badge/version-3.0.4-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,40 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v3.0.4 - Critical Login Fix (October 22, 2025)
+
+* **🐛 FIX:** Critical - Resolved login failure when both wp-login.php options enabled simultaneously
+* **⚡ IMPROVEMENT:** Added mutual exclusion logic - redirect option automatically disables wp-login.php magic login
+* **⚡ IMPROVEMENT:** Added admin warning notice explaining option conflicts with actionable guidance
+* **⚡ IMPROVEMENT:** Enhanced help text clarifying incompatibility between the two wp-login.php options
+* **🎨 UX:** Clear visual feedback when conflicting options are enabled
+* **🔧 TECHNICAL:** wp-login.php integration hooks only fire when redirect is disabled
+
+**What This Means:**
+- Fixed the bug where enabling both "Enable Login on wp-login.php" and "Redirect wp-login.php" prevented all logins
+- System now intelligently handles the conflict - redirect takes priority and disables the magic login field
+- Clear yellow warning box appears explaining exactly why and how to fix it
+- No more locked-out scenarios from conflicting settings
+
+### v3.0.3 - Theme Integration & Customization (October 22, 2025)
+
+* **🎨 NEW:** CSS variable customization hooks - `chrmrtns_kla_custom_css_variables` and `chrmrtns_kla_2fa_custom_css_variables` filters
+* **🎨 NEW:** Theme integration system - Map plugin CSS variables to your theme's color system without `!important`
+* **📖 NEW:** Comprehensive theme integration documentation in Help page with code examples
+* **⚡ IMPROVEMENT:** Enhanced 2FA active page styling - Proper boxed containers matching setup page design
+* **⚡ IMPROVEMENT:** Better CSS cascade order using `wp_add_inline_style()` for clean theme customization
+* **🐛 FIX:** Email template settings save - Added proper PHPCS ignore comments for nonce verification
+* **👨‍💻 DEVELOPER:** Filter hooks allow programmatic CSS variable overrides for automatic theme matching
+* **👨‍💻 DEVELOPER:** Supports dark mode integration via filter hooks with theme-specific CSS variable mapping
+* **📖 DOCUMENTATION:** Added "Theme Integration (Advanced)" section to Help page with basic and advanced examples
+
+**What This Means:**
+- Theme developers can seamlessly integrate Keyless Auth with their theme's color system
+- No more `!important` needed for CSS customization - proper cascade order
+- Clean PHP filter approach instead of messy CSS overrides
+- Automatic dark mode support when mapping to theme variables
+- Complete documentation with copy-paste ready examples in the admin Help page
 
 ### v3.0.2 - Critical 2FA Fixes (October 22, 2025)
 

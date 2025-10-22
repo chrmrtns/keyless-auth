@@ -226,6 +226,80 @@ class HelpPage {
                 <div class="notice notice-info inline" style="margin: 15px 0;">
                     <p><strong><?php esc_html_e('Performance Note:', 'keyless-auth'); ?></strong> <?php esc_html_e('CSS files only load when shortcodes are used on a page, saving bandwidth on pages without login forms.', 'keyless-auth'); ?></p>
                 </div>
+
+                <h3><?php esc_html_e('Theme Integration (Advanced)', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('For developers and advanced users: integrate Keyless Auth styles with your theme\'s color system using WordPress filter hooks.', 'keyless-auth'); ?></p>
+
+                <p><strong><?php esc_html_e('Why use filters instead of custom CSS?', 'keyless-auth'); ?></strong></p>
+                <ul>
+                    <li><?php esc_html_e('No !important needed - proper CSS cascade order', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Map plugin variables to your theme\'s existing CSS variables', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Automatic dark mode support when using theme variables', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Cleaner, more maintainable integration', 'keyless-auth'); ?></li>
+                </ul>
+
+                <h4><?php esc_html_e('Basic Example - Login Forms', 'keyless-auth'); ?></h4>
+                <p><?php esc_html_e('Add this code to your theme\'s functions.php or a custom plugin:', 'keyless-auth'); ?></p>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 13px;"><code>&lt;?php
+add_filter('chrmrtns_kla_custom_css_variables', function($css) {
+    $customCSS = &lt;&lt;&lt;CSS
+:root {
+    --kla-primary: var(--my-theme-primary);
+    --kla-background: var(--my-theme-bg);
+    --kla-text: var(--my-theme-text);
+}
+CSS;
+    return \$css . "\n" . \$customCSS;
+});</code></pre>
+
+                <h4><?php esc_html_e('Advanced Example - With Dark Mode', 'keyless-auth'); ?></h4>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 13px;"><code>&lt;?php
+add_filter('chrmrtns_kla_custom_css_variables', function($css) {
+    $customCSS = &lt;&lt;&lt;CSS
+/* Light mode */
+:root, :root.light-mode {
+    --kla-primary: var(--primary);
+    --kla-success: var(--success);
+    --kla-background: var(--bg-body);
+}
+
+/* Dark mode */
+:root.dark-mode {
+    --kla-primary: var(--primary);
+    --kla-background: var(--tertiary-5);
+    --kla-text: var(--text);
+}
+CSS;
+    return \$css . "\n" . \$customCSS;
+});</code></pre>
+
+                <h4><?php esc_html_e('2FA Page Integration', 'keyless-auth'); ?></h4>
+                <p><?php esc_html_e('Use a separate filter for the 2FA management page:', 'keyless-auth'); ?></p>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 13px;"><code>&lt;?php
+add_filter('chrmrtns_kla_2fa_custom_css_variables', function($css) {
+    return \$css . ':root { --kla-primary: var(--my-theme-primary); }';
+});</code></pre>
+
+                <h4><?php esc_html_e('Available CSS Variables', 'keyless-auth'); ?></h4>
+                <p><?php esc_html_e('You can override any of these variables:', 'keyless-auth'); ?></p>
+                <ul style="column-count: 2; column-gap: 20px;">
+                    <li><code>--kla-primary</code></li>
+                    <li><code>--kla-primary-hover</code></li>
+                    <li><code>--kla-primary-active</code></li>
+                    <li><code>--kla-primary-light</code></li>
+                    <li><code>--kla-success</code></li>
+                    <li><code>--kla-success-hover</code></li>
+                    <li><code>--kla-error</code></li>
+                    <li><code>--kla-error-light</code></li>
+                    <li><code>--kla-warning</code></li>
+                    <li><code>--kla-warning-light</code></li>
+                    <li><code>--kla-text</code></li>
+                    <li><code>--kla-text-light</code></li>
+                    <li><code>--kla-border</code></li>
+                    <li><code>--kla-border-light</code></li>
+                    <li><code>--kla-background</code></li>
+                    <li><code>--kla-background-alt</code></li>
+                </ul>
             </div>
 
             <div class="chrmrtns_kla_card">

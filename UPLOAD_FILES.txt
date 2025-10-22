@@ -1,5 +1,5 @@
 ================================================================================
-KEYLESS AUTH v3.0.0 - COMPLETE UPLOAD CHECKLIST
+KEYLESS AUTH v3.0.1 - COMPLETE UPLOAD CHECKLIST
 ================================================================================
 
 TOTAL FILES: 38 (28 PHP classes + 10 index.php security files)
@@ -137,8 +137,21 @@ IMPORTANT UPLOAD STEPS:
 ================================================================================
 VERSION INFORMATION:
 ================================================================================
-Version: 3.0.0
-Changes: 
+Version: 3.0.1
+Changes:
+  - Full WCAG 2.1 Level AA accessibility compliance achieved
+  - ARIA live regions for error/success messages (screen reader support)
+  - ARIA labels on all forms and interactive elements
+  - aria-required on required inputs, aria-describedby for helper text
+  - Screen reader only text (.sr-only) utility class added
+  - Enhanced keyboard navigation with visible focus states
+  - QR codes with proper role="img" and descriptive labels
+  - 2FA verification with screen reader hints
+  - Status indicators use aria-live for dynamic content
+  - Loading states communicated to assistive technology
+  - No visual changes - purely accessibility enhancements
+
+Previous (v3.0.0):
   - Complete PSR-4 autoloading refactoring
   - Admin class modularization (1798 → 166 lines)
   - New organized directory structure

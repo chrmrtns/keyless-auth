@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 3.0.2
+Stable tag: 3.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,6 +304,25 @@ Change token expiration:
 
 
 == Changelog ==
+
+= 3.0.4 =
+* FIX: Critical - wp-login.php options conflict - cannot login when both "Enable Login on wp-login.php" and "Redirect wp-login.php" are active
+* IMPROVEMENT: Added mutual exclusion logic - redirect option now automatically disables wp-login.php magic login integration
+* IMPROVEMENT: Added admin warning notice explaining when options conflict and why one is disabled
+* IMPROVEMENT: Enhanced help text under both options explaining their incompatibility
+* UX: Clear visual feedback when conflicting options are enabled with actionable guidance
+* TECHNICAL: wp-login.php integration hooks only fire when redirect is disabled to prevent login issues
+
+= 3.0.3 =
+* NEW: CSS variable customization hooks - chrmrtns_kla_custom_css_variables and chrmrtns_kla_2fa_custom_css_variables filters
+* NEW: Theme integration system - Map plugin CSS variables to your theme's color system without !important
+* NEW: Comprehensive theme integration documentation in Help page with code examples
+* IMPROVEMENT: Enhanced 2FA active page styling - Proper boxed containers matching setup page design
+* IMPROVEMENT: Better CSS cascade order using wp_add_inline_style() for clean theme customization
+* FIX: Email template settings save - Added proper PHPCS ignore comments for nonce verification (verified in parent method)
+* DEVELOPER: Filter hooks allow programmatic CSS variable overrides for automatic theme matching
+* DEVELOPER: Supports dark mode integration via filter hooks with theme-specific CSS variable mapping
+* DOCUMENTATION: Added "Theme Integration (Advanced)" section to Help page with basic and advanced examples
 
 = 3.0.2 =
 * FIX: Critical - Fixed fatal error in 2FA magic link login flow (Core::get_instance() namespace confusion)

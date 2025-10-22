@@ -33,8 +33,13 @@ class Core {
         add_shortcode('keyless-auth', array($this, 'render_login_form'));
         add_shortcode('keyless-auth-full', array($this, 'render_full_login_form'));
 
-        // wp-login.php integration - only add hooks if enabled
-        if (get_option('chrmrtns_kla_enable_wp_login', '0') === '1') {
+        // wp-login.php integration - only add hooks if enabled AND redirect is disabled
+        // These options are mutually exclusive: can't add magic login field to wp-login.php
+        // if we're redirecting away from it
+        $enable_wp_login = get_option('chrmrtns_kla_enable_wp_login', '0') === '1';
+        $redirect_wp_login = get_option('chrmrtns_kla_redirect_wp_login', '0') === '1';
+
+        if ($enable_wp_login && !$redirect_wp_login) {
             add_action('login_footer', array($this, 'chrmrtns_kla_add_wp_login_field'));
             add_action('login_init', array($this, 'chrmrtns_kla_handle_wp_login_submission'));
             add_action('login_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
@@ -861,6 +866,12 @@ class Core {
 
     /**
      * Enqueue frontend scripts
+     *
+     * Loads CSS for login forms when shortcode is rendered.
+     * Provides filter hook for theme integration without !important.
+     *
+     * @since 1.0.0
+     * @since 3.1.0 Added chrmrtns_kla_custom_css_variables filter
      */
     public function enqueue_frontend_scripts() {
         // Enqueue legacy styles for backward compatibility
@@ -897,6 +908,46 @@ class Core {
                 CHRMRTNS_KLA_VERSION,
                 'all'
             );
+
+            /**
+             * Filter: chrmrtns_kla_custom_css_variables
+             *
+             * Allows themes and plugins to customize CSS variables without using !important.
+             * The filtered CSS is added as inline styles after the main stylesheet,
+             * ensuring proper cascade order.
+             *
+             * @since 3.1.0
+             *
+             * @param string $css Custom CSS to append after plugin styles (default: empty string)
+             *
+             * @example Theme integration without !important
+             * add_filter('chrmrtns_kla_custom_css_variables', function($css) {
+             *     return $css . '
+             *         :root {
+             *             --kla-primary: var(--my-theme-primary);
+             *             --kla-background: var(--my-theme-bg);
+             *             --kla-text: var(--my-theme-text);
+             *         }
+             *     ';
+             * });
+             *
+             * @example Dark mode theme integration
+             * add_filter('chrmrtns_kla_custom_css_variables', function($css) {
+             *     return $css . '
+             *         :root.cf-theme-light {
+             *             --kla-primary: var(--primary);
+             *         }
+             *         :root.cf-theme-dark {
+             *             --kla-primary: var(--primary);
+             *             --kla-background: var(--tertiary-5);
+             *         }
+             *     ';
+             * });
+             */
+            $custom_css = apply_filters('chrmrtns_kla_custom_css_variables', '');
+            if (!empty($custom_css)) {
+                wp_add_inline_style('chrmrtns_kla_forms_enhanced', $custom_css);
+            }
         }
     }
 

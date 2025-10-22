@@ -23,7 +23,69 @@ class Templates {
     public function __construct() {
         // Constructor is intentionally empty - methods are called as needed
     }
-    
+
+    /**
+     * Save template settings
+     *
+     * Note: Nonce verification is performed in render_settings_page() before calling this method
+     */
+    public function save_template_settings() {
+        // Check if reset_custom_template is set
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+        if (isset($_POST['reset_custom_template'])) {
+            delete_option('chrmrtns_kla_custom_email_styles');
+            delete_option('chrmrtns_kla_custom_email_html');
+            update_option('chrmrtns_kla_email_template', 'default');
+            add_settings_error('chrmrtns_kla_settings', 'settings_updated', esc_html__('Custom template has been reset successfully.', 'keyless-auth'), 'updated');
+            return;
+        }
+
+        // Save template selection
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+        if (isset($_POST['chrmrtns_kla_email_template'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+            $template = sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_email_template']));
+            update_option('chrmrtns_kla_email_template', $template);
+        }
+
+        // Save color settings
+        $color_fields = array(
+            'chrmrtns_kla_button_color',
+            'chrmrtns_kla_button_hover_color',
+            'chrmrtns_kla_button_text_color',
+            'chrmrtns_kla_button_hover_text_color',
+            'chrmrtns_kla_link_color',
+            'chrmrtns_kla_link_hover_color'
+        );
+
+        foreach ($color_fields as $field) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+            if (isset($_POST[$field])) {
+                // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+                $color = sanitize_text_field(wp_unslash($_POST[$field]));
+                update_option($field, $color);
+            }
+        }
+
+        // Save custom email styles
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+        if (isset($_POST['chrmrtns_kla_custom_email_styles'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+            $custom_styles = wp_kses_post(wp_unslash($_POST['chrmrtns_kla_custom_email_styles']));
+            update_option('chrmrtns_kla_custom_email_styles', $custom_styles);
+        }
+
+        // Save custom email HTML if present
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+        if (isset($_POST['chrmrtns_kla_custom_email_html'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
+            $custom_html = wp_kses_post(wp_unslash($_POST['chrmrtns_kla_custom_email_html']));
+            update_option('chrmrtns_kla_custom_email_html', $custom_html);
+        }
+
+        add_settings_error('chrmrtns_kla_settings', 'settings_updated', esc_html__('Settings saved successfully.', 'keyless-auth'), 'updated');
+    }
+
     /**
      * Get email template content
      */
@@ -325,15 +387,11 @@ class Templates {
      * Render settings page
      */
     public function render_settings_page() {
-        
-        // Handle form submission directly here
+
+        // Handle form submission
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['chrmrtns_kla_settings_nonce'])) {
             if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chrmrtns_kla_settings_nonce'])), 'chrmrtns_kla_settings_save')) {
-                // Call the admin class save_settings method directly
-                if (class_exists('Chrmrtns\\KeylessAuth\\Admin\\Admin')) {
-                    $admin = new Admin();
-                    $admin->save_settings();
-                }
+                $this->save_template_settings();
             } else {
                 add_settings_error('chrmrtns_kla_settings', 'nonce_failed', esc_html__('Security check failed. Please try again.', 'keyless-auth'), 'error');
             }

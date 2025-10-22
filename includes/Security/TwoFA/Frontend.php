@@ -77,6 +77,9 @@ class Frontend {
     /**
      * Enqueue frontend scripts and styles
      * Called when [keyless-auth-2fa] shortcode is rendered
+     *
+     * @since 2.4.0
+     * @since 3.1.0 Added chrmrtns_kla_2fa_custom_css_variables filter
      */
     public function enqueue_frontend_scripts() {
         // Only enqueue when shortcode is actually used
@@ -127,6 +130,32 @@ class Frontend {
             array(),
             CHRMRTNS_KLA_VERSION
         );
+
+        /**
+         * Filter: chrmrtns_kla_2fa_custom_css_variables
+         *
+         * Allows themes and plugins to customize 2FA page CSS variables without using !important.
+         * The filtered CSS is added as inline styles after the main stylesheet,
+         * ensuring proper cascade order.
+         *
+         * @since 3.1.0
+         *
+         * @param string $css Custom CSS to append after 2FA plugin styles (default: empty string)
+         *
+         * @example Theme integration for 2FA page
+         * add_filter('chrmrtns_kla_2fa_custom_css_variables', function($css) {
+         *     return $css . '
+         *         :root {
+         *             --kla-primary: var(--my-theme-primary);
+         *             --kla-background: var(--my-theme-bg);
+         *         }
+         *     ';
+         * });
+         */
+        $custom_2fa_css = apply_filters('chrmrtns_kla_2fa_custom_css_variables', '');
+        if (!empty($custom_2fa_css)) {
+            wp_add_inline_style('chrmrtns-kla-2fa-frontend', $custom_2fa_css);
+        }
     }
 
     /**
@@ -299,63 +328,70 @@ class Frontend {
             <p><?php esc_html_e('Your account is protected with two-factor authentication.', 'keyless-auth'); ?></p>
         </div>
 
-        <div class="chrmrtns-2fa-info-grid">
-            <div class="chrmrtns-2fa-info-item">
-                <h4><?php esc_html_e('Last Used', 'keyless-auth'); ?></h4>
-                <p><?php echo esc_html($last_used); ?></p>
-            </div>
-            <div class="chrmrtns-2fa-info-item">
-                <h4><?php esc_html_e('Backup Codes', 'keyless-auth'); ?></h4>
-                <p><?php
-                /* translators: %d: number of backup codes remaining */
-                printf(esc_html(_n('%d code remaining', '%d codes remaining', $backup_count, 'keyless-auth')), (int) $backup_count); ?></p>
+        <div class="chrmrtns-2fa-step">
+            <h4>🔐 <?php esc_html_e('Security Status', 'keyless-auth'); ?></h4>
+            <div class="chrmrtns-2fa-info-grid">
+                <div class="chrmrtns-2fa-info-item">
+                    <h5><?php esc_html_e('Last Used', 'keyless-auth'); ?></h5>
+                    <p><?php echo esc_html($last_used); ?></p>
+                </div>
+                <div class="chrmrtns-2fa-info-item">
+                    <h5><?php esc_html_e('Backup Codes', 'keyless-auth'); ?></h5>
+                    <p><?php
+                    /* translators: %d: number of backup codes remaining */
+                    printf(esc_html(_n('%d code remaining', '%d codes remaining', $backup_count, 'keyless-auth')), (int) $backup_count); ?></p>
+                </div>
+                <div class="chrmrtns-2fa-info-item">
+                    <h5><?php esc_html_e('Account', 'keyless-auth'); ?></h5>
+                    <p><?php echo esc_html($user->user_email); ?></p>
+                </div>
             </div>
         </div>
 
-        <div class="chrmrtns-2fa-actions">
-            <h4><?php esc_html_e('Manage 2FA', 'keyless-auth'); ?></h4>
+        <div class="chrmrtns-2fa-step">
+            <h4>🔑 <?php esc_html_e('Backup Codes', 'keyless-auth'); ?></h4>
+            <p><?php esc_html_e('Use these codes if you lose access to your authenticator app. Each code can only be used once.', 'keyless-auth'); ?></p>
 
-            <div class="chrmrtns-2fa-action">
-                <h5><?php esc_html_e('Backup Codes', 'keyless-auth'); ?></h5>
-                <p><?php esc_html_e('Use these codes if you lose access to your authenticator app. Each code can only be used once.', 'keyless-auth'); ?></p>
-
-                <?php if ($backup_count > 0): ?>
-                    <div class="chrmrtns-2fa-backup-codes" id="chrmrtns-backup-codes" style="display: none;">
-                        <h6><?php esc_html_e('Your Backup Codes:', 'keyless-auth'); ?></h6>
-                        <div class="chrmrtns-backup-codes-list">
-                            <?php
-                            // For display, we need to show the original codes, but we only have hashes
-                            // This is a limitation - backup codes should be shown immediately after generation
-                            ?>
-                            <p><em><?php esc_html_e('Backup codes are only shown once when first generated for security.', 'keyless-auth'); ?></em></p>
-                        </div>
+            <?php if ($backup_count > 0): ?>
+                <div class="chrmrtns-2fa-backup-codes" id="chrmrtns-backup-codes" style="display: none;">
+                    <h6><?php esc_html_e('Your Backup Codes:', 'keyless-auth'); ?></h6>
+                    <div class="chrmrtns-backup-codes-list">
+                        <p><em><?php esc_html_e('Backup codes are only shown once when first generated for security.', 'keyless-auth'); ?></em></p>
                     </div>
-                    <button type="button" class="chrmrtns-kla-btn chrmrtns-kla-btn-secondary" id="chrmrtns-show-backup-codes">
-                        <?php esc_html_e('View Backup Codes', 'keyless-auth'); ?>
-                    </button>
-                <?php endif; ?>
-
-                <button type="button" class="chrmrtns-kla-btn chrmrtns-kla-btn-primary" id="chrmrtns-generate-backup-codes">
-                    <?php $backup_count > 0 ? esc_html_e('Generate New Backup Codes', 'keyless-auth') : esc_html_e('Generate Backup Codes', 'keyless-auth'); ?>
+                </div>
+                <button type="button" class="chrmrtns-kla-btn chrmrtns-kla-btn-secondary chrmrtns-kla-btn-small" id="chrmrtns-show-backup-codes">
+                    <?php esc_html_e('View Backup Codes', 'keyless-auth'); ?>
                 </button>
+            <?php endif; ?>
 
-                <?php if ($backup_count > 0): ?>
-                    <p><small><?php esc_html_e('Generating new codes will invalidate all existing backup codes.', 'keyless-auth'); ?></small></p>
-                <?php endif; ?>
-            </div>
+            <button type="button" class="chrmrtns-kla-btn chrmrtns-kla-btn-primary" id="chrmrtns-generate-backup-codes">
+                <?php $backup_count > 0 ? esc_html_e('Generate New Backup Codes', 'keyless-auth') : esc_html_e('Generate Backup Codes', 'keyless-auth'); ?>
+            </button>
 
-            <div class="chrmrtns-2fa-action">
-                <h5><?php esc_html_e('Disable 2FA', 'keyless-auth'); ?></h5>
-                <?php if ($role_required): ?>
+            <?php if ($backup_count > 0): ?>
+                <p><small class="chrmrtns-help-text"><?php esc_html_e('⚠️ Generating new codes will invalidate all existing backup codes.', 'keyless-auth'); ?></small></p>
+            <?php endif; ?>
+        </div>
+
+        <div class="chrmrtns-2fa-step">
+            <h4><?php echo $role_required ? '🔒' : '⚙️'; ?> <?php esc_html_e('Disable 2FA', 'keyless-auth'); ?></h4>
+            <?php if ($role_required): ?>
+                <div class="chrmrtns-2fa-required-notice" style="margin: 15px 0;">
                     <p><strong><?php esc_html_e('2FA is required for your account role and cannot be disabled.', 'keyless-auth'); ?></strong></p>
                     <p><em><?php esc_html_e('Contact your site administrator if you need to disable 2FA.', 'keyless-auth'); ?></em></p>
-                <?php else: ?>
-                    <p><?php esc_html_e('Disabling 2FA will make your account less secure. Only disable if absolutely necessary.', 'keyless-auth'); ?></p>
-                    <button type="button" class="chrmrtns-kla-btn chrmrtns-kla-btn-danger" id="chrmrtns-disable-2fa">
-                        <?php esc_html_e('Disable 2FA', 'keyless-auth'); ?>
-                    </button>
-                <?php endif; ?>
-            </div>
+                </div>
+            <?php else: ?>
+                <p><?php esc_html_e('Disabling 2FA will make your account less secure. Only disable if absolutely necessary.', 'keyless-auth'); ?></p>
+                <button type="button" class="chrmrtns-kla-btn chrmrtns-kla-btn-danger" id="chrmrtns-disable-2fa">
+                    <?php esc_html_e('Disable 2FA', 'keyless-auth'); ?>
+                </button>
+            <?php endif; ?>
+        </div>
+
+        <div class="chrmrtns-2fa-info">
+            <h4>💡 <?php esc_html_e('About Two-Factor Authentication', 'keyless-auth'); ?></h4>
+            <p><?php esc_html_e('Two-factor authentication adds an extra layer of security by requiring both your password and a time-based code from your authenticator app. This protects your account even if your password is compromised.', 'keyless-auth'); ?></p>
+            <p><strong><?php esc_html_e('Keep your backup codes safe!', 'keyless-auth'); ?></strong> <?php esc_html_e('Store them in a secure location like a password manager. You\'ll need them if you lose access to your authenticator app.', 'keyless-auth'); ?></p>
         </div>
         <?php
     }
