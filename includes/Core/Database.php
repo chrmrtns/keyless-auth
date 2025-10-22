@@ -780,10 +780,8 @@ class Database {
         } else {
             $query = $base_query . " ORDER BY u.user_login ASC";
 
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Querying custom devices table for admin interface, query properly prepared
-            $prepared_query = $wpdb->prepare($query);
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query already prepared above
-            $results = $wpdb->get_results($prepared_query);
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Querying custom devices table for admin interface, no placeholders needed
+            $results = $wpdb->get_results($query);
         }
 
         return $results;
