@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-3.0.4-blue.svg)
+![Version](https://img.shields.io/badge/version-3.0.5-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,19 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v3.0.5 - Help Page UX Enhancement (October 22, 2025)
+
+* **✨ NEW:** Help page tabs - Added tabbed navigation for better organization of help content
+* **🎨 UX:** Organized help content into 7 sections: Getting Started, Shortcodes, Two-Factor Auth, Customization, Security, Troubleshooting, and Advanced
+* **🔧 TECHNICAL:** Implemented pure CSS tabs using :checked pseudo-selectors (no JavaScript required)
+* **⚡ IMPROVEMENT:** Better content discoverability and navigation in admin help interface
+
+**What This Means:**
+- Help page now has organized tabs instead of one long scrolling page
+- Easier to find specific help topics with clear section labels
+- Pure CSS implementation for reliability and performance
+- Better user experience when looking for documentation
 
 ### v3.0.4 - Critical Login Fix (October 22, 2025)
 

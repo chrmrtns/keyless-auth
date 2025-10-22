@@ -16,6 +16,31 @@ if (!defined('ABSPATH')) {
 class HelpPage {
 
     /**
+     * Constructor
+     */
+    public function __construct() {
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_help_page_styles'));
+    }
+
+    /**
+     * Enqueue help page styles
+     */
+    public function enqueue_help_page_styles($hook) {
+        // Only load on our help page
+        if ($hook !== 'keyless-auth_page_keyless-auth-help') {
+            return;
+        }
+
+        wp_enqueue_style(
+            'chrmrtns-kla-help-page',
+            CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/help-page.css',
+            array(),
+            CHRMRTNS_KLA_VERSION . '.1', // Cache bust for CSS tab fix
+            'all'
+        );
+    }
+
+    /**
      * Render the help page
      */
     public function render() {
@@ -29,7 +54,33 @@ class HelpPage {
                 <?php esc_html_e('Keyless Auth - Help & Instructions', 'keyless-auth'); ?>
             </h1>
 
-            <div class="chrmrtns_kla_card">
+            <div class="chrmrtns-help-tabs">
+                <!-- Hidden Radio Inputs for Tab State -->
+                <input type="radio" name="chrmrtns-help-tab" id="tab-getting-started" class="chrmrtns-tab-radio" checked>
+                <input type="radio" name="chrmrtns-help-tab" id="tab-shortcodes" class="chrmrtns-tab-radio">
+                <input type="radio" name="chrmrtns-help-tab" id="tab-2fa" class="chrmrtns-tab-radio">
+                <input type="radio" name="chrmrtns-help-tab" id="tab-customization" class="chrmrtns-tab-radio">
+                <input type="radio" name="chrmrtns-help-tab" id="tab-security" class="chrmrtns-tab-radio">
+                <input type="radio" name="chrmrtns-help-tab" id="tab-troubleshooting" class="chrmrtns-tab-radio">
+                <input type="radio" name="chrmrtns-help-tab" id="tab-advanced" class="chrmrtns-tab-radio">
+
+                <!-- Tab Navigation Labels -->
+                <div class="chrmrtns-tab-nav">
+                    <label for="tab-getting-started" class="chrmrtns-tab-button"><?php esc_html_e('⭐ Getting Started', 'keyless-auth'); ?></label>
+                    <label for="tab-shortcodes" class="chrmrtns-tab-button"><?php esc_html_e('📝 Shortcodes', 'keyless-auth'); ?></label>
+                    <label for="tab-2fa" class="chrmrtns-tab-button"><?php esc_html_e('🔐 Two-Factor Auth', 'keyless-auth'); ?></label>
+                    <label for="tab-customization" class="chrmrtns-tab-button"><?php esc_html_e('🎨 Customization', 'keyless-auth'); ?></label>
+                    <label for="tab-security" class="chrmrtns-tab-button"><?php esc_html_e('🛡️ Security', 'keyless-auth'); ?></label>
+                    <label for="tab-troubleshooting" class="chrmrtns-tab-button"><?php esc_html_e('🔧 Troubleshooting', 'keyless-auth'); ?></label>
+                    <label for="tab-advanced" class="chrmrtns-tab-button"><?php esc_html_e('⚙️ Advanced', 'keyless-auth'); ?></label>
+                </div>
+
+                <!-- Tab Content Wrapper -->
+                <div class="chrmrtns-tab-wrapper">
+
+                <!-- Tab Content: Getting Started -->
+                <div class="chrmrtns-tab-content" data-tab="tab-getting-started">
+                    <div class="chrmrtns_kla_card">
                 <h2><?php esc_html_e('Getting Started', 'keyless-auth'); ?></h2>
                 <p><?php esc_html_e('Keyless Auth allows your users to login without passwords using secure email magic links. Here\'s how to get started:', 'keyless-auth'); ?></p>
 
@@ -112,6 +163,63 @@ class HelpPage {
                     <li><strong><?php esc_html_e('Database Logging:', 'keyless-auth'); ?></strong> <?php esc_html_e('All attempts are logged for security analysis', 'keyless-auth'); ?></li>
                 </ul>
             </div>
+                </div>
+
+                <!-- Tab Content: Shortcodes -->
+                <div class="chrmrtns-tab-content" data-tab="tab-shortcodes">
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Available Shortcodes', 'keyless-auth'); ?></h2>
+                <table class="widefat">
+                    <thead>
+                        <tr>
+                            <th><?php esc_html_e('Shortcode', 'keyless-auth'); ?></th>
+                            <th><?php esc_html_e('Description', 'keyless-auth'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>[keyless-auth]</code></td>
+                            <td><?php esc_html_e('Main passwordless login form (magic link only). Supports attributes: redirect, button_text, description, label', 'keyless-auth'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><code>[keyless-auth-full]</code></td>
+                            <td><?php esc_html_e('Complete login form with both password and magic link options. Supports attributes: redirect, show_title, title_text', 'keyless-auth'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><code>[keyless-auth-2fa]</code></td>
+                            <td><?php esc_html_e('Two-factor authentication setup and management interface (requires 2FA system to be enabled in Options)', 'keyless-auth'); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('Shortcode Usage Examples', 'keyless-auth'); ?></h2>
+                <p><?php esc_html_e('Here are some examples of how to use the shortcodes:', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('Basic Usage:', 'keyless-auth'); ?></h4>
+                <p><code>[keyless-auth]</code> - <?php esc_html_e('Magic link login form only', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-full]</code> - <?php esc_html_e('Both password and magic link options', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-2fa]</code> - <?php esc_html_e('2FA setup interface (when 2FA is enabled)', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('[keyless-auth] Options:', 'keyless-auth'); ?></h4>
+                <p><code>[keyless-auth redirect="/dashboard/"]</code><br><?php esc_html_e('Redirect to dashboard after magic link login', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth button_text="Email login link"]</code><br><?php esc_html_e('Custom button text', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth label="Your Email"]</code><br><?php esc_html_e('Custom field label', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth description="Secure passwordless access"]</code><br><?php esc_html_e('Add description text above the form', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth button_text="Email login link" description="Secure passwordless access" label="Your Email" redirect="/dashboard/"]</code><br><?php esc_html_e('Combined options example', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('Advanced [keyless-auth-full] Options:', 'keyless-auth'); ?></h4>
+                <p><code>[keyless-auth-full redirect="/dashboard/"]</code><br><?php esc_html_e('Redirect to dashboard after login', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-full show_title="no"]</code><br><?php esc_html_e('Hide the main title', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-full title_text="Member Login"]</code><br><?php esc_html_e('Custom title text', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-full title_text="Member Login" redirect="/members/" show_title="yes"]</code><br><?php esc_html_e('Combined options example', 'keyless-auth'); ?></p>
+            </div>
+                </div>
+
+                <!-- Tab Content: Two-Factor Auth -->
+                <div class="chrmrtns-tab-content" data-tab="tab-2fa">
 
             <div class="chrmrtns_kla_card">
                 <h2><?php esc_html_e('Two-Factor Authentication (2FA)', 'keyless-auth'); ?></h2>
@@ -207,6 +315,10 @@ class HelpPage {
                     <p><strong><?php esc_html_e('Security Note:', 'keyless-auth'); ?></strong> <?php esc_html_e('Application Passwords are time-limited tokens that can be revoked individually. They provide better security than using regular passwords for API access.', 'keyless-auth'); ?></p>
                 </div>
             </div>
+                </div>
+
+                <!-- Tab Content: Customization -->
+                <div class="chrmrtns-tab-content" data-tab="tab-customization">
 
             <div class="chrmrtns_kla_card">
                 <h2><?php esc_html_e('Appearance & Theme Settings', 'keyless-auth'); ?></h2>
@@ -301,6 +413,10 @@ add_filter('chrmrtns_kla_2fa_custom_css_variables', function($css) {
                     <li><code>--kla-background-alt</code></li>
                 </ul>
             </div>
+                </div>
+
+                <!-- Tab Content: Security -->
+                <div class="chrmrtns-tab-content" data-tab="tab-security">
 
             <div class="chrmrtns_kla_card">
                 <h2><?php esc_html_e('Security Settings', 'keyless-auth'); ?></h2>
@@ -394,6 +510,10 @@ add_filter('chrmrtns_kla_2fa_custom_css_variables', function($css) {
                     <p><strong><?php esc_html_e('Security Tip:', 'keyless-auth'); ?></strong> <?php esc_html_e('Combine with strong passwords or magic link authentication for best security. User enumeration prevention makes brute force attacks significantly harder.', 'keyless-auth'); ?></p>
                 </div>
             </div>
+                </div>
+
+                <!-- Tab Content: Troubleshooting -->
+                <div class="chrmrtns-tab-content" data-tab="tab-troubleshooting">
 
             <div class="chrmrtns_kla_card">
                 <h2><?php esc_html_e('Troubleshooting', 'keyless-auth'); ?></h2>
@@ -406,8 +526,24 @@ add_filter('chrmrtns_kla_2fa_custom_css_variables', function($css) {
 
                     <dt><strong><?php esc_html_e('Users not receiving emails?', 'keyless-auth'); ?></strong></dt>
                     <dd><?php esc_html_e('Check spam folders and verify the user\'s email address is correct. Consider configuring DKIM/SPF records.', 'keyless-auth'); ?></dd>
+
+                    <dt><strong><?php esc_html_e('Password login not working with [keyless-auth-full]?', 'keyless-auth'); ?></strong></dt>
+                    <dd>
+                        <?php esc_html_e('If password login reloads without errors but magic link works, your page builder may be intercepting wp-login.php. Page builders like Bricks Builder, Elementor Pro, and Divi have custom authentication page settings that redirect wp-login.php to custom pages.', 'keyless-auth'); ?>
+                        <br><br>
+                        <strong><?php esc_html_e('Solutions:', 'keyless-auth'); ?></strong>
+                        <ul style="margin-top: 5px; margin-left: 20px;">
+                            <li><strong><?php esc_html_e('Bricks Builder:', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to Bricks → Settings → General → Custom authentication pages, and disable the "Login Page" setting.', 'keyless-auth'); ?></li>
+                            <li><strong><?php esc_html_e('Elementor/Divi:', 'keyless-auth'); ?></strong> <?php esc_html_e('Check for similar "custom login page" or "authentication page" settings and disable them.', 'keyless-auth'); ?></li>
+                            <li><strong><?php esc_html_e('General:', 'keyless-auth'); ?></strong> <?php esc_html_e('Ensure no other plugins or theme settings are redirecting wp-login.php to a custom page.', 'keyless-auth'); ?></li>
+                        </ul>
+                    </dd>
                 </dl>
             </div>
+                </div>
+
+                <!-- Tab Content: Advanced -->
+                <div class="chrmrtns-tab-content" data-tab="tab-advanced">
 
             <div class="chrmrtns_kla_card">
                 <h2><?php esc_html_e('Advanced Configuration', 'keyless-auth'); ?></h2>
@@ -476,7 +612,11 @@ new Notices(
                     <li><code>wp_chrmrtns_kla_user_devices</code> - <?php esc_html_e('Device fingerprinting', 'keyless-auth'); ?></li>
                 </ul>
             </div>
-        </div>
+                </div>
+
+                </div><!-- .chrmrtns-tab-wrapper -->
+            </div><!-- .chrmrtns-help-tabs -->
+        </div><!-- .wrap -->
         <?php
     }
 }

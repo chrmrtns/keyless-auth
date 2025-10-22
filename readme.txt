@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 3.0.4
+Stable tag: 3.0.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -283,6 +283,16 @@ Change token expiration:
 
 	Great question! We built Keyless Auth out of real-world frustration with password complexity and user experience challenges. The story involves too many plugins, security concerns, and the quest for the perfect balance between usability and security. Read the full story behind the plugin's creation: [How Many Plugins Are Too Many? Just One More: Why We Built Keyless Auth](https://chris-martens.com/blog/how-many-plugins-are-too-many-just-one-more-why-we-built-keyless-auth/)
 
+= Password login not working with [keyless-auth-full] shortcode? =
+
+	If the password login form reloads without logging in or showing errors, but magic link login works fine, check if your page builder has custom authentication page settings enabled. Page builders like Bricks Builder, Elementor Pro, and Divi often have settings that redirect wp-login.php to custom pages, which conflicts with WordPress's default password form submission.
+
+	**Solution for Bricks Builder**: Go to Bricks → Settings → General → Custom authentication pages, and disable the "Login Page" setting.
+
+	**Solution for other page builders**: Look for similar "custom login page" or "authentication page" settings in your page builder's configuration and disable them.
+
+	**Why does magic link work?** Magic link forms submit to the current page, while WordPress's password form (wp_login_form) submits to wp-login.php, which gets intercepted by the page builder.
+
 = I can't find a question similar to my issue; Where can I find support? =
 
 	For plugin support, please use the WordPress.org support forum for Keyless Auth. For bug reports and feature requests, you can also visit our GitHub repository. For support with the original Passwordless Login functionality, visit http://www.cozmoslabs.com.
@@ -304,6 +314,12 @@ Change token expiration:
 
 
 == Changelog ==
+
+= 3.0.5 =
+* NEW: Help page tabs - Added tabbed navigation for better organization of help content
+* UX: Organized help content into 7 sections: Getting Started, Shortcodes, Two-Factor Auth, Customization, Security, Troubleshooting, and Advanced
+* TECHNICAL: Implemented pure CSS tabs using :checked pseudo-selectors (no JavaScript required)
+* IMPROVEMENT: Better content discoverability and navigation in admin help interface
 
 = 3.0.4 =
 * FIX: Critical - wp-login.php options conflict - cannot login when both "Enable Login on wp-login.php" and "Redirect wp-login.php" are active
