@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-3.0.5-blue.svg)
+![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -75,6 +75,38 @@ Born from real-world frustration with password complexity and user experience ch
 4. Users scan QR code with authenticator app
 
 ## 🚀 Latest Updates
+
+### v3.1.0 - WooCommerce Integration & Template Fixes (October 23, 2025)
+
+* **🛒 NEW:** WooCommerce Integration - Magic link authentication on WooCommerce login forms
+* **🎨 NEW:** Collapsible UI design - "Or login with magic link instead" toggle link on My Account and Checkout pages
+* **⚙️ NEW:** WooCommerce setting toggle - Enable/disable integration from Options page
+* **🏗️ NEW:** Modular architecture - Separate WooCommerce.php class for clean code organization
+* **🔍 NEW:** Auto-detection - Only loads when WooCommerce is active and setting is enabled
+* **🛍️ NEW:** Smart checkout redirect - Users return to checkout after login, preserving cart
+* **🐛 FIX:** Custom email template not saving - Fixed field name mismatch (chrmrtns_kla_custom_email_body vs chrmrtns_kla_custom_email_html)
+* **🐛 FIX:** Reset custom template function now uses correct option name (chrmrtns_kla_custom_email_body)
+* **🐛 FIX:** Template sanitization now preserves inline styles and `<style>` tags properly with wp_kses
+* **⚡ IMPROVEMENT:** Real-time color preview updates - All template previews update instantly when colors change
+* **⚡ IMPROVEMENT:** WordPress standard notice classes - Replaced inline styles with 'notice notice-warning/info inline' classes
+* **⚡ IMPROVEMENT:** Added helpful notice explaining WYSIWYG placeholder behavior in custom template editor
+* **⚡ IMPROVEMENT:** Seamless integration with WooCommerce themes - Minimal, non-intrusive styling
+* **⚡ IMPROVEMENT:** Vanilla JavaScript implementation - No jQuery dependency for WooCommerce integration
+* **⚡ IMPROVEMENT:** Dynamic toggle text - Changes from "Or login with magic link instead" to "Close magic link form"
+* **⚡ IMPROVEMENT:** Dedicated AJAX handler - Separate handler for WooCommerce requests with proper JSON responses
+* **👨‍💻 DEVELOPER:** Foundation for Pro features - WooCommerce integration ready for future enhancements
+* **🔧 TECHNICAL:** PSR-4 namespaced class at includes/Core/WooCommerce.php
+* **🔧 TECHNICAL:** Uses Fetch API for modern AJAX requests
+* **🌐 TRANSLATION:** Added 10+ new translatable strings for WooCommerce integration
+
+**What This Means:**
+- WooCommerce sites can now use magic link authentication on My Account and Checkout pages
+- Customers on checkout can log in without leaving the page, preserving their cart
+- Custom email templates now save properly and persist after page refresh
+- Template color changes update all previews in real-time without saving
+- Better user experience with clear notices about placeholder behavior in WYSIWYG editor
+- Clean, non-intrusive UI that respects WooCommerce theme styling
+- Modern vanilla JavaScript implementation for better performance
 
 ### v3.0.5 - Help Page UX Enhancement (October 22, 2025)
 

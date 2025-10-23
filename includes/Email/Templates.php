@@ -34,7 +34,7 @@ class Templates {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
         if (isset($_POST['reset_custom_template'])) {
             delete_option('chrmrtns_kla_custom_email_styles');
-            delete_option('chrmrtns_kla_custom_email_html');
+            delete_option('chrmrtns_kla_custom_email_body');
             update_option('chrmrtns_kla_email_template', 'default');
             add_settings_error('chrmrtns_kla_settings', 'settings_updated', esc_html__('Custom template has been reset successfully.', 'keyless-auth'), 'updated');
             return;
@@ -77,10 +77,13 @@ class Templates {
 
         // Save custom email HTML if present
         // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
-        if (isset($_POST['chrmrtns_kla_custom_email_html'])) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() before calling this method
-            $custom_html = wp_kses_post(wp_unslash($_POST['chrmrtns_kla_custom_email_html']));
-            update_option('chrmrtns_kla_custom_email_html', $custom_html);
+        if (isset($_POST['chrmrtns_kla_custom_email_body'])) {
+            // Use wp_kses with custom allowed HTML for email templates (preserve inline styles)
+            $allowed_html = wp_kses_allowed_html('post');
+            $allowed_html['style'] = array();
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in render_settings_page() line 396 before calling this method
+            $custom_html = wp_kses(wp_unslash($_POST['chrmrtns_kla_custom_email_body']), $allowed_html);
+            update_option('chrmrtns_kla_custom_email_body', $custom_html);
         }
 
         add_settings_error('chrmrtns_kla_settings', 'settings_updated', esc_html__('Settings saved successfully.', 'keyless-auth'), 'updated');
@@ -480,7 +483,9 @@ class Templates {
                         'style' => array(),
                         'width' => array(),
                         'height' => array(),
-                        'border' => array()
+                        'border' => array(),
+                        'class' => array(),
+                        'data-template' => array()
                     ),
                     'div' => array('style' => array(), 'class' => array()),
                     'p' => array('style' => array(), 'class' => array()),
@@ -540,7 +545,7 @@ class Templates {
                 break;
         }
         
-        return '<iframe srcdoc="' . htmlspecialchars($preview_content, ENT_QUOTES) . '" style="width: 100%; height: 100%; border: none;"></iframe>';
+        return '<iframe class="template-preview-iframe" data-template="' . esc_attr($template_key) . '" srcdoc="' . htmlspecialchars($preview_content, ENT_QUOTES) . '" style="width: 100%; height: 100%; border: none;"></iframe>';
     }
     
     /**
@@ -609,7 +614,6 @@ class Templates {
     private function render_custom_template_editor() {
         $custom_body = get_option('chrmrtns_kla_custom_email_body', '');
 
-
         // Only provide placeholder content for DISPLAY PURPOSES if completely empty
         // This does NOT auto-save the content - just shows a helpful starting template
         $editor_content = $custom_body;
@@ -643,13 +647,17 @@ class Templates {
         <div id="chrmrtns_kla_custom_template_section" style="<?php echo get_option('chrmrtns_kla_email_template', 'default') !== 'custom' ? 'display: none;' : ''; ?>">
             <h4><?php esc_html_e('Email Body Content', 'keyless-auth'); ?></h4>
             <p><?php esc_html_e('Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility.', 'keyless-auth'); ?></p>
-            <div style="background: #e7f3ff; border-left: 4px solid #2196F3; padding: 12px; margin: 15px 0; border-radius: 4px;">
-                <p style="margin: 0; font-size: 14px;"><strong>💡 Tip:</strong> When switching between Visual and Text modes, the editor may convert placeholders within CSS style attributes to lowercase (e.g., <code>[BUTTON_COLOR]</code> becomes <code>[button_color]</code>). This is normal behavior and both formats work correctly in your emails.</p>
+            <div class="notice notice-warning inline">
+                <p><strong>⚠️ About Placeholders in the Editor:</strong></p>
+                <p>The WYSIWYG editor below will show placeholders like <code>[BUTTON_COLOR]</code> as plain text. This is normal! The actual colors and values are automatically applied when emails are sent. To see how your template looks with real colors applied, <strong>save your changes and check the "Custom Template" preview in the grid above</strong>.</p>
+            </div>
+            <div class="notice notice-info inline">
+                <p><strong>💡 Tip:</strong> When switching between Visual and Text modes, the editor may convert placeholders within CSS style attributes to lowercase (e.g., <code>[BUTTON_COLOR]</code> becomes <code>[button_color]</code>). This is normal behavior and both formats work correctly in your emails.</p>
             </div>
             <?php if (empty($custom_body)): ?>
-                <p style="background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; margin: 10px 0;">
-                    <strong>Note:</strong> This is a starter template. Edit it as needed and click "Save Settings" to store your changes.
-                </p>
+                <div class="notice notice-warning inline">
+                    <p><strong>Note:</strong> This is a starter template. Edit it as needed and click "Save Settings" to store your changes.</p>
+                </div>
             <?php endif; ?>
             <?php
             wp_editor($editor_content, 'chrmrtns_kla_custom_email_body', array(

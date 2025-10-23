@@ -11,22 +11,68 @@ jQuery(document).ready(function($) {
         $(this).text($(this).text() === 'View' ? 'Hide' : 'View');
     });
 
+    // Store initial color values for preview updates
+    var initialColors = {
+        button_color: $('#chrmrtns_kla_button_color_text').val() || '#007bff',
+        button_hover_color: $('#chrmrtns_kla_button_hover_color_text').val() || '#0056b3',
+        button_text_color: $('#chrmrtns_kla_button_text_color_text').val() || '#ffffff',
+        button_hover_text_color: $('#chrmrtns_kla_button_hover_text_color_text').val() || '#ffffff',
+        link_color: $('#chrmrtns_kla_link_color_text').val() || '#007bff',
+        link_hover_color: $('#chrmrtns_kla_link_hover_color_text').val() || '#0056b3'
+    };
+
+    // Function to update all preview iframes with new colors
+    function updatePreviewColors() {
+        var newColors = {
+            button_color: $('#chrmrtns_kla_button_color_text').val() || '#007bff',
+            button_hover_color: $('#chrmrtns_kla_button_hover_color_text').val() || '#0056b3',
+            button_text_color: $('#chrmrtns_kla_button_text_color_text').val() || '#ffffff',
+            button_hover_text_color: $('#chrmrtns_kla_button_hover_text_color_text').val() || '#ffffff',
+            link_color: $('#chrmrtns_kla_link_color_text').val() || '#007bff',
+            link_hover_color: $('#chrmrtns_kla_link_hover_color_text').val() || '#0056b3'
+        };
+
+        // Update each preview iframe
+        $('.template-preview-iframe').each(function() {
+            var $iframe = $(this);
+            var srcdoc = $iframe.attr('srcdoc');
+
+            if (srcdoc) {
+                // Replace old color values with new ones (case-insensitive for CSS)
+                srcdoc = srcdoc.replace(new RegExp(initialColors.button_color, 'gi'), newColors.button_color);
+                srcdoc = srcdoc.replace(new RegExp(initialColors.button_hover_color, 'gi'), newColors.button_hover_color);
+                srcdoc = srcdoc.replace(new RegExp(initialColors.button_text_color, 'gi'), newColors.button_text_color);
+                srcdoc = srcdoc.replace(new RegExp(initialColors.button_hover_text_color, 'gi'), newColors.button_hover_text_color);
+                srcdoc = srcdoc.replace(new RegExp(initialColors.link_color, 'gi'), newColors.link_color);
+                srcdoc = srcdoc.replace(new RegExp(initialColors.link_hover_color, 'gi'), newColors.link_hover_color);
+
+                // Update iframe
+                $iframe.attr('srcdoc', srcdoc);
+            }
+        });
+
+        // Update initial colors for next change
+        initialColors = newColors;
+    }
+
     // Color picker synchronization for email templates
     $('input[type="color"][id$="_picker"]').on('change input', function() {
         var color = $(this).val();
         var textInput = $(this).siblings('input[type="text"]');
         textInput.val(color);
+        updatePreviewColors();
     });
-    
+
     // Text input to color picker synchronization
     $('input[id$="_text"]').on('input', function() {
         var colorValue = $(this).val();
         var colorPicker = $(this).siblings('input[type="color"]');
-        
+
         // Only update color picker if it's a valid hex color
         if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(colorValue)) {
             colorPicker.val(colorValue);
         }
+        updatePreviewColors();
     });
     
     // Show/hide custom template editor based on selection

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Keyless Auth - Login without Passwords 3.0.5\n"
+"Project-Id-Version: Keyless Auth - Login without Passwords 3.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/keyless-auth\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-22T19:52:03+00:00\n"
+"POT-Creation-Date: 2025-10-23T05:04:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: keyless-auth\n"
@@ -26,7 +26,7 @@ msgstr ""
 
 #. Description of the plugin
 #: keyless-auth.php
-msgid "Enhanced passwordless authentication with magic email links, two-factor authentication, SMTP integration, and comprehensive security features for WordPress."
+msgid "Enhanced passwordless authentication with magic email links, two-factor authentication, SMTP integration, WooCommerce integration, and comprehensive security features for WordPress."
 msgstr ""
 
 #. Author of the plugin
@@ -161,11 +161,11 @@ msgstr ""
 
 #: includes/Admin/Pages/DashboardPage.php:38
 #: includes/Admin/Pages/HelpPage.php:53
-#: includes/Admin/Pages/OptionsPage.php:117
+#: includes/Admin/Pages/OptionsPage.php:121
 #: includes/Admin/Pages/SmtpPage.php:40
 #: includes/Admin/Pages/TwoFAUsersPage.php:42
 #: includes/Email/MailLogger.php:604
-#: includes/Email/Templates.php:403
+#: includes/Email/Templates.php:406
 msgid "Keyless Auth Logo"
 msgstr ""
 
@@ -512,7 +512,7 @@ msgid "All attempts are logged for security analysis"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:225
-#: includes/Admin/Pages/OptionsPage.php:273
+#: includes/Admin/Pages/OptionsPage.php:294
 msgid "Two-Factor Authentication (2FA)"
 msgstr ""
 
@@ -549,7 +549,7 @@ msgid "Place [keyless-auth-2fa] shortcode on a page for user setup"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:233
-#: includes/Admin/Pages/OptionsPage.php:288
+#: includes/Admin/Pages/OptionsPage.php:309
 msgid "User Setup:"
 msgstr ""
 
@@ -782,17 +782,17 @@ msgid "Application Passwords are time-limited tokens that can be revoked individ
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:324
-#: includes/Admin/Pages/OptionsPage.php:196
+#: includes/Admin/Pages/OptionsPage.php:217
 msgid "Appearance & Theme Settings"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:325
-#: includes/Admin/Pages/OptionsPage.php:198
+#: includes/Admin/Pages/OptionsPage.php:219
 msgid "Control how login forms appear in light and dark mode themes."
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:327
-#: includes/Admin/Pages/OptionsPage.php:204
+#: includes/Admin/Pages/OptionsPage.php:225
 msgid "Dark Mode Behavior"
 msgstr ""
 
@@ -900,18 +900,18 @@ msgid "You can override any of these variables:"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:422
-#: includes/Admin/Pages/OptionsPage.php:223
-#: includes/Admin/Pages/OptionsPage.php:380
+#: includes/Admin/Pages/OptionsPage.php:244
+#: includes/Admin/Pages/OptionsPage.php:401
 msgid "Security Settings"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:423
-#: includes/Admin/Pages/OptionsPage.php:225
+#: includes/Admin/Pages/OptionsPage.php:246
 msgid "Additional security options to harden your WordPress installation."
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:425
-#: includes/Admin/Pages/OptionsPage.php:231
+#: includes/Admin/Pages/OptionsPage.php:252
 msgid "Disable XML-RPC"
 msgstr ""
 
@@ -971,7 +971,7 @@ msgid "If you use REST API instead of XML-RPC, you can safely disable XML-RPC. M
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:449
-#: includes/Admin/Pages/OptionsPage.php:244
+#: includes/Admin/Pages/OptionsPage.php:265
 msgid "Disable Application Passwords"
 msgstr ""
 
@@ -1036,7 +1036,7 @@ msgid "If you get locked out, you can always deactivate the Keyless Auth plugin 
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:480
-#: includes/Admin/Pages/OptionsPage.php:258
+#: includes/Admin/Pages/OptionsPage.php:279
 msgid "Prevent User Enumeration"
 msgstr ""
 
@@ -1316,247 +1316,259 @@ msgstr ""
 msgid "Device fingerprinting"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:65
-#: includes/Admin/Pages/OptionsPage.php:107
+#: includes/Admin/Pages/OptionsPage.php:68
+#: includes/Admin/Pages/OptionsPage.php:111
 #: includes/Security/TwoFA/Core.php:290
 #: keyless-auth.php:88
 msgid "Your account requires 2FA setup within {days} days for security."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:83
+#: includes/Admin/Pages/OptionsPage.php:86
 msgid "Emergency mode is now enabled. 2FA system is disabled for all users."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:85
+#: includes/Admin/Pages/OptionsPage.php:88
 msgid "Emergency mode is disabled. 2FA system is now active."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:92
+#: includes/Admin/Pages/OptionsPage.php:95
 msgid "Options saved successfully!"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:118
+#: includes/Admin/Pages/OptionsPage.php:122
 msgid "Keyless Auth - Options"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:120
+#: includes/Admin/Pages/OptionsPage.php:124
 msgid "Plugin Options"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:128
+#: includes/Admin/Pages/OptionsPage.php:132
 msgid "Enable Login on wp-login.php"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:133
+#: includes/Admin/Pages/OptionsPage.php:137
 msgid "Add a magic login field to the WordPress login page (wp-login.php). Note: This option is incompatible with the wp-login.php redirect option below."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:139
+#: includes/Admin/Pages/OptionsPage.php:143
 msgid "Notice:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:140
+#: includes/Admin/Pages/OptionsPage.php:144
 msgid "This option is currently inactive because \"Redirect all wp-login.php requests\" is enabled below. The redirect takes priority and prevents the magic login field from appearing on wp-login.php."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:141
+#: includes/Admin/Pages/OptionsPage.php:145
 msgid "To use magic login on wp-login.php, disable the redirect option below."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:148
-msgid "Custom Login Page URL"
-msgstr ""
-
-#: includes/Admin/Pages/OptionsPage.php:153
-msgid "Optional: Specify a custom login page URL. When users need to login (like in 2FA flow), they'll be redirected here instead of wp-login.php. Leave empty to use the default WordPress login page."
+#: includes/Admin/Pages/OptionsPage.php:152
+msgid "Enable WooCommerce Integration"
 msgstr ""
 
 #: includes/Admin/Pages/OptionsPage.php:159
+msgid "WooCommerce is not active. Install and activate WooCommerce to enable this feature."
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:161
+msgid "Add magic link authentication to WooCommerce login forms (My Account and Checkout pages). A collapsible \"Or login with magic link instead\" option will appear below the password field."
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:169
+msgid "Custom Login Page URL"
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:174
+msgid "Optional: Specify a custom login page URL. When users need to login (like in 2FA flow), they'll be redirected here instead of wp-login.php. Leave empty to use the default WordPress login page."
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:180
 msgid "Redirect wp-login.php"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:163
+#: includes/Admin/Pages/OptionsPage.php:184
 msgid "Redirect all wp-login.php requests to custom login page"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:165
+#: includes/Admin/Pages/OptionsPage.php:186
 msgid "When enabled, all requests to wp-login.php will be redirected to your custom login page. Note: When enabled, this automatically disables magic login integration on wp-login.php since users will be redirected away. Emergency bypass: add ?kla_use_wp_login=1 to access wp-login.php directly."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:171
+#: includes/Admin/Pages/OptionsPage.php:192
 msgid "Post-Login Redirect URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:176
+#: includes/Admin/Pages/OptionsPage.php:197
 msgid "Optional: Specify where users should be redirected after successful login via magic link or 2FA. This applies to all users regardless of role. Leave empty to use default WordPress behavior (admin dashboard for admins, homepage for others)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:182
+#: includes/Admin/Pages/OptionsPage.php:203
 msgid "2FA Setup Page URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:187
+#: includes/Admin/Pages/OptionsPage.php:208
 msgid "Optional: Specify a custom page where users can set up 2FA using the [keyless-auth-2fa] shortcode. When users need to configure 2FA, email notifications will link here instead of wp-login.php. Leave empty to use the default WordPress login page."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:209
+#: includes/Admin/Pages/OptionsPage.php:230
 msgid "Auto (System Preference + Theme Classes)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:210
+#: includes/Admin/Pages/OptionsPage.php:231
 msgid "Light Only (No Dark Mode)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:211
+#: includes/Admin/Pages/OptionsPage.php:232
 msgid "Dark Only (Force Dark Mode)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:214
+#: includes/Admin/Pages/OptionsPage.php:235
 msgid "Control how login forms appear in dark mode. Auto detects system preferences and theme dark mode classes. Light Only forces light theme. Dark Only forces dark theme."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:237
+#: includes/Admin/Pages/OptionsPage.php:258
 msgid "Disable WordPress XML-RPC interface to prevent brute force attacks and reduce attack surface. Only disable if you don't use XML-RPC features (Jetpack, mobile apps, pingbacks)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:250
+#: includes/Admin/Pages/OptionsPage.php:271
 msgid "Disable WordPress Application Passwords to prevent REST API and XML-RPC authentication. Only disable if you don't use programmatic access (mobile apps, CI/CD tools, third-party integrations)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:251
-#: includes/Admin/Pages/OptionsPage.php:319
+#: includes/Admin/Pages/OptionsPage.php:272
+#: includes/Admin/Pages/OptionsPage.php:340
 msgid "Warning:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:251
+#: includes/Admin/Pages/OptionsPage.php:272
 msgid "Disabling this will break REST API and XML-RPC authentication. Users will not be able to authenticate via Application Passwords."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:264
+#: includes/Admin/Pages/OptionsPage.php:285
 msgid "Prevent attackers from discovering usernames via REST API, author archives, login errors, and comment author classes. Blocks common user enumeration techniques used to gather usernames for brute force attacks."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:275
+#: includes/Admin/Pages/OptionsPage.php:296
 msgid "Add an extra layer of security with TOTP-based two-factor authentication using authenticator apps."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:281
+#: includes/Admin/Pages/OptionsPage.php:302
 msgid "Enable 2FA System"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:286
+#: includes/Admin/Pages/OptionsPage.php:307
 msgid "Enable TOTP authenticator app support for all WordPress logins. Only enable if you don't have other 2FA solutions active."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:287
+#: includes/Admin/Pages/OptionsPage.php:308
 msgid "API Access:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:287
+#: includes/Admin/Pages/OptionsPage.php:308
 msgid "REST API and XML-RPC automatically bypass 2FA when using Application Passwords."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:288
+#: includes/Admin/Pages/OptionsPage.php:309
 msgid "Users can access 2FA setup using the [keyless-auth-2fa] shortcode on any page."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:295
+#: includes/Admin/Pages/OptionsPage.php:316
 msgid "Emergency Disable 2FA"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:301
+#: includes/Admin/Pages/OptionsPage.php:322
 msgid "Emergency mode is enabled via wp-config.php constant."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:304
+#: includes/Admin/Pages/OptionsPage.php:325
 msgid "Remove the CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY constant from wp-config.php to manage emergency mode here."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:308
+#: includes/Admin/Pages/OptionsPage.php:329
 msgid "Controlled by wp-config.php"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:312
+#: includes/Admin/Pages/OptionsPage.php:333
 msgid "2FA system is currently disabled"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:314
+#: includes/Admin/Pages/OptionsPage.php:335
 msgid "Disable 2FA system temporarily"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:318
+#: includes/Admin/Pages/OptionsPage.php:339
 msgid "Temporarily disable all 2FA requirements for troubleshooting or emergency access. Users can login normally without 2FA when enabled."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:319
+#: includes/Admin/Pages/OptionsPage.php:340
 msgid "This reduces security. Only use when necessary."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:330
+#: includes/Admin/Pages/OptionsPage.php:351
 msgid "Required for User Roles"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:334
+#: includes/Admin/Pages/OptionsPage.php:355
 msgid "Required User Roles"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:342
+#: includes/Admin/Pages/OptionsPage.php:363
 msgid "Users with these roles MUST set up 2FA. Other users can optionally enable 2FA for enhanced security."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:350
+#: includes/Admin/Pages/OptionsPage.php:371
 msgid "Grace Period"
 msgstr ""
 
 #. translators: %d: number of days for grace period
-#: includes/Admin/Pages/OptionsPage.php:357
+#: includes/Admin/Pages/OptionsPage.php:378
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/Pages/OptionsPage.php:361
+#: includes/Admin/Pages/OptionsPage.php:382
 msgid "How many days users have to set up 2FA after role requirement is enabled."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:368
+#: includes/Admin/Pages/OptionsPage.php:389
 msgid "Grace Period Message"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:373
+#: includes/Admin/Pages/OptionsPage.php:394
 msgid "Message shown to users during grace period. Use {days} placeholder for remaining days."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:384
+#: includes/Admin/Pages/OptionsPage.php:405
 msgid "Max Failed Attempts"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:393
+#: includes/Admin/Pages/OptionsPage.php:414
 msgid "Number of failed 2FA attempts before user is temporarily locked out."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:400
+#: includes/Admin/Pages/OptionsPage.php:421
 msgid "Lockout Duration"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:411
+#: includes/Admin/Pages/OptionsPage.php:432
 msgid "How long to lock users out after too many failed 2FA attempts."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:418
+#: includes/Admin/Pages/OptionsPage.php:439
 msgid "User Management"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:419
+#: includes/Admin/Pages/OptionsPage.php:440
 msgid "2FA user management has been moved to a dedicated page for better usability."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:420
+#: includes/Admin/Pages/OptionsPage.php:441
 msgid "Manage 2FA Users"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:423
+#: includes/Admin/Pages/OptionsPage.php:444
 msgid "Save Options"
 msgstr ""
 
@@ -1851,7 +1863,8 @@ msgid "No password required - we'll send you a secure login link via email."
 msgstr ""
 
 #: includes/Core/Core.php:405
-#: includes/Email/Templates.php:396
+#: includes/Core/WooCommerce.php:174
+#: includes/Email/Templates.php:399
 msgid "Security check failed. Please try again."
 msgstr ""
 
@@ -1860,6 +1873,7 @@ msgid "The username or email you provided do not exist. Please try again."
 msgstr ""
 
 #: includes/Core/Core.php:429
+#: includes/Core/WooCommerce.php:217
 msgid "There was a problem sending your email. Please try again or contact an admin."
 msgstr ""
 
@@ -1876,6 +1890,7 @@ msgid "Login at %s"
 msgstr ""
 
 #: includes/Core/Core.php:975
+#: includes/Core/WooCommerce.php:70
 msgid "Magic login link sent! Check your email and click the link to login."
 msgstr ""
 
@@ -1896,6 +1911,8 @@ msgid "Enter email or username"
 msgstr ""
 
 #: includes/Core/Core.php:1011
+#: includes/Core/WooCommerce.php:115
+#: includes/Core/WooCommerce.php:153
 msgid "Send Magic Link"
 msgstr ""
 
@@ -1903,8 +1920,63 @@ msgstr ""
 msgid "Please enter your email address or username."
 msgstr ""
 
-#: includes/Core/Main.php:103
+#: includes/Core/Main.php:109
 msgid "Settings"
+msgstr ""
+
+#: includes/Core/WooCommerce.php:85
+#: includes/Core/WooCommerce.php:155
+msgid "Or login with magic link instead"
+msgstr ""
+
+#: includes/Core/WooCommerce.php:92
+msgid "Email address"
+msgstr ""
+
+#: includes/Core/WooCommerce.php:94
+msgid "Required"
+msgstr ""
+
+#: includes/Core/WooCommerce.php:104
+msgid "your@email.com"
+msgstr ""
+
+#: includes/Core/WooCommerce.php:151
+#: includes/Core/WooCommerce.php:185
+msgid "Please enter a valid email address."
+msgstr ""
+
+#: includes/Core/WooCommerce.php:152
+msgid "Sending..."
+msgstr ""
+
+#: includes/Core/WooCommerce.php:154
+#: includes/Security/TwoFA/Frontend.php:123
+msgid "An error occurred. Please try again."
+msgstr ""
+
+#: includes/Core/WooCommerce.php:156
+msgid "Close magic link form"
+msgstr ""
+
+#: includes/Core/WooCommerce.php:179
+msgid "Email address is required."
+msgstr ""
+
+#: includes/Core/WooCommerce.php:192
+msgid "No account found with this email address."
+msgstr ""
+
+#: includes/Core/WooCommerce.php:199
+msgid "Your account is pending admin approval."
+msgstr ""
+
+#: includes/Core/WooCommerce.php:220
+msgid "Magic login link sent! Check your email."
+msgstr ""
+
+#: includes/Core/WooCommerce.php:223
+msgid "System error. Please try again."
 msgstr ""
 
 #: includes/Email/MailLogger.php:67
@@ -2010,7 +2082,7 @@ msgid "Maximum number of mail logs to keep. Older logs will be automatically del
 msgstr ""
 
 #: includes/Email/MailLogger.php:645
-#: includes/Email/Templates.php:431
+#: includes/Email/Templates.php:434
 msgid "Save Settings"
 msgstr ""
 
@@ -2267,214 +2339,214 @@ msgstr ""
 msgid "Custom template has been reset successfully."
 msgstr ""
 
-#: includes/Email/Templates.php:86
+#: includes/Email/Templates.php:89
 msgid "Settings saved successfully."
 msgstr ""
 
-#: includes/Email/Templates.php:404
+#: includes/Email/Templates.php:407
 msgid "Email Template Settings"
 msgstr ""
 
-#: includes/Email/Templates.php:415
+#: includes/Email/Templates.php:418
 msgid "Customize the appearance and content of your passwordless login emails."
 msgstr ""
 
-#: includes/Email/Templates.php:420
+#: includes/Email/Templates.php:423
 msgid "Email Template"
 msgstr ""
 
-#: includes/Email/Templates.php:423
+#: includes/Email/Templates.php:426
 msgid "Color Settings"
 msgstr ""
 
-#: includes/Email/Templates.php:426
+#: includes/Email/Templates.php:429
 msgid "Custom Template Editor"
 msgstr ""
 
-#: includes/Email/Templates.php:438
+#: includes/Email/Templates.php:441
 msgid "Reset Custom Template"
 msgstr ""
 
-#: includes/Email/Templates.php:454
+#: includes/Email/Templates.php:457
 msgid "Default Template"
 msgstr ""
 
-#: includes/Email/Templates.php:455
+#: includes/Email/Templates.php:458
 msgid "German Template"
 msgstr ""
 
-#: includes/Email/Templates.php:456
+#: includes/Email/Templates.php:459
 msgid "Simple Template"
 msgstr ""
 
-#: includes/Email/Templates.php:457
+#: includes/Email/Templates.php:460
 msgid "Custom Template"
 msgstr ""
 
-#: includes/Email/Templates.php:561
+#: includes/Email/Templates.php:566
 msgid "Button Color"
 msgstr ""
 
-#: includes/Email/Templates.php:568
+#: includes/Email/Templates.php:573
 msgid "Button Hover Color"
 msgstr ""
 
-#: includes/Email/Templates.php:575
+#: includes/Email/Templates.php:580
 msgid "Button Text Color"
 msgstr ""
 
-#: includes/Email/Templates.php:582
+#: includes/Email/Templates.php:587
 msgid "Button Hover Text Color"
 msgstr ""
 
-#: includes/Email/Templates.php:589
+#: includes/Email/Templates.php:594
 msgid "Link Color"
 msgstr ""
 
-#: includes/Email/Templates.php:596
+#: includes/Email/Templates.php:601
 msgid "Link Hover Color"
 msgstr ""
 
-#: includes/Email/Templates.php:644
+#: includes/Email/Templates.php:648
 msgid "Email Body Content"
 msgstr ""
 
-#: includes/Email/Templates.php:645
+#: includes/Email/Templates.php:649
 msgid "Create your email body content using the WYSIWYG editor below. Use inline styles for best email client compatibility."
 msgstr ""
 
-#: includes/Email/Templates.php:680
+#: includes/Email/Templates.php:688
 msgid "Custom CSS Styles (Optional)"
 msgstr ""
 
-#: includes/Email/Templates.php:682
+#: includes/Email/Templates.php:690
 msgid "Add custom CSS that will be placed in the &lt;head&gt; section. This is for advanced users who want to use CSS classes instead of inline styles."
 msgstr ""
 
-#: includes/Email/Templates.php:692
+#: includes/Email/Templates.php:700
 msgid "The final email will have this structure: &lt;html&gt;&lt;head&gt;&lt;style&gt;[your CSS]&lt;/style&gt;&lt;/head&gt;&lt;body&gt;[your content]&lt;/body&gt;&lt;/html&gt;. Use placeholders like [TO], [LOGIN_URL], [BUTTON_COLOR], etc."
 msgstr ""
 
-#: includes/Email/Templates.php:706
+#: includes/Email/Templates.php:714
 msgid "Template Placeholders"
 msgstr ""
 
-#: includes/Email/Templates.php:707
+#: includes/Email/Templates.php:715
 msgid "Use these placeholders in your custom template:"
 msgstr ""
 
-#: includes/Email/Templates.php:709
+#: includes/Email/Templates.php:717
 msgid "Recipient email address"
 msgstr ""
 
-#: includes/Email/Templates.php:710
+#: includes/Email/Templates.php:718
 msgid "Login URL"
 msgstr ""
 
-#: includes/Email/Templates.php:711
+#: includes/Email/Templates.php:719
 msgid "Button color"
 msgstr ""
 
-#: includes/Email/Templates.php:712
+#: includes/Email/Templates.php:720
 msgid "Button hover color"
 msgstr ""
 
-#: includes/Email/Templates.php:713
+#: includes/Email/Templates.php:721
 msgid "Link color"
 msgstr ""
 
-#: includes/Email/Templates.php:714
+#: includes/Email/Templates.php:722
 msgid "Link hover color"
 msgstr ""
 
-#: includes/Email/Templates.php:716
+#: includes/Email/Templates.php:724
 msgid "Example HTML:"
 msgstr ""
 
-#: includes/Email/Templates.php:764
-#: includes/Email/Templates.php:866
+#: includes/Email/Templates.php:772
+#: includes/Email/Templates.php:874
 msgid "Account Security Setup"
 msgstr ""
 
 #. translators: %s: user display name
-#: includes/Email/Templates.php:872
+#: includes/Email/Templates.php:880
 #, php-format
 msgid "Hello %s,"
 msgstr ""
 
-#: includes/Email/Templates.php:876
+#: includes/Email/Templates.php:884
 msgid "We are updating account settings for all users. Your account needs additional verification setup to continue accessing your dashboard."
 msgstr ""
 
-#: includes/Email/Templates.php:881
-#: includes/Email/Templates.php:890
+#: includes/Email/Templates.php:889
+#: includes/Email/Templates.php:898
 msgid "Setup Reminder"
 msgstr ""
 
 #. translators: %d: number of days remaining
-#: includes/Email/Templates.php:884
+#: includes/Email/Templates.php:892
 #, php-format
 msgid "Please complete account verification within %d days to maintain access."
 msgstr ""
 
 #. translators: %d: number of days remaining
-#: includes/Email/Templates.php:893
-#: includes/Email/Templates.php:902
+#: includes/Email/Templates.php:901
+#: includes/Email/Templates.php:910
 #, php-format
 msgid "Please complete account verification within %d days."
 msgstr ""
 
-#: includes/Email/Templates.php:899
+#: includes/Email/Templates.php:907
 msgid "Setup Needed"
 msgstr ""
 
-#: includes/Email/Templates.php:910
+#: includes/Email/Templates.php:918
 msgid "Setup Steps:"
 msgstr ""
 
-#: includes/Email/Templates.php:912
+#: includes/Email/Templates.php:920
 msgid "Download a verification app (Google Authenticator, Authy, or similar)"
 msgstr ""
 
-#: includes/Email/Templates.php:913
+#: includes/Email/Templates.php:921
 msgid "Click the button below to access your account settings"
 msgstr ""
 
-#: includes/Email/Templates.php:914
+#: includes/Email/Templates.php:922
 msgid "Scan the QR code with your verification app"
 msgstr ""
 
-#: includes/Email/Templates.php:915
+#: includes/Email/Templates.php:923
 msgid "Enter the 6-digit code to complete setup"
 msgstr ""
 
-#: includes/Email/Templates.php:916
+#: includes/Email/Templates.php:924
 msgid "Save your backup codes safely"
 msgstr ""
 
-#: includes/Email/Templates.php:921
+#: includes/Email/Templates.php:929
 msgid "Login to Setup"
 msgstr ""
 
-#: includes/Email/Templates.php:924
+#: includes/Email/Templates.php:932
 msgid "Why is this important?"
 msgstr ""
 
-#: includes/Email/Templates.php:925
+#: includes/Email/Templates.php:933
 msgid "Account verification helps protect your data by adding a second step to the login process. This keeps your account safe even if someone knows your password."
 msgstr ""
 
-#: includes/Email/Templates.php:927
+#: includes/Email/Templates.php:935
 msgid "If you have any questions or need assistance, please contact our support team."
 msgstr ""
 
 #. translators: 1: site name, 2: site URL
-#: includes/Email/Templates.php:933
+#: includes/Email/Templates.php:941
 #, php-format
 msgid "This email was sent from %1$s (%2$s)"
 msgstr ""
 
-#: includes/Email/Templates.php:937
+#: includes/Email/Templates.php:945
 msgid "This is an automated message. Please do not reply to this email."
 msgstr ""
 
@@ -2610,10 +2682,6 @@ msgstr ""
 #: includes/Security/TwoFA/Frontend.php:122
 #: includes/Security/TwoFA/Frontend.php:513
 msgid "2FA has been disabled."
-msgstr ""
-
-#: includes/Security/TwoFA/Frontend.php:123
-msgid "An error occurred. Please try again."
 msgstr ""
 
 #: includes/Security/TwoFA/Frontend.php:174

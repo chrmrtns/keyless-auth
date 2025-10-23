@@ -1,0 +1,53 @@
+/**
+ * WooCommerce Integration Styles for Keyless Auth
+ *
+ * Minimal, non-intrusive styling for magic link integration on WooCommerce forms
+ *
+ * @package Keyless Auth
+ * @since 3.1.0
+ */
+
+/* Toggle link wrapper */
+.chrmrtns-kla-wc-magic-link-toggle {
+    text-align: center;
+    margin: 1em 0;
+}
+
+/* Toggle link styling */
+.chrmrtns-kla-wc-toggle-link {
+    font-size: 0.9em;
+    text-decoration: none;
+    color: #0073aa;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.chrmrtns-kla-wc-toggle-link:hover,
+.chrmrtns-kla-wc-toggle-link.active {
+    border-bottom-color: #0073aa;
+}
+
+/* Magic link form container */
+.chrmrtns-kla-wc-magic-form {
+    padding: 1em;
+    background: #f7f9fc;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 1em 0;
+}
+
+/* Email input field */
+.chrmrtns-kla-wc-magic-form .input-text {
+    width: 100%;
+}
+
+/* Status message */
+.chrmrtns-kla-wc-magic-status {
+    margin-top: 0.5em;
+    padding: 0.5em;
+}
+
+/* Submit button */
+.chrmrtns-kla-wc-submit-magic {
+    margin-top: 0.5em;
+}

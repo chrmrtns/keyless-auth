@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 3.0.5
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -314,6 +314,28 @@ Change token expiration:
 
 
 == Changelog ==
+
+= 3.1.0 =
+* NEW: WooCommerce Integration - Magic link authentication on WooCommerce login forms
+* NEW: Collapsible UI design - "Or login with magic link instead" toggle link on My Account and Checkout pages
+* NEW: WooCommerce setting toggle - Enable/disable integration from Options page
+* NEW: Modular architecture - Separate WooCommerce.php class for clean code organization
+* NEW: Auto-detection - Only loads when WooCommerce is active and setting is enabled
+* NEW: Smart checkout redirect - Users return to checkout after login, preserving cart
+* FIX: Custom email template not saving - Fixed field name mismatch (chrmrtns_kla_custom_email_body vs chrmrtns_kla_custom_email_html)
+* FIX: Reset custom template function now uses correct option name (chrmrtns_kla_custom_email_body)
+* FIX: Template sanitization now preserves inline styles and <style> tags properly with wp_kses
+* IMPROVEMENT: Real-time color preview updates - All template previews update instantly when colors change
+* IMPROVEMENT: WordPress standard notice classes - Replaced inline styles with 'notice notice-warning/info inline' classes
+* IMPROVEMENT: Added helpful notice explaining WYSIWYG placeholder behavior in custom template editor
+* IMPROVEMENT: Seamless integration with WooCommerce themes - Minimal, non-intrusive styling
+* IMPROVEMENT: Vanilla JavaScript implementation - No jQuery dependency for WooCommerce integration
+* IMPROVEMENT: Dynamic toggle text - Changes from "Or login with magic link instead" to "Close magic link form"
+* IMPROVEMENT: Dedicated AJAX handler - Separate handler for WooCommerce requests with proper JSON responses
+* DEVELOPER: Foundation for Pro features - WooCommerce integration ready for future enhancements
+* TECHNICAL: PSR-4 namespaced class at includes/Core/WooCommerce.php
+* TECHNICAL: Uses Fetch API for modern AJAX requests
+* TRANSLATION: Added 10+ new translatable strings for WooCommerce integration
 
 = 3.0.5 =
 * NEW: Help page tabs - Added tabbed navigation for better organization of help content
