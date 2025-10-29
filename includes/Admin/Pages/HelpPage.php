@@ -115,6 +115,10 @@ class HelpPage {
                             <td><code>[keyless-auth-2fa]</code></td>
                             <td><?php esc_html_e('Two-factor authentication setup and management interface (requires 2FA system to be enabled in Options)', 'keyless-auth'); ?></td>
                         </tr>
+                        <tr>
+                            <td><code>[keyless-auth-password-reset]</code></td>
+                            <td><?php esc_html_e('Custom password reset page with branded two-step flow - email request and password reset forms. Enable in Options → Custom Password Reset Page', 'keyless-auth'); ?></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -127,6 +131,14 @@ class HelpPage {
                 <p><code>[keyless-auth]</code> - <?php esc_html_e('Magic link login form only', 'keyless-auth'); ?></p>
                 <p><code>[keyless-auth-full]</code> - <?php esc_html_e('Both password and magic link options', 'keyless-auth'); ?></p>
                 <p><code>[keyless-auth-2fa]</code> - <?php esc_html_e('2FA setup interface (when 2FA is enabled)', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-password-reset]</code> - <?php esc_html_e('Custom password reset page (create page, add shortcode, configure URL in Options)', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('[keyless-auth-password-reset] Setup:', 'keyless-auth'); ?></h4>
+                <p><strong><?php esc_html_e('Step 1:', 'keyless-auth'); ?></strong> <?php esc_html_e('Create a new page (e.g., "Reset Password") and add the shortcode:', 'keyless-auth'); ?> <code>[keyless-auth-password-reset]</code></p>
+                <p><strong><?php esc_html_e('Step 2:', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to Keyless Auth → Options', 'keyless-auth'); ?></p>
+                <p><strong><?php esc_html_e('Step 3:', 'keyless-auth'); ?></strong> <?php esc_html_e('Enable "Custom Password Reset Page"', 'keyless-auth'); ?></p>
+                <p><strong><?php esc_html_e('Step 4:', 'keyless-auth'); ?></strong> <?php esc_html_e('Enter your page URL in "Password Reset Page URL" (e.g., https://yoursite.com/reset-password)', 'keyless-auth'); ?></p>
+                <p><?php esc_html_e('The "Forgot password?" link in login forms will now use your custom page instead of wp-login.php', 'keyless-auth'); ?></p>
 
                 <h4><?php esc_html_e('[keyless-auth] Options:', 'keyless-auth'); ?></h4>
                 <p><code>[keyless-auth redirect="/dashboard/"]</code><br><?php esc_html_e('Redirect to dashboard after magic link login', 'keyless-auth'); ?></p>
@@ -190,6 +202,10 @@ class HelpPage {
                             <td><code>[keyless-auth-2fa]</code></td>
                             <td><?php esc_html_e('Two-factor authentication setup and management interface (requires 2FA system to be enabled in Options)', 'keyless-auth'); ?></td>
                         </tr>
+                        <tr>
+                            <td><code>[keyless-auth-password-reset]</code></td>
+                            <td><?php esc_html_e('Custom password reset page with branded two-step flow - email request and password reset forms. Enable in Options → Custom Password Reset Page', 'keyless-auth'); ?></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -202,6 +218,14 @@ class HelpPage {
                 <p><code>[keyless-auth]</code> - <?php esc_html_e('Magic link login form only', 'keyless-auth'); ?></p>
                 <p><code>[keyless-auth-full]</code> - <?php esc_html_e('Both password and magic link options', 'keyless-auth'); ?></p>
                 <p><code>[keyless-auth-2fa]</code> - <?php esc_html_e('2FA setup interface (when 2FA is enabled)', 'keyless-auth'); ?></p>
+                <p><code>[keyless-auth-password-reset]</code> - <?php esc_html_e('Custom password reset page (create page, add shortcode, configure URL in Options)', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('[keyless-auth-password-reset] Setup:', 'keyless-auth'); ?></h4>
+                <p><strong><?php esc_html_e('Step 1:', 'keyless-auth'); ?></strong> <?php esc_html_e('Create a new page (e.g., "Reset Password") and add the shortcode:', 'keyless-auth'); ?> <code>[keyless-auth-password-reset]</code></p>
+                <p><strong><?php esc_html_e('Step 2:', 'keyless-auth'); ?></strong> <?php esc_html_e('Go to Keyless Auth → Options', 'keyless-auth'); ?></p>
+                <p><strong><?php esc_html_e('Step 3:', 'keyless-auth'); ?></strong> <?php esc_html_e('Enable "Custom Password Reset Page"', 'keyless-auth'); ?></p>
+                <p><strong><?php esc_html_e('Step 4:', 'keyless-auth'); ?></strong> <?php esc_html_e('Enter your page URL in "Password Reset Page URL" (e.g., https://yoursite.com/reset-password)', 'keyless-auth'); ?></p>
+                <p><?php esc_html_e('The "Forgot password?" link in login forms will now use your custom page instead of wp-login.php', 'keyless-auth'); ?></p>
 
                 <h4><?php esc_html_e('[keyless-auth] Options:', 'keyless-auth'); ?></h4>
                 <p><code>[keyless-auth redirect="/dashboard/"]</code><br><?php esc_html_e('Redirect to dashboard after magic link login', 'keyless-auth'); ?></p>

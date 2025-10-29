@@ -673,6 +673,33 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 
 ## 🔄 Changelog
 
+### v3.2.0
+- **NEW:** Custom Password Reset Page - Replace wp-login.php with branded shortcode-based reset page
+- **NEW:** Password reset shortcode `[keyless-auth-password-reset]` - Embed on any page with any slug
+- **NEW:** Custom password reset URL setting - Specify your own password reset page URL
+- **NEW:** Two-step password reset flow - Email request form and password reset form with token validation
+- **NEW:** Beautiful styled reset forms - Matching Keyless Auth gradient branding
+- **IMPROVEMENT:** Flexible page URL - No hardcoded /reset-password route, users choose their own slug
+- **IMPROVEMENT:** Smart "Forgot password?" link - Auto-switches between custom page and wp-login.php
+- **IMPROVEMENT:** Optional support footer - Only displays if support URL is configured
+- **IMPROVEMENT:** Properly scoped CSS - All styles prefixed to avoid theme conflicts
+- **TECHNICAL:** New PasswordReset class at `includes/Core/PasswordReset.php`
+- **TECHNICAL:** Full translation support with `_e()` and `esc_html_e()` functions
+- **TECHNICAL:** Token validation using WordPress `check_password_reset_key()` function
+- **TECHNICAL:** Secure nonce validation for both email request and password reset forms
+
+### v3.1.0
+- **NEW:** WooCommerce Integration - Magic link authentication on WooCommerce login forms
+- **NEW:** Collapsible UI design - "Or login with magic link instead" toggle link
+- **NEW:** WooCommerce setting toggle - Enable/disable integration from Options page
+- **NEW:** Smart checkout redirect - Users return to checkout after login
+- **FIX:** Custom email template not saving - Fixed field name mismatch
+- **FIX:** Template sanitization now preserves inline styles and <style> tags properly
+- **IMPROVEMENT:** Real-time color preview updates - All template previews update instantly
+- **IMPROVEMENT:** WordPress standard notice classes - Better admin UI consistency
+- **TECHNICAL:** PSR-4 namespaced class at `includes/Core/WooCommerce.php`
+- **TECHNICAL:** Vanilla JavaScript implementation - No jQuery dependency
+
 ### v2.6.0
 - **NEW:** Enhanced CSS system using CSS custom properties for consistent theming across all forms
 - **NEW:** Block theme compatibility - forms now work perfectly with Twenty Twenty-Five and other block themes

@@ -14,6 +14,7 @@ use Chrmrtns\KeylessAuth\Email\MailLogger;
 use Chrmrtns\KeylessAuth\Security\TwoFA\Core as TwoFACore;
 use Chrmrtns\KeylessAuth\Security\TwoFA\Frontend as TwoFAFrontend;
 use Chrmrtns\KeylessAuth\Core\WooCommerce;
+use Chrmrtns\KeylessAuth\Core\PasswordReset;
 
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
@@ -89,6 +90,9 @@ class Main {
         if (class_exists('WooCommerce') && get_option('chrmrtns_kla_enable_woocommerce', '0') === '1') {
             new WooCommerce();
         }
+
+        // Initialize Password Reset (custom shortcode-based reset page)
+        new PasswordReset();
     }
 
     /**

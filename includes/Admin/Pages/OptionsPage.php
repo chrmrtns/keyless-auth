@@ -55,6 +55,12 @@ class OptionsPage {
             $prevent_user_enumeration = isset($_POST['chrmrtns_kla_prevent_user_enumeration']) ? '1' : '0';
             update_option('chrmrtns_kla_prevent_user_enumeration', $prevent_user_enumeration);
 
+            $custom_password_reset = isset($_POST['chrmrtns_kla_custom_password_reset']) ? '1' : '0';
+            update_option('chrmrtns_kla_custom_password_reset', $custom_password_reset);
+
+            $custom_password_reset_url = isset($_POST['chrmrtns_kla_custom_password_reset_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_custom_password_reset_url'])) : '';
+            update_option('chrmrtns_kla_custom_password_reset_url', $custom_password_reset_url);
+
             // Handle 2FA settings
             $enable_2fa = isset($_POST['chrmrtns_kla_2fa_enabled']) ? true : false;
             update_option('chrmrtns_kla_2fa_enabled', $enable_2fa);
@@ -279,6 +285,32 @@ class OptionsPage {
                             <input type="checkbox" id="chrmrtns_kla_prevent_user_enumeration" name="chrmrtns_kla_prevent_user_enumeration" value="1" <?php checked($prevent_user_enumeration, '1'); ?> />
                             <p class="description">
                                 <?php esc_html_e('Prevent attackers from discovering usernames via REST API, author archives, login errors, and comment author classes. Blocks common user enumeration techniques used to gather usernames for brute force attacks.', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_custom_password_reset"><?php esc_html_e('Custom Password Reset Page', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <?php $custom_password_reset = get_option('chrmrtns_kla_custom_password_reset', '0'); ?>
+                            <input type="checkbox" id="chrmrtns_kla_custom_password_reset" name="chrmrtns_kla_custom_password_reset" value="1" <?php checked($custom_password_reset, '1'); ?> />
+                            <p class="description">
+                                <?php esc_html_e('Enable custom password reset page. Create a page with the [keyless_password_reset] shortcode and specify the URL below.', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_custom_password_reset_url"><?php esc_html_e('Password Reset Page URL', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <?php $custom_password_reset_url = get_option('chrmrtns_kla_custom_password_reset_url', ''); ?>
+                            <input type="url" id="chrmrtns_kla_custom_password_reset_url" name="chrmrtns_kla_custom_password_reset_url" value="<?php echo esc_attr($custom_password_reset_url); ?>" class="regular-text" placeholder="<?php esc_attr_e('https://yoursite.com/reset-password', 'keyless-auth'); ?>" />
+                            <p class="description">
+                                <?php esc_html_e('Full URL to your password reset page. The "Forgot password?" link will use this URL. Leave empty to use default wp-login.php.', 'keyless-auth'); ?>
                             </p>
                         </td>
                     </tr>

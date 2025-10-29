@@ -2,14 +2,14 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Keyless Auth - Login without Passwords 3.1.0\n"
+"Project-Id-Version: Keyless Auth - Login without Passwords 3.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/keyless-auth\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-23T05:04:01+00:00\n"
+"POT-Creation-Date: 2025-10-29T17:43:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: keyless-auth\n"
@@ -161,7 +161,7 @@ msgstr ""
 
 #: includes/Admin/Pages/DashboardPage.php:38
 #: includes/Admin/Pages/HelpPage.php:53
-#: includes/Admin/Pages/OptionsPage.php:121
+#: includes/Admin/Pages/OptionsPage.php:127
 #: includes/Admin/Pages/SmtpPage.php:40
 #: includes/Admin/Pages/TwoFAUsersPage.php:42
 #: includes/Email/MailLogger.php:604
@@ -332,1243 +332,1319 @@ msgid "Go to Options to enable 2FA system and use [keyless-auth-2fa] shortcode f
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:97
-#: includes/Admin/Pages/HelpPage.php:172
+#: includes/Admin/Pages/HelpPage.php:184
 msgid "Available Shortcodes"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:101
-#: includes/Admin/Pages/HelpPage.php:176
+#: includes/Admin/Pages/HelpPage.php:188
 msgid "Shortcode"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:102
-#: includes/Admin/Pages/HelpPage.php:177
+#: includes/Admin/Pages/HelpPage.php:189
 msgid "Description"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:108
-#: includes/Admin/Pages/HelpPage.php:183
+#: includes/Admin/Pages/HelpPage.php:195
 msgid "Main passwordless login form (magic link only). Supports attributes: redirect, button_text, description, label"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:112
-#: includes/Admin/Pages/HelpPage.php:187
+#: includes/Admin/Pages/HelpPage.php:199
 msgid "Complete login form with both password and magic link options. Supports attributes: redirect, show_title, title_text"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:116
-#: includes/Admin/Pages/HelpPage.php:191
+#: includes/Admin/Pages/HelpPage.php:203
 msgid "Two-factor authentication setup and management interface (requires 2FA system to be enabled in Options)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:123
-#: includes/Admin/Pages/HelpPage.php:198
-msgid "Shortcode Usage Examples"
-msgstr ""
-
-#: includes/Admin/Pages/HelpPage.php:124
-#: includes/Admin/Pages/HelpPage.php:199
-msgid "Here are some examples of how to use the shortcodes:"
-msgstr ""
-
-#: includes/Admin/Pages/HelpPage.php:126
-#: includes/Admin/Pages/HelpPage.php:201
-msgid "Basic Usage:"
+#: includes/Admin/Pages/HelpPage.php:120
+#: includes/Admin/Pages/HelpPage.php:207
+msgid "Custom password reset page with branded two-step flow - email request and password reset forms. Enable in Options → Custom Password Reset Page"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:127
-#: includes/Admin/Pages/HelpPage.php:202
-msgid "Magic link login form only"
+#: includes/Admin/Pages/HelpPage.php:214
+msgid "Shortcode Usage Examples"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:128
-#: includes/Admin/Pages/HelpPage.php:203
-msgid "Both password and magic link options"
+#: includes/Admin/Pages/HelpPage.php:215
+msgid "Here are some examples of how to use the shortcodes:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:129
-#: includes/Admin/Pages/HelpPage.php:204
-msgid "2FA setup interface (when 2FA is enabled)"
+#: includes/Admin/Pages/HelpPage.php:130
+#: includes/Admin/Pages/HelpPage.php:217
+msgid "Basic Usage:"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:131
-#: includes/Admin/Pages/HelpPage.php:206
-msgid "[keyless-auth] Options:"
+#: includes/Admin/Pages/HelpPage.php:218
+msgid "Magic link login form only"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:132
-#: includes/Admin/Pages/HelpPage.php:207
-msgid "Redirect to dashboard after magic link login"
+#: includes/Admin/Pages/HelpPage.php:219
+msgid "Both password and magic link options"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:133
-#: includes/Admin/Pages/HelpPage.php:208
-msgid "Custom button text"
+#: includes/Admin/Pages/HelpPage.php:220
+msgid "2FA setup interface (when 2FA is enabled)"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:134
-#: includes/Admin/Pages/HelpPage.php:209
-msgid "Custom field label"
-msgstr ""
-
-#: includes/Admin/Pages/HelpPage.php:135
-#: includes/Admin/Pages/HelpPage.php:210
-msgid "Add description text above the form"
+#: includes/Admin/Pages/HelpPage.php:221
+msgid "Custom password reset page (create page, add shortcode, configure URL in Options)"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:136
-#: includes/Admin/Pages/HelpPage.php:142
-#: includes/Admin/Pages/HelpPage.php:211
-#: includes/Admin/Pages/HelpPage.php:217
-msgid "Combined options example"
+#: includes/Admin/Pages/HelpPage.php:223
+msgid "[keyless-auth-password-reset] Setup:"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:137
+#: includes/Admin/Pages/HelpPage.php:224
+msgid "Step 1:"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:137
+#: includes/Admin/Pages/HelpPage.php:224
+msgid "Create a new page (e.g., \"Reset Password\") and add the shortcode:"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:138
-#: includes/Admin/Pages/HelpPage.php:213
-msgid "Advanced [keyless-auth-full] Options:"
+#: includes/Admin/Pages/HelpPage.php:225
+msgid "Step 2:"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:138
+#: includes/Admin/Pages/HelpPage.php:225
+msgid "Go to Keyless Auth → Options"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:139
-#: includes/Admin/Pages/HelpPage.php:214
-msgid "Redirect to dashboard after login"
+#: includes/Admin/Pages/HelpPage.php:226
+msgid "Step 3:"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:139
+#: includes/Admin/Pages/HelpPage.php:226
+msgid "Enable \"Custom Password Reset Page\""
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:140
-#: includes/Admin/Pages/HelpPage.php:215
-msgid "Hide the main title"
+#: includes/Admin/Pages/HelpPage.php:227
+msgid "Step 4:"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:140
+#: includes/Admin/Pages/HelpPage.php:227
+msgid "Enter your page URL in \"Password Reset Page URL\" (e.g., https://yoursite.com/reset-password)"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:141
-#: includes/Admin/Pages/HelpPage.php:216
-msgid "Custom title text"
+#: includes/Admin/Pages/HelpPage.php:228
+msgid "The \"Forgot password?\" link in login forms will now use your custom page instead of wp-login.php"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:143
+#: includes/Admin/Pages/HelpPage.php:230
+msgid "[keyless-auth] Options:"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:144
+#: includes/Admin/Pages/HelpPage.php:231
+msgid "Redirect to dashboard after magic link login"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:145
+#: includes/Admin/Pages/HelpPage.php:232
+msgid "Custom button text"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:146
-msgid "How It Works"
+#: includes/Admin/Pages/HelpPage.php:233
+msgid "Custom field label"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:147
+#: includes/Admin/Pages/HelpPage.php:234
+msgid "Add description text above the form"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:148
-msgid "User enters their email address or username"
-msgstr ""
-
-#: includes/Admin/Pages/HelpPage.php:149
-msgid "System generates a secure, time-limited token"
+#: includes/Admin/Pages/HelpPage.php:154
+#: includes/Admin/Pages/HelpPage.php:235
+#: includes/Admin/Pages/HelpPage.php:241
+msgid "Combined options example"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:150
-msgid "Email is sent with a magic login link"
+#: includes/Admin/Pages/HelpPage.php:237
+msgid "Advanced [keyless-auth-full] Options:"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:151
-msgid "User clicks the link and is automatically logged in"
+#: includes/Admin/Pages/HelpPage.php:238
+msgid "Redirect to dashboard after login"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:152
+#: includes/Admin/Pages/HelpPage.php:239
+msgid "Hide the main title"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:153
+#: includes/Admin/Pages/HelpPage.php:240
+msgid "Custom title text"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:158
+msgid "How It Works"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:160
+msgid "User enters their email address or username"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:161
+msgid "System generates a secure, time-limited token"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:162
+msgid "Email is sent with a magic login link"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:163
+msgid "User clicks the link and is automatically logged in"
+msgstr ""
+
+#: includes/Admin/Pages/HelpPage.php:164
 msgid "Token expires after 10 minutes for security"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:157
+#: includes/Admin/Pages/HelpPage.php:169
 msgid "Security Features"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:159
+#: includes/Admin/Pages/HelpPage.php:171
 msgid "Token Expiration:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:159
+#: includes/Admin/Pages/HelpPage.php:171
 msgid "All login links expire after 10 minutes"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:160
+#: includes/Admin/Pages/HelpPage.php:172
 msgid "One-Time Use:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:160
+#: includes/Admin/Pages/HelpPage.php:172
 msgid "Each token can only be used once"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:161
+#: includes/Admin/Pages/HelpPage.php:173
 msgid "IP Tracking:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:161
+#: includes/Admin/Pages/HelpPage.php:173
 msgid "Login attempts are logged with IP addresses"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:162
+#: includes/Admin/Pages/HelpPage.php:174
 msgid "Device Fingerprinting:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:162
+#: includes/Admin/Pages/HelpPage.php:174
 msgid "Tracks device information for audit purposes"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:163
+#: includes/Admin/Pages/HelpPage.php:175
 msgid "Database Logging:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:163
+#: includes/Admin/Pages/HelpPage.php:175
 msgid "All attempts are logged for security analysis"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:225
-#: includes/Admin/Pages/OptionsPage.php:294
+#: includes/Admin/Pages/HelpPage.php:249
+#: includes/Admin/Pages/OptionsPage.php:322
 msgid "Two-Factor Authentication (2FA)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:226
+#: includes/Admin/Pages/HelpPage.php:250
 msgid "Add an extra layer of security with TOTP-based two-factor authentication using smartphone authenticator apps."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:228
+#: includes/Admin/Pages/HelpPage.php:252
 msgid "Setup Instructions"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:230
+#: includes/Admin/Pages/HelpPage.php:254
 msgid "Enable 2FA System:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:230
+#: includes/Admin/Pages/HelpPage.php:254
 msgid "Go to Options → Enable 2FA System checkbox"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:231
+#: includes/Admin/Pages/HelpPage.php:255
 msgid "Configure Role Requirements:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:231
+#: includes/Admin/Pages/HelpPage.php:255
 msgid "Select user roles that require 2FA (optional)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:232
+#: includes/Admin/Pages/HelpPage.php:256
 msgid "Add User Interface:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:232
+#: includes/Admin/Pages/HelpPage.php:256
 msgid "Place [keyless-auth-2fa] shortcode on a page for user setup"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:233
-#: includes/Admin/Pages/OptionsPage.php:309
+#: includes/Admin/Pages/HelpPage.php:257
+#: includes/Admin/Pages/OptionsPage.php:337
 msgid "User Setup:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:233
+#: includes/Admin/Pages/HelpPage.php:257
 msgid "Users scan QR code with authenticator app and verify setup"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:236
+#: includes/Admin/Pages/HelpPage.php:260
 msgid "Supported Authenticator Apps"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:242
+#: includes/Admin/Pages/HelpPage.php:266
 msgid "Any RFC 6238 compliant TOTP app"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:245
+#: includes/Admin/Pages/HelpPage.php:269
 msgid "Key Features"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:247
+#: includes/Admin/Pages/HelpPage.php:271
 msgid "Universal Coverage:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:247
+#: includes/Admin/Pages/HelpPage.php:271
 msgid "Works with ALL login methods (magic links, passwords, SSO)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:248
+#: includes/Admin/Pages/HelpPage.php:272
 msgid "Backup Codes:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:248
+#: includes/Admin/Pages/HelpPage.php:272
 msgid "10 single-use recovery codes for emergency access"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:249
+#: includes/Admin/Pages/HelpPage.php:273
 msgid "Admin Controls:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:249
+#: includes/Admin/Pages/HelpPage.php:273
 msgid "Admins can disable 2FA for any user"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:250
+#: includes/Admin/Pages/HelpPage.php:274
 msgid "Grace Periods:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:250
+#: includes/Admin/Pages/HelpPage.php:274
 msgid "Configurable setup time for required users (1-30 days)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:251
+#: includes/Admin/Pages/HelpPage.php:275
 msgid "Failed Attempt Protection:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:251
+#: includes/Admin/Pages/HelpPage.php:275
 msgid "Automatic lockouts after too many failed attempts"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:254
+#: includes/Admin/Pages/HelpPage.php:278
 msgid "API and Programmatic Access"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:256
-#: includes/Admin/Pages/HelpPage.php:473
+#: includes/Admin/Pages/HelpPage.php:280
+#: includes/Admin/Pages/HelpPage.php:497
 msgid "Important:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:256
+#: includes/Admin/Pages/HelpPage.php:280
 msgid "REST API and XML-RPC requests bypass 2FA when using Application Passwords."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:258
+#: includes/Admin/Pages/HelpPage.php:282
 msgid "Application Password Requirements"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:259
+#: includes/Admin/Pages/HelpPage.php:283
 msgid "For programmatic access to WordPress, you MUST use Application Passwords:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:261
+#: includes/Admin/Pages/HelpPage.php:285
 msgid "REST API:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:261
+#: includes/Admin/Pages/HelpPage.php:285
 msgid "All REST API requests must authenticate using Application Passwords"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:262
+#: includes/Admin/Pages/HelpPage.php:286
 msgid "XML-RPC:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:262
+#: includes/Admin/Pages/HelpPage.php:286
 msgid "XML-RPC requests must use Application Passwords (not regular passwords)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:263
+#: includes/Admin/Pages/HelpPage.php:287
 msgid "WP-CLI:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:263
+#: includes/Admin/Pages/HelpPage.php:287
 msgid "Command-line tools automatically bypass 2FA"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:264
+#: includes/Admin/Pages/HelpPage.php:288
 msgid "Third-party Apps:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:264
+#: includes/Admin/Pages/HelpPage.php:288
 msgid "Mobile apps, CI/CD tools, integrations must use Application Passwords"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:267
+#: includes/Admin/Pages/HelpPage.php:291
 msgid "How to Create Application Passwords"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:269
+#: includes/Admin/Pages/HelpPage.php:293
 msgid "Go to Users → Your Profile"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:270
+#: includes/Admin/Pages/HelpPage.php:294
 msgid "Scroll to \"Application Passwords\" section"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:271
+#: includes/Admin/Pages/HelpPage.php:295
 msgid "Enter a name for your application (e.g., \"Mobile App\", \"API Script\")"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:272
+#: includes/Admin/Pages/HelpPage.php:296
 msgid "Click \"Add New Application Password\""
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:273
+#: includes/Admin/Pages/HelpPage.php:297
 msgid "Copy the generated password and use it for API authentication"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:276
+#: includes/Admin/Pages/HelpPage.php:300
 msgid "Authentication Methods Overview"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:280
+#: includes/Admin/Pages/HelpPage.php:304
 msgid "Login Method"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:281
+#: includes/Admin/Pages/HelpPage.php:305
 msgid "2FA Required?"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:282
+#: includes/Admin/Pages/HelpPage.php:306
 msgid "Notes"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:287
+#: includes/Admin/Pages/HelpPage.php:311
 msgid "Interactive Login"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:287
+#: includes/Admin/Pages/HelpPage.php:311
 msgid "(Web browser, admin panel)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:288
+#: includes/Admin/Pages/HelpPage.php:312
 msgid "YES"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:289
+#: includes/Admin/Pages/HelpPage.php:313
 msgid "All interactive logins require 2FA when enabled (magic links, passwords, SSO)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:292
+#: includes/Admin/Pages/HelpPage.php:316
 msgid "REST API"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:292
-#: includes/Admin/Pages/HelpPage.php:297
+#: includes/Admin/Pages/HelpPage.php:316
+#: includes/Admin/Pages/HelpPage.php:321
 msgid "(with Application Passwords)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:293
-#: includes/Admin/Pages/HelpPage.php:298
-#: includes/Admin/Pages/HelpPage.php:303
+#: includes/Admin/Pages/HelpPage.php:317
+#: includes/Admin/Pages/HelpPage.php:322
+#: includes/Admin/Pages/HelpPage.php:327
 msgid "NO"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:294
+#: includes/Admin/Pages/HelpPage.php:318
 msgid "Application Passwords provide separate secure authentication"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:297
+#: includes/Admin/Pages/HelpPage.php:321
 msgid "XML-RPC"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:299
+#: includes/Admin/Pages/HelpPage.php:323
 msgid "Must use Application Passwords, not regular passwords"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:302
+#: includes/Admin/Pages/HelpPage.php:326
 msgid "WP-CLI"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:302
+#: includes/Admin/Pages/HelpPage.php:326
 msgid "(Command line)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:304
+#: includes/Admin/Pages/HelpPage.php:328
 msgid "Automatically detected and bypassed"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:307
+#: includes/Admin/Pages/HelpPage.php:331
 msgid "Legacy API Access"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:307
+#: includes/Admin/Pages/HelpPage.php:331
 msgid "(using regular passwords)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:308
+#: includes/Admin/Pages/HelpPage.php:332
 msgid "BLOCKED"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:309
+#: includes/Admin/Pages/HelpPage.php:333
 msgid "Will fail - must upgrade to Application Passwords"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:315
+#: includes/Admin/Pages/HelpPage.php:339
 msgid "Security Note:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:315
+#: includes/Admin/Pages/HelpPage.php:339
 msgid "Application Passwords are time-limited tokens that can be revoked individually. They provide better security than using regular passwords for API access."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:324
-#: includes/Admin/Pages/OptionsPage.php:217
+#: includes/Admin/Pages/HelpPage.php:348
+#: includes/Admin/Pages/OptionsPage.php:219
 msgid "Appearance & Theme Settings"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:325
-#: includes/Admin/Pages/OptionsPage.php:219
+#: includes/Admin/Pages/HelpPage.php:349
+#: includes/Admin/Pages/OptionsPage.php:221
 msgid "Control how login forms appear in light and dark mode themes."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:327
-#: includes/Admin/Pages/OptionsPage.php:225
+#: includes/Admin/Pages/HelpPage.php:351
+#: includes/Admin/Pages/OptionsPage.php:227
 msgid "Dark Mode Behavior"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:328
+#: includes/Admin/Pages/HelpPage.php:352
 msgid "You can control how login forms render in dark mode from the Options page. Three modes are available:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:331
+#: includes/Admin/Pages/HelpPage.php:355
 msgid "Auto (Default):"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:331
+#: includes/Admin/Pages/HelpPage.php:355
 msgid "Automatically detects system dark mode preference and theme dark mode classes. Forms adapt to match user's system settings and theme."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:332
+#: includes/Admin/Pages/HelpPage.php:356
 msgid "Light Only:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:332
+#: includes/Admin/Pages/HelpPage.php:356
 msgid "Forces light theme always, disables dark mode completely. Use this if you want consistent light appearance regardless of user preferences."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:333
+#: includes/Admin/Pages/HelpPage.php:357
 msgid "Dark Only:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:333
+#: includes/Admin/Pages/HelpPage.php:357
 msgid "Forces dark theme always. Use this if your site has a dark theme and you want forms to always match."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:336
-#: includes/Admin/Pages/HelpPage.php:443
-#: includes/Admin/Pages/HelpPage.php:470
-#: includes/Admin/Pages/HelpPage.php:507
+#: includes/Admin/Pages/HelpPage.php:360
+#: includes/Admin/Pages/HelpPage.php:467
+#: includes/Admin/Pages/HelpPage.php:494
+#: includes/Admin/Pages/HelpPage.php:531
 msgid "Where to configure:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:336
+#: includes/Admin/Pages/HelpPage.php:360
 msgid "Go to Options → Appearance & Theme Settings → Dark Mode Behavior"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:339
+#: includes/Admin/Pages/HelpPage.php:363
 msgid "Performance Note:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:339
+#: includes/Admin/Pages/HelpPage.php:363
 msgid "CSS files only load when shortcodes are used on a page, saving bandwidth on pages without login forms."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:342
+#: includes/Admin/Pages/HelpPage.php:366
 msgid "Theme Integration (Advanced)"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:343
+#: includes/Admin/Pages/HelpPage.php:367
 msgid "For developers and advanced users: integrate Keyless Auth styles with your theme's color system using WordPress filter hooks."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:345
+#: includes/Admin/Pages/HelpPage.php:369
 msgid "Why use filters instead of custom CSS?"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:347
+#: includes/Admin/Pages/HelpPage.php:371
 msgid "No !important needed - proper CSS cascade order"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:348
+#: includes/Admin/Pages/HelpPage.php:372
 msgid "Map plugin variables to your theme's existing CSS variables"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:349
+#: includes/Admin/Pages/HelpPage.php:373
 msgid "Automatic dark mode support when using theme variables"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:350
+#: includes/Admin/Pages/HelpPage.php:374
 msgid "Cleaner, more maintainable integration"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:353
+#: includes/Admin/Pages/HelpPage.php:377
 msgid "Basic Example - Login Forms"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:354
+#: includes/Admin/Pages/HelpPage.php:378
 msgid "Add this code to your theme's functions.php or a custom plugin:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:367
+#: includes/Admin/Pages/HelpPage.php:391
 msgid "Advanced Example - With Dark Mode"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:388
+#: includes/Admin/Pages/HelpPage.php:412
 msgid "2FA Page Integration"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:389
+#: includes/Admin/Pages/HelpPage.php:413
 msgid "Use a separate filter for the 2FA management page:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:395
+#: includes/Admin/Pages/HelpPage.php:419
 msgid "Available CSS Variables"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:396
+#: includes/Admin/Pages/HelpPage.php:420
 msgid "You can override any of these variables:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:422
-#: includes/Admin/Pages/OptionsPage.php:244
-#: includes/Admin/Pages/OptionsPage.php:401
+#: includes/Admin/Pages/HelpPage.php:446
+#: includes/Admin/Pages/OptionsPage.php:246
+#: includes/Admin/Pages/OptionsPage.php:429
 msgid "Security Settings"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:423
-#: includes/Admin/Pages/OptionsPage.php:246
+#: includes/Admin/Pages/HelpPage.php:447
+#: includes/Admin/Pages/OptionsPage.php:248
 msgid "Additional security options to harden your WordPress installation."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:425
-#: includes/Admin/Pages/OptionsPage.php:252
+#: includes/Admin/Pages/HelpPage.php:449
+#: includes/Admin/Pages/OptionsPage.php:254
 msgid "Disable XML-RPC"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:426
+#: includes/Admin/Pages/HelpPage.php:450
 msgid "WordPress includes an XML-RPC interface (xmlrpc.php) that allows remote access to your site. While useful for some features, it's often targeted by attackers for brute force attacks."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:428
+#: includes/Admin/Pages/HelpPage.php:452
 msgid "When to disable XML-RPC:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:430
+#: includes/Admin/Pages/HelpPage.php:454
 msgid "You don't use Jetpack or similar plugins that require XML-RPC"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:431
 #: includes/Admin/Pages/HelpPage.php:455
+#: includes/Admin/Pages/HelpPage.php:479
 msgid "You don't use WordPress mobile apps"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:432
+#: includes/Admin/Pages/HelpPage.php:456
 msgid "You don't need pingbacks or trackbacks"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:433
+#: includes/Admin/Pages/HelpPage.php:457
 msgid "You want to reduce your site's attack surface"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:436
+#: includes/Admin/Pages/HelpPage.php:460
 msgid "When to keep XML-RPC enabled:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:438
+#: includes/Admin/Pages/HelpPage.php:462
 msgid "You use Jetpack for stats, security, or other features"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:439
 #: includes/Admin/Pages/HelpPage.php:463
+#: includes/Admin/Pages/HelpPage.php:487
 msgid "You use WordPress mobile apps to manage your site"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:440
+#: includes/Admin/Pages/HelpPage.php:464
 msgid "You have third-party integrations that require XML-RPC"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:443
+#: includes/Admin/Pages/HelpPage.php:467
 msgid "Go to Options → Security Settings → Disable XML-RPC"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:446
-#: includes/Admin/Pages/HelpPage.php:510
+#: includes/Admin/Pages/HelpPage.php:470
+#: includes/Admin/Pages/HelpPage.php:534
 msgid "Security Tip:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:446
+#: includes/Admin/Pages/HelpPage.php:470
 msgid "If you use REST API instead of XML-RPC, you can safely disable XML-RPC. Modern WordPress features use the REST API, which is more secure."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:449
-#: includes/Admin/Pages/OptionsPage.php:265
+#: includes/Admin/Pages/HelpPage.php:473
+#: includes/Admin/Pages/OptionsPage.php:267
 msgid "Disable Application Passwords"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:450
+#: includes/Admin/Pages/HelpPage.php:474
 msgid "Application Passwords are special passwords used for authenticating to REST API and XML-RPC endpoints without using your main account password. Introduced in WordPress 5.6, they provide secure programmatic access."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:452
+#: includes/Admin/Pages/HelpPage.php:476
 msgid "When to disable Application Passwords:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:454
+#: includes/Admin/Pages/HelpPage.php:478
 msgid "You don't use REST API authentication"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:456
+#: includes/Admin/Pages/HelpPage.php:480
 msgid "You don't have CI/CD pipelines or automated deployments"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:457
+#: includes/Admin/Pages/HelpPage.php:481
 msgid "You don't use third-party integrations requiring API access"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:458
+#: includes/Admin/Pages/HelpPage.php:482
 msgid "You want maximum security and don't need programmatic access"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:461
+#: includes/Admin/Pages/HelpPage.php:485
 msgid "When to keep Application Passwords enabled:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:464
+#: includes/Admin/Pages/HelpPage.php:488
 msgid "You have automated scripts or tools that access your site via REST API"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:465
+#: includes/Admin/Pages/HelpPage.php:489
 msgid "You use third-party services that require API authentication"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:466
+#: includes/Admin/Pages/HelpPage.php:490
 msgid "You have CI/CD pipelines that deploy to WordPress"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:467
+#: includes/Admin/Pages/HelpPage.php:491
 msgid "Your 2FA is enabled and users need API access"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:470
+#: includes/Admin/Pages/HelpPage.php:494
 msgid "Go to Options → Security Settings → Disable Application Passwords"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:473
+#: includes/Admin/Pages/HelpPage.php:497
 msgid "Disabling Application Passwords will break REST API and XML-RPC authentication. If you have 2FA enabled, this will prevent all programmatic access as regular passwords are blocked by 2FA."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:477
+#: includes/Admin/Pages/HelpPage.php:501
 msgid "Recovery Note:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:477
+#: includes/Admin/Pages/HelpPage.php:501
 msgid "If you get locked out, you can always deactivate the Keyless Auth plugin via FTP to regain access and disable this setting."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:480
-#: includes/Admin/Pages/OptionsPage.php:279
+#: includes/Admin/Pages/HelpPage.php:504
+#: includes/Admin/Pages/OptionsPage.php:281
 msgid "Prevent User Enumeration"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:481
+#: includes/Admin/Pages/HelpPage.php:505
 msgid "User enumeration is a technique attackers use to discover valid usernames on your WordPress site. Once they have usernames, they can launch targeted brute force attacks. This feature blocks all common enumeration methods."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:483
+#: includes/Admin/Pages/HelpPage.php:507
 msgid "What this feature blocks:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:485
+#: includes/Admin/Pages/HelpPage.php:509
 msgid "REST API User Endpoints:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:485
+#: includes/Admin/Pages/HelpPage.php:509
 msgid "Blocks /wp-json/wp/v2/users and /wp-json/wp/v2/users/{id} for non-logged-in users"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:486
+#: includes/Admin/Pages/HelpPage.php:510
 msgid "Author Archives:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:486
+#: includes/Admin/Pages/HelpPage.php:510
 msgid "Redirects author archive pages and ?author=N queries to homepage"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:487
+#: includes/Admin/Pages/HelpPage.php:511
 msgid "Login Error Messages:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:487
+#: includes/Admin/Pages/HelpPage.php:511
 msgid "Removes specific error messages that reveal whether username exists"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:488
+#: includes/Admin/Pages/HelpPage.php:512
 msgid "Comment Author Classes:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:488
+#: includes/Admin/Pages/HelpPage.php:512
 msgid "Removes comment-author-{username} CSS classes from comments"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:489
+#: includes/Admin/Pages/HelpPage.php:513
 msgid "oEmbed Data:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:489
+#: includes/Admin/Pages/HelpPage.php:513
 msgid "Removes author name and URL from oEmbed responses"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:492
+#: includes/Admin/Pages/HelpPage.php:516
 msgid "When to enable:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:494
+#: includes/Admin/Pages/HelpPage.php:518
 msgid "You want to prevent username discovery attacks"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:495
+#: includes/Admin/Pages/HelpPage.php:519
 msgid "You don't need public author archives"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:496
+#: includes/Admin/Pages/HelpPage.php:520
 msgid "You want maximum security against brute force attacks"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:497
+#: includes/Admin/Pages/HelpPage.php:521
 msgid "Your site is a business/corporate site without author profiles"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:500
+#: includes/Admin/Pages/HelpPage.php:524
 msgid "When to keep disabled:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:502
+#: includes/Admin/Pages/HelpPage.php:526
 msgid "You run a multi-author blog with author profiles"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:503
+#: includes/Admin/Pages/HelpPage.php:527
 msgid "You need author archives for SEO or navigation"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:504
+#: includes/Admin/Pages/HelpPage.php:528
 msgid "Third-party tools need access to user data via REST API"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:507
+#: includes/Admin/Pages/HelpPage.php:531
 msgid "Go to Options → Security Settings → Prevent User Enumeration"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:510
+#: includes/Admin/Pages/HelpPage.php:534
 msgid "Combine with strong passwords or magic link authentication for best security. User enumeration prevention makes brute force attacks significantly harder."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:519
+#: includes/Admin/Pages/HelpPage.php:543
 msgid "Troubleshooting"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:521
+#: includes/Admin/Pages/HelpPage.php:545
 msgid "Emails not being sent?"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:522
+#: includes/Admin/Pages/HelpPage.php:546
 msgid "Check your SMTP settings and test with the built-in email tester. Make sure your hosting provider allows email sending."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:524
+#: includes/Admin/Pages/HelpPage.php:548
 msgid "Login links not working?"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:525
+#: includes/Admin/Pages/HelpPage.php:549
 msgid "Verify that tokens haven't expired (10 minute limit) and check that the link hasn't been used already."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:527
+#: includes/Admin/Pages/HelpPage.php:551
 msgid "Users not receiving emails?"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:528
+#: includes/Admin/Pages/HelpPage.php:552
 msgid "Check spam folders and verify the user's email address is correct. Consider configuring DKIM/SPF records."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:530
+#: includes/Admin/Pages/HelpPage.php:554
 msgid "Password login not working with [keyless-auth-full]?"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:532
+#: includes/Admin/Pages/HelpPage.php:556
 msgid "If password login reloads without errors but magic link works, your page builder may be intercepting wp-login.php. Page builders like Bricks Builder, Elementor Pro, and Divi have custom authentication page settings that redirect wp-login.php to custom pages."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:534
+#: includes/Admin/Pages/HelpPage.php:558
 msgid "Solutions:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:536
+#: includes/Admin/Pages/HelpPage.php:560
 msgid "Bricks Builder:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:536
+#: includes/Admin/Pages/HelpPage.php:560
 msgid "Go to Bricks → Settings → General → Custom authentication pages, and disable the \"Login Page\" setting."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:537
+#: includes/Admin/Pages/HelpPage.php:561
 msgid "Elementor/Divi:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:537
+#: includes/Admin/Pages/HelpPage.php:561
 msgid "Check for similar \"custom login page\" or \"authentication page\" settings and disable them."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:538
+#: includes/Admin/Pages/HelpPage.php:562
 msgid "General:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:538
+#: includes/Admin/Pages/HelpPage.php:562
 msgid "Ensure no other plugins or theme settings are redirecting wp-login.php to a custom page."
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:549
+#: includes/Admin/Pages/HelpPage.php:573
 msgid "Advanced Configuration"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:550
+#: includes/Admin/Pages/HelpPage.php:574
 msgid "Developer Functions"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:551
+#: includes/Admin/Pages/HelpPage.php:575
 msgid "For developers, these functions are available:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:553
+#: includes/Admin/Pages/HelpPage.php:577
 msgid "Display login form in templates"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:554
+#: includes/Admin/Pages/HelpPage.php:578
 msgid "Display 2FA setup interface in templates"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:557
+#: includes/Admin/Pages/HelpPage.php:581
 msgid "Custom Admin Notices"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:558
+#: includes/Admin/Pages/HelpPage.php:582
 msgid "For developers extending Keyless Auth, you can create dismissible admin notifications using the Notices class:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:560
+#: includes/Admin/Pages/HelpPage.php:584
 msgid "Basic Usage"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:572
+#: includes/Admin/Pages/HelpPage.php:596
 msgid "Advanced Example with Date Range"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:582
+#: includes/Admin/Pages/HelpPage.php:606
 msgid "Available Notice Styles"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:584
+#: includes/Admin/Pages/HelpPage.php:608
 msgid "Blue informational notice"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:585
+#: includes/Admin/Pages/HelpPage.php:609
 msgid "Green success notice"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:586
+#: includes/Admin/Pages/HelpPage.php:610
 msgid "Yellow warning notice"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:587
+#: includes/Admin/Pages/HelpPage.php:611
 msgid "Red error notice"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:588
+#: includes/Admin/Pages/HelpPage.php:612
 msgid "Legacy green success style"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:591
+#: includes/Admin/Pages/HelpPage.php:615
 msgid "Available Hooks"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:592
+#: includes/Admin/Pages/HelpPage.php:616
 msgid "The Notices class provides action hooks for custom functionality:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:594
+#: includes/Admin/Pages/HelpPage.php:618
 msgid "Fires before notice is shown"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:595
+#: includes/Admin/Pages/HelpPage.php:619
 msgid "Fires after notice is shown to admin"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:596
+#: includes/Admin/Pages/HelpPage.php:620
 msgid "Fires after notice display logic completes"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:597
+#: includes/Admin/Pages/HelpPage.php:621
 msgid "Fires when user clicks dismiss"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:598
+#: includes/Admin/Pages/HelpPage.php:622
 msgid "Fires after dismiss is saved"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:601
+#: includes/Admin/Pages/HelpPage.php:625
 msgid "You can also filter the message content:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:603
+#: includes/Admin/Pages/HelpPage.php:627
 msgid "Modify the notice HTML before display"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:606
+#: includes/Admin/Pages/HelpPage.php:630
 msgid "Database Tables"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:607
+#: includes/Admin/Pages/HelpPage.php:631
 msgid "Keyless Auth creates these custom tables for optimal performance:"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:609
+#: includes/Admin/Pages/HelpPage.php:633
 msgid "Login attempt tracking"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:610
+#: includes/Admin/Pages/HelpPage.php:634
 msgid "Email sending logs"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:611
+#: includes/Admin/Pages/HelpPage.php:635
 msgid "Secure token storage"
 msgstr ""
 
-#: includes/Admin/Pages/HelpPage.php:612
+#: includes/Admin/Pages/HelpPage.php:636
 msgid "Device fingerprinting"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:68
-#: includes/Admin/Pages/OptionsPage.php:111
+#: includes/Admin/Pages/OptionsPage.php:74
+#: includes/Admin/Pages/OptionsPage.php:117
 #: includes/Security/TwoFA/Core.php:290
 #: keyless-auth.php:88
 msgid "Your account requires 2FA setup within {days} days for security."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:86
+#: includes/Admin/Pages/OptionsPage.php:92
 msgid "Emergency mode is now enabled. 2FA system is disabled for all users."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:88
+#: includes/Admin/Pages/OptionsPage.php:94
 msgid "Emergency mode is disabled. 2FA system is now active."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:95
+#: includes/Admin/Pages/OptionsPage.php:101
 msgid "Options saved successfully!"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:122
+#: includes/Admin/Pages/OptionsPage.php:128
 msgid "Keyless Auth - Options"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:124
+#: includes/Admin/Pages/OptionsPage.php:130
 msgid "Plugin Options"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:132
+#: includes/Admin/Pages/OptionsPage.php:138
 msgid "Enable Login on wp-login.php"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:137
+#: includes/Admin/Pages/OptionsPage.php:143
 msgid "Add a magic login field to the WordPress login page (wp-login.php). Note: This option is incompatible with the wp-login.php redirect option below."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:143
+#: includes/Admin/Pages/OptionsPage.php:149
 msgid "Notice:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:144
+#: includes/Admin/Pages/OptionsPage.php:150
 msgid "This option is currently inactive because \"Redirect all wp-login.php requests\" is enabled below. The redirect takes priority and prevents the magic login field from appearing on wp-login.php."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:145
+#: includes/Admin/Pages/OptionsPage.php:151
 msgid "To use magic login on wp-login.php, disable the redirect option below."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:152
+#: includes/Admin/Pages/OptionsPage.php:159
 msgid "Enable WooCommerce Integration"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:159
-msgid "WooCommerce is not active. Install and activate WooCommerce to enable this feature."
-msgstr ""
-
-#: includes/Admin/Pages/OptionsPage.php:161
+#: includes/Admin/Pages/OptionsPage.php:164
 msgid "Add magic link authentication to WooCommerce login forms (My Account and Checkout pages). A collapsible \"Or login with magic link instead\" option will appear below the password field."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:169
+#: includes/Admin/Pages/OptionsPage.php:171
 msgid "Custom Login Page URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:174
+#: includes/Admin/Pages/OptionsPage.php:176
 msgid "Optional: Specify a custom login page URL. When users need to login (like in 2FA flow), they'll be redirected here instead of wp-login.php. Leave empty to use the default WordPress login page."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:180
+#: includes/Admin/Pages/OptionsPage.php:182
 msgid "Redirect wp-login.php"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:184
+#: includes/Admin/Pages/OptionsPage.php:186
 msgid "Redirect all wp-login.php requests to custom login page"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:186
+#: includes/Admin/Pages/OptionsPage.php:188
 msgid "When enabled, all requests to wp-login.php will be redirected to your custom login page. Note: When enabled, this automatically disables magic login integration on wp-login.php since users will be redirected away. Emergency bypass: add ?kla_use_wp_login=1 to access wp-login.php directly."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:192
+#: includes/Admin/Pages/OptionsPage.php:194
 msgid "Post-Login Redirect URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:197
+#: includes/Admin/Pages/OptionsPage.php:199
 msgid "Optional: Specify where users should be redirected after successful login via magic link or 2FA. This applies to all users regardless of role. Leave empty to use default WordPress behavior (admin dashboard for admins, homepage for others)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:203
+#: includes/Admin/Pages/OptionsPage.php:205
 msgid "2FA Setup Page URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:208
+#: includes/Admin/Pages/OptionsPage.php:210
 msgid "Optional: Specify a custom page where users can set up 2FA using the [keyless-auth-2fa] shortcode. When users need to configure 2FA, email notifications will link here instead of wp-login.php. Leave empty to use the default WordPress login page."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:230
+#: includes/Admin/Pages/OptionsPage.php:232
 msgid "Auto (System Preference + Theme Classes)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:231
+#: includes/Admin/Pages/OptionsPage.php:233
 msgid "Light Only (No Dark Mode)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:232
+#: includes/Admin/Pages/OptionsPage.php:234
 msgid "Dark Only (Force Dark Mode)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:235
+#: includes/Admin/Pages/OptionsPage.php:237
 msgid "Control how login forms appear in dark mode. Auto detects system preferences and theme dark mode classes. Light Only forces light theme. Dark Only forces dark theme."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:258
+#: includes/Admin/Pages/OptionsPage.php:260
 msgid "Disable WordPress XML-RPC interface to prevent brute force attacks and reduce attack surface. Only disable if you don't use XML-RPC features (Jetpack, mobile apps, pingbacks)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:271
+#: includes/Admin/Pages/OptionsPage.php:273
 msgid "Disable WordPress Application Passwords to prevent REST API and XML-RPC authentication. Only disable if you don't use programmatic access (mobile apps, CI/CD tools, third-party integrations)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:272
-#: includes/Admin/Pages/OptionsPage.php:340
+#: includes/Admin/Pages/OptionsPage.php:274
+#: includes/Admin/Pages/OptionsPage.php:368
 msgid "Warning:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:272
+#: includes/Admin/Pages/OptionsPage.php:274
 msgid "Disabling this will break REST API and XML-RPC authentication. Users will not be able to authenticate via Application Passwords."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:285
+#: includes/Admin/Pages/OptionsPage.php:287
 msgid "Prevent attackers from discovering usernames via REST API, author archives, login errors, and comment author classes. Blocks common user enumeration techniques used to gather usernames for brute force attacks."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:296
-msgid "Add an extra layer of security with TOTP-based two-factor authentication using authenticator apps."
+#: includes/Admin/Pages/OptionsPage.php:294
+msgid "Custom Password Reset Page"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:302
-msgid "Enable 2FA System"
+#: includes/Admin/Pages/OptionsPage.php:300
+msgid "Enable custom password reset page. Create a page with the [keyless_password_reset] shortcode and specify the URL below."
 msgstr ""
 
 #: includes/Admin/Pages/OptionsPage.php:307
-msgid "Enable TOTP authenticator app support for all WordPress logins. Only enable if you don't have other 2FA solutions active."
+msgid "Password Reset Page URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:308
-msgid "API Access:"
+#: includes/Admin/Pages/OptionsPage.php:311
+msgid "https://yoursite.com/reset-password"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:308
-msgid "REST API and XML-RPC automatically bypass 2FA when using Application Passwords."
+#: includes/Admin/Pages/OptionsPage.php:313
+msgid "Full URL to your password reset page. The \"Forgot password?\" link will use this URL. Leave empty to use default wp-login.php."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:309
-msgid "Users can access 2FA setup using the [keyless-auth-2fa] shortcode on any page."
+#: includes/Admin/Pages/OptionsPage.php:324
+msgid "Add an extra layer of security with TOTP-based two-factor authentication using authenticator apps."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:316
-msgid "Emergency Disable 2FA"
-msgstr ""
-
-#: includes/Admin/Pages/OptionsPage.php:322
-msgid "Emergency mode is enabled via wp-config.php constant."
-msgstr ""
-
-#: includes/Admin/Pages/OptionsPage.php:325
-msgid "Remove the CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY constant from wp-config.php to manage emergency mode here."
-msgstr ""
-
-#: includes/Admin/Pages/OptionsPage.php:329
-msgid "Controlled by wp-config.php"
-msgstr ""
-
-#: includes/Admin/Pages/OptionsPage.php:333
-msgid "2FA system is currently disabled"
+#: includes/Admin/Pages/OptionsPage.php:330
+msgid "Enable 2FA System"
 msgstr ""
 
 #: includes/Admin/Pages/OptionsPage.php:335
-msgid "Disable 2FA system temporarily"
+msgid "Enable TOTP authenticator app support for all WordPress logins. Only enable if you don't have other 2FA solutions active."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:339
-msgid "Temporarily disable all 2FA requirements for troubleshooting or emergency access. Users can login normally without 2FA when enabled."
+#: includes/Admin/Pages/OptionsPage.php:336
+msgid "API Access:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:340
-msgid "This reduces security. Only use when necessary."
+#: includes/Admin/Pages/OptionsPage.php:336
+msgid "REST API and XML-RPC automatically bypass 2FA when using Application Passwords."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:351
-msgid "Required for User Roles"
+#: includes/Admin/Pages/OptionsPage.php:337
+msgid "Users can access 2FA setup using the [keyless-auth-2fa] shortcode on any page."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:355
-msgid "Required User Roles"
+#: includes/Admin/Pages/OptionsPage.php:344
+msgid "Emergency Disable 2FA"
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:350
+msgid "Emergency mode is enabled via wp-config.php constant."
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:353
+msgid "Remove the CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY constant from wp-config.php to manage emergency mode here."
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:357
+msgid "Controlled by wp-config.php"
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:361
+msgid "2FA system is currently disabled"
 msgstr ""
 
 #: includes/Admin/Pages/OptionsPage.php:363
+msgid "Disable 2FA system temporarily"
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:367
+msgid "Temporarily disable all 2FA requirements for troubleshooting or emergency access. Users can login normally without 2FA when enabled."
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:368
+msgid "This reduces security. Only use when necessary."
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:379
+msgid "Required for User Roles"
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:383
+msgid "Required User Roles"
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:391
 msgid "Users with these roles MUST set up 2FA. Other users can optionally enable 2FA for enhanced security."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:371
+#: includes/Admin/Pages/OptionsPage.php:399
 msgid "Grace Period"
 msgstr ""
 
 #. translators: %d: number of days for grace period
-#: includes/Admin/Pages/OptionsPage.php:378
+#: includes/Admin/Pages/OptionsPage.php:406
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/Pages/OptionsPage.php:382
+#: includes/Admin/Pages/OptionsPage.php:410
 msgid "How many days users have to set up 2FA after role requirement is enabled."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:389
+#: includes/Admin/Pages/OptionsPage.php:417
 msgid "Grace Period Message"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:394
+#: includes/Admin/Pages/OptionsPage.php:422
 msgid "Message shown to users during grace period. Use {days} placeholder for remaining days."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:405
+#: includes/Admin/Pages/OptionsPage.php:433
 msgid "Max Failed Attempts"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:414
+#: includes/Admin/Pages/OptionsPage.php:442
 msgid "Number of failed 2FA attempts before user is temporarily locked out."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:421
+#: includes/Admin/Pages/OptionsPage.php:449
 msgid "Lockout Duration"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:432
+#: includes/Admin/Pages/OptionsPage.php:460
 msgid "How long to lock users out after too many failed 2FA attempts."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:439
+#: includes/Admin/Pages/OptionsPage.php:467
 msgid "User Management"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:440
+#: includes/Admin/Pages/OptionsPage.php:468
 msgid "2FA user management has been moved to a dedicated page for better usability."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:441
+#: includes/Admin/Pages/OptionsPage.php:469
 msgid "Manage 2FA Users"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:444
+#: includes/Admin/Pages/OptionsPage.php:472
 msgid "Save Options"
 msgstr ""
 
@@ -1789,12 +1865,12 @@ msgid "Login with username"
 msgstr ""
 
 #: includes/Core/Core.php:161
-#: includes/Core/Core.php:308
+#: includes/Core/Core.php:319
 msgid "Send me the link"
 msgstr ""
 
 #: includes/Core/Core.php:168
-#: includes/Core/Core.php:300
+#: includes/Core/Core.php:311
 msgid "Magic link login form"
 msgstr ""
 
@@ -1842,86 +1918,220 @@ msgstr ""
 msgid "Log In"
 msgstr ""
 
-#: includes/Core/Core.php:288
+#: includes/Core/Core.php:299
 msgid "Forgot your password?"
 msgstr ""
 
-#: includes/Core/Core.php:293
+#: includes/Core/Core.php:304
 msgid "OR"
 msgstr ""
 
-#: includes/Core/Core.php:297
+#: includes/Core/Core.php:308
 msgid "Magic link login"
 msgstr ""
 
-#: includes/Core/Core.php:298
+#: includes/Core/Core.php:309
 msgid "Magic Link Login"
 msgstr ""
 
-#: includes/Core/Core.php:299
+#: includes/Core/Core.php:310
 msgid "No password required - we'll send you a secure login link via email."
 msgstr ""
 
-#: includes/Core/Core.php:405
+#: includes/Core/Core.php:416
+#: includes/Core/PasswordReset.php:134
+#: includes/Core/PasswordReset.php:208
 #: includes/Core/WooCommerce.php:174
 #: includes/Email/Templates.php:399
 msgid "Security check failed. Please try again."
 msgstr ""
 
-#: includes/Core/Core.php:416
+#: includes/Core/Core.php:427
 msgid "The username or email you provided do not exist. Please try again."
 msgstr ""
 
-#: includes/Core/Core.php:429
+#: includes/Core/Core.php:440
 #: includes/Core/WooCommerce.php:217
 msgid "There was a problem sending your email. Please try again or contact an admin."
 msgstr ""
 
 #. translators: %1$s: site name, %2$s: login URL for href attribute, %3$s: login URL for display text
-#: includes/Core/Core.php:501
+#: includes/Core/Core.php:512
 #, php-format
 msgid "Hello! <br><br>Login at %1$s by visiting this url: <a href=\"%2$s\" target=\"_blank\">%3$s</a>"
 msgstr ""
 
 #. translators: %s: site name
-#: includes/Core/Core.php:510
+#: includes/Core/Core.php:521
 #, php-format
 msgid "Login at %s"
 msgstr ""
 
-#: includes/Core/Core.php:975
+#: includes/Core/Core.php:986
 #: includes/Core/WooCommerce.php:70
 msgid "Magic login link sent! Check your email and click the link to login."
 msgstr ""
 
-#: includes/Core/Core.php:986
+#: includes/Core/Core.php:997
 msgid "🔐 Magic Login"
 msgstr ""
 
-#: includes/Core/Core.php:989
+#: includes/Core/Core.php:1000
 msgid "No password required"
 msgstr ""
 
-#: includes/Core/Core.php:997
+#: includes/Core/Core.php:1008
 msgid "Email or Username:"
 msgstr ""
 
-#: includes/Core/Core.php:1005
+#: includes/Core/Core.php:1016
 msgid "Enter email or username"
 msgstr ""
 
-#: includes/Core/Core.php:1011
+#: includes/Core/Core.php:1022
 #: includes/Core/WooCommerce.php:115
 #: includes/Core/WooCommerce.php:153
 msgid "Send Magic Link"
 msgstr ""
 
-#: includes/Core/Core.php:1048
+#: includes/Core/Core.php:1059
 msgid "Please enter your email address or username."
 msgstr ""
 
-#: includes/Core/Main.php:109
+#: includes/Core/Main.php:113
 msgid "Settings"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:140
+msgid "Please enter your email address."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:152
+msgid "If this email is registered, you will receive a password reset link shortly."
+msgstr ""
+
+#. translators: 1: Site name, 2: Username, 3: Password reset URL
+#: includes/Core/PasswordReset.php:175
+#, php-format
+msgid ""
+"Someone has requested a password reset for the following account:\n"
+"\n"
+"Site Name: %1$s\n"
+"Username: %2$s\n"
+"\n"
+"If this was a mistake, just ignore this email and nothing will happen.\n"
+"\n"
+"To reset your password, visit the following address:\n"
+"\n"
+"%3$s"
+msgstr ""
+
+#. translators: %s: Site name
+#: includes/Core/PasswordReset.php:191
+#, php-format
+msgid "[%s] Password Reset"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:195
+msgid "Password reset email sent! Please check your inbox."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:197
+msgid "Could not send email. Please contact the site administrator."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:218
+msgid "Please enter and confirm your password."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:221
+msgid "Passwords do not match. Please try again."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:224
+msgid "Password must be at least 8 characters long."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:231
+msgid "Invalid or expired reset link. Please request a new one."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:236
+msgid "Your password has been reset successfully! Redirecting to login..."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:248
+msgid "Invalid or expired reset link. Please request a new password reset."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:424
+#: includes/Core/PasswordReset.php:500
+msgid "Reset Password"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:429
+#: includes/Security/TwoFA/Core.php:477
+msgid "Error:"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:435
+msgid "Success!"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:441
+msgid "Enter your email address below and we'll send you a link to reset your password."
+msgstr ""
+
+#: includes/Core/PasswordReset.php:448
+msgid "Email Address"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:454
+msgid "Enter your email address"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:459
+msgid "Send Reset Link"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:470
+msgid "New Password"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:477
+msgid "Enter your new password"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:482
+msgid "Confirm New Password"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:489
+msgid "Confirm your new password"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:492
+msgid "Password requirements:"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:494
+msgid "At least 8 characters long"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:495
+msgid "Recommended: Mix of letters, numbers, and symbols"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:505
+msgid "Back to Login"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:515
+msgid "Need help?"
+msgstr ""
+
+#: includes/Core/PasswordReset.php:515
+msgid "Contact Support"
 msgstr ""
 
 #: includes/Core/WooCommerce.php:85
@@ -2621,10 +2831,6 @@ msgstr ""
 
 #: includes/Security/TwoFA/Core.php:469
 msgid "Account Locked"
-msgstr ""
-
-#: includes/Security/TwoFA/Core.php:477
-msgid "Error:"
 msgstr ""
 
 #: includes/Security/TwoFA/Core.php:485

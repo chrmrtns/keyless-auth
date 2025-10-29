@@ -285,7 +285,18 @@ class Core {
                 ));
                 ?>
                 <p class="chrmrtns-forgot-password">
-                    <a href="<?php echo esc_url(wp_lostpassword_url($redirect_to)); ?>"><?php esc_html_e('Forgot your password?', 'keyless-auth'); ?></a>
+                    <?php
+                    // Use custom reset page if enabled, otherwise use default wp-login.php
+                    $use_custom_reset = get_option('chrmrtns_kla_custom_password_reset', '0') === '1';
+                    $custom_reset_url = get_option('chrmrtns_kla_custom_password_reset_url', '');
+
+                    if ($use_custom_reset && !empty($custom_reset_url)) {
+                        $reset_url = $custom_reset_url;
+                    } else {
+                        $reset_url = wp_lostpassword_url($redirect_to);
+                    }
+                    ?>
+                    <a href="<?php echo esc_url($reset_url); ?>"><?php esc_html_e('Forgot your password?', 'keyless-auth'); ?></a>
                 </p>
             </div>
 
