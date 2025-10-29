@@ -100,6 +100,10 @@ class SettingsManager {
             'sanitize_callback' => 'esc_url_raw',
             'default' => ''
         ));
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_support_url', array(
+            'sanitize_callback' => 'esc_url_raw',
+            'default' => ''
+        ));
         register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_enable_woocommerce', array(
             'sanitize_callback' => array($this, 'sanitize_checkbox'),
             'default' => '0'

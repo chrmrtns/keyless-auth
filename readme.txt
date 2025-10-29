@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 3.2.0
+Stable tag: 3.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -314,6 +314,11 @@ Change token expiration:
 
 
 == Changelog ==
+
+= 3.2.1 =
+* NEW: Support URL setting in Options page - Configure optional support footer on password reset page
+* FIX: Registered missing chrmrtns_kla_support_url option that was referenced but not functional
+* IMPROVEMENT: Password reset page can now display custom support link when configured
 
 = 3.2.0 =
 * NEW: Custom Password Reset Page - Replace wp-login.php with branded shortcode-based reset page

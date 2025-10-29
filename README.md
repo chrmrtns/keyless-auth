@@ -673,6 +673,11 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 
 ## 🔄 Changelog
 
+### v3.2.1
+- **NEW:** Support URL setting in Options page - Configure optional support footer on password reset page
+- **FIX:** Registered missing chrmrtns_kla_support_url option that was referenced but not functional
+- **IMPROVEMENT:** Password reset page can now display custom support link when configured
+
 ### v3.2.0
 - **NEW:** Custom Password Reset Page - Replace wp-login.php with branded shortcode-based reset page
 - **NEW:** Password reset shortcode `[keyless-auth-password-reset]` - Embed on any page with any slug

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Keyless Auth - Login without Passwords 3.2.0\n"
+"Project-Id-Version: Keyless Auth - Login without Passwords 3.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/keyless-auth\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-29T17:43:50+00:00\n"
+"POT-Creation-Date: 2025-10-29T18:40:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: keyless-auth\n"
@@ -161,7 +161,7 @@ msgstr ""
 
 #: includes/Admin/Pages/DashboardPage.php:38
 #: includes/Admin/Pages/HelpPage.php:53
-#: includes/Admin/Pages/OptionsPage.php:127
+#: includes/Admin/Pages/OptionsPage.php:130
 #: includes/Admin/Pages/SmtpPage.php:40
 #: includes/Admin/Pages/TwoFAUsersPage.php:42
 #: includes/Email/MailLogger.php:604
@@ -572,7 +572,7 @@ msgid "All attempts are logged for security analysis"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:249
-#: includes/Admin/Pages/OptionsPage.php:322
+#: includes/Admin/Pages/OptionsPage.php:338
 msgid "Two-Factor Authentication (2FA)"
 msgstr ""
 
@@ -609,7 +609,7 @@ msgid "Place [keyless-auth-2fa] shortcode on a page for user setup"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:257
-#: includes/Admin/Pages/OptionsPage.php:337
+#: includes/Admin/Pages/OptionsPage.php:353
 msgid "User Setup:"
 msgstr ""
 
@@ -842,17 +842,17 @@ msgid "Application Passwords are time-limited tokens that can be revoked individ
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:348
-#: includes/Admin/Pages/OptionsPage.php:219
+#: includes/Admin/Pages/OptionsPage.php:222
 msgid "Appearance & Theme Settings"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:349
-#: includes/Admin/Pages/OptionsPage.php:221
+#: includes/Admin/Pages/OptionsPage.php:224
 msgid "Control how login forms appear in light and dark mode themes."
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:351
-#: includes/Admin/Pages/OptionsPage.php:227
+#: includes/Admin/Pages/OptionsPage.php:230
 msgid "Dark Mode Behavior"
 msgstr ""
 
@@ -960,18 +960,18 @@ msgid "You can override any of these variables:"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:446
-#: includes/Admin/Pages/OptionsPage.php:246
-#: includes/Admin/Pages/OptionsPage.php:429
+#: includes/Admin/Pages/OptionsPage.php:249
+#: includes/Admin/Pages/OptionsPage.php:445
 msgid "Security Settings"
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:447
-#: includes/Admin/Pages/OptionsPage.php:248
+#: includes/Admin/Pages/OptionsPage.php:251
 msgid "Additional security options to harden your WordPress installation."
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:449
-#: includes/Admin/Pages/OptionsPage.php:254
+#: includes/Admin/Pages/OptionsPage.php:257
 msgid "Disable XML-RPC"
 msgstr ""
 
@@ -1031,7 +1031,7 @@ msgid "If you use REST API instead of XML-RPC, you can safely disable XML-RPC. M
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:473
-#: includes/Admin/Pages/OptionsPage.php:267
+#: includes/Admin/Pages/OptionsPage.php:270
 msgid "Disable Application Passwords"
 msgstr ""
 
@@ -1096,7 +1096,7 @@ msgid "If you get locked out, you can always deactivate the Keyless Auth plugin 
 msgstr ""
 
 #: includes/Admin/Pages/HelpPage.php:504
-#: includes/Admin/Pages/OptionsPage.php:281
+#: includes/Admin/Pages/OptionsPage.php:284
 msgid "Prevent User Enumeration"
 msgstr ""
 
@@ -1376,275 +1376,287 @@ msgstr ""
 msgid "Device fingerprinting"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:74
-#: includes/Admin/Pages/OptionsPage.php:117
+#: includes/Admin/Pages/OptionsPage.php:77
+#: includes/Admin/Pages/OptionsPage.php:120
 #: includes/Security/TwoFA/Core.php:290
 #: keyless-auth.php:88
 msgid "Your account requires 2FA setup within {days} days for security."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:92
+#: includes/Admin/Pages/OptionsPage.php:95
 msgid "Emergency mode is now enabled. 2FA system is disabled for all users."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:94
+#: includes/Admin/Pages/OptionsPage.php:97
 msgid "Emergency mode is disabled. 2FA system is now active."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:101
+#: includes/Admin/Pages/OptionsPage.php:104
 msgid "Options saved successfully!"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:128
+#: includes/Admin/Pages/OptionsPage.php:131
 msgid "Keyless Auth - Options"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:130
+#: includes/Admin/Pages/OptionsPage.php:133
 msgid "Plugin Options"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:138
+#: includes/Admin/Pages/OptionsPage.php:141
 msgid "Enable Login on wp-login.php"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:143
+#: includes/Admin/Pages/OptionsPage.php:146
 msgid "Add a magic login field to the WordPress login page (wp-login.php). Note: This option is incompatible with the wp-login.php redirect option below."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:149
+#: includes/Admin/Pages/OptionsPage.php:152
 msgid "Notice:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:150
+#: includes/Admin/Pages/OptionsPage.php:153
 msgid "This option is currently inactive because \"Redirect all wp-login.php requests\" is enabled below. The redirect takes priority and prevents the magic login field from appearing on wp-login.php."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:151
+#: includes/Admin/Pages/OptionsPage.php:154
 msgid "To use magic login on wp-login.php, disable the redirect option below."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:159
+#: includes/Admin/Pages/OptionsPage.php:162
 msgid "Enable WooCommerce Integration"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:164
+#: includes/Admin/Pages/OptionsPage.php:167
 msgid "Add magic link authentication to WooCommerce login forms (My Account and Checkout pages). A collapsible \"Or login with magic link instead\" option will appear below the password field."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:171
+#: includes/Admin/Pages/OptionsPage.php:174
 msgid "Custom Login Page URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:176
+#: includes/Admin/Pages/OptionsPage.php:179
 msgid "Optional: Specify a custom login page URL. When users need to login (like in 2FA flow), they'll be redirected here instead of wp-login.php. Leave empty to use the default WordPress login page."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:182
+#: includes/Admin/Pages/OptionsPage.php:185
 msgid "Redirect wp-login.php"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:186
+#: includes/Admin/Pages/OptionsPage.php:189
 msgid "Redirect all wp-login.php requests to custom login page"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:188
+#: includes/Admin/Pages/OptionsPage.php:191
 msgid "When enabled, all requests to wp-login.php will be redirected to your custom login page. Note: When enabled, this automatically disables magic login integration on wp-login.php since users will be redirected away. Emergency bypass: add ?kla_use_wp_login=1 to access wp-login.php directly."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:194
+#: includes/Admin/Pages/OptionsPage.php:197
 msgid "Post-Login Redirect URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:199
+#: includes/Admin/Pages/OptionsPage.php:202
 msgid "Optional: Specify where users should be redirected after successful login via magic link or 2FA. This applies to all users regardless of role. Leave empty to use default WordPress behavior (admin dashboard for admins, homepage for others)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:205
+#: includes/Admin/Pages/OptionsPage.php:208
 msgid "2FA Setup Page URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:210
+#: includes/Admin/Pages/OptionsPage.php:213
 msgid "Optional: Specify a custom page where users can set up 2FA using the [keyless-auth-2fa] shortcode. When users need to configure 2FA, email notifications will link here instead of wp-login.php. Leave empty to use the default WordPress login page."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:232
+#: includes/Admin/Pages/OptionsPage.php:235
 msgid "Auto (System Preference + Theme Classes)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:233
+#: includes/Admin/Pages/OptionsPage.php:236
 msgid "Light Only (No Dark Mode)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:234
+#: includes/Admin/Pages/OptionsPage.php:237
 msgid "Dark Only (Force Dark Mode)"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:237
+#: includes/Admin/Pages/OptionsPage.php:240
 msgid "Control how login forms appear in dark mode. Auto detects system preferences and theme dark mode classes. Light Only forces light theme. Dark Only forces dark theme."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:260
+#: includes/Admin/Pages/OptionsPage.php:263
 msgid "Disable WordPress XML-RPC interface to prevent brute force attacks and reduce attack surface. Only disable if you don't use XML-RPC features (Jetpack, mobile apps, pingbacks)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:273
+#: includes/Admin/Pages/OptionsPage.php:276
 msgid "Disable WordPress Application Passwords to prevent REST API and XML-RPC authentication. Only disable if you don't use programmatic access (mobile apps, CI/CD tools, third-party integrations)."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:274
-#: includes/Admin/Pages/OptionsPage.php:368
+#: includes/Admin/Pages/OptionsPage.php:277
+#: includes/Admin/Pages/OptionsPage.php:384
 msgid "Warning:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:274
+#: includes/Admin/Pages/OptionsPage.php:277
 msgid "Disabling this will break REST API and XML-RPC authentication. Users will not be able to authenticate via Application Passwords."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:287
+#: includes/Admin/Pages/OptionsPage.php:290
 msgid "Prevent attackers from discovering usernames via REST API, author archives, login errors, and comment author classes. Blocks common user enumeration techniques used to gather usernames for brute force attacks."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:294
+#: includes/Admin/Pages/OptionsPage.php:297
 msgid "Custom Password Reset Page"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:300
+#: includes/Admin/Pages/OptionsPage.php:303
 msgid "Enable custom password reset page. Create a page with the [keyless_password_reset] shortcode and specify the URL below."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:307
+#: includes/Admin/Pages/OptionsPage.php:310
 msgid "Password Reset Page URL"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:311
+#: includes/Admin/Pages/OptionsPage.php:314
 msgid "https://yoursite.com/reset-password"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:313
+#: includes/Admin/Pages/OptionsPage.php:316
 msgid "Full URL to your password reset page. The \"Forgot password?\" link will use this URL. Leave empty to use default wp-login.php."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:324
+#: includes/Admin/Pages/OptionsPage.php:323
+msgid "Support URL (Optional)"
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:327
+msgid "https://yoursite.com/support"
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:329
+msgid "Enter a support page URL to display a help footer on the password reset page. Leave empty to hide the support footer."
+msgstr ""
+
+#: includes/Admin/Pages/OptionsPage.php:340
 msgid "Add an extra layer of security with TOTP-based two-factor authentication using authenticator apps."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:330
+#: includes/Admin/Pages/OptionsPage.php:346
 msgid "Enable 2FA System"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:335
+#: includes/Admin/Pages/OptionsPage.php:351
 msgid "Enable TOTP authenticator app support for all WordPress logins. Only enable if you don't have other 2FA solutions active."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:336
+#: includes/Admin/Pages/OptionsPage.php:352
 msgid "API Access:"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:336
+#: includes/Admin/Pages/OptionsPage.php:352
 msgid "REST API and XML-RPC automatically bypass 2FA when using Application Passwords."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:337
+#: includes/Admin/Pages/OptionsPage.php:353
 msgid "Users can access 2FA setup using the [keyless-auth-2fa] shortcode on any page."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:344
+#: includes/Admin/Pages/OptionsPage.php:360
 msgid "Emergency Disable 2FA"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:350
+#: includes/Admin/Pages/OptionsPage.php:366
 msgid "Emergency mode is enabled via wp-config.php constant."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:353
+#: includes/Admin/Pages/OptionsPage.php:369
 msgid "Remove the CHRMRTNS_KLA_DISABLE_2FA_EMERGENCY constant from wp-config.php to manage emergency mode here."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:357
+#: includes/Admin/Pages/OptionsPage.php:373
 msgid "Controlled by wp-config.php"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:361
+#: includes/Admin/Pages/OptionsPage.php:377
 msgid "2FA system is currently disabled"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:363
+#: includes/Admin/Pages/OptionsPage.php:379
 msgid "Disable 2FA system temporarily"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:367
+#: includes/Admin/Pages/OptionsPage.php:383
 msgid "Temporarily disable all 2FA requirements for troubleshooting or emergency access. Users can login normally without 2FA when enabled."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:368
+#: includes/Admin/Pages/OptionsPage.php:384
 msgid "This reduces security. Only use when necessary."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:379
+#: includes/Admin/Pages/OptionsPage.php:395
 msgid "Required for User Roles"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:383
+#: includes/Admin/Pages/OptionsPage.php:399
 msgid "Required User Roles"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:391
+#: includes/Admin/Pages/OptionsPage.php:407
 msgid "Users with these roles MUST set up 2FA. Other users can optionally enable 2FA for enhanced security."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:399
+#: includes/Admin/Pages/OptionsPage.php:415
 msgid "Grace Period"
 msgstr ""
 
 #. translators: %d: number of days for grace period
-#: includes/Admin/Pages/OptionsPage.php:406
+#: includes/Admin/Pages/OptionsPage.php:422
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/Pages/OptionsPage.php:410
+#: includes/Admin/Pages/OptionsPage.php:426
 msgid "How many days users have to set up 2FA after role requirement is enabled."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:417
+#: includes/Admin/Pages/OptionsPage.php:433
 msgid "Grace Period Message"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:422
+#: includes/Admin/Pages/OptionsPage.php:438
 msgid "Message shown to users during grace period. Use {days} placeholder for remaining days."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:433
+#: includes/Admin/Pages/OptionsPage.php:449
 msgid "Max Failed Attempts"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:442
+#: includes/Admin/Pages/OptionsPage.php:458
 msgid "Number of failed 2FA attempts before user is temporarily locked out."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:449
+#: includes/Admin/Pages/OptionsPage.php:465
 msgid "Lockout Duration"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:460
+#: includes/Admin/Pages/OptionsPage.php:476
 msgid "How long to lock users out after too many failed 2FA attempts."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:467
+#: includes/Admin/Pages/OptionsPage.php:483
 msgid "User Management"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:468
+#: includes/Admin/Pages/OptionsPage.php:484
 msgid "2FA user management has been moved to a dedicated page for better usability."
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:469
+#: includes/Admin/Pages/OptionsPage.php:485
 msgid "Manage 2FA Users"
 msgstr ""
 
-#: includes/Admin/Pages/OptionsPage.php:472
+#: includes/Admin/Pages/OptionsPage.php:488
 msgid "Save Options"
 msgstr ""
 

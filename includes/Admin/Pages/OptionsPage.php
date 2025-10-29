@@ -61,6 +61,9 @@ class OptionsPage {
             $custom_password_reset_url = isset($_POST['chrmrtns_kla_custom_password_reset_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_custom_password_reset_url'])) : '';
             update_option('chrmrtns_kla_custom_password_reset_url', $custom_password_reset_url);
 
+            $support_url = isset($_POST['chrmrtns_kla_support_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_support_url'])) : '';
+            update_option('chrmrtns_kla_support_url', $support_url);
+
             // Handle 2FA settings
             $enable_2fa = isset($_POST['chrmrtns_kla_2fa_enabled']) ? true : false;
             update_option('chrmrtns_kla_2fa_enabled', $enable_2fa);
@@ -311,6 +314,19 @@ class OptionsPage {
                             <input type="url" id="chrmrtns_kla_custom_password_reset_url" name="chrmrtns_kla_custom_password_reset_url" value="<?php echo esc_attr($custom_password_reset_url); ?>" class="regular-text" placeholder="<?php esc_attr_e('https://yoursite.com/reset-password', 'keyless-auth'); ?>" />
                             <p class="description">
                                 <?php esc_html_e('Full URL to your password reset page. The "Forgot password?" link will use this URL. Leave empty to use default wp-login.php.', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_support_url"><?php esc_html_e('Support URL (Optional)', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <?php $support_url = get_option('chrmrtns_kla_support_url', ''); ?>
+                            <input type="url" id="chrmrtns_kla_support_url" name="chrmrtns_kla_support_url" value="<?php echo esc_attr($support_url); ?>" class="regular-text" placeholder="<?php esc_attr_e('https://yoursite.com/support', 'keyless-auth'); ?>" />
+                            <p class="description">
+                                <?php esc_html_e('Enter a support page URL to display a help footer on the password reset page. Leave empty to hide the support footer.', 'keyless-auth'); ?>
                             </p>
                         </td>
                     </tr>
