@@ -503,4 +503,4 @@ Change token expiration:
 ---
 
 **For older changelog entries (versions 2.5.0 and earlier), please visit:**
-https://github.com/Chrmrtns/keyless-auth/blob/main/readme.md
+https://github.com/chrmrtns/keyless-auth/blob/main/README.md

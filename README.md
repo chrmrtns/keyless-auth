@@ -924,6 +924,88 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 - **SECURITY:** Enhanced nonce verification for all forms
 - **IMPROVEMENT:** Professional admin interface
 
+### v2.0.0
+- **NEW:** Complete rebrand to "Keyless Auth" with chrmrtns prefix by Chris Martens
+- **NEW:** Dedicated top-level admin menu "Keyless Auth" with Settings submenu
+- **NEW:** Visual template selection with live previews of each email template
+- **NEW:** WYSIWYG email editor with HTML support for custom templates
+- **NEW:** Advanced color controls supporting hex, RGB, HSL, HSLA formats
+- **NEW:** Separate color customization for buttons, button hover, and text links
+- **NEW:** Enhanced HTML sanitization allowing email-safe tags and attributes
+- **NEW:** Template help section with placeholder documentation and HTML examples
+- **NEW:** Improved email templates with better styling and link color support
+- **NEW:** Color picker and text input synchronization for flexible color entry
+- **REMOVED:** Profile Builder promotional section completely eliminated
+- **SECURITY:** Fixed timing attack vulnerability in token comparison
+- **SECURITY:** Added proper REQUEST_URI validation in URL generation
+- **SECURITY:** Consistent input sanitization using $_GET instead of $_REQUEST
+- **SECURITY:** Added validation before user meta deletion
+- **SECURITY:** Enhanced HTML sanitization for email content
+- **IMPROVEMENT:** Updated all function prefixes from wpa_ to chrmrtns_
+- **IMPROVEMENT:** Updated shortcode to [chrmrtns-passwordless-auth]
+- **IMPROVEMENT:** Enhanced email styling with responsive design
+- **IMPROVEMENT:** Better error handling and validation throughout
+- **IMPROVEMENT:** Dynamic TinyMCE editor initialization for better compatibility
+
+### v1.1.3
+- **FIX:** XSS issue with the already logged in message. Thanks to Mat Rollings
+- **FIX:** Added nonce check for the admin notice dismiss action
+- **FIX:** Sanitize additional output
+- **FIX:** A compatibility bug with Profile Builder when an after login redirect returned an empty string
+
+### v1.1.2
+- **FIX:** Issues with form being processed multiple times
+- **FIX:** An issue regarding AV Link Protection
+- **MISC:** Added a filter over the headers of the email that is sent: wpa_email_headers
+- **MISC:** Added a filter to allow adding of extra email verification logic: wpa_email_verify_login
+
+### v1.1.1
+- **IMPROVEMENT:** Redirect after login based on Profile Builder Pro custom redirects
+
+### v1.1.0
+- **FIX:** create_function to anonymous function so it works with PHP 7.2
+- **IMPROVEMENT:** Localize certain strings
+- **NEW:** Add wpa_after_login_redirect filter so you can redirect users after login
+- **IMPROVEMENT:** Change logo and banner
+
+### v1.0.9
+- **FIX:** Fixed a problem with admin approval error message
+
+### v1.0.8
+- **NEW:** Added compatibility with Admin Approval from Profile Builder
+
+### v1.0.7
+- **FIX:** Properly localize plugin again. Changed the text domain to be the same with the slug
+
+### v1.0.6
+- **FIX:** Properly localize plugin
+
+### v1.0.5
+- **FIX:** Fixed an issue with the Email Content Type. Now we are using the wp_mail_content_type filter to set this
+- **SECURITY:** Plugin security improvements
+
+### v1.0.4
+- **FIX:** Remove email 'from' filter. Should use wp_mail_from filter
+- **NEW:** Added support for HTML inside the e-mail that gets sent
+- **NEW:** Added the wpa_change_link_expiration filter to be able to change the lifespan of the token
+- **NEW:** Added the wpa_change_form_label to be able to change the label for the login form
+- **FIX:** Generating the url using add_query_args() function
+
+### v1.0.3
+- **FIX:** Minor readme change
+
+### v1.0.2
+- **FIX:** Added require_once for the PasswordHash class
+
+### v1.0.1
+- **SECURITY:** Tokens are now hashed in the database
+- **SECURITY:** Sanitized the input fields data
+- **FIX:** No longer using transients. Now using user_meta with an expiration meta since transients are not to be trusted
+- **IMPROVEMENT:** Removed a br tag
+
+### v1.0
+- **NEW:** Initial version. Added a passwordless login form as a shortcode
+
 ## 🌐 WordPress.org Plugin
 
 This plugin is officially available on WordPress.org!
