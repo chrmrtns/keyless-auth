@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-3.2.2-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-3.9%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -672,6 +672,15 @@ define('CHRMRTNS_PA_SMTP_PASSWORD', 'your-smtp-password');
 ```
 
 ## 🔄 Changelog
+
+### v3.2.2
+- **FIX:** Login error display on custom login pages - Wrong password/username errors now display properly instead of blank error
+- **FIX:** wp_login_failed hook integration - Failed login attempts now redirect to custom login page with error parameters
+- **IMPROVEMENT:** Error messages preserved during wp-login.php to custom page redirect flow
+- **IMPROVEMENT:** Better error handling for standard WordPress password forms on custom login pages
+- **TECHNICAL:** Added `handle_failed_login()` method to catch authentication failures and redirect with error codes
+- **TECHNICAL:** Error parameters (login_error, login) now properly preserved and displayed via shortcodes
+- **COMPATIBILITY:** Works harmoniously with User Enumeration Prevention feature - no conflicts
 
 ### v3.2.1
 - **NEW:** Support URL setting in Options page - Configure optional support footer on password reset page

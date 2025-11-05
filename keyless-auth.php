@@ -3,7 +3,7 @@
 * Plugin Name: Keyless Auth - Login without Passwords
 * Plugin URI: https://github.com/chrmrtns/keyless-auth
 * Description: Enhanced passwordless authentication with magic email links, two-factor authentication, SMTP integration, WooCommerce integration, and comprehensive security features for WordPress.
-* Version: 3.2.1
+* Version: 3.2.2
 * Author: Chris Martens
 * Author URI: https://github.com/chrmrtns
 * License: GPL2

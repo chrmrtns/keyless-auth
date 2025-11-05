@@ -48,6 +48,9 @@ class Core {
         // Hook early to catch wp-login.php requests for redirect
         add_action('init', array($this, 'chrmrtns_kla_maybe_redirect_wp_login'), 1);
 
+        // Hook into failed login to redirect with error parameters
+        add_action('wp_login_failed', array($this, 'handle_failed_login'), 10, 2);
+
         // Disable XML-RPC if option is enabled
         if (get_option('chrmrtns_kla_disable_xmlrpc', '0') === '1') {
             add_filter('xmlrpc_enabled', '__return_false');
@@ -128,7 +131,20 @@ class Core {
             if ($adminapp_error) { // admin approval compatibility
                 echo '<p class="chrmrtns-box chrmrtns-error" role="alert" aria-live="assertive">' . wp_kses_post(apply_filters('chrmrtns_kla_admin_approval_error', __('Your account needs to be approved by an admin before you can log-in.', 'keyless-auth'))) . '</p>';
             }
-            
+
+            // Show WordPress native login errors (from wp-login.php redirects)
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for error display
+            $login_error = isset($_GET['login_error']) ? sanitize_text_field(wp_unslash($_GET['login_error'])) : '';
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for error display
+            $login_status = isset($_GET['login']) ? sanitize_text_field(wp_unslash($_GET['login'])) : '';
+
+            if ($login_error || $login_status) {
+                $error_message = $this->get_login_error_message($login_error, $login_status);
+                if ($error_message) {
+                    echo '<p class="chrmrtns-box chrmrtns-error" role="alert">' . wp_kses_post($error_message) . '</p>';
+                }
+            }
+
             // Render the login form
             $this->render_login_form_html($atts);
         }
@@ -229,6 +245,38 @@ class Core {
                 echo '<p class="chrmrtns-box chrmrtns-error">' . wp_kses_post(apply_filters('chrmrtns_kla_admin_app_failed_text', __('Login failed. Please try again.', 'keyless-auth'))) . '</p>';
             } elseif (is_wp_error($sent_link)) {
                 echo '<p class="chrmrtns-box chrmrtns-error">' . wp_kses_post(apply_filters('chrmrtns_kla_error_send_link_msg', __('Email could not be sent. Please try again.', 'keyless-auth'))) . '</p>';
+            }
+
+            // Show WordPress native login errors (from wp-login.php redirects)
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for error display
+            $login_error = isset($_GET['login_error']) ? sanitize_text_field(wp_unslash($_GET['login_error'])) : '';
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for error display
+            $login_status = isset($_GET['login']) ? sanitize_text_field(wp_unslash($_GET['login'])) : '';
+
+            if ($login_error || $login_status) {
+                $error_message = $this->get_login_error_message($login_error, $login_status);
+                if ($error_message) {
+                    echo '<p class="chrmrtns-box chrmrtns-error" role="alert">' . wp_kses_post($error_message) . '</p>';
+                }
+            }
+
+            // Show success messages
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for success messages
+            if (isset($_GET['loggedout']) && $_GET['loggedout'] === 'true') {
+                echo '<p class="chrmrtns-box chrmrtns-success" role="status">' . esc_html__('You have successfully logged out.', 'keyless-auth') . '</p>';
+            }
+
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for success messages
+            if (isset($_GET['registered']) && $_GET['registered'] === 'true') {
+                echo '<p class="chrmrtns-box chrmrtns-success" role="status">' . esc_html__('Registration complete. Please check your email.', 'keyless-auth') . '</p>';
+            }
+
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameters for success messages
+            $checkemail = isset($_GET['checkemail']) ? sanitize_text_field(wp_unslash($_GET['checkemail'])) : '';
+            if ($checkemail === 'confirm') {
+                echo '<p class="chrmrtns-box chrmrtns-success" role="status">' . esc_html__('Check your email for the confirmation link.', 'keyless-auth') . '</p>';
+            } elseif ($checkemail === 'newpass') {
+                echo '<p class="chrmrtns-box chrmrtns-success" role="status">' . esc_html__('Check your email for your new password.', 'keyless-auth') . '</p>';
             }
 
             // Show title if enabled
@@ -387,6 +435,48 @@ class Core {
         </style>
         </div><!-- .chrmrtns-kla-form-wrapper -->
         <?php
+    }
+
+    /**
+     * Get user-friendly error message from WordPress login error codes
+     *
+     * @param string $error_code Error code from login redirect.
+     * @param string $login_status Login status parameter.
+     * @return string Human-readable error message.
+     */
+    private function get_login_error_message($error_code, $login_status) {
+        // Handle common WordPress login error codes
+        $error_messages = array(
+            // Standard wp-login.php error codes
+            'invalid_username' => __('Invalid username or email address.', 'keyless-auth'),
+            'incorrect_password' => __('The password you entered is incorrect.', 'keyless-auth'),
+            'invalidcombo' => __('Invalid username or password.', 'keyless-auth'),
+            'empty_username' => __('Please enter your username or email address.', 'keyless-auth'),
+            'empty_password' => __('Please enter your password.', 'keyless-auth'),
+            'invalid_email' => __('Invalid email address.', 'keyless-auth'),
+            'invalidkey' => __('Your password reset link is invalid or has expired.', 'keyless-auth'),
+            'expiredkey' => __('Your password reset link has expired. Please request a new one.', 'keyless-auth'),
+
+            // Login status messages (from ?login= parameter)
+            'failed' => __('Login failed. Please try again.', 'keyless-auth'),
+        );
+
+        // Check error code first
+        if (!empty($error_code) && isset($error_messages[$error_code])) {
+            return $error_messages[$error_code];
+        }
+
+        // Check login status
+        if (!empty($login_status) && isset($error_messages[$login_status])) {
+            return $error_messages[$login_status];
+        }
+
+        // Generic fallback for unknown errors
+        if (!empty($error_code) || !empty($login_status)) {
+            return __('Login failed. Please try again.', 'keyless-auth');
+        }
+
+        return '';
     }
 
     /**
@@ -584,8 +674,88 @@ class Core {
             return;
         }
 
+        // Preserve error parameters when redirecting
+        $redirect_url = $custom_login_url;
+        $params_to_preserve = array();
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters for error display, no security impact
+        if (isset($_GET['login'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters from WordPress redirect
+            $params_to_preserve['login'] = sanitize_text_field(wp_unslash($_GET['login']));
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters for error display, no security impact
+        if (isset($_GET['error'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters from WordPress redirect
+            $params_to_preserve['login_error'] = sanitize_text_field(wp_unslash($_GET['error']));
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters for success messages, no security impact
+        if (isset($_GET['loggedout'])) {
+            $params_to_preserve['loggedout'] = 'true';
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters for success messages, no security impact
+        if (isset($_GET['registered'])) {
+            $params_to_preserve['registered'] = 'true';
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters for success messages, no security impact
+        if (isset($_GET['checkemail'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters from WordPress redirect
+            $params_to_preserve['checkemail'] = sanitize_text_field(wp_unslash($_GET['checkemail']));
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters for redirect URL, no security impact
+        if (isset($_GET['redirect_to'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- GET parameters from WordPress redirect
+            $params_to_preserve['redirect_to'] = esc_url_raw(wp_unslash($_GET['redirect_to']));
+        }
+
+        // Add preserved parameters to redirect URL
+        if (!empty($params_to_preserve)) {
+            $redirect_url = add_query_arg($params_to_preserve, $custom_login_url);
+        }
+
         // Perform the redirect
-        wp_redirect($custom_login_url);
+        wp_redirect($redirect_url);
+        exit;
+    }
+
+    /**
+     * Handle failed login attempts
+     *
+     * Redirects to custom login page with error parameters when authentication fails
+     *
+     * @param string $username Username or email used in login attempt
+     * @param WP_Error $error WP_Error object containing error details
+     */
+    public function handle_failed_login($username, $error) {
+        // Check if custom login redirect is enabled
+        $redirect_enabled = get_option('chrmrtns_kla_redirect_wp_login', '0');
+        if ($redirect_enabled !== '1') {
+            return;
+        }
+
+        // Check if custom login URL is configured
+        $custom_login_url = get_option('chrmrtns_kla_custom_login_url', '');
+        if (empty($custom_login_url)) {
+            return;
+        }
+
+        // Get the error code from WP_Error object
+        $error_code = $error->get_error_code();
+
+        // Build redirect URL with error parameter
+        $redirect_url = add_query_arg('login_error', $error_code, $custom_login_url);
+
+        // Also preserve the username for better UX (optional)
+        if (!empty($username)) {
+            $redirect_url = add_query_arg('login', sanitize_text_field($username), $redirect_url);
+        }
+
+        // Perform the redirect
+        wp_redirect($redirect_url);
         exit;
     }
 

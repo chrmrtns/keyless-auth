@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 3.2.1
+Stable tag: 3.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -314,6 +314,15 @@ Change token expiration:
 
 
 == Changelog ==
+
+= 3.2.2 =
+* FIX: Login error display on custom login pages - Wrong password/username errors now display properly instead of blank error
+* FIX: wp_login_failed hook integration - Failed login attempts now redirect to custom login page with error parameters
+* IMPROVEMENT: Error messages preserved during wp-login.php to custom page redirect flow
+* IMPROVEMENT: Better error handling for standard WordPress password forms on custom login pages
+* TECHNICAL: Added handle_failed_login() method to catch authentication failures and redirect with error codes
+* TECHNICAL: Error parameters (login_error, login) now properly preserved and displayed via shortcodes
+* COMPATIBILITY: Works harmoniously with User Enumeration Prevention feature - no conflicts
 
 = 3.2.1 =
 * NEW: Support URL setting in Options page - Configure optional support footer on password reset page
