@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 5.6
 Tested up to: 6.8
-Stable tag: 3.3.0-beta.2
+Stable tag: 3.3.0-beta.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -336,12 +336,16 @@ Change token expiration:
 * NEW: REST API feature flag in Options page - Enable/disable REST API endpoints (disabled by default)
 * NEW: REST API documentation tab in Help page - Comprehensive JavaScript, PHP, and cURL examples
 * NEW: Standalone REST API test page (test-rest-api.html) - Test endpoints from anywhere without WordPress context
+* NEW: Dependency Injection Container (Container.php) - Lightweight DI container for service management with lazy loading
 * IMPROVEMENT: Reduced Core.php from 1,247 to 264 lines by extracting 3 utility classes, 2 service classes, and 3 specialized classes (79% reduction)
 * IMPROVEMENT: Better code organization with Single Responsibility Principle - each class has one clear purpose
 * IMPROVEMENT: Enhanced maintainability - related functions grouped into focused, reusable classes
-* IMPROVEMENT: Improved testability - dependency injection pattern for service classes enables easy unit testing
+* IMPROVEMENT: Improved testability - dependency injection pattern for service classes enables easy unit testing and mock injection
 * IMPROVEMENT: WooCommerce integration updated to use API abstraction layer with graceful fallback to AJAX
 * IMPROVEMENT: AssetLoader.enqueueFrontendScripts() method for consistent frontend asset loading
+* IMPROVEMENT: Main.php refactored with DI container - Service registry with clear dependency tree and bootstrap order
+* IMPROVEMENT: Core.php enhanced with comprehensive PHPDoc comments on all public methods
+* IMPROVEMENT: All extracted classes reviewed for consistency and documentation completeness
 * SECURITY: User enumeration prevention centralized in SecurityManager with 6 protection methods
 * SECURITY: Token validation now centralized with logging support via Database integration
 * SECURITY: 2FA integration cleanly separated in TokenValidator with grace period and session management
@@ -352,12 +356,17 @@ Change token expiration:
 * TECHNICAL: Zero breaking changes - all functionality preserved, just better organized
 * TECHNICAL: REST API runs in parallel with AJAX handlers for backward compatibility
 * TECHNICAL: Filter hook chrmrtns_kla_rest_api_enabled for programmatic REST API control
-* DEVELOPER: Eight new classes available for theme/plugin integration: UrlHelper, MessageFormatter, AssetLoader, SecurityManager, EmailService, LoginFormRenderer, TokenValidator, WpLoginIntegration
+* TECHNICAL: DI Container provides lazy loading - services only created when needed for better performance
+* TECHNICAL: Main.php orchestrates service initialization with clear separation of registration and bootstrap
+* DEVELOPER: Nine new classes available for theme/plugin integration: UrlHelper, MessageFormatter, AssetLoader, SecurityManager, EmailService, LoginFormRenderer, TokenValidator, WpLoginIntegration, Container
 * DEVELOPER: REST API available for custom integrations, mobile apps, and third-party services
 * DEVELOPER: KeylessAuthAPI JavaScript class for unified API access in custom themes/plugins
+* DEVELOPER: get_container() method on Main class provides access to DI container for extensions
+* DEVELOPER: Comprehensive PHPDoc on all public APIs enables better IDE autocomplete and code intelligence
 * FIX: Removed deprecated load_plugin_textdomain() call - WordPress.org handles translations automatically since WP 4.6
 * FIX: Added proper phpcs:ignore comments for GET parameter access in MessageFormatter for WordPress Plugin Check compliance
 * FIX: Help page CSS updated to include REST API tab selectors for proper tab functionality
+* FIX: Container exception message phpcs:ignore added for WordPress Plugin Check compliance
 
 = 3.2.3 =
 * SECURITY: Replaced all wp_redirect() with wp_safe_redirect() for enhanced security (21 occurrences)
