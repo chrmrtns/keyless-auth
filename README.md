@@ -2,7 +2,7 @@
 
 **Secure, passwordless authentication for WordPress. Your users login via magic email links – no passwords to remember or forget.**
 
-![Version](https://img.shields.io/badge/version-3.2.2-blue.svg)
+![Version](https://img.shields.io/badge/version-3.3.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-5.6%2B-blue.svg)
 ![License](https://img.shields.io/badge/license-GPL%20v2-green.svg)
 [![WordPress.org Plugin](https://img.shields.io/badge/WordPress.org-Plugin-blue.svg)](https://wordpress.org/plugins/keyless-auth/)
@@ -76,37 +76,32 @@ Born from real-world frustration with password complexity and user experience ch
 
 ## 🚀 Latest Updates
 
-### v3.1.0 - WooCommerce Integration & Template Fixes (October 23, 2025)
+### v3.3.0 - Core Refactoring & Architecture Improvements (November 11, 2025)
 
-* **🛒 NEW:** WooCommerce Integration - Magic link authentication on WooCommerce login forms
-* **🎨 NEW:** Collapsible UI design - "Or login with magic link instead" toggle link on My Account and Checkout pages
-* **⚙️ NEW:** WooCommerce setting toggle - Enable/disable integration from Options page
-* **🏗️ NEW:** Modular architecture - Separate WooCommerce.php class for clean code organization
-* **🔍 NEW:** Auto-detection - Only loads when WooCommerce is active and setting is enabled
-* **🛍️ NEW:** Smart checkout redirect - Users return to checkout after login, preserving cart
-* **🐛 FIX:** Custom email template not saving - Fixed field name mismatch (chrmrtns_kla_custom_email_body vs chrmrtns_kla_custom_email_html)
-* **🐛 FIX:** Reset custom template function now uses correct option name (chrmrtns_kla_custom_email_body)
-* **🐛 FIX:** Template sanitization now preserves inline styles and `<style>` tags properly with wp_kses
-* **⚡ IMPROVEMENT:** Real-time color preview updates - All template previews update instantly when colors change
-* **⚡ IMPROVEMENT:** WordPress standard notice classes - Replaced inline styles with 'notice notice-warning/info inline' classes
-* **⚡ IMPROVEMENT:** Added helpful notice explaining WYSIWYG placeholder behavior in custom template editor
-* **⚡ IMPROVEMENT:** Seamless integration with WooCommerce themes - Minimal, non-intrusive styling
-* **⚡ IMPROVEMENT:** Vanilla JavaScript implementation - No jQuery dependency for WooCommerce integration
-* **⚡ IMPROVEMENT:** Dynamic toggle text - Changes from "Or login with magic link instead" to "Close magic link form"
-* **⚡ IMPROVEMENT:** Dedicated AJAX handler - Separate handler for WooCommerce requests with proper JSON responses
-* **👨‍💻 DEVELOPER:** Foundation for Pro features - WooCommerce integration ready for future enhancements
-* **🔧 TECHNICAL:** PSR-4 namespaced class at includes/Core/WooCommerce.php
-* **🔧 TECHNICAL:** Uses Fetch API for modern AJAX requests
-* **🌐 TRANSLATION:** Added 10+ new translatable strings for WooCommerce integration
+* **📋 REQUIREMENT:** Minimum WordPress version increased from 3.9 to 5.6 for security and maintainability
+* **🏗️ NEW:** UrlHelper class - Centralized URL manipulation (getCurrentPageUrl, buildMagicLinkUrl, validateRedirectUrl)
+* **🎨 NEW:** MessageFormatter class - Unified message formatting system for success/error messages
+* **⚡ NEW:** AssetLoader class - Dedicated CSS/JS asset loading with dark mode support
+* **🔒 NEW:** SecurityManager class - Centralized security operations (token validation, user enumeration prevention, 2FA emergency disable)
+* **📧 NEW:** EmailService class - Dedicated email operations (magic link generation, template integration)
+* **📝 NEW:** LoginFormRenderer class - Dedicated form rendering (simple/full forms, status messages, Profile Builder integration)
+* **✅ NEW:** TokenValidator class - Token validation and login processing (2FA integration, grace period handling)
+* **🔐 NEW:** WpLoginIntegration class - wp-login.php integration (magic login field, submission handling, redirect logic)
+* **⚡ IMPROVEMENT:** Reduced Core.php from 1,247 to 264 lines (79% reduction) by extracting 8 specialized classes
+* **🏛️ IMPROVEMENT:** Better code organization following Single Responsibility Principle
+* **🧪 IMPROVEMENT:** Enhanced testability with dependency injection pattern for service classes
+* **👨‍💻 DEVELOPER:** Eight new classes available for theme/plugin integration
+* **🐛 FIX:** Removed deprecated load_plugin_textdomain() call - WordPress.org handles translations automatically
+* **✅ FIX:** Added proper phpcs:ignore comments for WordPress Plugin Check compliance
+* **🔧 TECHNICAL:** Zero breaking changes - all functionality preserved, just better organized
 
 **What This Means:**
-- WooCommerce sites can now use magic link authentication on My Account and Checkout pages
-- Customers on checkout can log in without leaving the page, preserving their cart
-- Custom email templates now save properly and persist after page refresh
-- Template color changes update all previews in real-time without saving
-- Better user experience with clear notices about placeholder behavior in WYSIWYG editor
-- Clean, non-intrusive UI that respects WooCommerce theme styling
-- Modern vanilla JavaScript implementation for better performance
+- More maintainable codebase with clear separation of concerns
+- Each class has a single, focused responsibility
+- Better foundation for future features and enhancements
+- Easier testing and debugging with modular architecture
+- No impact on existing functionality - seamless upgrade
+- WordPress Plugin Check passes with zero errors
 
 ### v3.0.5 - Help Page UX Enhancement (October 22, 2025)
 
