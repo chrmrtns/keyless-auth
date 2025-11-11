@@ -72,6 +72,7 @@ class Container {
 
         // Check if service is registered
         if (!isset($this->services[$name])) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message for developers, not end users
             throw new \Exception("Service '{$name}' not registered in container");
         }
 
