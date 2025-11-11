@@ -81,13 +81,13 @@ class Database {
 
                 if (!$new_table_exists) {
                     // Rename old table to new table name (faster than copy + delete)
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Renaming table during migration, table names are safely constructed
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Renaming table during migration, table names are safely constructed from prefix
                     $wpdb->query("RENAME TABLE `{$old_table}` TO `{$new_table}`");
                 } else {
                     // If both exist, copy data from old to new, then drop old
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Migration data copy, table names are safely constructed
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Migration data copy, table names are safely constructed from prefix
                     $wpdb->query("INSERT IGNORE INTO `{$new_table}` SELECT * FROM `{$old_table}`");
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Dropping old table after migration, table name is safely constructed
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Dropping old table after migration, table name is safely constructed from prefix
                     $wpdb->query("DROP TABLE IF EXISTS `{$old_table}`");
                 }
             }
@@ -305,8 +305,8 @@ class Database {
                 ORDER BY $order_by
                 LIMIT %d OFFSET %d";
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql contains sanitized dynamic content, $where_values properly prepared
-        return $wpdb->get_results($wpdb->prepare($sql, $where_values)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql contains sanitized dynamic content, $where_values properly prepared
+        return $wpdb->get_results($wpdb->prepare($sql, $where_values));
     }
 
     /**
@@ -457,9 +457,11 @@ class Database {
         $sql = "DELETE FROM {$wpdb->prefix}chrmrtns_kla_login_tokens WHERE $where_clause"; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
         if (!empty($where_values)) {
-            return $wpdb->query($wpdb->prepare($sql, $where_values)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql is safely constructed, $where_values properly prepared
+            return $wpdb->query($wpdb->prepare($sql, $where_values));
         } else {
-            return $wpdb->query($sql); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,PluginCheck.Security.DirectDB.UnescapedDBParameter -- $sql is safely constructed with only hardcoded WHERE clause
+            return $wpdb->query($sql);
         }
     }
 
@@ -773,14 +775,14 @@ class Database {
             $search_term = '%' . $wpdb->esc_like($search) . '%';
             $query = $base_query . " WHERE (u.user_login LIKE %s OR u.user_email LIKE %s OR u.display_name LIKE %s) ORDER BY u.user_login ASC";
 
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Querying custom devices table for admin interface with search, query properly prepared with placeholders
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Querying custom devices table for admin interface with search, query properly prepared with placeholders
             $prepared_query = $wpdb->prepare($query, $search_term, $search_term, $search_term);
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query already prepared with placeholders above
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Query already prepared with placeholders above
             $results = $wpdb->get_results($prepared_query);
         } else {
             $query = $base_query . " ORDER BY u.user_login ASC";
 
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Querying custom devices table for admin interface, no placeholders needed
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Querying custom devices table for admin interface, no placeholders needed
             $results = $wpdb->get_results($query);
         }
 

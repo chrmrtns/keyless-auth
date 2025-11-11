@@ -521,7 +521,7 @@ class Core {
         
         // Check admin approval compatibility
         if ($this->is_admin_approval_required($user)) {
-            wp_redirect(add_query_arg('chrmrtns_kla_adminapp_error', '1', $this->get_current_page_url()));
+            wp_safe_redirect(add_query_arg('chrmrtns_kla_adminapp_error', '1', $this->get_current_page_url()));
             exit;
         }
         
@@ -717,8 +717,8 @@ class Core {
             $redirect_url = add_query_arg($params_to_preserve, $custom_login_url);
         }
 
-        // Perform the redirect
-        wp_redirect($redirect_url);
+        // Perform the redirect with validation
+        wp_safe_redirect(wp_validate_redirect($redirect_url, wp_login_url()));
         exit;
     }
 
@@ -754,8 +754,8 @@ class Core {
             $redirect_url = add_query_arg('login', sanitize_text_field($username), $redirect_url);
         }
 
-        // Perform the redirect
-        wp_redirect($redirect_url);
+        // Perform the redirect with validation
+        wp_safe_redirect(wp_validate_redirect($redirect_url, wp_login_url()));
         exit;
     }
 
@@ -775,7 +775,7 @@ class Core {
         
         // Validate token
         if (!$this->validate_login_token($user_id, $token)) {
-            wp_redirect(add_query_arg('chrmrtns_kla_error_token', '1', $this->get_current_page_url()));
+            wp_safe_redirect(add_query_arg('chrmrtns_kla_error_token', '1', $this->get_current_page_url()));
             exit;
         }
         
@@ -827,7 +827,7 @@ class Core {
                         'magic_login' => '1'
                     ), home_url());
 
-                    wp_redirect($tfa_verify_url);
+                    wp_safe_redirect($tfa_verify_url);
                     exit;
                 } elseif ($role_required) {
                     // User's role requires 2FA but they don't have it set up yet
@@ -845,7 +845,7 @@ class Core {
 
                     // If grace period expired, redirect to 2FA setup
                     if (time() > $grace_end) {
-                        wp_redirect(add_query_arg(array('action' => 'keyless-2fa-setup', 'magic_login' => '1'), home_url()));
+                        wp_safe_redirect(add_query_arg(array('action' => 'keyless-2fa-setup', 'magic_login' => '1'), home_url()));
                         exit;
                     }
                     // Grace period still active - allow login to proceed normally
@@ -877,7 +877,7 @@ class Core {
         }
 
         $redirect_url = apply_filters('chrmrtns_kla_after_login_redirect', $redirect_url, $user_id);
-        wp_redirect($redirect_url);
+        wp_safe_redirect(wp_validate_redirect($redirect_url, admin_url()));
         exit;
     }
     
@@ -1238,7 +1238,7 @@ class Core {
         $this->handle_login_request();
 
         // Redirect back to wp-login.php with success message
-        wp_redirect(add_query_arg(array(
+        wp_safe_redirect(add_query_arg(array(
             'chrmrtns_kla_sent' => '1'
         ), wp_login_url()));
         exit;

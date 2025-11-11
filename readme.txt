@@ -5,7 +5,7 @@ Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
 Requires at least: 3.9
 Tested up to: 6.8
-Stable tag: 3.2.2
+Stable tag: 3.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -314,6 +314,16 @@ Change token expiration:
 
 
 == Changelog ==
+
+= 3.2.3 =
+* SECURITY: Replaced all wp_redirect() with wp_safe_redirect() for enhanced security (21 occurrences)
+* SECURITY: Added wp_validate_redirect() validation for custom/external URLs with fallback to safe defaults
+* FIX: WordPress Plugin Check compliance - All redirect security warnings resolved
+* FIX: Core hook "wp_login" properly ignored with phpcs comment (WordPress core hook, not plugin hook)
+* IMPROVEMENT: Dynamic notification hooks properly documented with phpcs ignore comments
+* TECHNICAL: Custom redirect URLs from options now validated before redirect
+* TECHNICAL: Magic login redirect URLs from transients validated with fallback to admin_url()
+* TECHNICAL: All 4 files updated: Core.php (8 fixes), TwoFA/Core.php (11 fixes), Admin/Admin.php (1 fix), Notices.php (6 comments)
 
 = 3.2.2 =
 * FIX: Login error display on custom login pages - Wrong password/username errors now display properly instead of blank error
