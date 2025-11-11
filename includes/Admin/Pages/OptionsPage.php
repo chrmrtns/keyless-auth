@@ -31,6 +31,9 @@ class OptionsPage {
             $enable_woocommerce = isset($_POST['chrmrtns_kla_enable_woocommerce']) ? '1' : '0';
             update_option('chrmrtns_kla_enable_woocommerce', $enable_woocommerce);
 
+            $enable_rest_api = isset($_POST['chrmrtns_kla_enable_rest_api']) ? '1' : '0';
+            update_option('chrmrtns_kla_enable_rest_api', $enable_rest_api);
+
             $custom_login_url = isset($_POST['chrmrtns_kla_custom_login_url']) ? esc_url_raw(wp_unslash($_POST['chrmrtns_kla_custom_login_url'])) : '';
             update_option('chrmrtns_kla_custom_login_url', $custom_login_url);
 
@@ -108,6 +111,7 @@ class OptionsPage {
 
         $enable_wp_login = get_option('chrmrtns_kla_enable_wp_login', '0');
         $enable_woocommerce = get_option('chrmrtns_kla_enable_woocommerce', '0');
+        $enable_rest_api = get_option('chrmrtns_kla_enable_rest_api', '0');
         $custom_login_url = get_option('chrmrtns_kla_custom_login_url', '');
         $custom_redirect_url = get_option('chrmrtns_kla_custom_redirect_url', '');
         $custom_2fa_setup_url = get_option('chrmrtns_kla_custom_2fa_setup_url', '');
@@ -169,6 +173,17 @@ class OptionsPage {
                         </td>
                     </tr>
                     <?php endif; ?>
+                    <tr>
+                        <th scope="row">
+                            <label for="chrmrtns_kla_enable_rest_api"><?php esc_html_e('Enable REST API (Beta)', 'keyless-auth'); ?></label>
+                        </th>
+                        <td>
+                            <input type="checkbox" id="chrmrtns_kla_enable_rest_api" name="chrmrtns_kla_enable_rest_api" value="1" <?php checked($enable_rest_api, '1'); ?> />
+                            <p class="description">
+                                <?php esc_html_e('Enable REST API endpoints for magic link authentication. This runs in parallel with existing AJAX handlers for backward compatibility. Endpoint: /wp-json/keyless-auth/v1/request-login', 'keyless-auth'); ?>
+                            </p>
+                        </td>
+                    </tr>
                     <tr>
                         <th scope="row">
                             <label for="chrmrtns_kla_custom_login_url"><?php esc_html_e('Custom Login Page URL', 'keyless-auth'); ?></label>

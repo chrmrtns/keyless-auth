@@ -25,6 +25,7 @@ use Chrmrtns\KeylessAuth\Frontend\LoginFormRenderer;
 use Chrmrtns\KeylessAuth\Frontend\WpLoginIntegration;
 use Chrmrtns\KeylessAuth\Security\SecurityManager;
 use Chrmrtns\KeylessAuth\Security\TokenValidator;
+use Chrmrtns\KeylessAuth\API\RestController;
 
 
 class Core {
@@ -58,6 +59,13 @@ class Core {
     private $wp_login_integration;
 
     /**
+     * REST API Controller instance
+     *
+     * @var RestController
+     */
+    private $rest_controller;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -78,6 +86,10 @@ class Core {
         add_action('wp_ajax_chrmrtns_kla_request_login_code', array($this, 'handle_login_request'));
         add_action('wp_loaded', array($this, 'handle_login_link'), 1);
         add_action('init', array($this, 'handle_form_submission'));
+
+        // Initialize REST API Controller
+        $this->rest_controller = new RestController($this->security_manager, $this->email_service);
+        add_action('rest_api_init', array($this->rest_controller, 'register_routes'));
         add_shortcode('keyless-auth', array($this, 'render_login_form'));
         add_shortcode('keyless-auth-full', array($this, 'render_full_login_form'));
 

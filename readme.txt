@@ -329,21 +329,35 @@ Change token expiration:
 * NEW: LoginFormRenderer class - Dedicated form rendering (simple and full login forms, status messages, Profile Builder integration)
 * NEW: TokenValidator class - Dedicated token validation and login processing (2FA integration, grace period handling, session management)
 * NEW: WpLoginIntegration class - Dedicated wp-login.php integration (magic login field, submission handling, redirect logic, failed login handling)
+* NEW: REST API (Beta) - Modern REST API endpoints for magic link authentication
+* NEW: RestController class - Handles REST API endpoints with proper HTTP status codes (200, 404, 403, 500)
+* NEW: REST endpoint POST /wp-json/keyless-auth/v1/request-login - Request magic login links via REST API
+* NEW: JavaScript API abstraction layer (KeylessAuthAPI) - Auto-switches between REST and AJAX based on settings
+* NEW: REST API feature flag in Options page - Enable/disable REST API endpoints (disabled by default)
+* NEW: REST API documentation tab in Help page - Comprehensive JavaScript, PHP, and cURL examples
+* NEW: Standalone REST API test page (test-rest-api.html) - Test endpoints from anywhere without WordPress context
 * IMPROVEMENT: Reduced Core.php from 1,247 to 264 lines by extracting 3 utility classes, 2 service classes, and 3 specialized classes (79% reduction)
 * IMPROVEMENT: Better code organization with Single Responsibility Principle - each class has one clear purpose
 * IMPROVEMENT: Enhanced maintainability - related functions grouped into focused, reusable classes
 * IMPROVEMENT: Improved testability - dependency injection pattern for service classes enables easy unit testing
+* IMPROVEMENT: WooCommerce integration updated to use API abstraction layer with graceful fallback to AJAX
+* IMPROVEMENT: AssetLoader.enqueueFrontendScripts() method for consistent frontend asset loading
 * SECURITY: User enumeration prevention centralized in SecurityManager with 6 protection methods
 * SECURITY: Token validation now centralized with logging support via Database integration
 * SECURITY: 2FA integration cleanly separated in TokenValidator with grace period and session management
+* SECURITY: REST API uses WordPress nonce verification (wp_rest) for secure requests
 * TECHNICAL: Utility classes (UrlHelper, MessageFormatter, AssetLoader) use PSR-4 namespacing and static methods
 * TECHNICAL: Service classes (SecurityManager, EmailService, TokenValidator) use dependency injection pattern
 * TECHNICAL: Presentation layer (LoginFormRenderer) separated from business logic
 * TECHNICAL: Zero breaking changes - all functionality preserved, just better organized
-* TECHNICAL: Foundation for future enhancements - modular architecture ready for REST API migration
+* TECHNICAL: REST API runs in parallel with AJAX handlers for backward compatibility
+* TECHNICAL: Filter hook chrmrtns_kla_rest_api_enabled for programmatic REST API control
 * DEVELOPER: Eight new classes available for theme/plugin integration: UrlHelper, MessageFormatter, AssetLoader, SecurityManager, EmailService, LoginFormRenderer, TokenValidator, WpLoginIntegration
+* DEVELOPER: REST API available for custom integrations, mobile apps, and third-party services
+* DEVELOPER: KeylessAuthAPI JavaScript class for unified API access in custom themes/plugins
 * FIX: Removed deprecated load_plugin_textdomain() call - WordPress.org handles translations automatically since WP 4.6
 * FIX: Added proper phpcs:ignore comments for GET parameter access in MessageFormatter for WordPress Plugin Check compliance
+* FIX: Help page CSS updated to include REST API tab selectors for proper tab functionality
 
 = 3.2.3 =
 * SECURITY: Replaced all wp_redirect() with wp_safe_redirect() for enhanced security (21 occurrences)

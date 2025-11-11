@@ -78,7 +78,7 @@
          */
         const submitButtons = document.querySelectorAll('.chrmrtns-kla-wc-submit-magic');
         submitButtons.forEach(function(button) {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', async function(e) {
                 e.preventDefault();
 
                 const emailFieldId = this.getAttribute('data-email-field');
@@ -106,44 +106,72 @@
                     statusMsg.style.display = 'none';
                 }
 
-                // Send AJAX request
-                const formData = new FormData();
-                formData.append('action', 'chrmrtns_kla_wc_request_magic_link');
-                formData.append('email', email);
-                formData.append('nonce', chrmrtns_kla_ajax.nonce);
-                formData.append('redirect_to', window.location.href); // Redirect back to current page after login
+                // Use API abstraction layer if available, otherwise fallback to AJAX
+                if (window.KeylessAuthAPI && window.chrmrtnsKlaApiConfig) {
+                    try {
+                        const api = new window.KeylessAuthAPI(window.chrmrtnsKlaApiConfig);
+                        const response = await api.requestLoginLink(email, window.location.href);
 
-                fetch(chrmrtns_kla_ajax.ajax_url, {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'same-origin'
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(response) {
-                    if (response.success) {
-                        // Redirect to show success message
-                        const currentUrl = window.location.href;
-                        const separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
-                        window.location.href = currentUrl + separator + 'chrmrtns_kla_wc_sent=1';
-                    } else {
+                        if (response.success) {
+                            // Redirect to show success message
+                            const currentUrl = window.location.href;
+                            const separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
+                            window.location.href = currentUrl + separator + 'chrmrtns_kla_wc_sent=1';
+                        } else {
+                            if (statusMsg) {
+                                statusMsg.innerHTML = '<span style="color: #dc3232;">' + response.message + '</span>';
+                                statusMsg.style.display = 'block';
+                            }
+                            button.disabled = false;
+                            button.textContent = chrmrtns_kla_wc.send_link;
+                        }
+                    } catch (error) {
                         if (statusMsg) {
-                            statusMsg.innerHTML = '<span style="color: #dc3232;">' + response.data + '</span>';
+                            statusMsg.innerHTML = '<span style="color: #dc3232;">' + chrmrtns_kla_wc.error_occurred + '</span>';
                             statusMsg.style.display = 'block';
                         }
                         button.disabled = false;
                         button.textContent = chrmrtns_kla_wc.send_link;
                     }
-                })
-                .catch(function() {
-                    if (statusMsg) {
-                        statusMsg.innerHTML = '<span style="color: #dc3232;">' + chrmrtns_kla_wc.error_occurred + '</span>';
-                        statusMsg.style.display = 'block';
-                    }
-                    button.disabled = false;
-                    button.textContent = chrmrtns_kla_wc.send_link;
-                });
+                } else {
+                    // Fallback to direct AJAX (for backward compatibility)
+                    const formData = new FormData();
+                    formData.append('action', 'chrmrtns_kla_wc_request_magic_link');
+                    formData.append('email', email);
+                    formData.append('nonce', chrmrtns_kla_ajax.nonce);
+                    formData.append('redirect_to', window.location.href);
+
+                    fetch(chrmrtns_kla_ajax.ajax_url, {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'same-origin'
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(response) {
+                        if (response.success) {
+                            const currentUrl = window.location.href;
+                            const separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
+                            window.location.href = currentUrl + separator + 'chrmrtns_kla_wc_sent=1';
+                        } else {
+                            if (statusMsg) {
+                                statusMsg.innerHTML = '<span style="color: #dc3232;">' + response.data + '</span>';
+                                statusMsg.style.display = 'block';
+                            }
+                            button.disabled = false;
+                            button.textContent = chrmrtns_kla_wc.send_link;
+                        }
+                    })
+                    .catch(function() {
+                        if (statusMsg) {
+                            statusMsg.innerHTML = '<span style="color: #dc3232;">' + chrmrtns_kla_wc.error_occurred + '</span>';
+                            statusMsg.style.display = 'block';
+                        }
+                        button.disabled = false;
+                        button.textContent = chrmrtns_kla_wc.send_link;
+                    });
+                }
             });
         });
     });

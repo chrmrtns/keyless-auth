@@ -108,6 +108,10 @@ class SettingsManager {
             'sanitize_callback' => array($this, 'sanitize_checkbox'),
             'default' => '0'
         ));
+        register_setting('chrmrtns_kla_options_group', 'chrmrtns_kla_enable_rest_api', array(
+            'sanitize_callback' => array($this, 'sanitize_checkbox'),
+            'default' => '0'
+        ));
     }
 
     /**

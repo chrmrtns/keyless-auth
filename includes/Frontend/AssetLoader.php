@@ -137,6 +137,37 @@ class AssetLoader {
     }
 
     /**
+     * Enqueue frontend JavaScript with API configuration
+     *
+     * Loads the API abstraction layer and configures it for either AJAX or REST API.
+     *
+     * @since 3.3.0
+     */
+    public static function enqueueFrontendScripts() {
+        // Enqueue API abstraction layer
+        wp_enqueue_script(
+            'keyless-auth-api',
+            self::getAssetUrl('keyless-auth-api.js', 'js'),
+            array(),
+            CHRMRTNS_KLA_VERSION,
+            true
+        );
+
+        // Check if REST API is enabled
+        $use_rest = get_option('chrmrtns_kla_enable_rest_api', '0') === '1';
+
+        // Localize script with API configuration
+        wp_localize_script('keyless-auth-api', 'chrmrtnsKlaApiConfig', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'ajax_nonce' => wp_create_nonce('chrmrtns_kla_ajax_nonce'),
+            'rest_url' => rest_url('keyless-auth/v1'),
+            'rest_nonce' => wp_create_nonce('wp_rest'),
+            'use_rest' => $use_rest,
+            'api_method' => $use_rest ? 'rest' : 'ajax'
+        ));
+    }
+
+    /**
      * Check if specific CSS file exists
      *
      * @param string $filename CSS filename to check.

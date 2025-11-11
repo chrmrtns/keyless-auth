@@ -35,7 +35,7 @@ class HelpPage {
             'chrmrtns-kla-help-page',
             CHRMRTNS_KLA_PLUGIN_URL . 'assets/css/help-page.css',
             array(),
-            CHRMRTNS_KLA_VERSION . '.1', // Cache bust for CSS tab fix
+            CHRMRTNS_KLA_VERSION . '.2', // Cache bust for REST API tab
             'all'
         );
     }
@@ -59,6 +59,7 @@ class HelpPage {
                 <input type="radio" name="chrmrtns-help-tab" id="tab-getting-started" class="chrmrtns-tab-radio" checked>
                 <input type="radio" name="chrmrtns-help-tab" id="tab-shortcodes" class="chrmrtns-tab-radio">
                 <input type="radio" name="chrmrtns-help-tab" id="tab-2fa" class="chrmrtns-tab-radio">
+                <input type="radio" name="chrmrtns-help-tab" id="tab-rest-api" class="chrmrtns-tab-radio">
                 <input type="radio" name="chrmrtns-help-tab" id="tab-customization" class="chrmrtns-tab-radio">
                 <input type="radio" name="chrmrtns-help-tab" id="tab-security" class="chrmrtns-tab-radio">
                 <input type="radio" name="chrmrtns-help-tab" id="tab-troubleshooting" class="chrmrtns-tab-radio">
@@ -69,6 +70,7 @@ class HelpPage {
                     <label for="tab-getting-started" class="chrmrtns-tab-button"><?php esc_html_e('⭐ Getting Started', 'keyless-auth'); ?></label>
                     <label for="tab-shortcodes" class="chrmrtns-tab-button"><?php esc_html_e('📝 Shortcodes', 'keyless-auth'); ?></label>
                     <label for="tab-2fa" class="chrmrtns-tab-button"><?php esc_html_e('🔐 Two-Factor Auth', 'keyless-auth'); ?></label>
+                    <label for="tab-rest-api" class="chrmrtns-tab-button"><?php esc_html_e('🔌 REST API', 'keyless-auth'); ?></label>
                     <label for="tab-customization" class="chrmrtns-tab-button"><?php esc_html_e('🎨 Customization', 'keyless-auth'); ?></label>
                     <label for="tab-security" class="chrmrtns-tab-button"><?php esc_html_e('🛡️ Security', 'keyless-auth'); ?></label>
                     <label for="tab-troubleshooting" class="chrmrtns-tab-button"><?php esc_html_e('🔧 Troubleshooting', 'keyless-auth'); ?></label>
@@ -338,6 +340,202 @@ class HelpPage {
                 <div class="notice notice-warning inline" style="margin: 15px 0;">
                     <p><strong><?php esc_html_e('Security Note:', 'keyless-auth'); ?></strong> <?php esc_html_e('Application Passwords are time-limited tokens that can be revoked individually. They provide better security than using regular passwords for API access.', 'keyless-auth'); ?></p>
                 </div>
+            </div>
+                </div>
+
+                <!-- Tab Content: REST API -->
+                <div class="chrmrtns-tab-content" data-tab="tab-rest-api">
+
+            <div class="chrmrtns_kla_card">
+                <h2><?php esc_html_e('REST API (Beta)', 'keyless-auth'); ?></h2>
+                <p><?php esc_html_e('Keyless Auth provides a REST API endpoint for requesting magic login links. This allows you to integrate passwordless authentication into custom applications, mobile apps, or third-party services.', 'keyless-auth'); ?></p>
+
+                <div class="notice notice-info inline" style="margin: 15px 0;">
+                    <p><strong><?php esc_html_e('Beta Feature:', 'keyless-auth'); ?></strong> <?php esc_html_e('The REST API is currently in beta. It runs in parallel with existing AJAX handlers for backward compatibility.', 'keyless-auth'); ?></p>
+                </div>
+
+                <h3><?php esc_html_e('Enabling the REST API', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('To enable REST API endpoints:', 'keyless-auth'); ?></p>
+                <ol>
+                    <li><?php esc_html_e('Go to Keyless Auth → Options', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Check "Enable REST API (Beta)"', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Click "Save Changes"', 'keyless-auth'); ?></li>
+                </ol>
+
+                <h3><?php esc_html_e('Available Endpoints', 'keyless-auth'); ?></h3>
+
+                <h4><?php esc_html_e('Request Login Link', 'keyless-auth'); ?></h4>
+                <p><strong><?php esc_html_e('Endpoint:', 'keyless-auth'); ?></strong> <code>POST /wp-json/keyless-auth/v1/request-login</code></p>
+                <p><?php esc_html_e('Sends a magic login link to the specified user\'s email address.', 'keyless-auth'); ?></p>
+
+                <h4><?php esc_html_e('Request Parameters', 'keyless-auth'); ?></h4>
+                <table class="widefat striped" style="margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th><?php esc_html_e('Parameter', 'keyless-auth'); ?></th>
+                            <th><?php esc_html_e('Type', 'keyless-auth'); ?></th>
+                            <th><?php esc_html_e('Required', 'keyless-auth'); ?></th>
+                            <th><?php esc_html_e('Description', 'keyless-auth'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>email_or_username</code></td>
+                            <td>string</td>
+                            <td><?php esc_html_e('Yes', 'keyless-auth'); ?></td>
+                            <td><?php esc_html_e('User\'s email address or username', 'keyless-auth'); ?></td>
+                        </tr>
+                        <tr>
+                            <td><code>redirect_url</code></td>
+                            <td>string</td>
+                            <td><?php esc_html_e('No', 'keyless-auth'); ?></td>
+                            <td><?php esc_html_e('URL to redirect to after successful login', 'keyless-auth'); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4><?php esc_html_e('Success Response', 'keyless-auth'); ?></h4>
+                <p><strong><?php esc_html_e('Status:', 'keyless-auth'); ?></strong> 200 OK</p>
+                <pre><code>{
+    "success": true,
+    "message": "Magic login link sent! Check your email."
+}</code></pre>
+
+                <h4><?php esc_html_e('Error Responses', 'keyless-auth'); ?></h4>
+
+                <p><strong>404 Not Found</strong> - <?php esc_html_e('User not found', 'keyless-auth'); ?></p>
+                <pre><code>{
+    "code": "user_not_found",
+    "message": "No account found with this email address or username.",
+    "data": {
+        "status": 404
+    }
+}</code></pre>
+
+                <p><strong>403 Forbidden</strong> - <?php esc_html_e('Account pending approval', 'keyless-auth'); ?></p>
+                <pre><code>{
+    "code": "account_not_approved",
+    "message": "Your account is pending admin approval.",
+    "data": {
+        "status": 403
+    }
+}</code></pre>
+
+                <p><strong>500 Internal Server Error</strong> - <?php esc_html_e('Email send failure', 'keyless-auth'); ?></p>
+                <pre><code>{
+    "code": "email_send_failed",
+    "message": "There was a problem sending your email. Please try again or contact an admin.",
+    "data": {
+        "status": 500
+    }
+}</code></pre>
+
+                <h3><?php esc_html_e('JavaScript Integration', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('Keyless Auth provides a JavaScript API abstraction layer that automatically switches between REST and AJAX based on your settings:', 'keyless-auth'); ?></p>
+
+                <pre><code>// Using the API abstraction layer (recommended)
+const api = new KeylessAuthAPI(chrmrtnsKlaApiConfig);
+
+try {
+    const response = await api.requestLoginLink('user@example.com', 'https://yoursite.com/dashboard');
+
+    if (response.success) {
+        console.log('Magic link sent!');
+    } else {
+        console.error('Error:', response.message);
+    }
+} catch (error) {
+    console.error('Request failed:', error);
+}</code></pre>
+
+                <h4><?php esc_html_e('Direct REST API Call', 'keyless-auth'); ?></h4>
+                <pre><code>// Direct REST API call (if you need full control)
+const response = await fetch('/wp-json/keyless-auth/v1/request-login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': wpApiSettings.nonce // WordPress REST nonce
+    },
+    credentials: 'same-origin',
+    body: JSON.stringify({
+        email_or_username: 'user@example.com',
+        redirect_url: 'https://yoursite.com/dashboard'
+    })
+});
+
+const data = await response.json();
+
+if (response.ok) {
+    console.log('Success:', data.message);
+} else {
+    console.error('Error:', data.message);
+}</code></pre>
+
+                <h3><?php esc_html_e('PHP Integration', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('You can make requests to the REST API from PHP using WordPress HTTP API:', 'keyless-auth'); ?></p>
+
+                <pre><code>$response = wp_remote_post(
+    rest_url('keyless-auth/v1/request-login'),
+    array(
+        'headers' => array(
+            'Content-Type' => 'application/json',
+            'X-WP-Nonce' => wp_create_nonce('wp_rest')
+        ),
+        'body' => json_encode(array(
+            'email_or_username' => 'user@example.com',
+            'redirect_url' => 'https://yoursite.com/dashboard'
+        ))
+    )
+);
+
+if (is_wp_error($response)) {
+    // Handle error
+    error_log('REST API error: ' . $response->get_error_message());
+} else {
+    $body = json_decode(wp_remote_retrieve_body($response), true);
+
+    if (isset($body['success']) && $body['success']) {
+        // Magic link sent successfully
+    } else {
+        // Handle error response
+        error_log('API error: ' . $body['message']);
+    }
+}</code></pre>
+
+                <h3><?php esc_html_e('Feature Flag', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('You can programmatically enable or disable the REST API using the filter hook:', 'keyless-auth'); ?></p>
+
+                <pre><code>add_filter('chrmrtns_kla_rest_api_enabled', function($enabled) {
+    // Force enable for specific conditions
+    if (defined('MY_CUSTOM_CONDITION')) {
+        return true;
+    }
+
+    return $enabled;
+});</code></pre>
+
+                <h3><?php esc_html_e('Testing', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('A test page is included in the plugin for validating REST API functionality:', 'keyless-auth'); ?></p>
+                <ol>
+                    <li><?php esc_html_e('Copy test-rest-api.html to your WordPress root directory', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Enable REST API in plugin options', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Access the test page via your site URL', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Enter an email and test the API', 'keyless-auth'); ?></li>
+                </ol>
+
+                <div class="notice notice-warning inline" style="margin: 15px 0;">
+                    <p><strong><?php esc_html_e('Security Note:', 'keyless-auth'); ?></strong> <?php esc_html_e('REST API endpoints use WordPress nonce verification. Make sure to include the X-WP-Nonce header with a valid wp_rest nonce in all requests.', 'keyless-auth'); ?></p>
+                </div>
+
+                <h3><?php esc_html_e('Future Pro Features', 'keyless-auth'); ?></h3>
+                <p><?php esc_html_e('The following advanced features are planned for Keyless Auth Pro:', 'keyless-auth'); ?></p>
+                <ul>
+                    <li><?php esc_html_e('Bulk login link generation', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Webhook notifications for login events', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Custom rate limiting per endpoint', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('Advanced analytics and reporting API', 'keyless-auth'); ?></li>
+                    <li><?php esc_html_e('OAuth 2.0 support', 'keyless-auth'); ?></li>
+                </ul>
             </div>
                 </div>
 

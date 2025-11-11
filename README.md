@@ -613,6 +613,166 @@ Simply add the shortcode to any page or widget:
 - Comprehensive user management with search functionality
 - Automatic integration with magic link authentication flow
 
+### REST API (Beta - v3.3.0+)
+Keyless Auth now provides REST API endpoints for modern integrations. The API runs in parallel with existing AJAX handlers for backward compatibility.
+
+#### Enabling REST API
+1. Go to **Keyless Auth → Options**
+2. Enable "**Enable REST API (Beta)**"
+3. Save settings
+
+#### Authentication Endpoint
+
+**Request Magic Link**
+```
+POST /wp-json/keyless-auth/v1/request-login
+```
+
+**Headers:**
+```
+Content-Type: application/json
+X-WP-Nonce: {wp_rest_nonce}
+```
+
+**Request Body:**
+```json
+{
+  "email_or_username": "user@example.com",
+  "redirect_url": "https://example.com/dashboard" (optional)
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "message": "Magic login link sent! Check your email and click the link to login.",
+  "data": {
+    "user_id": 123,
+    "email": "user@example.com"
+  }
+}
+```
+
+**Error Responses:**
+```json
+// 404 - User not found
+{
+  "code": "invalid_user",
+  "message": "The username or email you provided does not exist.",
+  "data": { "status": 404 }
+}
+
+// 403 - Admin approval required
+{
+  "code": "admin_approval_required",
+  "message": "Your account is pending admin approval.",
+  "data": { "status": 403 }
+}
+
+// 500 - Email sending failed
+{
+  "code": "email_failed",
+  "message": "There was a problem sending your email.",
+  "data": { "status": 500 }
+}
+
+// 503 - Emergency disabled
+{
+  "code": "emergency_disabled",
+  "message": "Magic link login is temporarily disabled.",
+  "data": { "status": 503 }
+}
+```
+
+#### JavaScript Integration
+
+**Using the API Abstraction Layer:**
+```javascript
+// The API layer automatically detects REST/AJAX based on settings
+const api = new KeylessAuthAPI(chrmrtnsKlaApiConfig);
+
+try {
+  const response = await api.requestLoginLink(
+    'user@example.com',
+    'https://example.com/dashboard'
+  );
+
+  if (response.success) {
+    console.log('Magic link sent!', response.message);
+  } else {
+    console.error('Error:', response.message);
+  }
+} catch (error) {
+  console.error('Network error:', error);
+}
+```
+
+**Direct REST API Call:**
+```javascript
+fetch('/wp-json/keyless-auth/v1/request-login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-WP-Nonce': wpApiSettings.nonce
+  },
+  credentials: 'same-origin',
+  body: JSON.stringify({
+    email_or_username: 'user@example.com',
+    redirect_url: 'https://example.com/dashboard'
+  })
+})
+.then(response => response.json())
+.then(data => {
+  if (data.success) {
+    console.log('Success:', data.message);
+  } else {
+    console.error('Error:', data.message);
+  }
+});
+```
+
+#### PHP Integration
+
+**Using WordPress HTTP API:**
+```php
+$response = wp_remote_post(rest_url('keyless-auth/v1/request-login'), array(
+    'headers' => array(
+        'Content-Type' => 'application/json',
+        'X-WP-Nonce' => wp_create_nonce('wp_rest')
+    ),
+    'body' => wp_json_encode(array(
+        'email_or_username' => 'user@example.com',
+        'redirect_url' => 'https://example.com/dashboard'
+    ))
+));
+
+if (!is_wp_error($response)) {
+    $body = json_decode(wp_remote_retrieve_body($response), true);
+    if ($body['success']) {
+        echo 'Magic link sent!';
+    }
+}
+```
+
+#### Feature Flag
+
+Control REST API availability programmatically:
+```php
+// Enable REST API via filter
+add_filter('chrmrtns_kla_rest_api_enabled', '__return_true');
+
+// Or check if enabled
+$is_enabled = get_option('chrmrtns_kla_enable_rest_api', '0') === '1';
+```
+
+#### Future Pro Features (Planned)
+- Bulk user operations
+- Administrative actions via API
+- Webhook integrations
+- API rate limiting controls
+- API analytics and logging
+
 ## 🔒 Security Features
 
 - **Secure token generation** using `wp_hash()` with user ID, timestamp, and salt

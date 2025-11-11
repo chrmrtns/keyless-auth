@@ -2,6 +2,80 @@
 
 This directory is a **Git worktree** for refactoring Core.php into modular classes.
 
+## Refactoring Progress
+
+### Phase 7: REST API Implementation ✅ COMPLETED
+**Branch:** feature/refactor-core-v3.3.0
+**Status:** Completed
+**Date:** 2025-11-11
+
+#### What Was Implemented:
+1. **REST API Controller** (`includes/API/RestController.php`)
+   - New endpoint: `POST /wp-json/keyless-auth/v1/request-login`
+   - Accepts `email_or_username` and optional `redirect_url` parameters
+   - Returns proper HTTP status codes (200, 404, 403, 500)
+   - Includes filter hook: `chrmrtns_kla_rest_api_enabled`
+
+2. **JavaScript API Abstraction Layer** (`assets/js/keyless-auth-api.js`)
+   - `KeylessAuthAPI` class that auto-switches between REST and AJAX
+   - Unified response format for both methods
+   - Graceful degradation and error handling
+
+3. **Feature Flag System**
+   - Added "Enable REST API (Beta)" checkbox in Options page
+   - Option: `chrmrtns_kla_enable_rest_api` (defaults to disabled)
+   - Allows programmatic control via filter hook
+
+4. **Frontend Integration**
+   - Updated `includes/Frontend/AssetLoader.php` with `enqueueFrontendScripts()` method
+   - Modified WooCommerce integration to use API abstraction layer
+   - Maintains backward compatibility with existing AJAX handlers
+
+5. **Documentation**
+   - Added comprehensive REST API section to README.md
+   - Created new "🔌 REST API" tab in Help page
+   - Includes JavaScript, PHP, and cURL examples
+   - Documents all endpoints, parameters, and response codes
+
+6. **Testing**
+   - Created standalone test page: `test-rest-api.html`
+   - Works from any location (no WordPress context needed)
+   - Tests both REST and AJAX endpoints
+   - Includes debug information panel
+
+#### Files Created:
+- `includes/API/RestController.php` (228 lines)
+- `includes/API/index.php` (security file)
+- `assets/js/keyless-auth-api.js` (165 lines)
+- `test-rest-api.html` (241 lines)
+
+#### Files Modified:
+- `includes/Core/Core.php` - Added RestController initialization
+- `includes/Admin/Settings/SettingsManager.php` - Registered REST API option
+- `includes/Admin/Pages/OptionsPage.php` - Added REST API checkbox
+- `includes/Frontend/AssetLoader.php` - Added enqueueFrontendScripts() method
+- `includes/Core/WooCommerce.php` - Updated to use API layer
+- `assets/js/woocommerce-integration.js` - Integrated API abstraction layer
+- `includes/Admin/Pages/HelpPage.php` - Added REST API tab
+- `assets/css/help-page.css` - Added REST API tab selectors
+- `README.md` - Added REST API documentation
+
+#### Technical Decisions:
+- REST API runs in **parallel** with AJAX (not replacement) for backward compatibility
+- Basic endpoints are **free** (Pro features planned: bulk operations, webhooks, rate limiting, analytics, OAuth 2.0)
+- Uses WordPress REST nonce verification (`wp_rest`)
+- Returns `WP_Error` objects with proper HTTP status codes
+- Follows WordPress REST API conventions
+
+#### Testing Results:
+✅ REST endpoint works without authentication (via `rest_authentication_errors` filter whitelist)
+✅ Proper error handling (404, 403, 500, 503)
+✅ Success response with magic link email sent
+✅ WooCommerce integration working with API layer
+✅ Backward compatibility maintained with AJAX
+
+---
+
 ## Directory Structure
 
 ```

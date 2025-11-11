@@ -131,16 +131,19 @@ class WooCommerce {
             return;
         }
 
-        // Enqueue WooCommerce-specific JavaScript (no jQuery dependency)
+        // Enqueue API abstraction layer first
+        \Chrmrtns\KeylessAuth\Frontend\AssetLoader::enqueueFrontendScripts();
+
+        // Enqueue WooCommerce-specific JavaScript (depends on API layer)
         wp_enqueue_script(
             'chrmrtns-kla-wc-integration',
             CHRMRTNS_KLA_PLUGIN_URL . 'assets/js/woocommerce-integration.js',
-            array(),
+            array('keyless-auth-api'), // Depend on API abstraction layer
             CHRMRTNS_KLA_VERSION,
             true
         );
 
-        // Localize script with AJAX data
+        // Localize script with AJAX data (for backward compatibility)
         wp_localize_script('chrmrtns-kla-wc-integration', 'chrmrtns_kla_ajax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('chrmrtns_kla_ajax_nonce')
