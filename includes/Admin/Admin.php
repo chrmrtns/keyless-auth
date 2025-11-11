@@ -65,7 +65,7 @@ class Admin {
         if (isset($_GET['chrmrtns_kla_learn_more_dismiss_notification']) && isset($_GET['_wpnonce'])) {
             if (wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'chrmrtns_kla_learn_more_dismiss_notification')) {
                 update_option('chrmrtns_kla_learn_more_dismiss_notification', true);
-                wp_redirect(remove_query_arg(array('chrmrtns_kla_learn_more_dismiss_notification', '_wpnonce')));
+                wp_safe_redirect(remove_query_arg(array('chrmrtns_kla_learn_more_dismiss_notification', '_wpnonce')));
                 exit;
             }
         }

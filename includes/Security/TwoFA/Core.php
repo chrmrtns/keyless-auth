@@ -211,7 +211,7 @@ class Core {
         if (empty($_SESSION['chrmrtns_kla_2fa_user_id'])) {
             $login_url = class_exists('Chrmrtns\\KeylessAuth\\Admin\\Admin') ?
                 \Chrmrtns\KeylessAuth\Admin\Admin::get_login_url() : wp_login_url();
-            wp_redirect($login_url);
+            wp_safe_redirect($login_url);
             exit;
         }
 
@@ -221,7 +221,7 @@ class Core {
         if (!$user) {
             $login_url = class_exists('Chrmrtns\\KeylessAuth\\Admin\\Admin') ?
                 \Chrmrtns\KeylessAuth\Admin\Admin::get_login_url() : wp_login_url();
-            wp_redirect($login_url);
+            wp_safe_redirect($login_url);
             exit;
         }
 
@@ -351,7 +351,7 @@ class Core {
      */
     public function show_2fa_setup_page() {
         if (current_user_can('read')) {
-            wp_redirect(admin_url('?chrmrtns_kla_setup_notice=1'));
+            wp_safe_redirect(admin_url('?chrmrtns_kla_setup_notice=1'));
             exit;
         }
         wp_die(esc_html__('Please use the shortcode [keyless-auth-2fa] on a page to set up 2FA.', 'keyless-auth'));
@@ -369,7 +369,7 @@ class Core {
         $code = isset($_POST['chrmrtns_2fa_code']) ? sanitize_text_field(wp_unslash($_POST['chrmrtns_2fa_code'])) : '';
 
         if (empty($code)) {
-            wp_redirect(add_query_arg(array('action' => 'keyless-2fa-verify', 'error' => 'empty_code'), home_url()));
+            wp_safe_redirect(add_query_arg(array('action' => 'keyless-2fa-verify', 'error' => 'empty_code'), home_url()));
             exit;
         }
 
@@ -394,6 +394,7 @@ class Core {
             $user = get_user_by('id', $user_id);
             wp_set_current_user($user_id, $user->user_login);
             wp_set_auth_cookie($user_id, true);
+            // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core WordPress hook
             do_action('wp_login', $user->user_login, $user);
 
             // Check if this was from a magic login
@@ -408,16 +409,16 @@ class Core {
                     $chrmrtns_kla_database->cleanup_expired_tokens($user_id);
                 }
 
-                wp_redirect($magic_login_data['redirect_url']);
+                wp_safe_redirect(wp_validate_redirect($magic_login_data['redirect_url'], admin_url()));
                 exit;
             }
 
-            wp_redirect(admin_url());
+            wp_safe_redirect(admin_url());
             exit;
         } else {
             $lockout_seconds = $this->totp->is_user_locked_out($user_id);
             $error = $lockout_seconds > 0 ? 'locked_out' : 'invalid_code';
-            wp_redirect(add_query_arg(array('action' => 'keyless-2fa-verify', 'error' => $error), home_url()));
+            wp_safe_redirect(add_query_arg(array('action' => 'keyless-2fa-verify', 'error' => $error), home_url()));
             exit;
         }
     }
@@ -659,7 +660,7 @@ class Core {
         }
         $_SESSION['chrmrtns_kla_2fa_user_id'] = $user_id;
 
-        wp_redirect(home_url('/?action=keyless-2fa-verify'));
+        wp_safe_redirect(home_url('/?action=keyless-2fa-verify'));
         exit;
     }
 
@@ -694,7 +695,7 @@ class Core {
 
             if (time() > $grace_end) {
                 wp_logout();
-                wp_redirect(add_query_arg('chrmrtns_kla_2fa_required', '1', wp_login_url()));
+                wp_safe_redirect(add_query_arg('chrmrtns_kla_2fa_required', '1', wp_login_url()));
                 exit;
             }
         }
@@ -722,7 +723,7 @@ class Core {
             $grace_end = $grace_start + ($grace_days * DAY_IN_SECONDS);
 
             if (time() > $grace_end) {
-                wp_redirect(home_url('/?action=keyless-2fa-setup'));
+                wp_safe_redirect(home_url('/?action=keyless-2fa-setup'));
                 exit;
             }
         }

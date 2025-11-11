@@ -43,20 +43,24 @@ class Notices {
         global $pagenow;
 
         $user_id = $current_user->ID;
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Internal prefixed hook with dynamic name
         do_action($this->notificationId . '_before_notification_displayed', $current_user, $pagenow);
 
         if (current_user_can('manage_options')) {
             // Check that the user hasn't already clicked to ignore the message
             if (!get_user_meta($user_id, $this->notificationId . '_dismiss_notification')) {
+                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Internal prefixed hook with dynamic name
                 $finalMessage = apply_filters(
-                    $this->notificationId . '_notification_message',
+                    $this->notificationId . '_notification_message', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Internal prefixed hook with dynamic name
                     '<div class="' . esc_attr($this->notificationClass) . '">' . wp_kses_post($this->notificationMessage) . '</div>',
                     $this->notificationMessage
                 );
                 echo wp_kses_post($finalMessage);
             }
+            // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Internal prefixed hook with dynamic name
             do_action($this->notificationId . '_notification_displayed', $current_user, $pagenow);
         }
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Internal prefixed hook with dynamic name
         do_action($this->notificationId . '_after_notification_displayed', $current_user, $pagenow);
     }
 
@@ -71,6 +75,7 @@ class Notices {
         global $current_user;
         $user_id = $current_user->ID;
 
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Internal prefixed hook with dynamic name
         do_action($this->notificationId . '_before_notification_dismissed', $current_user);
 
         // If user clicks to ignore the notice, add that to their user meta
@@ -78,6 +83,7 @@ class Notices {
             add_user_meta($user_id, $this->notificationId . '_dismiss_notification', 'true', true);
         }
 
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Internal prefixed hook with dynamic name
         do_action($this->notificationId . '_after_notification_dismissed', $current_user);
     }
 }
