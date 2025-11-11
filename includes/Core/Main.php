@@ -21,15 +21,38 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * Main plugin bootstrap class
+ *
+ * Orchestrates plugin initialization using dependency injection container.
+ * Responsibilities:
+ * - Register services in DI container
+ * - Bootstrap components in correct order
+ * - Manage plugin lifecycle hooks
+ * - Provide plugin action links
+ *
+ * @since 3.0.0
+ */
 class Main {
 
     /**
      * Plugin instance
+     *
+     * @var Main|null
      */
     private static $instance = null;
 
     /**
-     * Get plugin instance
+     * Dependency injection container
+     *
+     * @var Container
+     */
+    private $container;
+
+    /**
+     * Get plugin instance (singleton)
+     *
+     * @return Main Plugin instance
      */
     public static function get_instance() {
         if (null === self::$instance) {
@@ -39,60 +62,131 @@ class Main {
     }
 
     /**
-     * Constructor
+     * Constructor - Set up hooks
      */
     private function __construct() {
+        // Initialize container
+        $this->container = new Container();
+
+        // Register services
+        $this->register_services();
+
+        // Set up WordPress hooks
         add_action('plugins_loaded', array($this, 'init'));
         add_action('plugins_loaded', array($this, 'load_textdomain'));
-
-        // Add plugin action links
         add_filter('plugin_action_links_' . plugin_basename(CHRMRTNS_KLA_PLUGIN_FILE), array($this, 'add_plugin_action_links'));
     }
 
     /**
-     * Initialize plugin
+     * Get the DI container
+     *
+     * @return Container DI container instance
      */
-    public function init() {
-        // Initialize components
-        $this->init_components();
+    public function get_container() {
+        return $this->container;
     }
 
     /**
-     * Initialize components
+     * Register services in DI container
+     *
+     * Services are registered as factories (closures) for lazy loading.
+     * Each service is only instantiated when first requested.
+     *
+     * @return void
      */
-    private function init_components() {
-        // Initialize database functionality
+    private function register_services() {
+        // Database service
+        $this->container->register('database', function($container) {
+            return new Database();
+        });
+
+        // Core service (requires database)
+        $this->container->register('core', function($container) {
+            return new Core();
+        });
+
+        // Admin service (only loaded in admin context)
+        $this->container->register('admin', function($container) {
+            return new Admin();
+        });
+
+        // SMTP service
+        $this->container->register('smtp', function($container) {
+            return new SMTP();
+        });
+
+        // Mail logger service
+        $this->container->register('mail_logger', function($container) {
+            return new MailLogger();
+        });
+
+        // 2FA core service (singleton)
+        $this->container->register('2fa_core', function($container) {
+            return TwoFACore::get_instance();
+        });
+
+        // 2FA frontend service
+        $this->container->register('2fa_frontend', function($container) {
+            return new TwoFAFrontend();
+        });
+
+        // WooCommerce integration service (conditional)
+        $this->container->register('woocommerce', function($container) {
+            return new WooCommerce();
+        });
+
+        // Password reset service
+        $this->container->register('password_reset', function($container) {
+            return new PasswordReset();
+        });
+    }
+
+    /**
+     * Initialize plugin - Bootstrap all services
+     *
+     * @return void
+     */
+    public function init() {
+        $this->bootstrap_services();
+    }
+
+    /**
+     * Bootstrap services in correct order
+     *
+     * Services are initialized from the container, respecting dependencies.
+     * Some services are conditionally loaded based on context or settings.
+     *
+     * @return void
+     */
+    private function bootstrap_services() {
+        // 1. Initialize database first (required by other services)
         global $chrmrtns_kla_database;
-        $chrmrtns_kla_database = new Database();
+        $chrmrtns_kla_database = $this->container->get('database');
 
-        // Initialize core functionality
-        new Core();
+        // 2. Initialize core functionality
+        $this->container->get('core');
 
-        // Initialize admin functionality (only in admin)
+        // 3. Initialize admin (only in admin context)
         if (is_admin()) {
-            new Admin();
+            $this->container->get('admin');
         }
 
-        // Initialize SMTP functionality
-        new SMTP();
+        // 4. Initialize email services
+        $this->container->get('smtp');
+        $this->container->get('mail_logger');
 
-        // Initialize mail logging
-        new MailLogger();
-
-        // Initialize 2FA functionality (singleton to prevent multiple instances)
+        // 5. Initialize 2FA services
         global $chrmrtns_kla_2fa_core;
-        $chrmrtns_kla_2fa_core = TwoFACore::get_instance();
+        $chrmrtns_kla_2fa_core = $this->container->get('2fa_core');
+        $this->container->get('2fa_frontend');
 
-        // Initialize 2FA frontend
-        new TwoFAFrontend();
-
-        // Initialize WooCommerce integration (if WooCommerce is active and setting enabled)
+        // 6. Initialize WooCommerce integration (conditional)
         if (class_exists('WooCommerce') && get_option('chrmrtns_kla_enable_woocommerce', '0') === '1') {
-            new WooCommerce();
+            $this->container->get('woocommerce');
         }
 
-        // Initialize Password Reset (custom shortcode-based reset page)
-        new PasswordReset();
+        // 7. Initialize password reset
+        $this->container->get('password_reset');
     }
 
     /**

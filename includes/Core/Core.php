@@ -1,11 +1,25 @@
 <?php
 /**
- * Core authentication functionality for Keyless Auth
- * 
+ * Core authentication orchestrator for Keyless Auth
+ *
+ * Pure orchestrator class that coordinates magic link authentication.
+ * Delegates actual work to specialized services:
+ * - SecurityManager: User validation, token generation, enumeration prevention
+ * - EmailService: Magic link email generation and sending
+ * - TokenValidator: Token validation and login processing
+ * - WpLoginIntegration: wp-login.php integration
+ * - RestController: REST API endpoints
+ *
+ * Responsibilities:
+ * - Initialize and wire up service dependencies
+ * - Register WordPress hooks and shortcodes
+ * - Coordinate form submissions and login requests
+ * - Apply security settings from options
+ *
+ * @package Keyless Auth
  * @since 2.0.1
+ * @version 3.3.0
  */
-
-
 
 namespace Chrmrtns\KeylessAuth\Core;
 
@@ -27,7 +41,14 @@ use Chrmrtns\KeylessAuth\Security\SecurityManager;
 use Chrmrtns\KeylessAuth\Security\TokenValidator;
 use Chrmrtns\KeylessAuth\API\RestController;
 
-
+/**
+ * Core orchestrator class
+ *
+ * Coordinates magic link authentication by wiring up specialized services
+ * and registering WordPress hooks. Does not contain business logic itself.
+ *
+ * @since 2.0.1
+ */
 class Core {
 
     /**
@@ -66,7 +87,19 @@ class Core {
     private $rest_controller;
 
     /**
-     * Constructor
+     * Constructor - Initialize services and register hooks
+     *
+     * Sets up the dependency tree:
+     * 1. SecurityManager (user validation, token generation)
+     * 2. EmailService (depends on SecurityManager)
+     * 3. TokenValidator (depends on SecurityManager)
+     * 4. WpLoginIntegration (depends on SecurityManager)
+     * 5. RestController (depends on SecurityManager and EmailService)
+     *
+     * Registers all WordPress hooks and shortcodes.
+     * Applies security settings from plugin options.
+     *
+     * @since 2.0.1
      */
     public function __construct() {
         // Initialize Security Manager
@@ -128,7 +161,22 @@ class Core {
     }
 
     /**
-     * Render login form shortcode
+     * Render magic link login form shortcode
+     *
+     * Shortcode: [keyless-auth]
+     *
+     * Displays a simple email/username input form for requesting magic links.
+     * Shows status messages (success, errors) and handles logged-in state.
+     *
+     * Supported attributes:
+     * - redirect: URL to redirect after login
+     * - button_text: Custom button text
+     * - description: Custom form description
+     * - label: Custom input label
+     *
+     * @since 1.0.0
+     * @param array $atts Shortcode attributes
+     * @return string Rendered HTML form
      */
     public function render_login_form($atts = array()) {
         // Enqueue styles when shortcode is rendered
@@ -165,7 +213,23 @@ class Core {
 
 
     /**
-     * Render full login form with both standard and magic link options
+     * Render full login form with both password and magic link options
+     *
+     * Shortcode: [keyless-auth-full]
+     *
+     * Displays a complete login form with:
+     * - Standard WordPress password login
+     * - Magic link request option
+     * - Status messages and error handling
+     *
+     * Supported attributes:
+     * - redirect: URL to redirect after login
+     * - show_title: Display form title (yes/no, default: yes)
+     * - title_text: Custom title text (default: "Login")
+     *
+     * @since 2.0.0
+     * @param array $atts Shortcode attributes
+     * @return string Rendered HTML form
      */
     public function render_full_login_form($atts = array()) {
         // Enqueue styles when shortcode is rendered
@@ -207,7 +271,16 @@ class Core {
 
 
     /**
-     * Handle form submission
+     * Handle magic link form submission
+     *
+     * Called on init hook to process magic link request forms.
+     * Only handles forms with chrmrtns_kla_magic_form field present.
+     * Does NOT handle standard WordPress password logins.
+     *
+     * Delegates to handle_login_request() for actual processing.
+     *
+     * @since 2.0.0
+     * @return void
      */
     public function handle_form_submission() {
         // Only handle magic link form submissions, not standard WordPress login
@@ -218,7 +291,24 @@ class Core {
     }
     
     /**
-     * Handle login request
+     * Handle magic link login request (AJAX and form submissions)
+     *
+     * Processes magic link requests from:
+     * - Frontend forms (via handle_form_submission)
+     * - AJAX requests (wp_ajax_nopriv_chrmrtns_kla_request_login_code)
+     * - wp-login.php magic link field
+     *
+     * Flow:
+     * 1. Verify nonce
+     * 2. Validate user exists
+     * 3. Check admin approval status
+     * 4. Generate magic link and send email
+     *
+     * Errors are stored in chrmrtns_kla_login_request_error option
+     * for display on next page load.
+     *
+     * @since 1.0.0
+     * @return void
      */
     public function handle_login_request() {
         // Delete any existing error
