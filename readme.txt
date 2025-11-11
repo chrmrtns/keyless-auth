@@ -3,9 +3,9 @@
 Contributors: chrmrtns
 Donate link: https://paypal.me/chrmrtns
 Tags: secure-login, smtp, 2fa, passwordless, authentication
-Requires at least: 3.9
+Requires at least: 5.6
 Tested up to: 6.8
-Stable tag: 3.2.3
+Stable tag: 3.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -196,7 +196,7 @@ Change token expiration:
 
 = Requirements =
 
-* **WordPress**: 3.9 or higher (tested up to 6.8)
+* **WordPress**: 5.6 or higher (tested up to 6.8)
 * **PHP**: 7.4 or higher
 * **Email Delivery**: SMTP recommended for reliability
 
@@ -314,6 +314,36 @@ Change token expiration:
 
 
 == Changelog ==
+
+= 3.3.0 =
+* REQUIREMENT: Minimum WordPress version increased from 3.9 to 5.6
+* COMPATIBILITY: WordPress 5.6+ (December 2020) now required for security and maintainability
+* NOTE: No breaking changes for users already on WordPress 5.6 or higher
+* RATIONALE: WordPress 3.9 (April 2014) has critical unpatched security vulnerabilities
+* REFACTOR: Core.php modular refactoring - Extracted utility, service, and presentation classes for better code organization
+* NEW: UrlHelper class - Centralized URL manipulation and generation (getCurrentPageUrl, buildMagicLinkUrl, validateRedirectUrl, etc.)
+* NEW: MessageFormatter class - Unified message formatting system (success, error, login messages with consistent HTML structure)
+* NEW: AssetLoader class - Dedicated CSS/JS asset loading with dark mode support and custom CSS filter integration
+* NEW: SecurityManager class - Centralized security operations (token generation/validation, user enumeration prevention, 2FA emergency disable)
+* NEW: EmailService class - Dedicated email operations (magic link generation, template integration, token storage)
+* NEW: LoginFormRenderer class - Dedicated form rendering (simple and full login forms, status messages, Profile Builder integration)
+* NEW: TokenValidator class - Dedicated token validation and login processing (2FA integration, grace period handling, session management)
+* NEW: WpLoginIntegration class - Dedicated wp-login.php integration (magic login field, submission handling, redirect logic, failed login handling)
+* IMPROVEMENT: Reduced Core.php from 1,247 to 264 lines by extracting 3 utility classes, 2 service classes, and 3 specialized classes (79% reduction)
+* IMPROVEMENT: Better code organization with Single Responsibility Principle - each class has one clear purpose
+* IMPROVEMENT: Enhanced maintainability - related functions grouped into focused, reusable classes
+* IMPROVEMENT: Improved testability - dependency injection pattern for service classes enables easy unit testing
+* SECURITY: User enumeration prevention centralized in SecurityManager with 6 protection methods
+* SECURITY: Token validation now centralized with logging support via Database integration
+* SECURITY: 2FA integration cleanly separated in TokenValidator with grace period and session management
+* TECHNICAL: Utility classes (UrlHelper, MessageFormatter, AssetLoader) use PSR-4 namespacing and static methods
+* TECHNICAL: Service classes (SecurityManager, EmailService, TokenValidator) use dependency injection pattern
+* TECHNICAL: Presentation layer (LoginFormRenderer) separated from business logic
+* TECHNICAL: Zero breaking changes - all functionality preserved, just better organized
+* TECHNICAL: Foundation for future enhancements - modular architecture ready for REST API migration
+* DEVELOPER: Eight new classes available for theme/plugin integration: UrlHelper, MessageFormatter, AssetLoader, SecurityManager, EmailService, LoginFormRenderer, TokenValidator, WpLoginIntegration
+* FIX: Removed deprecated load_plugin_textdomain() call - WordPress.org handles translations automatically since WP 4.6
+* FIX: Added proper phpcs:ignore comments for GET parameter access in MessageFormatter for WordPress Plugin Check compliance
 
 = 3.2.3 =
 * SECURITY: Replaced all wp_redirect() with wp_safe_redirect() for enhanced security (21 occurrences)

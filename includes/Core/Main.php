@@ -97,13 +97,18 @@ class Main {
 
     /**
      * Load plugin textdomain
+     *
+     * Note: Since WordPress 4.6, plugins hosted on WordPress.org no longer need
+     * to manually call load_plugin_textdomain(). WordPress automatically loads
+     * translations from wordpress.org's translation system.
+     * This method is kept for backwards compatibility but does nothing.
+     *
+     * @since 1.0.0
+     * @deprecated 3.3.0 WordPress.org automatically handles translations
      */
     public function load_textdomain() {
-        load_plugin_textdomain(
-            'keyless-auth',
-            false,
-            dirname(plugin_basename(CHRMRTNS_KLA_PLUGIN_FILE)) . '/languages'
-        );
+        // WordPress.org automatically loads translations since WP 4.6
+        // No action needed for plugins hosted on WordPress.org
     }
 
     /**
